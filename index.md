@@ -5,6 +5,6 @@
 layout: home
 ---
 
-# Sample Index Page
+Welcome! Pardon the dust, this is still very much a work in progress, and I have very little idea what I am doing with Jekyll. 
 
-Testing markdown. Yay!
+Ain't nothin like testing in your production environment.... 

@@ -4,6 +4,4 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-More on the about page!!!
+Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.
