@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Math Primer, Part 2"
-date:   2019-05-26 9:30:00 -0500
+date:   2019-06-01 9:31:00 -0500
 categories: math calculus trigonometry fundamentals
 ---
 
@@ -256,9 +256,9 @@ $$ A = wh $$
 
 Where
 
-$$w$$ is the height of the rectangle.
-$$h$$ is the width of the rectangle.
-$$A$$ is the area.
+1. $$w$$ is the height of the rectangle.
+2. $$h$$ is the width of the rectangle.
+3. $$A$$ is the area.
 
 If you were to make a shape out of $$N$$ many rectangles which do not overlap, the total area of that shape is just the sum of the areas:
 
@@ -307,7 +307,7 @@ functionPlot({
 })
 </script>
 
-This particular choice of subdividing the area under the curve is a bit arbitrary, but was chosen to work well for example. We are creating 10 rectangles, each 2 seconds long. The height of each rectangle is defined to be $$v{t_{end})} where $$t_{end}$$ is defined to be the end-time for each rectangle.
+This particular choice of subdividing the area under the curve is a bit arbitrary, but was chosen to work well for example. We are creating 10 rectangles, each 2 seconds long. The height of each rectangle is defined to be $$v({t_{end})}$$ where $$t_{end}$$ is defined to be the end-time for each rectangle.
 
 There are subtle other ways we could choose to subdivide the area, but we won't get into that now.
 
