@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Math Primer, Part 1"
-date:   2019-05-26 9:30:00 -0500
+date:   2019-06-01 9:30:00 -0500
 categories: math calculus trigonometry fundamentals
 ---
 
