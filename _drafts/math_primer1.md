@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Math Primer"
+title:  "Math Primer, Part 1"
 date:   2019-05-26 9:30:00 -0500
 categories: math calculus trigonometry fundamentals
 ---
@@ -12,7 +12,7 @@ Despite many jokes, engineering and math do indeed have a very strong linkage. S
 
 The good news is that, for the purpose of understanding most of the basics of software, only the basics of a few different fields of mathematics are required. Precise computation techniques can be useful, but first and foremost a conceptual understanding is required.
 
-The goal of this post is to go over some of the basic math concepts we'll be using as we go forward. Deep knowledge will not be needed - we'll just hit the basics of the concepts we'll be using later one.
+The goal of this post is to go over some of the basic math concepts we'll be using as we go forward. Deep knowledge will not be needed - we'll just hit the basics of the concepts we'll be using later on.
 
 ## The Basics
 
@@ -41,18 +41,18 @@ $$ y = f(x) = x^2 $$
 
 Here, $$f(x)$$ is just the name for the transformation which is *mathematically* described by the act of squaring $$x$$, which in turn is denoted as $$x^2$$, the result of all of which is described by the variable $$y$$.
 
-Take a more concrete example with multiple inputs. For those of you who are not familiar, Sir Isaac Newton developed a set of laws of physical motion. They describe how bodies of mass move through space. Newton's second law is usually stated in its 1-dimensional formula form:
+Take a more concrete example with multiple inputs. For those of you who are not familiar, Sir Isaac Newton developed a set of laws of physical motion. They describe how bodies of mass move through space. Newton's second law is often introduced in its 1-dimensional formula form:
 
 $$ F = ma $$
 
 Where
 * $$m$$ is the mass of the object in *kilograms* ($$kg$$)
 * $$a$$ is the acceleration of the object in *meters per second squared* ($$m/s^2$$)
-* $$F$$ is the force required to cause that mass to accelerate at that rate.
+* $$F$$ is the force required to cause that mass to accelerate at that rate. Force is measured in units of *Newtons* ($$N$$)
 
 This law defines a function with two inputs - mass and acceleration. It describes what sort of force is needed to cause a given mass to move with a given acceleration. This could be useful to determine how much force your drivetrain is exerting on your robot when you measure how fast it moves across the field.
 
-In particular, the function described by Newton's second law is simply that multiplying acceleration and mass together produces the required force (when proper units are used). This is admittedly a trivial calculation, but not an unimportant relationship. We use it here for its simplicity, but also because it will come into play later.
+In particular, the function described by Newton's second law is simply that multiplying acceleration and mass together produces the required force (when proper units are used). This is admittedly a trivial calculation, but not an unimportant relationship. We use it here for its simplicity, and also because it will come into play later.
 
 Note that since only $$m$$ and $$a$$ are on the left hand side of the equation, you could hide the left side behind the function notation. In this case:
 
@@ -80,7 +80,7 @@ Note this is a very computer-science oriented approach to using equations and va
 
 # Trig
 
-Trigonometry is an extension of algebra, introducing some very specific functions that are useful when doing calculations with both circles and right triangles. Turns out, circles and right triangles come up a lot.
+Trigonometry draws from the concepts of algebra, introducing some very specific functions that are useful when doing calculations with both circles and right triangles. Turns out, circles and right triangles come up a lot.
 
 The three functions we'll particularly point out are called "Sine", "Cosine", and "Tangent". Respectively, they are denoted:
 
@@ -101,7 +101,7 @@ The sine, cosine, and tangent are functions that provide the relationship betwee
 2. The side touching the angle in question is the *adjacent* side.
 3. The remaining side is called *opposite* side.
 
-INSERT PICTURE HERE
+![circle to sine](/assets/rightTriangle.png)
 
 The length of the sides will be denoted with the variables $$h$$, $$a$$, and $$o$$. Under these conventions, our functions allow us to relate the ratios of lengths of sides of a triangle to the given angle with the following relationships:
 
@@ -115,17 +115,17 @@ Teachers commonly assist students in memorizing these relationships by introduci
 
 Although it may not be obvious from first inspection, Sine/Cosine are very useful in determining X/Y coordinates of a point on a circle, when given a certain number of degrees of traversal around that circle.
 
-INSERT PICTURES HERE
+![circle to sine](/assets/triangleToCircle.png)
 
 Note, as above, a right triangle can be drawn with one point on the origin $$(0,0)$$, the other on our point of interest $$(x,y)$$. Given the angle referenced from the positive X axis, sine and cosine can be used to deduce the X/Y coordinates:
 
 $$ x = r \cos(\theta) $$
 
-$$ y = r \sin(\theta) $$
+$$ y = r \sin(\theta) $$ 
 
 Think about how this might be useful. Say you have a simple arm that rotates to raise and lower the end affecter. The length of the arm is $$r$$. The axis of rotation (shaft that supports the arm) goes through the origin. Say you want to calculate how high the arm will raise up when driven through 45 degrees of rotation. 
 
-INSERT PICTURE HERE
+
 
 This is the same problem as above! Yay, we already know how to solve it!
 
@@ -134,16 +134,27 @@ Think about how high up and down the arm will be as it rotates around in a full 
 ![circle to sine](https://media.giphy.com/media/F5rQlfTXqCJ8c/giphy.gif)
 <sup> source: giphy.com </sup>
 
-Note the periodic nature of this function - the value of the output goes up and down as the angle goes around the circle, with a repeating pattern. The patter repeats once every time the angle crosses the positive X axis. This repeating, wave-like nature is [actually *quite* deeply meaningful](https://en.wikipedia.org/wiki/Fourier_transform). But we'll leave that for another post.
 
+Note the periodic nature of this function - the value of the output goes up and down as the angle goes around the circle, with a repeating pattern. The patter repeats once every time the angle crosses the positive X axis. 
 
-## Calculus
+<div id="plot1"></div>
+<script>
+functionPlot({
+  target: '#plot1',
+  title: 'sin(x)',
+  grid: true,
+  yAxis: {
+      label: "Function Output",
+      domain: [-1.5, 1.5]
+  },
+  xAxis: {
+      label: "Function Input (angle in Degrees)",
+      domain: [0, 720]
+  },
+  data: [{
+    fn: 'sin(x*PI/180)'
+  }]
+})
+</script>
 
-calculus is a thing
-
-## Beyond
-
-Multi-dimensional calculus
-
-Linear algebra
-
+This repeating, wave-like nature is [actually *quite* deeply meaningful](https://en.wikipedia.org/wiki/Fourier_transform). But we'll leave that for another post.
