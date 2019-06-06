@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Introduction to Electronics"
-date:   2019-06-01 9:31:00 -0500
+date:   2019-06-05 9:30:00 -0500
 categories: electricity
 ---
 
@@ -11,13 +11,13 @@ Computers and robots are both electronic devices, so it is worthwhile to start w
 
 ## What is Electricity
 
-"Electric Charge" is a physical property of some matter, just like mass, or magnetism. Within an atom, the protons will have a positive charge, and electrons will have a negative charge. Electric charges interact with each other, and will exert mechanical forces on each other, which can cause motion. Just like in many things, opposites attract - negative charges tend to move toward positive charges, and vice versa. 
+*Electric Charge* is a physical property of some matter, just like mass, or magnetism. Within an atom, the protons will have a positive charge, and electrons will have a negative charge. Electric charges interact with each other, and will exert mechanical forces on each other, which can cause motion. Just like in many things, opposites attract - negative charges tend to move toward positive charges, and vice versa. 
 
-In robotics, "electricity" usually refers to the flow of charge from one point to another. If you have a big clump of positive charge (like a bunch of protons) fixed at a certain location, and release a small negative charge nearby (like an electron), that small mobile negative charge will move toward the bigger clump. We say that the positive charges create an "electric field" which causes forces on other charged particles in the area.
+In robotics, *electricity* usually refers to the flow of charge from one point to another. If you have a big clump of positive charge (like a bunch of protons) fixed at a certain location, and release a small negative charge nearby (like an electron), that small mobile negative charge will move toward the bigger clump. We say that the positive charges create an *electric field* which causes forces on other charged particles in the area.
 
 ## Measurements of Electricity
 
-There are two primary things to measure in the phenomenon above. 
+There are two primary quantities to measure in the phenomenon described above. 
 
 ### Voltage
 
@@ -25,9 +25,9 @@ When you have an excess of charge in one place, we say it creates an electric fi
 
 ### Current
 
-*Current* is a measurement of a certain amount of charge flowing past a given point. The SI unit for measuring this is the *Ampere* or more commonly just the *Amp* ($$A$$). In equations, you'll see it denoted as $$I$$, because of the French. It is equal to $$6.25 * 10^18$$ electrons flowing past a point at any given time.
+*Current* is a measurement of a certain amount of charge flowing past a given point. The SI unit for measuring this is the *Ampere* or more commonly just the *Amp* ($$A$$). In equations, you'll see it denoted as $$I$$, because of the French. It is equal to $$6.25 * 10^{18}$$ electrons flowing past a point at any given time.
 
-Back when it was invented, it actually wasn't known yet that electrons are almost always the mobile charge, so at the time positive current was defined to refer to positive charges. Only after further study was done that it was discovered the convention was technically wrong - when you talk about positive current flow in a certain direction, the electrons actually flow the opposite direction. The good news is you can usually happily ignore this fact until you get to semiconductor physics - most of the rest of electrical engineering can be blissfully unaware of the difference between "conventional current" and "electron current".
+Back when electrical properties were first being described, it actually wasn't known yet that electrons are almost always the mobile charge, so at the time positive current was defined to refer to positive charges. Only after further study was done that it was discovered the convention was technically wrong - when you talk about positive current flow in a certain direction, the electrons actually flow the opposite direction. The good news is you can usually happily ignore this fact until you get to semiconductor physics - most of the rest of electrical engineering can be blissfully unaware of the difference between "conventional current" and "electron current".
 
 ### Resistance, Conductors, and Insulators
 
@@ -64,7 +64,7 @@ When a doped region with extra electrons is fused to a doped region with holes, 
 
 Applying a voltage across this depletion region will exert an extra force on the electrons. Depending on the direction of the voltage, you may end up with more electrons  hopping into holes (expanding the depletion region), or knocking electrons out of holes (shrinking the depletion region). As the voltage gets big enough to drive the depletion region to near zero size, the resistance of the material goes down, and it transforms into a conductor overall.
 
-INSERT DIAGRAM OF THIS HAPPENING IN A DIODE
+![depletion layer and diode](/assets/diode.png)
 
 This is the useful property of semiconductors - by applying a voltage to one part, the material property can be converted between insulator and conductor.
 
@@ -74,13 +74,22 @@ It is commonly said that computers store information using 1's and 0's. These "b
 
 Transistors contain 3 or more regions of semiconductor material. The simplest type have what is referred to as a Base, Collector, and Emitter region. 
 
-INSERT BJT PICTURE HERE
+![bjt diagram](/assets/bjt.png)
+
+Usually the line diagram with the "arrow pointing in" is used to represent the transistor in schematics.
 
 By injecting a voltage (and tiny current) at the base, the motion of electrons causes an avalanche effect if the collector & emitter have a voltage across them. The tiny input force causes a much larger output force, though it saturates at a certain point. This association allows one electrical signal to impact the flow of another signal, much as a human turning a light switch on and off impacts the flow of electricity to a lamp.
 
-INSERT SOME PICTURE ILLUSTRATING TRANSISTOR AS A SWITCH.
+![bjt as switch](/assets/bjt_as_switch.png)
 
 This switching action of the transistor is the basis upon which information can be manipulated. By carefully combining transistors, along with small numbers of other components, basic "logic gates" can be built up. These rudamentory gates have one or more inputs, and a single output, and computer boolean operations like AND, OR, and NOT with electronics.
 
 The exact construction of logic gates from transistors is beyond the scope of this blog because, indeed, learning about how it *actually* works requires a much deeper dive into the various types of transistors available. In my opinion, this is a topic better suited for folks interested in designing processor circuitry, rather than writing software. For the curious, [HyperPhysics](http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html) has some examples of how gates can be constructed from the BJT transistors we have explained already.
+
+Therefor, we make the following two abstractions:
+
+1. *A transistor is a device which controls the flow of electricity*
+2. *Transistors can be combined to build logic gates, which implement basic logic functions*
+
+Just remember these two, and you'll be fine going forward!
 
