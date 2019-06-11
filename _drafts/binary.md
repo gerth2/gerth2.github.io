@@ -21,9 +21,13 @@ Here's what I think of when you say "sixteen":
 
 Sixteen represents a quantity. There are sixteen boxes. 
 
+<iframe src="https://giphy.com/embed/69rOXF4YTDVDD6cwkt" width="480" height="378" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/69rOXF4YTDVDD6cwkt"></a></p>
+
+No, Picard, there are 16 boxes.
+
 We are using the sequence of symbols $$16$$ to represent this quantity. You're already very familiar with how this works, but it's important to dig into the details - it will lead us to a natural way to define the binary system used in computers.
 
-THere's two things to take away from the symbol sequence $$16.$$:
+There's two things to take away from the symbol sequence $$16.$$:
 
 1. It uses two symbols, $$1$$ and $$6$$, anchored around the decimal point $$.$$
 2. It puts them together in a particular order to give meaning to the quantity. $$16.$$ and $$61.$$ are not the same.
@@ -35,7 +39,7 @@ It has a particular advantage over predicessor methods for representing numbers 
 1. There is a limited set of symbols to remember. For most modern mathematics, there are 10 symbols - $$0$$, $$1$$, $$2$$, $$3$$, $$4$$, $$5$$, $$6$$, $$7$$, $$8$$, $$9$$. Each represents a particular quantity. 
 2. The symbols are combined to represent quantities beyond the range of the symbol set. How it accomplishes this is really the [secret sauce](https://en.wikipedia.org/wiki/Secret_ingredient) to the whole system.
 
-Each symbol is in some position relative to the "decimal point". In english, we usually refer to them (from right to left) as the "ones place", the "tens place", the "hundreds place", etc.
+Each symbol is in some position relative to the "decimal point". In English, we usually refer to them (from right to left) as the "ones place", the "tens place", the "hundreds place", etc.
 
 Because there is a $$1$$ in the tens place, we multiply the quantity represented by $$1$$ by ten. Then, this quantity is added in with the quantity represented by $$6$$, which because it is in the ones place, is multiplied by one (aka nothing is done to it). Together, ten and six make for a quantity of 16.
 
@@ -47,7 +51,7 @@ What's the point of splitting like this? Note that any number in base 10 can be 
 
 $$16 = 1*10 + 16*1$$
 
-THis works, no matter how big the number gets.
+This works, no matter how big the number gets.
 
 $$1736 = 1*1000 + 7*100 + 3*10 + 6*1$$
 
@@ -161,17 +165,112 @@ Little subscripts on a number indicate it's base. So $$10_{10}$$ is Ten. $$10_{2
 
 ## Representing Ideas with Bytes
 
-### Conventions
+We've shown how 1's and 0's can be assembled together to represent positive integers so far. This is a very very common usage within computing, and in general is the one processors are built around. However, there are a number of other options for interpreting a string of 1's and 0's. 
 
 ### True/False
 
-### Positive Integers
+We've already mentioned this, but the most straightforward mapping of 1's and 0's to some concept is simply true and false.
+
+Usually, 
+
+* 1 -> True -> "ON"
+* 0 -> False -> "OFF"
+
+We'll show later the reason why this interpretation is particularly powerful for making decisions and calculation. 
+
+Just like a single base-10 number is often called a "digit", a single boolean 1 or 0 is called  *bit*
+
+### Positive Integers (continued)
+
+#### Vocabulary
+
+Also as we just showed above, positive integers can be calculated by treating 1's and 0's as a base-2 number system. This covers a big chunk of the things we want to represent.
+
+It's also convenient to group sets of 4, 8, 16, 32, or 64 bits into integers to keep track of them easier - even if you are not necessarily trying to represent a number. It's all 1's and 0's at the end of the day, so whatever representation makes life easiest, use that one!
+
+In general, 8 bits is referred to as a *byte*. Because computer scientists are often cute, they call 4 bits a *nibble*.
+
+Most modern computers work will do computation on more than one byte at a time. A *word* is a set of one or more bytes, which the computer works on at the same time.
+
+Within a word, bits must be ordered. The bit closest to the "anchor point" in the "ones" position, is called the *Least Significant Bit* or *LSB*. The bit at the opposite end, furthest from the decimal point, is called the *Most Significant Bit* or *MSB* or *leading bit*. Note that similar acronyms are also applied to the first and last byte of a word, so you may need some context to figure out what the author refers to. Capital letter B often means byte, lower-case letter b often means bit.
+
+#### Historical Perspective on Byte Width
+
+Tiny embedded processors are often still 8-bit (one-byte word). For many years, 32-bit computers (4-byte words) were the standard. Within the last few years 64-bit (8-byte) words has become standard. Later blog posts will delve further into exactly what this implies, but for now just think of it as "how many bits can the computer work on at once".
+
+Special-purpose computers can have more exotic word-sizes. The older [Nintendo 64 gaming console](https://en.wikipedia.org/wiki/Nintendo_64) was one of the first instances of using 64-bit processors in consumer devices, and that was back in the early 1990's. Even before that, 24 bit processors were common in some audio applications, as 24 bits was considered "good enough" to represent audio that humans could hear. Graphics processing frequently goes big - some bleeding edge graphics cards have parts that work on 512 bits at a time!.
+
+If you use every bit in a word to represent a positive integer, there is a fixed range of numbers you can represent. All bits off of course corresponds to a value of $$0$$. For an $$N$$ bit word, all bits on represents a value of $$2^{N} - 1$$ (proof left as exercise to the reader). For example, a 32-bit integer can represent values between 0 and 4294967295. It's a really big range, but it's not without its limits!
+
+When you treat a set of bits as only positive integers, you are said to be doing *unsigned math*.
 
 ### Negative Integers
 
-### Decimal Numbers
+Representing negative numbers in a nice way is a bit of a challenge. The truth is you could pick any scheme you want to map sequences of 1's and 0's to numbers, but you want to do it in a way that makes calculation easy. If you had to hard code every $$X-Y$$ combination into your software, you'd get tired and frustrated pretty fast. A healthy dose of laziness is the mark of a good engineer.
+
+The good news is that the most commonly used system is pretty darn good. It's called [*Two's Compliment*](https://en.wikipedia.org/wiki/Two%27s_complement). We won't delve too much into it, but suffice to say it has the following properties:
+
+* The Most Significant Bit represents the sign of the number. 0 means positive, 1 means negative.
+* When the leading bit is 0, bits are interpreted the same way as unsigned integers.
+* When the leading bit is 1, for an N bit number, the value is equal to $$(-1) * 2^{N} + X$$ where $$X$$ is the unsigned value of the first $$N-1$$ bits.
+
+Therefor, a 2's complement number will have range $$(-1) * 2^{N-1}$$ to $$2^{N-1} - 1$$. Proof is again left as an exercise to the reader.
+
+For example, when $$N=8$$,
+
+| Base 2   | Base 10 | 
+|----------|---------|
+| 01111111 | 127     |
+| 01111110 | 126     |
+| ...      | ...     |
+| 00000010 | 2       |
+| 00000001 | 1       |
+| 00000000 | 0       |
+| 11111111 | -1      |
+| 11111110 | -2      |
+| ...      | ...     |
+| 10000001 | -127    |
+| 10000000 | -128    |
+
+The key advantage of doing it this way is spelled out in more detail on wikipedia. In short - addition and subtraction *just work*, without anything special. If you add up -1 and 1, and allow for the carried bit to "fall off" the end of the 8 bit calculation, you get 0.
+
+As you maybe already see, the 2's compliment pattern is technically circular when the bit width is fixed (as it is in all processors). When you are working with 8 bit integers, and add 1 to 127, in bits, you get $$ 01111111_2 + 00000001_2 = 10000000_2 = -128_{10} $$. This is often called *overflow* or *wraparound*. It's unintuitive at first, but usually indicates a problem with your software - adding two positive numbers should not create a negative one. Some processors can detect this and raise an alarm. 
+
+When writing software and designing hardware, use caution when depending on rollover behavior. It's not always obvious without sufficient documentation, and if anyone accidentally changes variable bit width in the future, they'll be in for a world of hurt figuring out why the code doesn't work anymore.
+
+When you treat a set of bits as 2's compliment integers, you are said to be doing *signed math*.
+
+### Fractional Numbers
+
+Most engineering values in the real world aren't nice round integers. We need a way to represent some value like $$1.4623$$. In broad strokes, there are two ways this is accomplished.
+
+#### Fixed Point
+
+[Fixed Point](https://en.wikipedia.org/wiki/Fixed-point_arithmetic) is largely the historical way that fractional numbers were represented. There's some more formal math that goes into it, but the best way I know to think of it is that each "bit" represents some fraction of an engineering unit. For example, you could say that a particular variable is scaled at "0.25 RPM per Bit", implying that the real-world engineering value is always equal to 1/4th the value of the integer you read in software.
+
+This makes it very easy to store a fraction - it's no different than a normal integer. The only thing to be careful of is when you store, read, or perform math with the stored value - you have to be careful to build in additional conversion factors to make your formulas work properly.
+
+This small bit of extra math can easily be optimized at build time though, so the method is still quite low overhead at runtime. For this reason, it's usually the best choice when execution speed is of the utmost importance on resource-limited embedded processors. 
+
+As you can probably see, there is an obvious limit to the size of the "step" you can represent. In our above example, we can exactly represent a reading of 7.75 RPM, but not 7.8 RPM. The more granularity you desire, the less min/max range you get. 
+
+#### Floating Point
+
+[Floating Point](https://en.wikipedia.org/wiki/Floating-point_arithmetic) is the "newer" way to represent fractional numbers. Floating Point is covered by [IEEE](https://en.wikipedia.org/wiki/Institute_of_Electrical_and_Electronics_Engineers) [standards documents](https://en.wikipedia.org/wiki/Double-precision_floating-point_format), which show how to split a number into an exponential representation, then pack it into bits. Again, the mapping is chosen carefully to make the math easy to do while a program is executing.
+
+Floating point is still pretty complex to do by hand. Most modern processors include hardware units to support doing the math. These are not quite as fast as doing integer math, but are far faster than doing it "long hand" within your software implementation.
+
+Due to the proliferation of floating point support in hardware, it's becoming more and more the standard for how to do engineering math in embedded systems. For FRC robotics purposes, I would recommend using it. Only in cases of extreme optimization does it make sense to go back to using fixed point (or other) representations. However, keep in mind that it does bear a small performance penalty - try not to use floating point math for doing things like counting, where the fractional portion will never be needed.
 
 ### Letters
+
+Beyond numbers, there are a lot of other things you might want to represent. Letters are a common one - any time you print something to console, you have to represent a string of characters that forms English words that some human can understand quickly.
+
+To do this, there was again a [standard, called ASCII,](https://en.wikipedia.org/wiki/ASCII) put together to map sequences of bits to letters in the alphabet. They started with just the common English/Latin characters, plus a handful of helper symbols and codes designed around how typewriters printed out letters (see [Carriage Return](https://en.wikipedia.org/wiki/Carriage_return) and [Line Feed](https://en.wikipedia.org/wiki/Newline)). Later standards like [UTF-8](https://en.wikipedia.org/wiki/UTF-8) and similar expanded upon this, and [continue to expand](https://xkcd.com/1726/) to get more and more languages and systems of writing represented and displayed in computer systems.
+
+## Conclusion
+
+We've done an overview of some of the methods used to map 1's and 0's to various ideas. Going forward, just keep in mind that there exists a number of ways to transform a sequence of 1's and 0's into numbers, fractions, letters, and beyond.
 
 
 *There are 10 types of people in the world. Ones who understand binary, ones who don't, and ones who don't expect base-3*
