@@ -95,5 +95,5 @@ Just remember these two, and you'll be fine going forward!
 
 ## Next Steps - Where are we going?
 
-We've scratched the surface of Analog, and shown how you can start to go Digital. Go lay the groundwork of some basic Digital concepts with [Boolean Logic](/blog_posts/2019/06/10/binary.html).
+We've scratched the surface of Analog, and shown how you can start to go Digital. Go lay the groundwork of some basic Digital concepts with [Binary](/blog_posts/2019/06/10/binary.html).
 
