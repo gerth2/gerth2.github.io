@@ -2,7 +2,7 @@
 layout: post
 title:  "A Plan for Learning"
 date:   2019-05-19 9:30:40 -0500
-categories: intro welcome
+categories: blog_posts
 ---
 
 I like making plans. Like, _really_ like doing it. [^1] 
@@ -54,6 +54,9 @@ In parallel, I hope to start introducing some calculus and control theory topics
 I also like eating and drinking things. Expect a few posts there.
 
 
+## Next Steps - Where are we going?
+
+Go start learning! Check out [Abstraction](/blog_posts/2019/05/26/abstraction.html).
 
 
 

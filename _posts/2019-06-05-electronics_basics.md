@@ -2,7 +2,7 @@
 layout: post
 title:  "Introduction to Electronics"
 date:   2019-06-05 9:30:00 -0500
-categories: electricity
+categories: blog_posts
 ---
 
 *“Invention is the most important product of man's creative brain. The ultimate purpose is the complete mastery of mind over the material world, the harnessing of human nature to human needs.” ― Nikola Tesla*
@@ -92,4 +92,8 @@ Therefor, we make the following two abstractions:
 2. *Transistors can be combined to build logic gates, which implement basic logic functions*
 
 Just remember these two, and you'll be fine going forward!
+
+## Next Steps - Where are we going?
+
+We've scratched the surface of Analog, and shown how you can start to go Digital. Go lay the groundwork of some basic Digital concepts with [Boolean Logic](/blog_posts/2019/06/10/binary.html).
 

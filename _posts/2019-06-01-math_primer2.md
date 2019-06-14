@@ -2,7 +2,7 @@
 layout: post
 title:  "Math Primer, Part 2"
 date:   2019-06-01 9:31:00 -0500
-categories: math calculus trigonometry fundamentals
+categories: blog_posts
 ---
 
 This post is the continuation of our introduction to some of the math that will be useful for the purpose of this blog. 
@@ -442,4 +442,6 @@ If you learn better from reading books and visualizing at your own pace, or like
 If a title like that doesn't make you at least want to take a peek, I'm not sure what will.
 
 
+## Next Steps - Where are we going?
 
+It's time to start some real Science! Go check out [basics of electronics.](/blog_posts/2019/06/05/electronics_basics.html).

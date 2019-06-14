@@ -2,7 +2,7 @@
 layout: post
 title:  "Abstraction"
 date:   2019-05-26 9:30:00 -0500
-categories: abstraction fundamentals
+categories: blog_posts
 ---
 
 *"The more I learn, the more I realize how much I don't know." - Albert Einstein*
@@ -81,5 +81,10 @@ Abstraction, without concrete examples, is by definition an "abstract" concept. 
 Simply remember that when we talk about **abstractions**, we're talking about removing details we don't care about, to focus on the small parts that we do.
 
 The world is full of huge problems. Lots of folks would say these require huge solutions. I say they require lots of small solutions, linked in just the right way.
+
+
+## Next Steps - Where are we going?
+
+Before we get into software specifics, we'll do some theoretical background. Start with [the Math Primer](/blog_posts/2019/06/01/math_primer1.html).
  
  

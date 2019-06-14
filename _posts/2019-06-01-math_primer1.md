@@ -2,7 +2,7 @@
 layout: post
 title:  "Math Primer, Part 1"
 date:   2019-06-01 9:30:00 -0500
-categories: math calculus trigonometry fundamentals
+categories: blog_posts
 ---
 
 ![XKCD explains where math falls on the spectrum](https://imgs.xkcd.com/comics/purity.png)
@@ -158,3 +158,7 @@ functionPlot({
 </script>
 
 This repeating, wave-like nature is [actually *quite* deeply meaningful](https://en.wikipedia.org/wiki/Fourier_transform). But we'll leave that for another post.
+
+## Next Steps - Where are we going?
+
+Keep cranking on the math, there is more to learn! Go check out [Math Primer, part 2](/blog_posts/2019/06/01/math_primer2.html).
