@@ -5,7 +5,7 @@ date:   2019-06-13 9:31:00 -0500
 categories: blog_posts
 ---
 
-_"All you need is NAND... ba da da da da" - Professor Michael Loui, 2010, UIUC_
+_"All you need is NAND... ba da da da da" - [Professor Michael Loui](http://publish.illinois.edu/loui/), 2010, UIUC_
 
 ## Combining Bits
 
@@ -107,19 +107,150 @@ This is the way to denote that $$C$$ is calculated as the logical OR of inputs $
 
 ## Equations, Order of Operations
 
-This
+As we've shown already, boolean operations can be indicated with equations, just like regular math. Similar to regular base-10 math, you use variables that take on the value of 1 or 0, constant 1's and 0's, equals signs, an order of operations (with parenthesis to change it)... most of what applies in normal math applies here too!
+
+For example, take the following equation:
+
+$$ D = f(A,B,C) = A \cdot \overline{(B+C)} $$
+
+Let's break this function named $$f$$ down into its components. Order of operations would dictate that you evaluate the inside of the parenthesis first. In this case, you first evaluate the OR of $$B$$ and $$C$$.
+
+The NOT bar is drawn over that whole quantity, so you calculate the NOT of the whole quantity $$(B + C)$$. That is to say - you first calcualte $$B$$ OR $$C$$, then invert the result.
+
+Finally, $$A$$ is AND'ed with the result of that calculation. This produces the result $$D$$.
+
+In general, order of operations will be:
+ 
+1. Interior of Parenthesis
+2. NOT
+3. AND 
+4. OR
+
+Note that the NOT operation of putting a bar over a variable (or many) is kinda like parenthesis, where you are inverting a set of variables. Generally it's better to be more verbose in calculations, and ask questions if the notation is unclear.
+
+### Properties of Boolean Calculations
+
+You may have heard certain terms from your math class like the "associative" property and the "communicative" property. I don't like to get too stuck on terminology like this - it's good to know it so you can communicate with others, but even more important you know the underlying concept. Suffice to say, for software writing's sake, there's just a handful of ideas to keep in mind:
+
+* The order of the inputs to AND and OR don't matter. You can freely exchange inputs 1 and 2, and output is unchanged (inspect the truth tables, it's easy to prove this by just looking at them). This can help you simplify calculations.
+* Any quantity ANDed with 1 will be itself, and any quantity ORed with 0 will be itself
+  * This is often called the "identity" property. What it means is that if you see a $$+0$$ or $$\cdot 1$$ in an equation, you can trim it off without consequence. This is sometimes a useful fact when speeding up calculations
+* Any quantity ANDed with 0 will be 0, and any quantity ORed with 1 will be 1
+  * This is often called the "short circuit" property. What it means is that if you see a $$+1$$ or $$\cdot 0$$, you don't even have to bother doing the other half of the calculation, you already know the outcome. This is a useful fact when speeding up calculations.
 
 ## Gates & Drawing Diagrams
 
+Written out equations are not the only way to represent a binary equation. Indeed, this particular form of math is strongly oriented toward creating real-world circuits which do useful things. As a result of that, it is common to represent a boolean calculation using a schematic or diagram, indicating how one could potentially create hardware to perform the associated calculation. 
+
 ### Logic Gates
+
+The diagrams that are drawn indicate how entities called *logic gates* will be hooked together to represent a whole circuit. A logic gate is an *abstraction* of the electrical circuitry (probably involving transistors) which could implement the logic function represented.
+
+All of the fundamental operations we have mentioned so far have special symbols to indicate their identity.
+
+#### NOT Gate Symbol
+
+![NOT Gate Symbol](/assets/not.png)
+
+#### AND Gate Symbol
+
+![AND Gate Symbol](/assets/and.png)
+
+#### OR Gate Symbol
+
+![OR Gate Symbol](/assets/or.png)
 
 ### Logic Diagrams
 
+When you combine multiple gates together, and hook them together in a particular way, you get what most folks will call a *logic diagram* describing your boolean function.
+
+Take our previous simple example of a boolean function $$f$$
+
+$$ D = f(A,B,C) = A \cdot \overline{(B+C)} $$
+
+Using our symbols, we can draw them together with function inputs and outputs, to graphically represent the same equation:
+
+![Simple logic diagram](/assets/simple_logic_diagram.png)
+
 ## 2-Level Logic
 
+As it turns out, all boolean functions, no matter how complex, can be broken down into a two-level hierarchy. This can be either a set of AND calculations OR'ed together, or a set of OR calculations AND'ed together. You may have to invert some of the inputs with NOT operations, but otherwise, it's just two levels of gates.
 
 ## Derived Gates
 
+### XOR
+
+There is a somewhat common gate called the "Exclusive OR" that calculates the more traditional "This or That (but not both)" meaning of the word "or":
+
+| In1 | In2 || Out |
+|-----|-----||-----|
+|   0 |   0 ||   0 |
+|   0 |   1 ||   1 |
+|   1 |   0 ||   1 |
+|   1 |   1 ||   0 |
+
+Another interpretation that's often useful is that XOR outputs 1 when its inputs are *different*, but 0 when they are the *same*. 
+
+There is an equation symbol for it, but it's not commonly used.
+
+$$ C = A \oplus B $$
+
+Indicates that C is the logical XOR of inputs A and B.
+
+### NAND, NOR
+
+Finally, there are some additional gates which it's good to be aware of:
+
+#### NAND:
+
+| In1 | In2 || Out |
+|-----|-----||-----|
+|   0 |   0 ||   1 |
+|   0 |   1 ||   1 |
+|   1 |   0 ||   1 |
+|   1 |   1 ||   0 |
+
+NAND, or "Not AND" is just that - it's an AND gate, but with the output inverted.
+
+#### NOR
+
+| In1 | In2 || Out |
+|-----|-----||-----|
+|   0 |   0 ||   1 |
+|   0 |   1 ||   0 |
+|   1 |   0 ||   0 |
+|   1 |   1 ||   0 |
+
+NOR, or "Not OR" is just that - it's an OR gate, but with the output inverted.
+
+#### Symbols
+
+Of course, there are symbols for these gates as well. 
+
+![other gates symbols](/assets/xor_nor_nand.png)
+
+From left to right, they are XOR, NOR, and NAND. Outputs are at the top, inputs are at the bottom.
+
+Note for NAND and NOR, the little circle on the output indicates the inversion operation. You may see that little circle elsewhere too - just know it implies "invert" on the signal it's placed on.
+
+### Why NAND/NOR
+
+As it turns out, when you go look at the transistor configurations required to create normal AND/OR gates, they're actually NAND/NOR with an inverter on the output. In terms of design optimization, it actually is easier to design the logic in terms of NAND/NOR, and you will use fewer transistors in the final design. This makes for cheaper, simpler, and more energy-efficient designs - all around a good thing!
+
+Even better - most modern electronics design tools can do the AND/OR to NAND/NOR transformation automatically for you, which means you can design in whatever set of gates is easiest for you to think about. Then the computer design tool can do the plug-and-chug to create a more efficient implementation.
+
+Furthermore, NAND and NOR have the interesting property of being able to emulate all the trivial gates themselves. Without a formal proof, and presented in pictures only, here is the evidence:
+
+#### NOT with NAND:
+
+#### AND with NAND:
+
+#### OR with NAND:
+
+
+#### So what
+
+Recall from further up that *any* boolean function can be represented Here's the additional punchline, as Professor Loui sang to us in ECE 101 (to the tune of the Beatles "All You Need is Love") - "All you need is NAND... ba da da da da". Only having to have one gate around can also help simplify designs sometimes - whether that's a software tool that's trying to create the most optimum configuration of transistors for your design, or whether you just don't want to buy 10 types of circuit chips from [Digikey](https://www.digikey.com) for your project.... having just one gate type is often not a bad thing. Huzzah for optimization!
 
 
 
