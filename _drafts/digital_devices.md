@@ -120,7 +120,78 @@ We're going to move on to a slightly more abstract, but much more realistic exam
 
 ### Binary Addition
 
-Recall from the [boolean](link me!!) lesson how we can add together boolean numbers the same way we add together 
+Recall from the [boolean](link me!!) lesson how we can add together boolean numbers the same way we add together familiar base-10 numbers. The algorithm that I learned back in the day was:
+
+1. Line up the two numbers on top of each other, keeping each place vertically aligned.
+2. Starting from the one's place, add together each single digit number
+3. If the result of a particular addition is 10 or greater, "overflow" or "carry" into the next column.
+
+The exact same process works in binary. Recall:
+
+$$ 67_{10} = 01000011_{2} $$
+
+$$ 5_{10} = 00000101_{2} $$
+
+Adding these two numbers in base-10, I get a result of 72. Let's do it in binary, to show how a thing that only knows 1 and 0 might go about doing the same calculation:
+
+First, we align the numbers:
+
+$$ TODO, I DO NOT KNOW LATEX $$
+
+Then, starting from the least significant bit, we start adding.
+
+Note that $$1_{2} + 1_{2} = 10_{2}$$ (This is just $$1_{10} + 1_{10} = 2_{10}$$, which you presumably learned in 1st grade.) Since the addition of two $$1$$'s has created a new digit, we have to carry it over to the next column:
+
+Rinse-wash-repeat. 
+
+$$1_{2} + 1_{2} + 0_{2} = 1_{2} + 1_{2} = 10_{2}$$
+
+Therefor, we have to carry again.
+
+We continue this process until we've covered all the bits in the number, and arrive at our result:
+
+$$ 1001000_{2} = 72_{10} $$
+
+Huzzah! We have done the calculation using only 1's and 0's. Hey, digital logic uses only 1's and 0's. Do you think we could design some circuitry to do this? You bet your bottom dollar we can!
+
+
+### Patterns in Binary Addition
+
+To build the logic, we'll start by breaking down the problem. Look at a particular column of the above addition operation. Let's try to describe its' properties in general:
+
+1. It takes two bits as input, one each from the numbers we are trying to add.
+2. A third bit comes in from the previous step, to indicate whether the previous step resulted in a "carry" operation or not.
+3. It contributes one bit to the result number
+4. It also may pass a "carry" bit to the next step
+
+As a bit of bookkeeping, let's first write out a list of all the possible math facts we could need. Remembering that addition is associative:
+
+$$ 0_{2} +  0_{2} +  0_{2}  = 00_{2} $$
+
+$$ 0_{2} +  0_{2} +  1_{2}  = 00_{2} $$
+
+$$ 0_{2} +  1_{2} +  1_{2}  = 10_{2} $$
+
+$$ 1_{2} +  1_{2} +  1_{2}  = 11_{2} $$
+
+Since we're talking about only one stage, we'll indicate *which* stage that is with an index subscript. The first stage will have subscript $$0$$, the next subscript $$1$$ and so on. Some particular (but unspecified) stage - the "$$i$$'th stage" - will have subscript $$i$$. As a matter of notation, when looking at the $$i$$'th stage, the *next* stage will be $$i+1$$, and the previous stage will be $$i-1$$. We'll have to explicitly handle the end-cases, but ignore them for now - just think about the middle bits.
+
+To draw this a bit more clearly, let's cover all 3 inputs and both outputs in a table.
+
+We'll call the two bits to add $$A_{i}$$ and $$B_{i}$$, and the result $$R_{i}$$. Each stage will also output a Carry signal called $$C_{i}$$. Since each stage also takes an input from the previous stage's carry signal, we'll denote this input with $$C_{i-1}$$
+
+| $$A_{i}$$ | $$B_{i}$$ | $$C_{i-1}$$ || $$R_{i}$$ | $$C_{i}$$ |
+|-----|-----|-----||-----|-----|
+|   0 |   0 |   0 ||   1 |   1 |
+|   0 |   0 |   1 ||   1 |   1 |
+|   0 |   1 |   0 ||   1 |   1 |
+|   0 |   1 |   1 ||   1 |   1 |
+|   1 |   0 |   0 ||   1 |   1 |
+|   1 |   0 |   1 ||   1 |   1 |
+|   1 |   1 |   0 ||   1 |   1 |
+|   1 |   1 |   1 ||   1 |   1 |
+
+
 
 ### Single Bit Adder
 
