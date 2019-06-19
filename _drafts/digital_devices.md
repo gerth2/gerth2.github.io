@@ -50,7 +50,7 @@ Astute readers will notice that this actually is a very familiar function - it's
 
 $$ B = L_1 \cdot L_2 $$
 
-INSERT PICTURE HERE
+![mission control button schematic](/assets/mission_control.png)
 
 There we go, quite simple!
 
@@ -67,7 +67,7 @@ Astute readers will again notice this is actually a very familiar function - it'
 
 $$ C = \overline{E} $$
 
-INSERT PICTURE HERE
+![Astronaut button schematic](/assets/astronaut_button.png)
 
 Excellent! We have now devices for both the Launch Control room and the Astronauts capsule controls, each with an output that says "Light the rocket" or "Don't light the rocket". The rocket ignition mechanism now has to take these two signals, and combine them together. Note from our initial requirement, we know we don't want to launch the rocket unless both the astronauts and launch control decide it's time to go.
 
@@ -92,7 +92,7 @@ $$ A = (L_1 \cdot L_2) \cdot \overline{E} $$
 In diagrams, we'd draw this as:
 
 
-INSERT DIAGRAM HERE
+![Full Schematic](/assets/full_schematic.png)
 
 This simple logic diagram shows how we could implement logic to accomplish our basic launch control system.
 
@@ -100,7 +100,7 @@ This simple logic diagram shows how we could implement logic to accomplish our b
 
 Admittedly, this is a pretty simple system, and we took a very verbose and roundabout way to design it. I bet many of you saw the ending well before we got there. That's perfectly fine! The big takeaway is not just the answer itself, but rather dividing the problem up into useful pieces. In this context, "useful" implies that each one is solvable on its own, and represents some meaningful small piece of computation. If you notice, you can easily draw boxes around the three physical locations we discussed:
 
-INSERT PICTURE HERE
+![Marked up schematic](/assets/marked_up_schematic.png)
 
 The individual pieces may not be implemented by the same computer! You might have to have each piece on a different machine, since they're in physically different places. This diagram and design doesn't at all get into how one might transfer a boolean value from one place to another (radio? super long wire?), but for lots of purposes that doesn't matter. Imagine your boss came up and asked "What does the system do"? They don't care about the implementation details, they care about functionality. This would be a great diagram to show the high level behavior of the system, without getting bogged down on communication, button size, or other implementation details.
 
@@ -136,17 +136,35 @@ Adding these two numbers in base-10, I get a result of 72. Let's do it in binary
 
 First, we align the numbers:
 
-$$ TODO, I DO NOT KNOW LATEX $$
+$$\begin{align}
+01000011& \\
+\underline{+\quad 00000101}& \\
+ &
+\end{align}$$
 
 Then, starting from the least significant bit, we start adding.
 
 Note that $$1_{2} + 1_{2} = 10_{2}$$ (This is just $$1_{10} + 1_{10} = 2_{10}$$, which you presumably learned in 1st grade.) Since the addition of two $$1$$'s has created a new digit, we have to carry it over to the next column:
+
+$$\begin{align}
+      10& \\
+01000011& \\
+\underline{+\quad 00000101}& \\
+0&
+\end{align}$$
 
 Rinse-wash-repeat. 
 
 $$1_{2} + 1_{2} + 0_{2} = 1_{2} + 1_{2} = 10_{2}$$
 
 Therefor, we have to carry again.
+
+$$\begin{align}
+     110& \\
+01000011& \\
+\underline{+\quad 00000101}& \\
+00&
+\end{align}$$
 
 We continue this process until we've covered all the bits in the number, and arrive at our result:
 
@@ -182,22 +200,47 @@ We'll call the two bits to add $$A_{i}$$ and $$B_{i}$$, and the result $$R_{i}$$
 
 | $$A_{i}$$ | $$B_{i}$$ | $$C_{i-1}$$ || $$R_{i}$$ | $$C_{i}$$ |
 |-----|-----|-----||-----|-----|
-|   0 |   0 |   0 ||   1 |   1 |
-|   0 |   0 |   1 ||   1 |   1 |
-|   0 |   1 |   0 ||   1 |   1 |
-|   0 |   1 |   1 ||   1 |   1 |
-|   1 |   0 |   0 ||   1 |   1 |
-|   1 |   0 |   1 ||   1 |   1 |
-|   1 |   1 |   0 ||   1 |   1 |
+|   0 |   0 |   0 ||   0 |   0 |
+|   0 |   0 |   1 ||   1 |   0 |
+|   0 |   1 |   0 ||   1 |   0 |
+|   0 |   1 |   1 ||   0 |   1 |
+|   1 |   0 |   0 ||   1 |   0 |
+|   1 |   0 |   1 ||   0 |   1 |
+|   1 |   1 |   0 ||   0 |   1 |
 |   1 |   1 |   1 ||   1 |   1 |
-
 
 
 ### Single Bit Adder
 
+A single bit adder will be a device with three inputs (the two bits to add, plus a carry-in bit). It is actually two independent circuits, outputting the Result bit and the Carry-out bit. We'll design each one, one at a time.
+
+#### Result Bit
+
+If you stare at the truth table hard enough, you might notice that the result bit is 1 whenever the number of input signals is _odd_. There are more algorithmic methods you can use to determine this, but recognizing this pattern lets you make the quick shortcut. Recall from previous posts that an *XOR* gate outputs 1 when an odd number of its inputs are 1. So, we'll use an XOR gate:
+
+$$ R_{i} = A_{i} \oplus B_{i} \oplus C_{i-1} $$
+
+#### Carry Out Bit
+
+The carry out bit also has a bit of a pattern to it. Notice that it is true when at least two inputs are true. This can be covered by a series of OR'ed together AND outputs as such:
+
+$$ C_{i} = A_{i} B_{i} + A_{i} C_{i-1} + B_{i} C_{i-1} $$
+
+Again there are algorithms you can use to derive this equation from the truth table, but if you stare at it hard enough, you should be able to convince yourself that this equation is both accurate, and makes sense. For example, think about why we don't have to handle the all-three-inputs-true case explicitly.
+
+#### Schematic
+
+Based on our observation of the truth table, we can put together this device that can compute one column of the "add two bytes" problem:
+
+![single bit adder](/assets/single_bit_adder.png)
+
+To use many of these devices in larger units, we'll use an *abstraction* where we draw just the inputs and outputs, and hide the details of the guts.
+
+![abstraction of single bit adder](/assets/single_bit_adder_abstraction.png)
+
 ### Ripple-carry Adder
 
-Test text
+The Ripple-carry Adder is a logical next-step to expand the single-bit adder. Earlier in the post we showed the algorithm for doing binary addition. Since it's a bunch of rinse-wash-repeat steps, it stands to reason that we could make one circuit to do each step, then replicate and string them together. That's exactly what we've done with the single-bit adder - we've made one circuit that can perform one step of the addition. A Ripple-carry Adder is simply a set of single-bit adders chained together to do addition of a full byte.
 
 ### Joining chunks together
 
