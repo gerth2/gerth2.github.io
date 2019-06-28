@@ -243,6 +243,12 @@ Other
 ---What you have to do to be a good scientist or engineer
 ---
 
+-- Common professional engineering phrases, and what they imply
+--- Say the ssame thing, but pick the word that tells the desired narative.
+--- our software has a (bug/defect/limitation/feature)
+--- This is a (problem/oppurtuinty)
+--- The testing is (insufficent/incomplete)
+
 --Coffee
 ---History
 ---What types are out there
