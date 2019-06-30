@@ -63,32 +63,67 @@ The maximum clock speed is dictated by the worst-case propagation delay from the
 
 This is why reducing the number of layers of gates is important - the fewer layers you have, the less input to output delay you have, and the faster you can run your digital circuit's clock. This means faster computation, which is generally regarded as a good thing![^3].
 
+#### But Mommy, Where do Baby Clocks Come From?
+
+Don't worry child, we will tell you when you are older.
+
+Actually, it doesn't matter too much for our design purposes. This is the beauty of abstraction - you don't need to know *how* a clock signal is generated to *use* it. But for the curious, we will indulge you momentarily. 
+
+A clock is just a repeating waveform, and can be derived from any repeating pattern in nature. Common ways of generating it include:
+
+1. Getting it from the power line (usually a nice 60Hz in north america, unless your power company screws up.)
+2. Repeatedly charging and discharging a capacitor through a resistor (for example, see ["555 timer" circuit design](INSERT WIKI LINK HERE)).
+3. Amplifying the vibrations of a specially-designed [crystal made of quartz.](LINK HERE AS WELL)
+4. Watching atomic vibrations of a [cesium atom.](LINK TO NIST STANDARD HERE)
+5. A whole host of other things
+
+In addition, there's a whole science to distributing this clock signal carefully to all the circuit elements, so they actually receive nice clean 0-to-1 transitions at the same time. Especially when clock frequencies get high, those wires inside your processor start to act less like ideal wires, and more like radio antennas. It gets mucky fast. 
+
+We don't like to think about all this at once. So we use our powers of *abstraction* to simply say *we trust a clock signal exists and works well, now we will use it*. 
+
 ### The D flip-flop from Gates.
 
-Here's our design goal - we want to build a device where we can predictably control when the output changes based on some clock input. We will have a single input that dictates when the *next* output will be, and when the clock input *changes* from 0 to 1, we will update our output to match our input. At all other times, the output should retain its state.
+Here's our design goal - we want to build a device where we can predictably control when the output changes based on some clock signal input. We will have a single input that dictates when the *next* output will be, and when the clock input *changes* from 0 to 1, we will update our output to match our input. At all other times, the output should retain its state.
+
+We do this by cascading multiple SR latches together, such that an input, or some feedback value, "drops through" each layer as the clock swings from 0 to 1. Neglecting gate propagation delay, the 0 to 1 *rising edge* of the clock will be the event that ultimately causes a new input to appear at the output.
 
 I am again in debt to Wikipedia for providing some images of gate configurations. Far easier than drawing it myself, and equally correct.
 
-![Gated D latch](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Edge_triggered_D_flip_flop.svg/1920px-Edge_triggered_D_flip_flop.svg.png)
+![Edge Triggered D Flip Flop](https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Edge_triggered_D_flip_flop.svg/1920px-Edge_triggered_D_flip_flop.svg.png)
 
-It might be a bit hard to trace the functionality, but it's actually pretty straightforward. When the input labeled *Clock* goes from a 0 to a 1, the output $$Q$$ takes on whatever value is applied at the $$D$$ input. $$\overbar{Q}$$ is of course always the inverse of $$Q$$.
-
-You 
+It might be a bit hard to trace the functionality, but it's actually pretty straightforward. When the input labeled *Clock* goes from a 0 to a 1, the output $$Q$$ takes on whatever value is applied at the $$D$$ input. $$\overline{Q}$$ is of course always the inverse of $$Q$$.
 
 ### Abstraction
 
-When you 
+When you draw out one of these devices in a circuit diagram, it's actually confusing to do it with gates. Astute document readers might recognize "oh that's a D flip flop!". But in reality, you don't want to make people think about that, you just want them to know it. So, there's a fairly generic symbol that gets drawn:
 
-## RAM
+INSERT WIKI IMAGELINK HERE
 
-Test text
+The ports are labeled about as you'd expect from above. The little notched $$>$$ by the Clock input indicates that it is in fact a clock.
+
+The $$S$$ and $$R$$ ports are often omitted. They will force the output to 1 ($$S$$) or 0 ($$R$$) immediately, regardless of the value of $$C$$ or $$D$$. This is useful for a *reset* circuit, which (when activated) puts all the devices into a known state. This is useful when first powering on (or rebooting) your computer - depending on the exact transistor layout, the state of each flip flop may not be guaranteed when you first apply power to the circuit. Some might be 1, some might be 0...who knows. To get around this, designers usually just build in the ability to force every piece of the circuit to a known state.
+
+### But, Why a Clock?
+
+The reason for triggering on the rising edge is for *synchronization* across the larger system. Think about a computer chip - you'll have many many many of these memory components spread throughout your processor, RAM, peripherals, device drivers, etc. You want to be sure that they all change state at the same time, so you design your circuit with a rising-edge paradigm in mind. Namely - when the clock is not having a rising edge, you have that whole time to do all the combinational logic. Signals propagate around, change gate state, do calculations and whatnot.... you can do whatever you like in this time, just as long as *all Flip Flop inputs* and stable before the *next clock rising edge*.
+
+For the sake of completeness, it should be noted that digital circuits are often *falling edge* triggered. This changes the circuit design a bit, but the concept remains the same. It doesn't matter if your clock goes "1 0 1 0..." or "0 1 0 1...". General design principles would say to keep all your devices the same - all rising edge or all falling edge triggered. But even this can be violated if you're careful enough. Not worth focusing on too much now, but just for awareness - rising-ege isn't the only option.
 
 ## Counter
 
+Let's put together a circuit combining two things we have just learned about - adders and flip flops. Our goal will be to build a device which keeps track of time, counting the number of clock cycles. To keep things simple, we're going to pretend that we're building a clock for planet Zorgon. It's a zippy but precise planet, circling its sun every 256 seconds exactly. Our Zorgon clock therefor just needs to count up from 0 to 255 to track all the seconds in the day, then reset back to 0 after the 255th second (when it is the next day).
+
+If you recall from the binary lesson, if we have 8 bits and treat them as an unsigned integer, we can exactly represent the numbers 0 through 255 (since $$255 = (2^{8}-1$$)). They don't call Zorgon the "Planet of Simplifying Mathematical Coincidences" for nothing!
+
+
+
+
+### A Zorgon Alarm Clock
+
 Test text
 
 
-### A Simple Alarm Clock
+## RAM
 
 Test text
 
@@ -98,6 +133,6 @@ Test text
 TBD
 
 
-[^1]: Flaw - or *limitation* or *oppurtunity*. All words could apply, just pick the one that says what you want to say.
+[^1]: Flaw - or *limitation* or *opportunity*. All words could apply, just pick the one that says what you want to say.
 [^2]: Or at least, it ought to. Sometimes the marketing department has other ideas. But we still like them, because they help sell the things, which makes money, and lets the engineers make more things, and have food to eat.
 [^3]: Turns out, because of gate delay, the ripple-carry adder is actually a bad design for an adder circuit. Think about what happens if you had 1000 stages. How long do you have to wait for the full result to be available? Think about how many gate propagations are needed to calculate the final carry-out signal. Dis nasty.
