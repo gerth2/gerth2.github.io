@@ -111,26 +111,122 @@ For the sake of completeness, it should be noted that digital circuits are often
 
 ## Counter
 
-Let's put together a circuit combining two things we have just learned about - adders and flip flops. Our goal will be to build a device which keeps track of time, counting the number of clock cycles. To keep things simple, we're going to pretend that we're building a clock for planet Zorgon. It's a zippy but precise planet, circling its sun every 256 seconds exactly. Our Zorgon clock therefor just needs to count up from 0 to 255 to track all the seconds in the day, then reset back to 0 after the 255th second (when it is the next day).
+Let's put together a circuit combining two things we have just learned about - adders and flip flops. Our goal will be to build a device which keeps track of time, counting the number of clock cycles. To keep things simple, we're going to pretend that we're building a clock for planet Zorgon. It's a zippy but precise planet, circling its sun every 16 seconds exactly. Our Zorgon clock therefor just needs to count up from 0 to 15 to track all the seconds in the day, then reset back to 0 after the 15th second (when it is the next day).
 
-If you recall from the binary lesson, if we have 8 bits and treat them as an unsigned integer, we can exactly represent the numbers 0 through 255 (since $$255 = (2^{8}-1$$)). They don't call Zorgon the "Planet of Simplifying Mathematical Coincidences" for nothing!
+If you recall from the binary lesson, if we have 4 bits and treat them as an unsigned integer, we can exactly represent the numbers 0 through 15 (since $$15 = (2^{4}-1$$)). They don't call Zorgon the "Planet of Simplifying Mathematical Coincidences" for nothing!
 
+To store the present time, we will use 4 D flip flops in parallel. This is nothing fancy, just creating a new digital device with three main ports. A 4-bit input, with one bit going to the $$D$$ input each flip flop. The 4-bit output comes directly from the individual $$Q$$ bits at the output of each flip flop. The clock input is still one bit, and drives all flip flop clocks simultaneously. Effectively, we've created a flip flop that stores 4 bits at a time, rather than one. This device is often called a *register*.
 
+![4 bit register](/assets/register.png)
+
+We will make the assumption that we have a clock signal that already runs at 1 Hz (this is not hard to create). *Hz* (abbreviation for "Hertz") means "cycles per second". Since each cycle of the clock waveform has exactly one rising edge and one falling edge, we expect once per second our (rising edge triggered) flip flops will propagate their input to the output.
+
+Here's the key to the design: the *output* of the register will be used to represent the *present* time on Zorgon. Every rising edge of the clock, we will want to increase the present time by 1 (since, of course, time goes forward). To do this, we need to ensure that at all times, the input to the register is the current time, plus 1. This will ensure that when the clock has a rising edge, the new time (cur_time + 1) is propagated to the output, and the output (representing current time) updates properly.
+
+We'll hook up a circuit like this:
+
+DRAW A PICTURE HERE.
+
+The inside of the "+" box is just an 4-bit ripple carry adder, like we had [last time](/blog_posts/2019/06/26/digital_devices.html). That "constant value" of 1 is achieved by simply connecting the 0th bit to a high voltage, and all the other bits to ground.
+
+There! With just a few components, we're able to create a circuit that keeps track of the present time of (Zorgon) day, and outputs it in a binary format!
 
 
 ### A Zorgon Alarm Clock
 
-Test text
+Knowing the current time of day is cool, but what if you want to be notified at a certain time every day? Say, for example, the time you want to wake up at! This is a device most folks would call an *alarm clock*. As the english name suggests, we could start with our clock, and add an alarm circuit to it.
+
+The alarm circuit is simple. We shall define it as such: it takes two inputs: the current time of day, and the desired time of alarm. Current time comes from our existing clock circuit, and desired alarm time has to come as input from the user. If you want to be woken up by your alarm on the 4th second of the day, you would provide the input bits $$ 0100_2 $$. Providing user input in digital circuits like this is usually just done through switches that selectively tie digital signals to ground or 5V. Something like [this](https://www.jameco.com/z/78B04ST-Grayhill-DIP-Switch-On-Off-Single-Pole-Single-Throw-4-Raised-Slide-0-15-Amp-30-Volt-PC-Pins-2000-Cycle-2-5mm-Through-Hole-Tube_696950.html?%20CID=GOOG&gclid=Cj0KCQjwgezoBRDNARIsAGzEfe7hcHovtbSrxWYDnhEjBbvDTIrS4ydOLhCMUV2kU8dR8l9B52EvHOcaAtGKEALw_wcB) - you've possibly seen these in old garage door openers? Maybe? Or maybe I'm getting old.
+
+In any case, we will define that the output of our alarm circuitry is a single bit. It shall be 1 when the current time matches the alarm time, and 0 otherwise. We'll assume it's hooked up to some loud buzzer, or a motor that drives a 2x4 into your skull, or releases a flock of penguins, or something "alerting" of that nature. But through the power of abstraction, we will simply leave it at 1 = "alert" and 0 = "no alert".
+
+To calculate the output, we need to calculate if the two inputs are *exactly* equal. Doing this across four bits is quite trivial - for two four-bit numbers to be *exactly* equal, it just means that every one of their bits is equal. 
+
+Recall that the output of an XOR gate reports when two bits are different (1 for different, 0 for same). By putting an inverter on the output of an XOR gate, we've created an XNOR gate, which produces 1 when the bits are the same, but 0 when they are different.
+
+Similarly, a 4-input AND gate will output 1 when all 4 inputs are true, and 0 otherwise (1 or more inputs are 0). 
+
+Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate "are my two 4-bit inputs exactly equal":
+
+![Alarm Circuit](/assets/alarm_circuit.png)
+
+Here we've used names A and B for the 4-bit inputs (A consists of A_0, A_1, A_2, and A_3). A is the current time, B is the set time from the user (though order technically won't matter).
+
+We can then hook this guy up to our existing clock circuit, and we suddenly can be woken up at the proper time on planet Zorgon! Huzzah!
+
+### Too close to home
+
+"But But But!", you say. "We live on planet Earth! A Zorgon clock is useless for day to day life!". I hear you, and do not disagree. Let's think through what we'd have to do to make this clock work on Earth (where there are $$24 * 60 * 60 = 86400$$ seconds in one day).
+
+For starters, we'll need more bits. $$log_{2}(86400) = 16.3984$$, so we'll need at least 17 bits to represent the present "second of the day". This should be easy enough - just expand both the register and the adder to have 17 bits, and re-connect wires.
+
+The second problem is that on Zorgon, the counter "rolled over" back to 0 at just the right time. This is because of the way binary addition works when you have a fixed set of output bits:
+
+$$ 0001_{2} + 1111_{2} = 10000_{2}$$ But because of how the ripple-carry adder is implemented, that top bit "drops off", or is otherwise discarded. This leaves the result of the addition operation as $$ 0000_{2} = 0_{10} $$
+
+Earth is not nearly as nice. We have to manually reset the count back to zero on the start of each day. Let us create a "new-day-detection" circuit which uses that same comparison logic in the Alarm Clock to check whether the current second count is the last second of the day (second $$86399_{10} = 10101000101111111_2$$ ). When all 17 bits of the current time are exactly equal to the last second of the day, the logic outputs a 1.
+
+#### The MUX
+
+There is another combinational logic device I'd like to quickly introduce you to - it's called a *multiplexer*, or *mux* for short. It has a set of input signals, some *select lines*, and a single output. Based on the value at the *select line* inputs, the appropriate input is propagated to the output. 
+
+From similar reasoning that we used above, the number of select lines required is equal to $$\lceil log_{2}(N) \rceil$$ where $$N$$ is the number of distinct inputs to be selected between.
+
+A non-traditional looking truth table will summarize this behavior succinctly:
+
+For a mux with data inputs A and B:
+
+| SEL || Out |
+|-----||-----|
+|   0 ||   A |
+|   1 ||   B |
+
+Perhaps more traditionally for the case where A and B are both 1 bit:
+
+| SEL |  A  |  B  || OUT |
+|-----|-----|-----||-----|
+|   0 |   0 |   0 ||   0 |
+|   0 |   0 |   1 ||   0 |
+|   0 |   1 |   0 ||   1 |
+|   0 |   1 |   1 ||   1 |
+|   1 |   0 |   0 ||   0 |
+|   1 |   0 |   1 ||   1 |
+|   1 |   1 |   0 ||   0 |
+|   1 |   1 |   1 ||   1 |
+
+You could go create this out of individual gates at this point - an exercise which is left up to the user.
+
+Just like we've ganged $$N$$ flip-flops together in parallel to make an $$N$$ bit register, you can also gang $$N$$ 1-bit mux's together to make an $$N$$ bit mux, which is what we'll need for Earth clock.
+
+#### New Dawn
+
+In particular, when our "new day detection" circuitry indicates that the next second is the start of a new day (and the current time should therefor be 0), we can use that 1-bit output and a mux to switch the value of the input to the registers:
+
+INSERT PICTURE
+
+Here, we see that when our "next-day" detection logic indicates the next second should be 0, we pass in a constant value of all-0-bits to the input of the register. In all other cases, we continue to pass the same thing we used to pass - current time + 1.
+
+The alarm circuitry would need very little adjustment - only to increase the total number of input switches used to select the "alarm" time.
+
+And just like that, we've constructed a functional earth alarm clock. Good job team!
 
 
 ## RAM
 
-Test text
+While our alarm clock adventures have been fun, it turns most people [don't build their alarm clocks from scratch.](https://www.amazon.com/s?k=alarm+clock&ref=nb_sb_noss_2). The ones on the market have far more features and it rarely makes sense to build one yourself like we described, unless you want to just have some fun.
+
+Building your own RAM chips is also not recommended for anything except leisure. However, it's worthwhile going over the basics of what features a piece of Random-Access Memory has to support, and propose one way of going about doing this with the circuits we know about.
+
+## Accessing Randomly
+
+Computer Memory is a digital device which stores and recalls large chunks of data. As you may know, and as we already mentioned, RAM is an acrynom which stands for "Random Access Memory" - it means that a user of a RAM chip can access any particular part of memory at any time. It also implies that the user can write a new value to any particular part of memory at any time. The other common type of memory is called ROM, for "Read Only Memory". This type can store information, but not change it.
+
+
 
 
 ## Next Steps - Where are we going?
 
-TBD
+With the introduction of combinational circuits like adders and mux's, and some sequential logic like registers and RAM, we're now ready to start delving into how these are combined together in a traditional processor. We'll start to cover this in a discussion on Von Neumann Architecture. Coming soon!
 
 
 [^1]: Flaw - or *limitation* or *opportunity*. All words could apply, just pick the one that says what you want to say.
