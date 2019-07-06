@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Digital Devices Part Two - Sequential Logic"
-date:   2019-06-15 9:30:00 -0500
+date:   2019-07-06 9:30:00 -0500
 categories: blog_posts
 ---
 
@@ -115,7 +115,7 @@ Let's put together a circuit combining two things we have just learned about - a
 
 If you recall from the binary lesson, if we have 4 bits and treat them as an unsigned integer, we can exactly represent the numbers 0 through 15 (since $$15 = (2^{4}-1$$)). They don't call Zorgon the "Planet of Simplifying Mathematical Coincidences" for nothing!
 
-To store the present time, we will use 4 D flip flops in parallel. This is nothing fancy, just creating a new digital device with three main ports. A 4-bit input, with one bit going to the $$D$$ input each flip flop. The 4-bit output comes directly from the individual $$Q$$ bits at the output of each flip flop. The clock input is still one bit, and drives all flip flop clocks simultaneously. Effectively, we've created a flip flop that stores 4 bits at a time, rather than one. This device is often called a *register*.
+To store the present time, we will use 4 D flip flops in parallel. This is nothing fancy, just creating a new digital device with three main ports. A 4-bit input, with one bit going to the $$D$$ input each flip flop. The 4-bit output comes directly from the individual $$Q$$ bits at the output of each flip flop. The clock input is still one bit, and drives all flip flop clocks simultaneously. Effectively, we've created a flip flop that stores 4 bits at a time, rather than one. This device is often called a *register*[^4].
 
 ![4 bit register](/assets/register.png)
 
@@ -158,7 +158,7 @@ Recall that the output of an XOR gate reports when two bits are different (1 for
 
 Similarly, a 4-input AND gate will output 1 when all 4 inputs are true, and 0 otherwise (1 or more inputs are 0). 
 
-Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate "are my two 4-bit inputs exactly equal":
+Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate "are my two 4-bit inputs exactly equal" [^4]:
 
 ![Alarm Comparison Circuit](/assets/alarm_circuit.png)
 
@@ -299,16 +299,7 @@ There are some key inefficiencies with this system, however:
 * The loop-back circuitry on every register can be eliminated by having two clocks (one for read, one for write), or some set of "enable bit" inputs that the processor controls - writes are commanded only when required.
 * The read-mux and write-mux circuitry can sometimes be combined into the inside of the register in an enable/disable fashion.
 
-For more info on "real" RAM chips, search around for "Memory Cell", like on [wikipedia](https://en.wikipedia.org/wiki/Memory_cell_(computing)). The key takeaway is that there are a huge number of different ways to implement RAM, but that shouldn't matter. As far as the processor is concerned, it's just an abstract device which can store and recall data from little mailboxes we call "addresses".
-
-
-
-
-
-
-
-
-
+For more info on "real" RAM chips, search around for "Memory Cell", like on [wikipedia](https://en.wikipedia.org/wiki/Memory_cell_(computing)). The key takeaway is that there are a huge number of different ways to implement RAM, but that shouldn't matter. As far as the processor is concerned, it's just an abstract device which can store and recall data from little mailboxes we call "addresses"
 
 
 ## Next Steps - Where are we going?
@@ -319,3 +310,4 @@ With the introduction of combinational circuits like adders and mux's, and some 
 [^1]: Flaw - or *limitation* or *opportunity*. All words could apply, just pick the one that says what you want to say.
 [^2]: Or at least, it ought to. Sometimes the marketing department has other ideas. But we still like them, because they help sell the things, which makes money, and lets the engineers make more things, and have food to eat.
 [^3]: Turns out, because of gate delay, the ripple-carry adder is actually a bad design for an adder circuit. Think about what happens if you had 1000 stages. How long do you have to wait for the full result to be available? Think about how many gate propagations are needed to calculate the final carry-out signal. Dis nasty.
+[^4]: Forgive the odd drawing here - you can ignore the numbers right by the gates. I'm testing out using [KiCad](http://kicad-pcb.org/) for schematic capture and design. It's a bit cumbersome for these educational purposes, but can draw simple logic diagrams well. Looks super powerful as an electronic schematic and printed circuit board design tool though! I highly recommend it so far!

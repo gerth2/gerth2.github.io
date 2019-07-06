@@ -260,6 +260,6 @@ Hopefully you can see - if you need more bits (say, 8, or 64?), you just add mor
 
 ## Next Steps - Where are we going?
 
-We've discussed digital circuits which are capable of transforming inputs into outputs, but not yet discussed how to create circuits which can remember past events. This will be a critical step if we want to be able to store any data while running our computer programs. We'll delve into this next. Coming soon!
+We've discussed digital circuits which are capable of transforming inputs into outputs, but not yet discussed how to create circuits which can remember past events. This will be a critical step if we want to be able to store any data while running our computer programs. We'll delve into this [in Part 2!](/blog_posts/2019/07/06/digital_devices_part2.html)
 
 [^1]: Yes, smell. A good engineer uses *most* of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It's a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don't usually recommend the sense of taste for writing software.
