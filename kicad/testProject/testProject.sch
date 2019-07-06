@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:testProject-cache
 EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
@@ -277,4 +278,15 @@ Wire Wire Line
 Wire Wire Line
 	4250 5150 4250 5700
 Connection ~ 4250 5700
+$Comp
+L 74xx:74LS83 U?
+U 1 1 5D212947
+P 9000 2850
+F 0 "U?" H 9000 3831 50  0000 C CNN
+F 1 "74LS83" H 9000 3740 50  0000 C CNN
+F 2 "" H 9000 2850 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS83" H 9000 2850 50  0001 C CNN
+	1    9000 2850
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC

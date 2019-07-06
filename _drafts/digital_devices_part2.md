@@ -71,13 +71,13 @@ Actually, it doesn't matter too much for our design purposes. This is the beauty
 
 A clock is just a repeating waveform, and can be derived from any repeating pattern in nature. Common ways of generating it include:
 
-1. Getting it from the power line (usually a nice 60Hz in north america, unless your power company screws up.)
-2. Repeatedly charging and discharging a capacitor through a resistor (for example, see ["555 timer" circuit design](INSERT WIKI LINK HERE)).
-3. Amplifying the vibrations of a specially-designed [crystal made of quartz.](LINK HERE AS WELL)
-4. Watching atomic vibrations of a [cesium atom.](LINK TO NIST STANDARD HERE)
-5. A whole host of other things
+1. Getting it from the power line (usually a nice 60Hz in North America, unless your [power company screws up](https://en.wikipedia.org/wiki/Utility_frequency#Stability).)
+2. Repeatedly charging and discharging a capacitor through a resistor and a non-linear switching circuit (for example, see ["555 timer" circuit design](https://en.wikipedia.org/wiki/555_timer_IC)).
+3. Amplifying the vibrations of a specially-designed [crystal made of quartz.](https://en.wikipedia.org/wiki/Crystal_oscillator)
+4. [Using lasers to toss caesium atoms in the air then measuring their atomic energy state decay](https://en.wikipedia.org/wiki/NIST-F2).
+5. [A whole host of other things](https://xkcd.com/730/)
 
-In addition, there's a whole science to distributing this clock signal carefully to all the circuit elements, so they actually receive nice clean 0-to-1 transitions at the same time. Especially when clock frequencies get high, those wires inside your processor start to act less like ideal wires, and more like radio antennas. It gets mucky fast. 
+In addition, there's a whole science to distributing this clock signal carefully to all the circuit elements, so they actually receive nice clean 0-to-1 transitions at the same time. Especially when clock frequencies get high, those wires inside your processor start to act less like ideal wires, and [more like radio antennas](https://en.wikipedia.org/wiki/Transmission_line). It gets mucky fast. 
 
 We don't like to think about all this at once. So we use our powers of *abstraction* to simply say *we trust a clock signal exists and works well, now we will use it*. 
 
@@ -97,11 +97,11 @@ It might be a bit hard to trace the functionality, but it's actually pretty stra
 
 When you draw out one of these devices in a circuit diagram, it's actually confusing to do it with gates. Astute document readers might recognize "oh that's a D flip flop!". But in reality, you don't want to make people think about that, you just want them to know it. So, there's a fairly generic symbol that gets drawn:
 
-INSERT WIKI IMAGELINK HERE
+![D Flip Flop symbol from Wikipedia](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/D-Type_Flip-flop.svg/1920px-D-Type_Flip-flop.svg.png)
 
-The ports are labeled about as you'd expect from above. The little notched $$>$$ by the Clock input indicates that it is in fact a clock.
+The ports are labeled about as you'd expect from above. The little notched $$>$$ indicates the clock input.
 
-The $$S$$ and $$R$$ ports are often omitted. They will force the output to 1 ($$S$$) or 0 ($$R$$) immediately, regardless of the value of $$C$$ or $$D$$. This is useful for a *reset* circuit, which (when activated) puts all the devices into a known state. This is useful when first powering on (or rebooting) your computer - depending on the exact transistor layout, the state of each flip flop may not be guaranteed when you first apply power to the circuit. Some might be 1, some might be 0...who knows. To get around this, designers usually just build in the ability to force every piece of the circuit to a known state.
+The $$S$$ and $$R$$ ports are often omitted from other drawings. They will force the output to 1 ($$S$$) or 0 ($$R$$) immediately, regardless of the value of the clock or $$D$$. This is useful for a *reset* circuit, which (when activated) puts all the devices into a known state. This is useful when first powering on (or rebooting) your computer - depending on the exact transistor layout, the state of each flip flop may not be guaranteed when you first apply power to the circuit. Some might be 1, some might be 0...who knows. To get around this, designers usually just build in the ability to force every piece of the circuit to a known state.
 
 ### But, Why a Clock?
 
@@ -119,15 +119,27 @@ To store the present time, we will use 4 D flip flops in parallel. This is nothi
 
 ![4 bit register](/assets/register.png)
 
+Rather than drawing all 4 gates every time, we'll put all this in a nice little box labeled "Register":
+
+![4 bit register abstraction symbol](/assets/4bitRegister.png)
+
+Note the little "/" marks on the input and output ports with the number $$4$$ below it. That's just a notation way to say "here are four wires that should remain together". You should always think of those four bits together as representing "time of day", so we'll draw them together to help not confuse the reader. Some programs may use a thicker line to show the "bundle" of data wires.
+
 We will make the assumption that we have a clock signal that already runs at 1 Hz (this is not hard to create). *Hz* (abbreviation for "Hertz") means "cycles per second". Since each cycle of the clock waveform has exactly one rising edge and one falling edge, we expect once per second our (rising edge triggered) flip flops will propagate their input to the output.
 
 Here's the key to the design: the *output* of the register will be used to represent the *present* time on Zorgon. Every rising edge of the clock, we will want to increase the present time by 1 (since, of course, time goes forward). To do this, we need to ensure that at all times, the input to the register is the current time, plus 1. This will ensure that when the clock has a rising edge, the new time (cur_time + 1) is propagated to the output, and the output (representing current time) updates properly.
 
+We'll take a quick shortcut to represent our four bit adder from last time as one block:
+
+![4 bit adder abstraction symbol](/assets/4bitAdder.png)
+
+"Inside the box" we've accounted for the fact that the carry-in signal is hardcoded to 0, and the carry out signal is unused and not connected.
+
 We'll hook up a circuit like this:
 
-DRAW A PICTURE HERE.
+![Zorgon Clock](/assets/zorgonClock.png)
 
-The inside of the "+" box is just an 4-bit ripple carry adder, like we had [last time](/blog_posts/2019/06/26/digital_devices.html). That "constant value" of 1 is achieved by simply connecting the 0th bit to a high voltage, and all the other bits to ground.
+We see our 4-bit ripple carry adder, like we had [last time](/blog_posts/2019/06/26/digital_devices.html). That "constant value" of 1 is achieved by simply connecting the 0th bit to a high voltage, and all the other bits to ground.
 
 There! With just a few components, we're able to create a circuit that keeps track of the present time of (Zorgon) day, and outputs it in a binary format!
 
@@ -148,11 +160,19 @@ Similarly, a 4-input AND gate will output 1 when all 4 inputs are true, and 0 ot
 
 Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate "are my two 4-bit inputs exactly equal":
 
-![Alarm Circuit](/assets/alarm_circuit.png)
+![Alarm Comparison Circuit](/assets/alarm_circuit.png)
 
 Here we've used names A and B for the 4-bit inputs (A consists of A_0, A_1, A_2, and A_3). A is the current time, B is the set time from the user (though order technically won't matter).
 
-We can then hook this guy up to our existing clock circuit, and we suddenly can be woken up at the proper time on planet Zorgon! Huzzah!
+We'll wrap this circuit up into a nice little box that compares two four-bit numbers for equality:
+
+![Compare Equality abstraction symbol](/assets/compareEq.png)
+
+We can then hook this guy up to our existing clock circuit, and we suddenly can be woken up at the proper time on planet Zorgon! 
+
+![Zorgon Alarm Clock Circuit](/assets/zorgonAlarmClock.png)
+
+Huzzah!
 
 ### Too close to home
 
@@ -198,11 +218,16 @@ You could go create this out of individual gates at this point - an exercise whi
 
 Just like we've ganged $$N$$ flip-flops together in parallel to make an $$N$$ bit register, you can also gang $$N$$ 1-bit mux's together to make an $$N$$ bit mux, which is what we'll need for Earth clock.
 
+The multiplexer is used enough that it gets its own special symbol. Here's one drawn where A and B are both 4 bits wide.
+
+![Multiplexer symbol](/assets/mux.png)
+
+
 #### New Dawn
 
 In particular, when our "new day detection" circuitry indicates that the next second is the start of a new day (and the current time should therefor be 0), we can use that 1-bit output and a mux to switch the value of the input to the registers:
 
-INSERT PICTURE
+![Simple Earth Alarm Clock](/assets/earthAlarmClock.png)
 
 Here, we see that when our "next-day" detection logic indicates the next second should be 0, we pass in a constant value of all-0-bits to the input of the register. In all other cases, we continue to pass the same thing we used to pass - current time + 1.
 
@@ -217,9 +242,71 @@ While our alarm clock adventures have been fun, it turns most people [don't buil
 
 Building your own RAM chips is also not recommended for anything except leisure. However, it's worthwhile going over the basics of what features a piece of Random-Access Memory has to support, and propose one way of going about doing this with the circuits we know about.
 
-## Accessing Randomly
+### Accessing Randomly
 
-Computer Memory is a digital device which stores and recalls large chunks of data. As you may know, and as we already mentioned, RAM is an acrynom which stands for "Random Access Memory" - it means that a user of a RAM chip can access any particular part of memory at any time. It also implies that the user can write a new value to any particular part of memory at any time. The other common type of memory is called ROM, for "Read Only Memory". This type can store information, but not change it.
+Computer Memory is a digital device which stores and recalls large chunks of data. As you may know, and as we already mentioned, RAM is an acronym which stands for "Random Access Memory" - it means that a user of a RAM chip can access any particular part of memory at any time. It also implies that the user can write a new value to any particular part of memory at any time. As a side note, the other common type of memory is called ROM, for "Read Only Memory". This type can store information, but not change it.
+
+When reading and writing to a RAM chip, the *location* where things are stored is referred to as an "address". In general, on a chip, the addresses are just numbered 0, 1, 2, ... up through the maximum size of the chip. When you see a chip say it can store 1 MB ([megabyte](https://en.wikipedia.org/wiki/Megabyte) ~= $$10^6$$ bytes), this refers to the quantity of addresses available for storing data. If each address refers to one byte, the memory is said to be *byte addressable* and the addresses would go from 0 up through 1048576 or so.
+
+Think of addresses just like the addresses on houses. Each house has a mailbox, and each house has a number on it. When you want to "store" (ie give) data to a certain mailbox, you provide both the "data" (your package or letter) and the address to put it in. A mailman then does the job of storing the data in the right spot. The data remains there till the owner recalls it from the appropriate mailbox. The numbers of the address help coordinate the data going to the right spot, so the right person gets it back out.
+
+Of course, in real RAM, there's usually no restrictions on who can read or write to each address - unlike in the US, where [taking someone else's mail is a felony](https://www.law.cornell.edu/uscode/text/18/1702). Computers are supposed to be general purpose computation devices, so it's rare that hardware enforces read/write restrictions based on identity. This sort of security, if required, is usually added by software or specialized processor hardware.
+
+### The Prototype RAM Chip
+
+Every RAM chip will have to have a few connections:
+
+1. An input for the address from which to read data
+2. An output which contains the data recalled from the read address
+3. An input for the address to which to write data
+4. An input for the data to write at the write address
+5. A clock to synchronize read/write operations with data input and output.
+
+Depending on what brand and model of RAM chip you have, you may see certain of these functions tied together (ie one address for read/write) or split apart (ie two clocks - one for read and one for write). Some have enable lines to turn on or off read/write functionality as needed. All these features are nice to have, but add cost and increase pin count. So, it's all just an engineering tradeoff. Pick the RAM chip with all the features you *need*, and that matches your budget.
+
+When a processor wants to store a value, the process is generally:
+
+1. Assert the bits of value onto the data input
+2. Assert the bits of the address onto the write address input
+3. Allow the clock cycle to occur.
+
+Reading back a value is very similar:
+
+1. Assert the bits of the address onto the read address input
+2. Allow the clock cycle to occur
+3. Read the value of the bits on the data output 
+
+Note that most RAM chips do not store their value over power cycle. When you remove power from the device, all the data disappears. When you re-apply power, the device reads all 0's or all 1's (depends on the underlying technology). 
+
+### Internals of a Theoretical RAM Chip
+
+I don't want to get too deep into how to design the internals of the RAM chip. This is because the actual way they are made is highly optimized (some using only a single transistor per bit storage), and it looks very dissimilar from the usual gate logic we think about digital logic in. Still, it is very possible to construct a RAM chip from only the gates and flip-flops we already know about, and is an interesting thought experiment to figure out how to make it happen.
+
+
+Here's the highlights of a plausible (abet inefficient) way to do it - I'll leave the details of the implementation up to the reader to sort out. 
+
+* Each address has, at its core, an 8-bit register (same as above) to store the value.
+    * Every register is fed from the same clock.
+* One giant MUX at the output takes the read address input, and selects the proper register to pass to the output
+* Each register's output loops back around to its input through a mux and some digital logic, such that the value *usually* never changes (output of register fed right back to input).
+    * However, that input logic is set up such that when the write address input matches that register's address, the data from the write data input is used instead.
+
+There are some key inefficiencies with this system, however:
+
+* Muxes which select between 1,000,000 inputs are ineffective to make as a single unit. It's more efficient to split it up into lots of little tiny pieces.
+* At scale, gate delays may start to limit clock speed. Having additional buffers to temporarily store the read/write values while the internal circuitry changes state can help mitigate this
+    * It's worthwhile noting that in modern processors, RAM is usually asynchronous from and slower than the main processor. This can sometimes be part of the reason extra chips are needed on a motherboard to "drive" the RAM chips, converting data between the domain of the processor and the memory circuits.
+* The loop-back circuitry on every register can be eliminated by having two clocks (one for read, one for write), or some set of "enable bit" inputs that the processor controls - writes are commanded only when required.
+* The read-mux and write-mux circuitry can sometimes be combined into the inside of the register in an enable/disable fashion.
+
+For more info on "real" RAM chips, search around for "Memory Cell", like on [wikipedia](https://en.wikipedia.org/wiki/Memory_cell_(computing)). The key takeaway is that there are a huge number of different ways to implement RAM, but that shouldn't matter. As far as the processor is concerned, it's just an abstract device which can store and recall data from little mailboxes we call "addresses".
+
+
+
+
+
+
+
 
 
 
