@@ -197,6 +197,12 @@ The Zen of good software
 ----Start conservative
 ---Mandatory PPE
 
+--Programming Language Selection
+---Choose the tool that fits the solution, not the other way around
+----The danger of "whiz-bang"
+---Kotlin
+---Rust as a replacement for Java?
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Leadership & Structure
 
