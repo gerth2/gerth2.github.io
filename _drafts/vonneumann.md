@@ -290,29 +290,40 @@ So far, we've stuck to generic descriptions of the common things you find inside
 
 The "LC-3", or "Little Computer 3", is a "fake" architecture. You'll not find an off-the-shelf chip that implements the "LC-3" architecture. But, it's a dirt simple architecture - fixed opcode and word widths, simple operations, conveniently sized RAM... the list goes on.
 
-[There are a good number of online resources](https://www.cs.utexas.edu/users/fussell/courses/cs310h/lectures/Lecture_10-310h.pdf) that explain the architecture - some even down to the gate level. It's simple enough that the blog author implemented the processor, gate level up, as part of a sophomore year elective class.[^2]
+[There are a good number](http://lumetta.web.engr.illinois.edu/120-F16/slide-copies/100-the-lc-3-isa.pdf) [of online resources](https://www.cs.utexas.edu/users/fussell/courses/cs310h/lectures/Lecture_10-310h.pdf) [that explain the architecture](http://www.ncsa.illinois.edu/People/kindr/teaching/ece190_sp11/lectures/lecture_11.pdf) - some even down to the gate level. It's simple enough that the blog author implemented the processor, gate level up, as part of a sophomore year elective class.[^2]
 
 It's a great place to start, but unfortunately doesn't directly map to any real architecture. However, the concepts you learn while studying it definitely do apply!
 
 ### x86
 
+[x86 Processor Architecture](https://en.wikipedia.org/wiki/X86) comes from Intel, and dates back to the late 1970's. Over the years they have added lots and lots of new instructions to it, expanded the data width size, and a whole slew of other alterations, all while keeping the base thing backward compatible. This makes for a _very_ versatile and _very_ powerful processor. The biggest downsides are all rooted in the complexity of the devices - infinite backward compatibility makes for a lot of "legacy" portions of the architecture that aren't relevant for modern programming. Additionally, you need a _lot_ of gates to make an x86 processor, which generally means they are power hungry (though this has been mitigated in recent years).
+
+Still, the sheer flexibility and power of the architecture means almost every desktop PC (running Windows, Mac, or Linux) has some form of an x86 processor in it, and tons of manufacturers produce a flavor of the architecture.
+
+This was the second assembly language the author learned. Along with three other students, he wrote an operating system from scratch using C and x86 assembly. 
+
 ### ARM
 
-
-### Tradeoffs
-
-Power complexity cost 
-
-x86 complex, legacy, high-power, efficient computation, power hungry, 
-
-ARM more efficient
+[Advanced RISC Machine](https://en.wikipedia.org/wiki/ARM_architecture) architecture is the new "big kid" on the block. Specifically designed to address some of the x86 shortcomings, it quickly made a name for itself for its simplicity of implementation (therefor requiring fewer transistors, and drawing less power). It came along at just the right time to be adopted by the smartphone revolution, and nearly all smartphones on the market today run some form of this processor. It's strongly suited toward running mobile, power-sensitive applications. The roboRIO uses an ARM Cortex-A9 processor manufactured by Xilinx.
 
 
 ### The place of the special-purpose computing device
 
-graphics cards, high speed computation
+This whole blog post, we've been discussing how to made a digital device which can perform general purpose computation. This isn't to say that general purpose computers are the be-all, end-all of computation. Indeed, the ability to be programmed brings overhead with it. In the fetch/decode/execute cycle, fetch and decode are both only present because the processor has to figure out _what_ it is supposed to be doing at runtime, in addition to actually doing it.
+
+For this reason, when bleeding edge speed or absolutely minimal power consumption is required, it _sometimes_ still makes sense to give up the ability to be programmed to gain that speed or efficency. Digital Devices can still be custom designed to fit a very specific purpose. These are often called _Application Specific Integrated Circuits_ (ASIC's). 
+
+Common applications include video/audio processing, computer networking devices, and scientific research equipment.
+
+## Conclusion
+
+Phew, that was a lot, and way more hand-wavey than I had initially intended. None the less, we still have built up an understanding of what the main components of a processor are, how those things come to be from smaller digital circuits, and how they can execute individual stored instructions.
+
+Next up, we'll take a survery of common programming language constructs, and dig into how those constructs might be implemented in assembly code. Coming soon!
 
 
 [^1]: For the curious, formal systems of modeling the state of analog electronics in a "digital-useful" way can [go up to having 9 states](https://en.wikipedia.org/wiki/Logic_level).
 
 [^2]: Lots of students [post their solutions on github](https://www.google.com/search?safe=active&rlz=1C1CHBF_enUS840US840&ei=JIUuXcOzF8m4tAbC4bv4Cw&q=uiuc+ece+385+github&oq=uiuc+ece+385+github&gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8), which seems like a violation of academic integrity, if you ask me.
+
+[^3]: Again, lots of students [decided to post their solutions online](https://www.google.com/search?q=uiuc+ece+391+github&rlz=1C1CHBF_enUS840US840&oq=uiuc+ece+391+github&aqs=chrome..69i57.5400j0j7&sourceid=chrome&ie=UTF-8). Tisk tisk.
