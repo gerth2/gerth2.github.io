@@ -197,38 +197,102 @@ What set of operations are supported really just depends on processor design. In
 
 In addition to these combination operations, the ALU will often have additional outputs to indicate if the operation resulted in overflow or underflow (ie, result was outside the min or max range of the numbers that can be represented by the 32 bits of the ALU)
 
-Overflow underflow
-
-Bitwise Boolean AND OR NOT
-
-Logic - compare values (GT/LT/EQ) - status register
-
-Linkage back to control unit - what are we going to need?
-
 ### Control Unit
 
-microcode,
+The control unit is the heart of this whole system, coordinating the action of registers and the ALU together to do actual calculation. The design of the unit is special tailored to implement the stored-program concept. Again, the exact design of the control unit can vary, but all have to have at least a few basic components and abilities.
 
-Abstraction into RTL
+#### Registers
 
-program counter, instruction register
+Fundamentally, every control unit will have a set of registers to store information. These will be faster than the bulk RAM chips you're familar with, and serve special uses within the processor. But, fundamentally, they just store a specific set of bits representing some specific, meaningful quantity.
 
-#### Concept of an instruction
+The _Memory Address Register_ (MAR) and _Memory Data Register_ (MDR) are two of the key registers. They are connected directly to the RAM circuitry, and allow the control unit to command unit to read or write from a specific memory address. Along with a couple control signals, the basic process is that the memory address register is first loaded with the desired address. Then, control signals are sent to memory to read or write that address. For read, the data is pulled off the RAM chip and placed into the MDR. Write does similarly, but propagates whatever value was in the MDR (from the control unit's other parts) and puts it into the address in RAM specified by the MAR. Using this, the control unit can _read and write RAM data_.
 
-opcode, arguments
+Two more registers form the core of the stored program concept. The processor fundamentally assumes that the instructions it is supposed to execute exist in memory at a certain set of memory instructions. The _program counter register_ (PCR) stores the memory address of the current instruction being worked on. The _instruction_ register holds the actual instruction while its being worked on.
 
+There are also a set of registers called _General Purpose Registers_. These don't have a very specific purpose, they are left open for the programmer to use as they see fit while writing programs.
 
-### Memory
+Depending on how the IO devices are designed, there may be some dedicated registers attached to physical, user-interaction input or output devices.
 
-LOAD and STORE operations
+#### The Execution Cycle
 
+Most control units follow a repeating three-step process while running:
 
-### IO
+1) Fetch
+2) Decode
+3) Execute.
 
+During the _Fetch_ phase, the control unit fetches the next instruction. The Program Counter Register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.
+
+During the _Decode_ phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.
+
+During the _Execute_ phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence).
+
+#### Decoding an instruction
+
+Generally, instructions will command manipulations to registers. Some examples of these:
+
+* Math - Add two general purpose registers, and store the result in a 3rd general purpose register
+* Memory - Load a general purpose register from RAM, or store its contents to RAM
+* "Branching" - Manually adjust the Program Counter if the previous instruction's result was positive
+* IO - reading/writing from some input or output device.
+
+Instructions will always have two main components: the _opcode_ and the _arguments_.
+
+Remember that each instruction is just a set of bits. Usually, the first couple bits is the _opcode_, which identify what the instruction is requesting.
+
+The exact mapping of _which_ bits equate to _which_ operations is dependant on the details of the processor construction. [Here's an example from x86](http://ref.x86asm.net/coder32.html), which is by far one of the more complex versions.
+
+Simpler machines might have a mapping more like:
+
+| opcode || Abrev.  | Meaning |
+|--------||---------|---------|
+| 0001   || Add     | Add two numbers | 
+| 0010   || Sub     | Subtract two numbers | 
+| 0011   || OR      | Bitwise OR of two numbers | 
+| 0100   || AND     | Bitwise AND of two numbers | 
+| 0101   || NOT     | Bitwise NOT of a numbers | 
+| 0111   || STR     | Store a value to memory | 
+| 1000   || LD      | Load a value from memory | 
+| 1001   || BRN     | Branch to a different instruction if the previous result was negative | 
+| 1010   || BRZ     | Branch to a different instruction if the previous result was zero |
+
+And so on. Note that when you see assembly instructions, you'll almost always see it referred to by its abbreviation, not by the 1's and 0's of the opcode. It's hard to stare at the 1's a 0's, your eyes start to go crossed after a while. 
+
+The remaining bits are dedicated to the arguments to the opcode. They indicate the specifics of how the processor is to carry out the instruction.
+
+For instructions like Add, Subtract, AND, OR, etc. - the simplest set of arguments indicates a trio of general purpose registers to work with. Usually the arguments will be specified to say "source 1 register", "source 2 register", and "result register". NOT would only need two registers, but is conceptually the same. When the Instruction Register has AND for an opcode, the control unit will use the arguments to configure the signal routing in the processor to pipe the two source register outputs into the ALU, and then the ALU's output into the result register. One tick of the system clock goes by, the result register is updated, and the instruction is completed!
+
+Opcodes that work with memory addresses (BRN/BRZ,LD/STR) will often make one of the arguments the memory address to work with. More complex "addressing modes" allow the address to be specified relative to the program counter, or some general purpose register.
+
+### IO techniques
+
+In general, any input and output device will have to interact with the processor via some set of bits. For example, a mouse might report its X/Y coordinates as two integers. A screen might require representing every pixel color with one byte of data. Regardless of how it's actually done, just keep in mind that at the end of the day, it's just a set of bits that are read from, or go to, the device.
+
+How the processor gets access to these bits happens through two primary methods:
+
+#### Port Mapped
+
+Some processors will have dedicated registers inside the control unit for reading and writing data associated with a user IO device. This also means there will have to be dedicated assembly instructions for manipulating that data as part of a program. THis is a very fast method, but can be a bit inflexible, as the processor has to be designed with assumptions about what its IO devices will be. This is bad if you plug or unplug a device from your computer.
+
+#### Memory Mapped
+
+Sometimes, a more flexible technique is to use the same interface the RAM circuitry uses. The IO device "poses" as part of the RAM chip, responding to processor read and write requests just as a RAM chip would. But, rather than storing and recalling data as requested by a processor, the "other end" of each byte is hooked up to some IO device.
+
+This means there are no special assembly instructions required to do IO interaction. As a software writer, you just have to know things like "Memory addresses 0x0000154A and 0x0000154B are mouse X/Y" and "Memory addresses 0x00002000 through 0x00002FFF control the pixels on the screen". Don't use these special memory addresses like normal memory (ie, writing to the mouse addresses will probably not end well). But, it's much more flexible than forcing a Port Mapped architecture.
+
+But, there are plenty of tradeoffs on both sides. You'll probably see both as you adventure into this wonderful world of processors!
 
 ## Concrete examples of architecture
 
+So far, we've stuck to generic descriptions of the common things you find inside a processor. Lots of descriptions have just been these hand-wavey "well the actual implementation depends on the processor type". For the curious, we now present three concrete examples of computer architecure.
+
 ### LC-3
+
+The "LC-3", or "Little Computer 3", is a "fake" architecture. You'll not find an off-the-shelf chip that implements the "LC-3" architecture. But, it's a dirt simple architecture - fixed opcode and word widths, simple operations, conveniently sized RAM... the list goes on.
+
+[There are a good number of online resources](https://www.cs.utexas.edu/users/fussell/courses/cs310h/lectures/Lecture_10-310h.pdf) that explain the architecture - some even down to the gate level. It's simple enough that the blog author implemented the processor, gate level up, as part of a sophomore year elective class.[^2]
+
+It's a great place to start, but unfortunately doesn't directly map to any real architecture. However, the concepts you learn while studying it definitely do apply!
 
 ### x86
 
@@ -250,3 +314,5 @@ graphics cards, high speed computation
 
 
 [^1]: For the curious, formal systems of modeling the state of analog electronics in a "digital-useful" way can [go up to having 9 states](https://en.wikipedia.org/wiki/Logic_level).
+
+[^2]: Lots of students [post their solutions on github](https://www.google.com/search?safe=active&rlz=1C1CHBF_enUS840US840&ei=JIUuXcOzF8m4tAbC4bv4Cw&q=uiuc+ece+385+github&oq=uiuc+ece+385+github&gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8), which seems like a violation of academic integrity, if you ask me.
