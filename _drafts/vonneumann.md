@@ -201,6 +201,8 @@ In addition to these combination operations, the ALU will often have additional 
 
 The control unit is the heart of this whole system, coordinating the action of registers and the ALU together to do actual calculation. The design of the unit is special tailored to implement the stored-program concept. Again, the exact design of the control unit can vary, but all have to have at least a few basic components and abilities.
 
+![Control Unit Top Level](/assets/controlUnit.png)
+
 #### Registers
 
 Fundamentally, every control unit will have a set of registers to store information. These will be faster than the bulk RAM chips you're familar with, and serve special uses within the processor. But, fundamentally, they just store a specific set of bits representing some specific, meaningful quantity.
@@ -217,15 +219,21 @@ Depending on how the IO devices are designed, there may be some dedicated regist
 
 Most control units follow a repeating three-step process while running:
 
-1) Fetch
-2) Decode
-3) Execute.
+1. Fetch
+2. Decode
+3. Execute.
+
+![Control Unit Fetch](/assets/processorFetch.png)
 
 During the _Fetch_ phase, the control unit fetches the next instruction. The Program Counter Register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.
 
+![Control Unit Decode](/assets/processorDecode.png)
+
 During the _Decode_ phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.
 
-During the _Execute_ phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence).
+![Control Unit Execute - Math](/assets/processorExecuteMath.png)
+
+During the _Execute_ phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence). The drawing above shows an example where the ALU is used to do math.
 
 #### Decoding an instruction
 
