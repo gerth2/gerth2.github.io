@@ -25,7 +25,7 @@ When you have an excess of charge in one place, we say it creates an electric fi
 
 ### Current
 
-*Current* is a measurement of a certain amount of charge flowing past a given point. The SI unit for measuring this is the *Ampere* or more commonly just the *Amp* ($$A$$). In equations, you'll see it denoted as $$I$$, because of the French. It is equal to $$6.25 * 10^{18}$$ electrons flowing past a point at any given time.
+*Current* is a measurement of a certain amount of charge flowing past a given point. The SI unit for measuring this is the *Ampere* or more commonly just the *Amp* ($$A$$). In equations, you'll see it denoted as $$I$$, because of the French. It is equal to $$6.25 * 10^{18}$$ electrons flowing past a point per second.
 
 Back when electrical properties were first being described, it actually wasn't known yet that electrons are almost always the mobile charge, so at the time positive current was defined to refer to positive charges. Only after further study was done that it was discovered the convention was technically wrong - when you talk about positive current flow in a certain direction, the electrons actually flow the opposite direction. The good news is you can usually happily ignore this fact until you get to semiconductor physics - most of the rest of electrical engineering can be blissfully unaware of the difference between "conventional current" and "electron current".
 

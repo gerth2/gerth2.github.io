@@ -300,7 +300,7 @@ It's a great place to start, but unfortunately doesn't directly map to any real 
 
 Still, the sheer flexibility and power of the architecture means almost every desktop PC (running Windows, Mac, or Linux) has some form of an x86 processor in it, and tons of manufacturers produce a flavor of the architecture.
 
-This was the second assembly language the author learned. Along with three other students, he wrote an operating system from scratch using C and x86 assembly. 
+This was the second assembly language the author learned. Along with three other students, he wrote an operating system from scratch using C and x86 assembly. [^3]
 
 ### ARM
 

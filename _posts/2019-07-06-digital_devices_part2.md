@@ -111,7 +111,7 @@ For the sake of completeness, it should be noted that digital circuits are often
 
 ## Counter
 
-Let's put together a circuit combining two things we have just learned about - adders and flip flops. Our goal will be to build a device which keeps track of time, counting the number of clock cycles. To keep things simple, we're going to pretend that we're building a clock for planet Zorgon. It's a zippy but precise planet, circling its sun every 16 seconds exactly. Our Zorgon clock therefor just needs to count up from 0 to 15 to track all the seconds in the day, then reset back to 0 after the 15th second (when it is the next day).
+Let's put together a circuit combining two things we have just learned about - adders and flip flops. Our goal will be to build a device which keeps track of time, counting the number of clock cycles. To keep things simple, we're going to pretend that we're building a clock for planet Zorgon. It's a zippy but precise planet, revolving once around its axis once every 16 seconds exactly. Our Zorgon clock therefor just needs to count up from 0 to 15 to track all the seconds in the day, then reset back to 0 after the 15th second (when it is the next day).
 
 If you recall from the binary lesson, if we have 4 bits and treat them as an unsigned integer, we can exactly represent the numbers 0 through 15 (since $$15 = (2^{4}-1$$)). They don't call Zorgon the "Planet of Simplifying Mathematical Coincidences" for nothing!
 
