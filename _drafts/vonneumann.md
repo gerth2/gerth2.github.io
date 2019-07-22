@@ -205,7 +205,7 @@ The control unit is the heart of this whole system, coordinating the action of r
 
 #### Registers
 
-Fundamentally, every control unit will have a set of registers to store information. These will be faster than the bulk RAM chips you're familar with, and serve special uses within the processor. But, fundamentally, they just store a specific set of bits representing some specific, meaningful quantity.
+Fundamentally, every control unit will have a set of registers to store information. These will be faster than the bulk RAM chips you're familiar with, and serve special uses within the processor. But, fundamentally, they just store a specific set of bits representing some specific, meaningful quantity.
 
 The _Memory Address Register_ (MAR) and _Memory Data Register_ (MDR) are two of the key registers. They are connected directly to the RAM circuitry, and allow the control unit to command unit to read or write from a specific memory address. Along with a couple control signals, the basic process is that the memory address register is first loaded with the desired address. Then, control signals are sent to memory to read or write that address. For read, the data is pulled off the RAM chip and placed into the MDR. Write does similarly, but propagates whatever value was in the MDR (from the control unit's other parts) and puts it into the address in RAM specified by the MAR. Using this, the control unit can _read and write RAM data_.
 
@@ -223,19 +223,19 @@ Most control units follow a repeating three-step process while running:
 2. Decode
 3. Execute.
 
-![Control Unit Fetch](/assets/processorFetch.png)
+![Control Unit Fetch](/assets/controlUnitFetch.png)
 
 During the _Fetch_ phase, the control unit fetches the next instruction. The Program Counter Register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.
 
-![Control Unit Decode](/assets/processorDecode.png)
+![Control Unit Decode](/assets/controlUnitDecode.png)
 
 During the _Decode_ phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.
 
-![Control Unit Execute - Math](/assets/processorExecuteMath.png)
+![Control Unit Execute - Math](/assets/controlUnitMath.png)
 
 During the _Execute_ phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence). The drawing above shows an example where the ALU is used to do math.
 
-#### Decoding an instruction
+#### Decoding & Executing an Instruction
 
 Generally, instructions will command manipulations to registers. Some examples of these:
 
@@ -271,6 +271,10 @@ The remaining bits are dedicated to the arguments to the opcode. They indicate t
 For instructions like Add, Subtract, AND, OR, etc. - the simplest set of arguments indicates a trio of general purpose registers to work with. Usually the arguments will be specified to say "source 1 register", "source 2 register", and "result register". NOT would only need two registers, but is conceptually the same. When the Instruction Register has AND for an opcode, the control unit will use the arguments to configure the signal routing in the processor to pipe the two source register outputs into the ALU, and then the ALU's output into the result register. One tick of the system clock goes by, the result register is updated, and the instruction is completed!
 
 Opcodes that work with memory addresses (BRN/BRZ,LD/STR) will often make one of the arguments the memory address to work with. More complex "addressing modes" allow the address to be specified relative to the program counter, or some general purpose register.
+
+#### Choosing the Next Instruction
+
+Generally, after all decoding and execution has been completed, the Program Counter has to be updated with the next address. Frequently, this just means "add one" to the current program counter. However, the instruction might have some more complex instruction. "Branch" instructions generally alter the add-one behavior conditionally, based on the previous result being positive, zero, or negative (PZN register stores this information every instruction cycle).
 
 ### IO techniques
 
@@ -319,7 +323,7 @@ This was the second assembly language the author learned. Along with three other
 
 This whole blog post, we've been discussing how to made a digital device which can perform general purpose computation. This isn't to say that general purpose computers are the be-all, end-all of computation. Indeed, the ability to be programmed brings overhead with it. In the fetch/decode/execute cycle, fetch and decode are both only present because the processor has to figure out _what_ it is supposed to be doing at runtime, in addition to actually doing it.
 
-For this reason, when bleeding edge speed or absolutely minimal power consumption is required, it _sometimes_ still makes sense to give up the ability to be programmed to gain that speed or efficency. Digital Devices can still be custom designed to fit a very specific purpose. These are often called _Application Specific Integrated Circuits_ (ASIC's). 
+For this reason, when bleeding edge speed or absolutely minimal power consumption is required, it _sometimes_ still makes sense to give up the ability to be programmed to gain that speed or efficiency. Digital Devices can still be custom designed to fit a very specific purpose. These are often called _Application Specific Integrated Circuits_ (ASIC's). 
 
 Common applications include video/audio processing, computer networking devices, and scientific research equipment.
 
@@ -327,7 +331,7 @@ Common applications include video/audio processing, computer networking devices,
 
 Phew, that was a lot, and way more hand-wavey than I had initially intended. None the less, we still have built up an understanding of what the main components of a processor are, how those things come to be from smaller digital circuits, and how they can execute individual stored instructions.
 
-Next up, we'll take a survery of common programming language constructs, and dig into how those constructs might be implemented in assembly code. Coming soon!
+Next up, we'll take a survey of common programming language constructs, and dig into how those constructs might be implemented in assembly code. Coming soon!
 
 
 [^1]: For the curious, formal systems of modeling the state of analog electronics in a "digital-useful" way can [go up to having 9 states](https://en.wikipedia.org/wiki/Logic_level).
