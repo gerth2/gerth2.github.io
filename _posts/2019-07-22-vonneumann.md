@@ -43,7 +43,7 @@ Storing data is cool, but to do useful processing we have to, well, process the 
 
 The collection of circuitry which does the calculations is generally referred to as the _Arithmetic Logic Unit_, or ALU. It gets its own fancy-pants symbol that looks like a sideways pair of pants:
 
-![ALU](/assets/alu.png)
+![ALU](/assets/ALU.png)
 
 Implementations on various processors will vary slightly, but conceptually they all have to have at least 3 inputs:
 
