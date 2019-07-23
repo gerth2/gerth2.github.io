@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Processor Architecture Primer"
-date:   2019-07-06 9:30:00 -0500
+date:   2019-07-22 9:30:00 -0500
 categories: blog_posts
 ---
 
@@ -133,6 +133,11 @@ $$A \rightarrow C$$
 This simply indicates that on this particular clock cycle, we transfer the value from A into C. 
 
 This is often called "Register Transfer Language", and is the basis of the way we'll describe how data gets transferred around in a processor. The key to remember is that behind every description of $$A \rightarrow C$$ or $$B \rightarrow A$$, it's just a set of enable bits getting set correctly, such that data flows from from the source to the destination.
+
+## Next Steps - Where are we going?
+
+That's enough history and context-less introduction. Please promptly check out [Von Neumann Processor Architecture](/blog_posts/2019/07/22/vonneumann.html)!
+
 
 
 [^1]: For the curious, formal systems of modeling the state of analog electronics in a "digital-useful" way can [go up to having 9 states](https://en.wikipedia.org/wiki/Logic_level).

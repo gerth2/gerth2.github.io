@@ -1,13 +1,13 @@
 ---
 layout: post
 title:  "Processor Architecture"
-date:   2019-07-06 9:30:00 -0500
+date:   2019-07-22 9:31:00 -0500
 categories: blog_posts
 ---
 
 ## Introduction
 
-Oooh boy, I am getting excited! More excited than a [search companion who can do tricks!](https://en.wikipedia.org/wiki/File_Explorer#Search_companion). Things are starting to get very real now! 
+Oooh boy, I am getting excited! More excited than a [search companion who can do tricks!](https://en.wikipedia.org/wiki/File_Explorer#Search_companion) Things are starting to get very real now! 
 
 We've introduced a ton of topics in boolean logic - how to manipulate bits, store them, and use them to represent numbers. It's time to start digging into how all this comes together to build a real device which can do computation!
 
@@ -98,7 +98,7 @@ Fundamentally, every control unit will have a set of registers to store informat
 
 The _Memory Address Register_ (MAR) and _Memory Data Register_ (MDR) are two of the key registers. They are connected directly to the RAM circuitry, and allow the control unit to command unit to read or write from a specific memory address. Along with a couple control signals, the basic process is that the memory address register is first loaded with the desired address. Then, control signals are sent to memory to read or write that address. For read, the data is pulled off the RAM chip and placed into the MDR. Write does similarly, but propagates whatever value was in the MDR (from the control unit's other parts) and puts it into the address in RAM specified by the MAR. Using this, the control unit can _read and write RAM data_.
 
-Two more registers form the core of the stored program concept. The processor fundamentally assumes that the instructions it is supposed to execute exist in memory at a certain set of memory instructions. The _program counter register_ (PCR) stores the memory address of the current instruction being worked on. The _instruction_ register holds the actual instruction while its being worked on.
+Two more registers form the core of the stored program concept. The processor fundamentally assumes that the instructions it is supposed to execute exist in memory at a certain set of memory instructions. The _Program Counter_ (PC) register stores the memory address of the current instruction being worked on. The _Instruction Register_ (IR) holds the actual instruction while its being worked on.
 
 There are also a set of registers called _General Purpose Registers_ (GPR*). These don't have a very specific purpose, they are left open for the programmer to use as they see fit while writing programs.
 
@@ -118,7 +118,7 @@ Most control units follow a repeating three-step process while running:
 
 ![Control Unit Fetch](/assets/controlUnitFetch.png)
 
-During the _Fetch_ phase, the control unit fetches the next instruction. The Program Counter Register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.
+During the _Fetch_ phase, the control unit fetches the next instruction. The Program Counter register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.
 
 ![Control Unit Decode](/assets/controlUnitDecode.png)
 

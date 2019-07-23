@@ -304,7 +304,7 @@ For more info on "real" RAM chips, search around for "Memory Cell", like on [wik
 
 ## Next Steps - Where are we going?
 
-With the introduction of combinational circuits like adders and mux's, and some sequential logic like registers and RAM, we're now ready to start delving into how these are combined together in a traditional processor. We'll start to cover this in a discussion on Von Neumann Architecture. Coming soon!
+With the introduction of combinational circuits like adders and mux's, and some sequential logic like registers and RAM, we're now _almost_ ready to start delving into how these are combined together in a traditional processor. We'll start to cover this in a primer discussion on [Processor Architecture](/blog_posts/2019/07/22/processor_arch_primer.html). 
 
 
 [^1]: Flaw - or *limitation* or *opportunity*. All words could apply, just pick the one that says what you want to say.
