@@ -45,55 +45,8 @@ $$ V = I R $$
 
 In general, materials with high resistances are called "Insulators", and materials with low resistance are called "Conductors". This is why wire is effective for usage as a conduit through which to route current - the metal core provides a highway for charge to move through, carefully isolated from the outside world by a flexible, rubber insulator. This keeps the current flowing where you want it (motors & the like), and away from where you don't (the frame, your fingers, etc.).
 
-## Semiconductors
-
-Of particular interest to computer engineers is a very particular class of materials called *Semiconductors* These materials have the ability to change between conductor and insulator depending on how voltages are applied to them. 
-
-### Physical Construction
-
-Semiconductors are primarily made of specially processed silicon, formed into a very regular lattice-like structure on the atomic level, then carefully "doped" with impurities that introduce mobile charged particles. These can be actual electrons, or a void where an electron could fit in (called a "hole"), which is effectively a positive charge carrier. 
-
-Remember that a conductor has free particles to carry charge, while insulators do not. Undoped silicon is effectively an insulator, because all electrons are tightly bound into the lattice. Doped silicon does have extra electrons (or holes) which can move around, as they are not tightly bound to the lattice, and are therefor effectively conductors.
-
-Layers of differently-doped material are fused in specific physical configurations to construct useful devices.
-
-When a doped region with extra electrons is fused to a doped region with holes, some electrons naturally migrate into the holes near the junction. This forms what is called the "depletion layer" near the junction. This depletion layer is effectively an insulator, since there are no free electrons to carry current through the region.
-
-
-### Electrical Properties
-
-Applying a voltage across this depletion region will exert an extra force on the electrons. Depending on the direction of the voltage, you may end up with more electrons  hopping into holes (expanding the depletion region), or knocking electrons out of holes (shrinking the depletion region). As the voltage gets big enough to drive the depletion region to near zero size, the resistance of the material goes down, and it transforms into a conductor overall.
-
-![depletion layer and diode](/assets/diode.png)
-
-This is the useful property of semiconductors - by applying a voltage to one part, the material property can be converted between insulator and conductor.
-
-### Transistor as a Switch
-
-It is commonly said that computers store information using 1's and 0's. These "bits" of information are represented inside the circuitry of the processor as high and low voltages. To store, combine, and manipulate the information, it is necessary to have circutry which can manipulate the high and low voltages dynamically.
-
-Transistors contain 3 or more regions of semiconductor material. The simplest type have what is referred to as a Base, Collector, and Emitter region. 
-
-![bjt diagram](/assets/bjt.png)
-
-Usually the line diagram with the "arrow pointing in" is used to represent the transistor in schematics.
-
-By injecting a voltage (and tiny current) at the base, the motion of electrons causes an avalanche effect if the collector & emitter have a voltage across them. The tiny input force causes a much larger output force, though it saturates at a certain point. This association allows one electrical signal to impact the flow of another signal, much as a human turning a light switch on and off impacts the flow of electricity to a lamp.
-
-![bjt as switch](/assets/bjt_as_switch.png)
-
-This switching action of the transistor is the basis upon which information can be manipulated. By carefully combining transistors, along with small numbers of other components, basic "logic gates" can be built up. These rudamentory gates have one or more inputs, and a single output, and computer boolean operations like AND, OR, and NOT with electronics.
-
-The exact construction of logic gates from transistors is beyond the scope of this blog because, indeed, learning about how it *actually* works requires a much deeper dive into the various types of transistors available. In my opinion, this is a topic better suited for folks interested in designing processor circuitry, rather than writing software. For the curious, [HyperPhysics](http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html) has some examples of how gates can be constructed from the BJT transistors we have explained already.
-
-Therefor, we make the following two abstractions:
-
-1. *A transistor is a device which controls the flow of electricity*
-2. *Transistors can be combined to build logic gates, which implement basic logic functions*
-
-Just remember these two, and you'll be fine going forward!
 
 ## Next Steps - Where are we going?
 
-We've scratched the surface of Analog, and shown how you can start to go Digital. Go lay the groundwork of some basic Digital concepts with [Binary](/blog_posts/2019/06/10/binary.html).
+We've scratched the surface of what basic electronic concepts every good software engineer should know. Let's move on from this analog way of thinking - go lay the groundwork of some basic Digital concepts with [Binary](/blog_posts/2019/06/10/binary.html).
 

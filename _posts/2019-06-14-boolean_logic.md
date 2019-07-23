@@ -286,4 +286,4 @@ So, in case you were wondering, you can go out and buy logic gates! You will nee
 
 We've covered the basics of how bits can be combined and manipulated with fundamental logic gates. Moving forward, we'll start to combine these gates into useful digital circuitry, building up to the main components of a computer processor.  Go check out [Digital Devices](/blog_posts/2019/06/26/digital_devices.html).
 
-Alternately, we'll also cover some of the practical considerations when building digital circuitry in the real world - tips, tricks, tools, etc. Also coming soon!
+Alternately, we'll also cover some of the practical implications when building digital circuitry in the real world. For Extra Credit, check out [Electronics Part 2](/blog_posts/2019/06/15/electronics_for_digital.html).
