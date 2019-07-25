@@ -5,6 +5,8 @@ date:   2019-07-22 9:31:00 -0500
 categories: blog_posts
 ---
 
+*People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth)*
+
 ## Introduction
 
 Oooh boy, I am getting excited! More excited than a [search companion who can do tricks!](https://en.wikipedia.org/wiki/File_Explorer#Search_companion) Things are starting to get very real now! 
