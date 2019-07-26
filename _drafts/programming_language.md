@@ -161,7 +161,7 @@ There are some "specialty" math functions that C also defines. These aren't stri
 
 ##### Combining Bits with Boolean Logic
 
-C syntax also allows you to ...
+C syntax also allows you to perform the basic boolean operations [we described earlier](link me!)
 
 ##### Creating Boolean values from Numbers with Comparison
 
