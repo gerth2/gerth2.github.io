@@ -77,7 +77,7 @@ In the sample statement above, the value calculated on the right-hand side of th
 
 For example, combining our knowledge of Variables and Assignment:
 
-```C
+```c
 int var1 = 25;
 int var2 = -32;
 char var3 = 128;
@@ -164,21 +164,21 @@ A _block_ of code is simply a logical subset of statements which form one cohesi
 
 C code uses the symbols `{` and `}` to mark the start and end of each block. By convention, the contents of the block are indented with whitespace by some amount (the author is a [strong advocate for 4 spaces](https://stackoverflow.blog/2017/06/15/developers-use-spaces-make-money-use-tabs/)).
 
-```C
+```c
 {
-    //This is the start of a block
+    // This is the start of a block
 
-    //Here is some code
+    // Here is some code
     var = 25*input;
     output = var & 0b00001111;
 
-    //This is the end of a block of code.
+    // This is the end of a block of code.
 }
 ```
 
 Note that multiple blocks can be nested together:
 
-```
+```c
 {
     // start of outer block
   
@@ -202,7 +202,7 @@ In C, you can use a set of statement as a prefix to a block, to define condition
 
 The basic syntax for the prefix is `if(<condition>) { <code to execute> }`. For a more concrete example:
 
-```C
+```c
 int condition = TRUE;
 
 if(condition){
@@ -219,7 +219,7 @@ if(condition){
 C also provides a few other tools for making more complex combinations of these if- blocks. The `else` statement is the alternative to `if` - when `if`'s condition is false, then the code for `else` is run instead. Concretely:
 
 
-```C
+```c
 int condition = TRUE;
 
 if(condition){
@@ -239,7 +239,7 @@ if(condition){
 
 There is one more construct, which allows you to stack many if statements together, if the conditions should be mutually exclusive (zero or one are true), or a priority is needed (if multiple conditions are true, only one is acted on). 
 
-```C
+```c
 int condition1 = TRUE;
 int condition2 = TRUE;
 
@@ -273,7 +273,7 @@ A block of code which is run many times over and over is called a _loop_. There 
 
 The _while_ loop repeats a chunk of code so long as a condition is TRUE. The syntax used in C is `while(<condition>) { <code to repeat> }`. In a more concrete example:
 
-```C
+```c
 int condition = TRUE;
 int counter = 0;
 
@@ -301,7 +301,7 @@ This syntax is `for(<init action>; <loop condition>; <loop action>){ <Code to be
 
 99% of the time, _for_ loops will be written something like this:
 
-```C
+```c
 int idx;
 
 for(idx=0; idx < 10; idx++){
@@ -317,7 +317,7 @@ The sequence of steps that is summarized all in that one line:
 
 In C, the _for_ loop is pure syntactical candy. There's no reason you can't do the exact same thing with a while loop:
 
-```C
+```c
 int idx;
 
 idx = 0;
@@ -344,7 +344,7 @@ Functions should generally perform one monolithic task, and one task alone.
 
 For example, let's create a function with calculates the square of some input number, but preserves the sign of the number. This is a common operation done while conditioning joystick inputs from a driver - it gives them less sensitivity near the center for precise slow motions.
 
-```C
+```c
 double squareSigned(double in){
     double result;
 
@@ -379,7 +379,7 @@ Finally, keep in mind this is just one basic, contrived example, targeted at the
 
 A very common use-case of the bitwise operators is forcing a single bit to 1 or to 0 in a number. For example:
 
-```C
+```c
 //Force the least-significant bit of value to 0, but leave the rest untouched.
 value = value & 0b11111110;
 //Force the least-significant bit of value to 1, but leave the rest untouched.
@@ -387,7 +387,7 @@ value = value | 0b00000001;
 ```
 
 Another usecase is to check if a particular bit is 1 or 0:
-```C
+```c
 // Check if the most-significant bit is set to 1
 bit_is_set = value & 0b10000000;
 if(bit_is_set){
@@ -403,7 +403,7 @@ In this example, the constant `0b10000000` is referred to as the "bitmask" since
 
 Consider the `squareSigned()` function we looked at earlier. Back in main robot code, this would get used in a fashion something like this:
 
-```C
+```c
 // ...
 double joyValue;
 double motValue;
@@ -429,7 +429,7 @@ Note that for these examples, we've chosen some very obvious names for our varia
 
 Of course, the compiler is not a human, and doesn't know that the string of characters `joyValue` has any real relationship to a joystick. No matter how good of names you choose for your variables, the compiler will still always expect you to populate them with meaningful values yourself - ie, call `getDriverXJoystick()` and assign it into `joyValue`. The above code could be written as:
 
-```C
+```c
 // ...
 double woodieFlowers;
 double deanKamen;
