@@ -1,102 +1,31 @@
 ---
 layout: post
-title:  "Programming Languages"
-date:   2019-07-23 9:30:40 -0500
+title:  "Programming Language - C Syntax"
+date:   2019-07-28 9:31:00 -0500
 categories: blog_posts
 ---
 
-*Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.  - [Donald Knuth](https://en.wikipedia.org/wiki/Donald_Knuth)*
-
+*C is quirky, flawed, and an enormous success. - [Dennis Ritchie, co-creator of the C programming language](https://en.wikipedia.org/wiki/Dennis_Ritchie).*
 
 ## Introduction
 
-This post marks our first "pure" venture into the world of software. For most of the readers of this blog, I'm assuming you have some casual familiarity with how to write software. But even if not, don't worry - we're going to go through the basics, again using a ground-up format to explain how computer programs are put together.
-
-### On our Selection of Introductory Languages
-
-#### The Options
-
-In FRC land, there are a handful of different programming languages that are commonly supported. Labview is in its own special class. Aside from this, the big players are Java and C++, followed by Python and Kotlin. These are all powerful, professional, and (relatively) modern programming languages, each rich with its own features and quirks. For *FRC* purposes, any of them make a fine choice for writing robot software.
-
-It should be noted that [people have opinions](https://www.chiefdelphi.com/t/c-or-java/358070) on the selection of programming languages.
-
-#### The Choice
-
-In order to do the ground-up approach properly, we're going to not start with any of these languages, but rather with pure C. This will simplify the connection between how bits are manipulated on a processor, and the actual code we write.  Additionally, once you understand the concepts of how C is put together, it becomes easy to see how the additional features provided by C++, Kotlin, Java, or Python could be implemented in C. 
-
-In this way, by focusing on an understanding of how C code works on a processor, we provide a pathway for understanding how _any_ programming language works on a processor.
-
-### High Level vs. Low Level
-
-When describing programming languages, we've already used the description *high level*. As you'd probably expect, *low level* is also a description. Loosely, these terms describe "how close to the actual silicon of the processor are you?". Closeness here refers to the number of layers of abstraction formally defined between the thing you are typing out on a keyboard, and the logic gates doing useful things in response to your typing.
-
-The literal 1's and 0's going through your processor is probably the lowest level way to write a program. The people who truly believe this is the best way to write software are either dead, or literally crazy.
-
-![expert keyboard](/assets/supercoder2000.jpg)
-
-*source - reddit.com*
-
-Just barely one step up, we can represent these 1's and 0's with much more useful pneumonics, like ADD (addition), SUB (subtract), MOV (move), LD (load), ST (store), etc. Rather than forcing a human to remember that $$0010001010011$$ means "Add general purpose register 1 to general purpose register 2 and store the result in general purpose register 3", we simply by writing something like **ADD R1 R2 R3**. Isn't that better than staring at $$0010001010011$$? I think so. This abstraction to pneumonics is called *assembly code*.
-
-Depending on the application, it still makes sense to write code at this level. When you need very fast code, very efficient code, or very very precise code for working with specialized hardware, assembly is your go-to solution. And, if you know the hardware well, it's admittedly not bad. Chris Sawyer wrote multiple video games using it [nearly](https://en.wikipedia.org/wiki/RollerCoaster_Tycoon_(video_game)) [exclusively](https://en.wikipedia.org/wiki/RollerCoaster_Tycoon_2). People who like writing software here are still a special breed of folks, but not as crazy as the ones who have the ink on their 1 and 0 keys rubbed off from excessive usage.
-
-For the rest of us folks, we usually use some sort of *high level* programming language. The official definition of a *High Level* programming language is simply one that attempts to abstract away the details of _exactly_ which assembly instructions are supported or needed, and hide them behind a more generalized way of describing desired behavior. The key advantage of doing this is that you can write one program, and rely on different compiler tools to take that same source code, and emit assembly instructions which can work on many different types of computers. This interoperability is a key driver in lots of the design of high level languages, but comes at a cost - it is harder to interact with specific details of the hardware you are on, and inherently less efficient to execute code.
-
-It should be noted that you can always add more layers of abstraction. A language doesn't have to transform into assembly code - you can transfom between high level languages too. For example, MathWorks' *Simulink* is a graphical programming language, much like Labview, which can [have its block diagrams converted directly to C code](https://www.mathworks.com/help/dsp/ug/generate-c-code-from-simulink-model.html). In this way, you can say Simulink is a higher-level programming language than C. 
-
-For specific use cases, there are other programming languages which can build into Simulink models.
-
-![ogres are like onions](https://media.giphy.com/media/pyQV6sy5qOALu/giphy.gif)
-
-The layers just keep going.
-
-This is why large software projects often have to combine many programming languages together. Your ultimate goal is simply to describe to the computer what you want it to do. You always want your software development to take place at the highest-level that makes sense - this allows you to have to spend the least amount of time thinking about details that, at the end of the day, an automated tool could have done for you. Only get into the nitty-gritty when you have to. But when duty calls, don't be afraid to dive deep.
+In this post, we'll explain the basics of the C programming language syntax, showing how it accomplishes the major goals of any high-level programming language.
 
 ## The "C-like" Syntax
 
-### History
+Though we're about to describe software syntax for the C programming language, the implications of these facts and examples are much broader.
 
-[The C programming language](https://en.wikipedia.org/wiki/C_(programming_language)#History) is the OG of high level languages. It wasn't the first of its type, but it was by far the most successful. It struck just the right balance between providing nice high-level programming language abstractions, without getting so high level as to become convoluted and bloated with useless features.
+Many of the concepts C introduced in how a high-level language is to specify program behavior were inherited into other programming languages. For this reason, many languages are said to have "C-like syntax", meaning that the fundamental way you specify behavior follows lots of the same design patterns laid out by C. The lion's share of commonly used programming languages follow these patterns, so it seems to be a good place to start!
 
-It was introduced in the late 1970's, tightly tied with the development of the [Unix operating system](https://en.wikipedia.org/wiki/Unix) at [Bell Labs](https://en.wikipedia.org/wiki/Bell_Labs). The initial goal was to provide a high-level language for writing utilities for the OS. It evolved quickly to be the language that the operating system itself was written in.
-
-The amazing thing is that as other languages have come and gone, C has remained the de-facto standard for anyone looking to write software with the highest performance, highest efficiency, or most hardware interaction. C++ and Rust are starting to supplant it in a few places, but C is still by far king for operating system and embedded system development. The fact any programming language has lasted these 40+ years is a true testament to good design.
-
-It's worthwhile to note that many of the concepts C introduced in how a high-level language is to specify program behavior were inherited into other programming languages. For this reason, many languages are said to have "C-like syntax", meaning that the fundamental way you specify behavior follows lots of the same design patterns laid out by C. The lion's share of commonly used programming languages follow these patterns, so it seems to be a good place to start!
-
-### Super Basics - What does a Programming Language have to Accomplish?
-
-Any programming language's job is to bridge the worlds of human-readable description of behavior, to a machine-readable set of 1's and 0's that can flow through a processor. The *compiler* is the tool that actually does the action, and the language's *syntax* is the set of rules on the compiler input to allow the action to work. 
-
-Remember the compiler itself is a program, and can't think creatively (or read your mind). The language *syntax* is the agreed-upon rules that you will use to communicate information with the compiler.
-
-The syntax must be flexible enough to be Turing Complete, but constrained enough to not force the human to think about too many details. 
-
-Good syntax design allows the programming language to describe all the calculations and logic required to establish a *relationship* between *inputs* and *outputs*. At the end of the day, that's really all your software on your robot has to do - map driver inputs, sensor inputs, and field state (teleop/auto) to motor and solenoid commands.
-
-#### Abilities Common to all Programming Languages
-
-To be useful, all programming languages have to have a few basic components:
-
-  * Input & Output (IO)
-    * Interacting with the “outside world”
-  * Assignment
-    * Storing and retrieving data from memory (aka Variables)
-  * Math & Logic
-    * Combining numbers and true/false conditions
-  * Control flow
-    * Using results of true/false conditions to control execution
-    * Repeating instructions under certain conditions
-  * Structural Organization
-    * Functions, Classes, objects, source files, interfaces, templates, etc.
-
-We will now look into the details of the syntax of the C programming language, to see how it implements these components to accomplish the goals of a high-level programming language.
+For most of the readers of this blog, I'm assuming you have some casual familiarity with how to write software. But even if not, don't worry - we're going to go through the basics, again using a ground-up format to explain how computer programs are put together.
 
 ### Storage of Source Code
 
-C code source files are just plain-text, ASCII or utf8-encoded [text files](https://en.wikipedia.org/wiki/Text_file), which just happen to have extensions like `.c` or `.h`. They can be opened and edited by any text editor: [VS Code](https://code.visualstudio.com/), [Notepad++](https://notepad-plus-plus.org/), [VIM](https://www.vim.org/), [Emacs](https://www.gnu.org/software/emacs/), even the built-in Windows Notepad (not recommended). 
+C code source files are just plain-text, ASCII or utf-encoded [text files](https://en.wikipedia.org/wiki/Text_file), which just happen to have extensions like `.c` or `.h`. They can be opened and edited by any text editor: [VS Code](https://code.visualstudio.com/), [Notepad++](https://notepad-plus-plus.org/), [VIM](https://www.vim.org/), [Emacs](https://www.gnu.org/software/emacs/), even the built-in Windows Notepad (not recommended). 
 
 A word to the wise - choose a good text editor which knows about C code syntax, so it can properly [highlight different parts of each line](https://en.wikipedia.org/wiki/Syntax_highlighting). These visual cues are invaluable as a software developer to visualize the behavior of your code.
+
+![Syntax Highlighting](/assets/syntaxHighlighting.png)
 
 ### C Code Statements & Their Components
 
@@ -114,7 +43,7 @@ We will use this for reference as we go forward in the next few sections.
 
 C syntax allows software writers to use numbers in statements. THese numbers can be simple integers, like `3` in the sample statement. They can also be fractional or *floating point* numbers, such `5.7` in the sample statement.
 
-A single negative sign (`-`) in front of a number will of course make it negative - `-26` is an allowed constant.
+A single negative sign (`-`) in front of a number will of course make it negative - `-26` is an allowed constant, equal to negative twenty six.
 
 #### Variables
 
@@ -124,6 +53,20 @@ In the statement above, `input` and `result` are both variables.
 
 Note that C does not allow variables to simply come into existence and disappear at runtime - each variable that is required must be *declared* prior to usage. The precise manner in how you declare the variable will dictate how many bits are used to store values, whether the value is read/write or read-only, which portions of code are allowed to access the variable, and a whole slew of other properties.
 
+Built into the C programming language are a few basic variable types:
+
+`int` is the basic integer storage. It is interpreted as a 2's compliment signed integer.
+`char` and `short` both store integers as well, but take up fewer bits than `int` (and therefore have a more restricted range).
+`long` will also be an integer, but take more bits than `int` (and therefore have a wider range`).
+
+`char` is usually treated as unsigned by default. Any type can get the qualifier `unsigned` put in front of it to force it to be unsigned.
+
+The exact number of bits for each of these is not fixed - it depends on what type of processor you are on. This is incredibly horrible when attempting to write code that works the same on multiple machines, so other types like `int8_t`, `int16_t`, and `int32_t` are actually better to use - these explicitly specify the bit width.
+
+`double` and `float` are both floating point representations, allowing you to store decimal values.
+
+A number of other types are built in, and the keyword `typedef` even allows you to define your own!
+
 #### Assignment
 
 Once we have variables, we have to have a way to get information into them. In C code statements, the `=` equals sign character is used to perform an assignment operation. Assignment takes whatever is on the right-hand side of the `=`, and places it into the variable on the left-hand side. 
@@ -131,6 +74,18 @@ Once we have variables, we have to have a way to get information into them. In C
 It's roughly equivalent to a "store" operation, rather than an expression of equality (more on that later). Think of it as memory movement - you do some calculation to get a number. Then, the equals sign indicates the calculation's result needs to be stored somewhere. The variable on the left hand side provides the memory address where the value is to be stored at.
 
 In the sample statement above, the value calculated on the right-hand side of the `=` is being stored into the variable named `result` - and by this, we really mean the value is being put into the RAM memory bits associated with the variable `result`.
+
+For example, combining our knowledge of Variables and Assignment:
+
+```C
+int var1 = 25;
+int var2 = -32;
+char var3 = 128;
+double var4 = -534.574029;
+unsigned int var5 = -23; // Will do weird stuff.
+short var6 = 67.5; // Will also do weird stuff.
+```
+
 
 #### Operators
 
@@ -161,7 +116,7 @@ There are some "specialty" math functions that C also defines. These aren't stri
 
 ##### Combining Bits with Boolean Logic
 
-C syntax also allows you to perform the basic boolean operations [we described earlier](link me!). Just like regular math, special symbols are reserved to indicate the operation.
+C syntax also allows you to perform the basic boolean operations [we described earlier](/blog_posts/2019/06/14/boolean_logic.html). Just like regular math, special symbols are reserved to indicate the operation.
 
   * `&&` performs the AND operation between two values
   * `||` performs the OR operation between  two values
@@ -251,13 +206,13 @@ The basic syntax for the prefix is `if(<condition>) { <code to execute> }`. For 
 int condition = TRUE;
 
 if(condition){
-  // This code will be run.
+    // This code will be run.
 }
 
 condition = FALSE;
 
 if(condition){
-  // Now this code will be skipped.
+    // Now this code will be skipped.
 }
 ```
 
@@ -268,17 +223,17 @@ C also provides a few other tools for making more complex combinations of these 
 int condition = TRUE;
 
 if(condition){
-  // This code will be run.
+    // This code will be run.
 } else {
-  // This code will be skipped.
+    // This code will be skipped.
 }
 
 condition = FALSE;
 
 if(condition){
-  // Now this code will be skipped.
+    // Now this code will be skipped.
 } else {
-  // and this code will be run.
+    // and this code will be run.
 }
 ```
 
@@ -289,22 +244,22 @@ int condition1 = TRUE;
 int condition2 = TRUE;
 
 if(condition1){
-  // This code will be run.
+    // This code will be run.
 } else if(condition2){
-  // This code will be skipped, since we "hit" the condition1 statement first.  
+    // This code will be skipped, since we "hit" the condition1 statement first.  
 } else {
-  // This code will be skipped.
+    // This code will be skipped.
 }
 
 condition1 = FALSE;
 condition2 = TRUE;
 
 if(condition1){
-  // This code will be skipped
+    // This code will be skipped
 } else if(condition2){
-  // This code will be run
+    // This code will be run
 } else {
-  // This code will be skipped.
+    // This code will be skipped.
 }
 ```
 
@@ -347,40 +302,93 @@ This syntax is `for(<init action>; <loop condition>; <loop action>){ <Code to be
 99% of the time, _for_ loops will be written something like this:
 
 ```C
+int idx;
 
-
+for(idx=0; idx < 10; idx++){
+    // This code runs 10 times
+}
 ```
 
-#### Grouping for Delegating Functionality
+The sequence of steps that is summarized all in that one line:
 
-## Building Code into Assembly Instructions
+1. Before running anything inside the loop, `idx` is set to `0`
+2. Every loop, before doing the contents of loop, we check if the condition `idx < 10` evaluates to TRUE. This happens for the first 10 loops, but not for any subsequent one.
+3. After running the contents of the loop, we perform the action `idx++`, which keeps idx up to date with the number of times we have completed the loop action.
 
-### The Instruction Set
+In C, the _for_ loop is pure syntactical candy. There's no reason you can't do the exact same thing with a while loop:
 
-### Examples
+```C
+int idx;
 
-#### Working with Local Variables
+idx = 0;
 
-#### Working with Global Variables
+while(idx < 10){
+    // This code runs 10 times
+    idx++;
+}
+```
 
-#### If Statement 
+However, that takes two extra lines. Since this pattern is very common, the C language built in the _for_ loop shortcut.
 
-#### For Loop
+We'll get into more of the nuances of how to make the choice between _for_ and _while_ in future posts.
 
-#### Boolean Values
+#### Grouping for Reusability
+
+Another major usage of blocks of instructions is to create reusable chunks of code which perform a specific subset of functionality. In C code, we refer to such blocks of code as _functions_. A function is simply a block of code with a specific prefix to create the name of the function, specify what inputs it has (the _arguments_), and define the type of output (the _return value_) it has.
+
+Generally, the syntax for creating a function is:
+
+`<return type> <function name>(<arguments>){ <contents of function>}`
+
+Functions should generally perform one monolithic task, and one task alone. 
+
+For example, let's create a function with calculates the square of some input number, but preserves the sign of the number. This is a common operation done while conditioning joystick inputs from a driver - it gives them less sensitivity near the center for precise slow motions.
+
+```C
+double squareSigned(double in){
+    double result;
+
+    result = in * in;
+
+    if(in < 0){
+        result = -1.0 * result;
+    }
+
+    return result;
+}
+```
+
+In painstaking detail, here's what the handful of lines of code actually mean:
+
+1. The function is first declared. `double squareSigned` says "There is a function named `squareSigned` which returns a value of type `double`".
+2. `squareSigned(double in){` says "Function `squareSigned` takes one argument named `in`, which must be of type `double`.
+3. Whenever `squareSigned` is run, the first step is to set aside some memory to keep track of the result while we're performing the operation. We'll refer to that memory with the name `result`, treating it as a double floating point value.
+4. The first real step calculation is to multiply `in` by itself, and store that into `result`.
+5. After we have the value of `in * in` stored into `result`, we now need to re-apply the sign of `in` (since squaring it always produces a positive value).
+6. We calculate whether in was negative or not by comparing it to zero with the statement `in < 0`.
+7. If `in` was in fact negative, we also need to make `result` negative. To accomplish this, we use the _if_ statement to conditionally run our negating logic.
+8. Within the `if(){` block, multiply `result` by negative one, and store it back into result. This means that `result` will now have the same sign as `in`
+9. Finally, we specify that the value in `result` is to be the return value of the function. With the statement `return result;`, we return execution control to whatever chunk of code called this function in the first place, returning the value from `result` at the same time.
+
+Finally, keep in mind this is just one basic, contrived example, targeted at the first-time learner. We'll get more into the "when" and "why" of function usage in later posts, but for now, just remember that such a tool for reusing functionality is available in any programming language worth its salt.
+
+
+## Miscellaneous Code Examples 
+
+### Boolean Values
 
 A very common use-case of the bitwise operators is forcing a single bit to 1 or to 0 in a number. For example:
 
 ```C
-//Force the least-signifigant bit of value to 0, but leave the rest untouched.
+//Force the least-significant bit of value to 0, but leave the rest untouched.
 value = value & 0b11111110;
-//Force the least-signifigant bit of value to 1, but leave the rest untouched.
+//Force the least-significant bit of value to 1, but leave the rest untouched.
 value = value | 0b00000001;
 ```
 
 Another usecase is to check if a particular bit is 1 or 0:
 ```C
-// Check if the most-signifigant bit is set to 1
+// Check if the most-significant bit is set to 1
 bit_is_set = value & 0b10000000;
 if(bit_is_set){
   // bit was 1
@@ -391,4 +399,52 @@ if(bit_is_set){
 
 In this example, the constant `0b10000000` is referred to as the "bitmask" since it masks off all bits except the first one (aka forces the to 0). This way, if the top bit is zero, `bit_is_set` will be non-zero, and can be used in the `if()` statement to change the action of the program.
 
+### Using Functions
+
+Consider the `squareSigned()` function we looked at earlier. Back in main robot code, this would get used in a fashion something like this:
+
+```C
+// ...
+double joyValue;
+double motValue;
+
+joyValue = getDriverXJoystick();
+
+motValue = squareSigned(joyValue);
+
+setLeftDriveMotor(motValue);
+setRightDriveMotor(motValue);
+// ...
+```
+
+In this highly contrived example, we declare two variables to store the value of the joystick, and the value we want to power the motors at. We'll assume that functions named `getDriverXJoystick()` and `setLeftDriveMotor()` and `setRightDriveMotor()` exist and have been provided to us for interaction with the physical hardware. Our job is just to hook up one piece of hardware to another.
+
+Since this isn't the only joystick on the robot, we'll use our common `squareSigned()` function to perform the desired mapping from a joystick reading to a motor command.
+
+In this example, we first populate our `joyValue` with some value read in from the joysticks.
+
+We then pass that value into our function `squareSigned()`, which transfers control of the program to that function. When the function is done with its transformation, its _return value_ is stored into our variable `motValue`. We can then use `motValue` as the command to send to both motors.
+
+Note that for these examples, we've chosen some very obvious names for our variables. Clearly, to any reasonably astute observer, `joyValue` would tend to imply something along the lines of "value from a joystick", and `motValue` would imply "value for a motor". This is intentional - choose meaningful names so its easier for you to remember exactly what each variable is for, when you come back and look at the code in 5 weeks and have no idea what it was doing. 
+
+Of course, the compiler is not a human, and doesn't know that the string of characters `joyValue` has any real relationship to a joystick. No matter how good of names you choose for your variables, the compiler will still always expect you to populate them with meaningful values yourself - ie, call `getDriverXJoystick()` and assign it into `joyValue`. The above code could be written as:
+
+```C
+// ...
+double woodieFlowers;
+double deanKamen;
+
+woodieFlowers = getDriverXJoystick();
+
+deanKamen = squareSigned(woodieFlowers);
+
+setLeftDriveMotor(deanKamen);
+setRightDriveMotor(deanKamen);
+// ...
+```
+
+And it would work the exact same way. The only difference is you'll be hating yourself in three days when you have no recollection what a `woodieFlowers` is for.
+
 ## Next Steps - Where are we going?
+
+We're nearing the end of the story-arc for our introductory content! Next up, we'll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. Stay Tuned!

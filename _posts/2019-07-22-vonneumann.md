@@ -234,7 +234,7 @@ Common applications include video/audio processing, computer networking devices,
 
 Phew, that was a lot, and way more hand-wavey than I had initially intended. None the less, we still have built up an understanding of what the main components of a processor are, how those things come to be from smaller digital circuits, and how they can execute individual stored instructions.
 
-Next up, we'll take a survey of common programming language constructs, and dig into how those constructs might be implemented in assembly code. Coming soon!
+Next up, we'll take a survey of common programming language constructs, and later dig into how those constructs might be implemented in assembly code. Keep reading at [Programming Languages Introduction!](/blog_posts/2019/07/28/programming_language_intro.html).
 
 [^1]: Lots of students [post their solutions on github](https://www.google.com/search?safe=active&rlz=1C1CHBF_enUS840US840&ei=JIUuXcOzF8m4tAbC4bv4Cw&q=uiuc+ece+385+github&oq=uiuc+ece+385+github&gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8), which seems like a violation of academic integrity, if you ask me.
 
