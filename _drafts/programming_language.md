@@ -161,9 +161,33 @@ There are some "specialty" math functions that C also defines. These aren't stri
 
 ##### Combining Bits with Boolean Logic
 
-C syntax also allows you to perform the basic boolean operations [we described earlier](link me!)
+C syntax also allows you to perform the basic boolean operations [we described earlier](link me!). Just like regular math, special symbols are reserved to indicate the operation.
+
+  * `&&` performs the AND operation between two values
+  * `||` performs the OR operation between  two values
+    * `|` is the symbol on the key right below backspace, accessed when you hit shift.
+  * `!` performs the NOT operation on a single value
+
+All of these are called the "Logical" operators, since they treat their numbers like a single boolean value. The reason we say "treat" is because C doesn't have a dedicated "boolean" type - the best we can do is just use one byte (named `char`, as we will see later). Given these bite-sized variables, the value of `0` is treated as FALSE, while any other value is TRUE. As it turns out, these are the more commonly used set of boolean operators.
+
+Lesser used, but worth a mention, are the _bitwise_ operators - they do the same boolean operation, but work bit-by-bit on the number. For example, the bitwise-NOT of `0b1100` is `0b0011` (note how each bit is flipped to the opposite value). Similarly, the bitwise-OR of `0b1100` and `0b0101` is `0b1101` (each bit in the first number OR'ed with the corresponding bit in the second number).
+
+  * `&` performs the bitwise AND operation between two numbers
+  * `|` performs the bitwise OR operation between two numbers
+  * `~` performs the bitwise NOT on a number.
+
+See examples of the usage of these things later on. The key for now - these operators provide ways of combining boolean values to create new boolean values.
 
 ##### Creating Boolean values from Numbers with Comparison
+
+Just like in math that you've probably done in high school, there are a set of operators that will do comparison between two integer numbers to create boolean values. These operators do almost exactly what you would expect:
+
+  * `>` and `>=` check if one number is greater than (or equal to) another number.
+  * `<` and `<=` check if one number is less than (or equal to) another number.
+  * `==` will check if two numbers are exactly equal
+  * `!=` will check if two numbers are not equal
+
+Note this distinction between the action of `=` and `==`, it's a very common thing that gets lots of new software developers. `=` performs _assignment_ - it takes one number and stores it into a memory address. `==` performs _comparison_ - it checks whether two numbers are equal or not, creating a boolean from the result.
 
 #### Comments 
 
@@ -175,14 +199,157 @@ Some special statements are called *comments*. These are wrapped in special char
 
 Put comments wherever you want to remember (or tell the next developer) what your code is doing. Use comments to describe the "why", and not the "what".
 
-
 ### Grouping
+
+A flat list of instructions is just fine for a computer, but generally humans like to visually organize their code a bit more. Therefor, in most programming languages, _statements_ are grouped together into clumps called _blocks_ based on the functionality that is desired.
 
 #### Blocks
 
+A _block_ of code is simply a logical subset of statements which form one cohesive action, and are meant to be run together. _Which_ statements belong together and _why_ will be discussed in due time, but for now consider just that statements will be grouped into units called _blocks_.
+
+C code uses the symbols `{` and `}` to mark the start and end of each block. By convention, the contents of the block are indented with whitespace by some amount (the author is a [strong advocate for 4 spaces](https://stackoverflow.blog/2017/06/15/developers-use-spaces-make-money-use-tabs/)).
+
+```C
+{
+    //This is the start of a block
+
+    //Here is some code
+    var = 25*input;
+    output = var & 0b00001111;
+
+    //This is the end of a block of code.
+}
+```
+
+Note that multiple blocks can be nested together:
+
+```
+{
+    // start of outer block
+  
+    {
+        // Inner block 1
+    }
+  
+    {
+        // Inner block 2
+    }
+  
+    // end of outer block
+}
+```
+
+Blocks are used to group pieces of code together to defining when certain parts of logic should be executed or skipped based on conditions (_conditional flow_), or for doing a chunk of code multiple times (_Releating Flow_).
+
 #### Grouping for Conditional Flow
 
+In C, you can use a set of statement as a prefix to a block, to define conditions on which the block should be run. The prefix statement must use some value or quantity that resolve to a boolean. Then, when the boolean is True, the block is executed. Otherwise, the block is skipped. 
+
+The basic syntax for the prefix is `if(<condition>) { <code to execute> }`. For a more concrete example:
+
+```C
+int condition = TRUE;
+
+if(condition){
+  // This code will be run.
+}
+
+condition = FALSE;
+
+if(condition){
+  // Now this code will be skipped.
+}
+```
+
+C also provides a few other tools for making more complex combinations of these if- blocks. The `else` statement is the alternative to `if` - when `if`'s condition is false, then the code for `else` is run instead. Concretely:
+
+
+```C
+int condition = TRUE;
+
+if(condition){
+  // This code will be run.
+} else {
+  // This code will be skipped.
+}
+
+condition = FALSE;
+
+if(condition){
+  // Now this code will be skipped.
+} else {
+  // and this code will be run.
+}
+```
+
+There is one more construct, which allows you to stack many if statements together, if the conditions should be mutually exclusive (zero or one are true), or a priority is needed (if multiple conditions are true, only one is acted on). 
+
+```C
+int condition1 = TRUE;
+int condition2 = TRUE;
+
+if(condition1){
+  // This code will be run.
+} else if(condition2){
+  // This code will be skipped, since we "hit" the condition1 statement first.  
+} else {
+  // This code will be skipped.
+}
+
+condition1 = FALSE;
+condition2 = TRUE;
+
+if(condition1){
+  // This code will be skipped
+} else if(condition2){
+  // This code will be run
+} else {
+  // This code will be skipped.
+}
+```
+
+As we go forward we will see more and more practical examples of this usage, so don't worry too much about understanding the nuance and memorizing it now. Just keep in mind that there is a construct that uses `if` to control if certain pieces of code get executed or not!
+
 #### Grouping for Repeating Flow
+
+The other common usage for grouping blocks of statements is for when you want to have a chunk of code repeat many times over and over. Admittedly this is less common for robots, but still happens. As a simple example, say you had 20 numbers you wanted to print to the screen - using loops, you can use the same print code many times, minimizing the amount of copy/paste or rewrite work you have to do.
+
+A block of code which is run many times over and over is called a _loop_. There are two main types of loops available in C. 
+
+The _while_ loop repeats a chunk of code so long as a condition is TRUE. The syntax used in C is `while(<condition>) { <code to repeat> }`. In a more concrete example:
+
+```C
+int condition = TRUE;
+int counter = 0;
+
+while(condition){
+  //Code to repeat
+  if(counter >= 10){
+    condition = FALSE;
+  } else {
+    counter++;
+  }
+}
+```
+
+If you trace the code execution, you should see that the code on the inside of the while loop runs until our counter is 10 or larger. THe counter starts at 0, and gets incremented every loop until we exit.
+
+The condition of `counter >= 10` is referred to as the _terminal condition_ of the loop - it's the condition which triggers the loop to stop running, and allows execution to continue past the final `}` of the block.
+
+Now, of course, `condition` doesn't have to be tied to a fixed number of loops - it could be some event on the robot (like receiving a packet over ethernet) or user interaction (driver pushes a button), for example. But for when you are looking to run for a set number of loops, there is a syntax which allows expressing it more concisely.
+
+Enter the _for_ loop in C. It looks way more complex than it actually is. For loops are used when you know the exact number of times you want to iterate, rather than simply _wait_ for some external event (for an unknown duration).
+
+Just like _while_ loops, _for_ loops cause a block of code to get executed many times. The prefix to that block has extra syntax to provide a concise way of describing how long you will loop for. 
+
+This syntax is `for(<init action>; <loop condition>; <loop action>){ <Code to be executed> }`. THe Init action is simply a statement to be done right before starting the loop, and the loop action is a statement to be run at the end of the loop.
+
+99% of the time, _for_ loops will be written something like this:
+
+```C
+
+
+```
 
 #### Grouping for Delegating Functionality
 
@@ -196,8 +363,32 @@ Put comments wherever you want to remember (or tell the next developer) what you
 
 #### Working with Global Variables
 
-#### If Statement
+#### If Statement 
 
 #### For Loop
+
+#### Boolean Values
+
+A very common use-case of the bitwise operators is forcing a single bit to 1 or to 0 in a number. For example:
+
+```C
+//Force the least-signifigant bit of value to 0, but leave the rest untouched.
+value = value & 0b11111110;
+//Force the least-signifigant bit of value to 1, but leave the rest untouched.
+value = value | 0b00000001;
+```
+
+Another usecase is to check if a particular bit is 1 or 0:
+```C
+// Check if the most-signifigant bit is set to 1
+bit_is_set = value & 0b10000000;
+if(bit_is_set){
+  // bit was 1
+} else {
+  // bit was 0
+}
+```
+
+In this example, the constant `0b10000000` is referred to as the "bitmask" since it masks off all bits except the first one (aka forces the to 0). This way, if the top bit is zero, `bit_is_set` will be non-zero, and can be used in the `if()` statement to change the action of the program.
 
 ## Next Steps - Where are we going?
