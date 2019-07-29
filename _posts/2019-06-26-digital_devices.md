@@ -124,7 +124,7 @@ We're going to move on to a slightly more abstract, but much more realistic exam
 
 ### Binary Addition
 
-Recall from the [boolean](link me!!) lesson how we can add together boolean numbers the same way we add together familiar base-10 numbers. The algorithm that I learned back in the day was:
+Recall from the [binary lesson how we can add together base-2 numbers](/blog_posts/2019/06/10/binary.html) the same way we add together familiar base-10 numbers. The algorithm that I learned back in the day was:
 
 1. Line up the two numbers on top of each other, keeping each place vertically aligned.
 2. Starting from the one's place, add together each single digit number
