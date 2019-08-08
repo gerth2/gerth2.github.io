@@ -1,0 +1,8 @@
+break sample_1.asm:28
+disp myVariable
+disp myOtherVariable
+disp/x myBeefVariable
+run
+info registers
+continue
+quit
