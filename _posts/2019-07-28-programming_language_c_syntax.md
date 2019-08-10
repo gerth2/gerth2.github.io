@@ -447,4 +447,4 @@ And it would work the exact same way. The only difference is you'll be hating yo
 
 ## Next Steps - Where are we going?
 
-We're nearing the end of the story-arc for our introductory content! Next up, we'll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. Stay Tuned!
+We're nearing the end of the story-arc for our introductory content! Next up, we'll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. [To get started, check out our introduction to the x86 assembly language!](/blog_posts/2019/08/10/x86_intro.html)
