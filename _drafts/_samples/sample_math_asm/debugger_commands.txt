@@ -1,0 +1,5 @@
+break sample.asm:26
+run
+info registers
+continue
+quit

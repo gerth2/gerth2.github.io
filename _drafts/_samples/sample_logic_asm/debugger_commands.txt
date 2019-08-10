@@ -1,0 +1,9 @@
+break sample.asm:33
+disp/t andResult
+disp/t orResult
+disp/t notResult
+disp/t xorResult
+run
+info registers
+continue
+quit

@@ -1,4 +1,4 @@
-break sample_1.asm:28
+break sample.asm:28
 disp myVariable
 disp myOtherVariable
 disp/x myBeefVariable
