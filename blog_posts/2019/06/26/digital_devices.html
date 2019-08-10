@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Digital Devices | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Digital Devices" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
+<meta property="og:description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/06/26/digital_devices.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/06/26/digital_devices.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-26T09:30:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/06/26/digital_devices.html"},"url":"http://localhost:4000/blog_posts/2019/06/26/digital_devices.html","description":"Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.","headline":"Digital Devices","@type":"BlogPosting","dateModified":"2019-06-26T09:30:00-05:00","datePublished":"2019-06-26T09:30:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Digital Devices</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-06-26T09:30:00-05:00" itemprop="datePublished">Jun 26, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="/assets/word_problems.jpg" alt="word problems from Bill Waterson" /></p>
+
+<p><em>Calvin and Hobbes, by Bill Waterson</em></p>
+
+<h2 id="on-word-problems">On Word Problems</h2>
+
+<p>As engineers, we almost always start with word problems. You know those paragraphs that your math teacher writes out that you have to <em>read</em> and then they make you extract the useful information to formulate some formulas, then solve them, then get the actual answer? Yea, those. I used to love those, because the paragraph-format meant the teacher couldn’t fit as many problems on one page, which meant shorter homework assignments!</p>
+
+<p>Never in my professional life have I ever been asked “what’s <script type="math/tex">465 + 236</script>?”. Many times, I’ve had someone come to my desk and ask me a question that took ten sentences to explain, but at the end of the day all I had to do was calculate <script type="math/tex">465 + 236</script>. That and listen to them, which is a whole skill (nay, art?) unto itself.</p>
+
+<p>In previous posts, we’ve seen how logic gates can be combined to manipulate bits. There’s obviously a ton of different ways you could combine a set of bits… OR’ing them together, AND’ing them together, some combination of the two… But, why would you do such things?</p>
+
+<p>Word problems. Every engineering problem starts as a word problem. So to learn about digital devices, we’re going to frame a couple word problems. Some of them may seem a bit odd at first, but I promise they’re building up to something very useful. Keep in mind, we’re laying the foundation for understanding the guts of a computer, which is going to help us write better software.</p>
+
+<h2 id="rocket-launch-controller">Rocket Launch Controller</h2>
+
+<p>Well, a contrived one at least. Part of one, not the whole thing.</p>
+
+<p>Let’s imagine a usual rocket launch. We’re sending some people into space atop a very <em>very</em> powerful flaming pushy thing. You want to be sure everyone is OK with going to space before you actually try to go to space.</p>
+
+<p>Mission control is keeping track of the launch, and  has the responsibility of initiating it. Maybe we could give them one big launch button. But, this could be problematic - what if someone trips and falls and lands on the button? Then our rocket gets launched unexpectedly. This could be bad <script type="math/tex">^{citation needed}</script>.</p>
+
+<p>For safety’s sake, let’s build two buttons and put them on opposite sides of the room. The rocket shouldn’t launch unless two <em>different</em> launch control engineers push both the buttons at the same time. “Hey Bob, ya ready?” “Yea Joe, let’s light this candle!” “Ok, push the button” “Sounds good!” BWWWUWUSUSHSHSHSHSHSHSHSHHHHhhhhhhh……</p>
+
+<p>But, we also have astronauts in the capsule. Mission control is pretty good at their jobs, but they aren’t at the rocket. Despite all their instruments, they still don’t hear, feel, or smell<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> the behavior of the rocket. Maybe it’s wise to give our astronaut friends a “kill switch” of sorts inside the capsule. That way, if something seems off, they can activate some sort of “emergency stop” or “override” to prevent launch control from starting the rocket.</p>
+
+<p>Buttons make great sources of boolean inputs. Though we won’t go into the details just yet, suffice to say that you have three boolean inputs, representing each of our three buttons. We’ll call the two in the launch control room <script type="math/tex">L_1</script> and <script type="math/tex">L_2</script>. We’ll call the “emergency-stop” button near the astronauts <script type="math/tex">E</script>. For all buttons, a value of True indicates the button is pressed, and False indicates it’s not pressed.</p>
+
+<p>We will have a single output called <script type="math/tex">A</script>. When it’s True, it will trigger the ignitors to start the rocket, and send the thing to space. When False, the rocket remains on the launch pad.</p>
+
+<p>How do we want to design this digital circuit to control the launch functionality as described? Let’s break it down into little chunks.</p>
+
+<p>The launch room is kind of its own entity, with its own behavior, and own set of inputs. Let’s deal with that one first.</p>
+
+<p>What is the information that comes out of the launch room that the rocket ignitors care about? I’d say that the information the rocket cares about is “Both buttons or pressed” - either they’re both pressed, or their not both pressed. Let’s call this intermediate value <script type="math/tex">B</script>.</p>
+
+<p>Looking inside the launch room, the logic should be pretty simple. Two inputs, one output. Let’s enumerate what we want to happen for each input:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><script type="math/tex">L_1</script></th>
+      <th><script type="math/tex">L_2</script></th>
+      <th> </th>
+      <th><script type="math/tex">B</script></th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+      <td>No button is pressed. Don’t Launch.</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+      <td>Only one button is pressed. Don’t Launch Yet.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+      <td>Only one button is pressed. Don’t Launch Yet.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+      <td>Both buttons are pressed. Go for Launch!</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Astute readers will notice that this actually is a very familiar function - it’s just an AND gate!</p>
+
+<script type="math/tex; mode=display">B = L_1 \cdot L_2</script>
+
+<p><img src="/assets/mission_control.png" alt="mission control button schematic" /></p>
+
+<p>There we go, quite simple!</p>
+
+<p>Now let’s move on to the astronauts. They’ve got one button that when pressed should indicate “inhibit launch”.</p>
+
+<p>It’s generally a good idea to try to keep things as similar as possible. Since Launch Control has a single output that indicates “Go for Launch”, lets give our astronauts the same output. We need to design a circuit that takes their inhibit button value and converts it into a “Go for launch” output. We’ll call the astronaut output <script type="math/tex">C</script>. Again enumerating with a truth table:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><script type="math/tex">E</script></th>
+      <th> </th>
+      <th><script type="math/tex">C</script></th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+      <td>Astronauts are not pushing their button. Everything must be ok, go for launch!</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+      <td>Astronauts detected a problem and pushed their button! Don’t Launch!</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Astute readers will again notice this is actually a very familiar function - it’s just a NOT gate.</p>
+
+<script type="math/tex; mode=display">C = \overline{E}</script>
+
+<p><img src="/assets/astronaut_button.png" alt="Astronaut button schematic" /></p>
+
+<p>Excellent! We have now devices for both the Launch Control room and the Astronauts capsule controls, each with an output that says “Light the rocket” or “Don’t light the rocket”. The rocket ignition mechanism now has to take these two signals, and combine them together. Note from our initial requirement, we know we don’t want to launch the rocket unless both the astronauts and launch control decide it’s time to go.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th><script type="math/tex">B</script></th>
+      <th><script type="math/tex">C</script></th>
+      <th> </th>
+      <th><script type="math/tex">A</script></th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+      <td>No one wants to launch the rocket. Don’t Launch.</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+      <td>Astronauts say they’re ok to launch, but Launch Control doesn’t agree. Don’t Launch Yet.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+      <td>Launch Control wants to go, but astronauts saw a problem. Don’t Launch Yet.</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+      <td>Astronauts say they are good to go, and Launch Control says good to go!  Light the Rocket!</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Even the least astute of readers should be able to recognize this now. It’s another AND gate!</p>
+
+<script type="math/tex; mode=display">A = B \cdot C</script>
+
+<p>We can now put all 3 pieces of the puzzle together. Substituting equations:</p>
+
+<script type="math/tex; mode=display">A = (B) \cdot (C)</script>
+
+<script type="math/tex; mode=display">A = (L_1 \cdot L_2) \cdot \overline{E}</script>
+
+<p>In diagrams, we’d draw this as:</p>
+
+<p><img src="/assets/full_schematic.png" alt="Full Schematic" /></p>
+
+<p>This simple logic diagram shows how we could implement logic to accomplish our basic launch control system.</p>
+
+<h3 id="notes-on-subdividing">Notes on Subdividing</h3>
+
+<p>Admittedly, this is a pretty simple system, and we took a very verbose and roundabout way to design it. I bet many of you saw the ending well before we got there. That’s perfectly fine! The big takeaway is not just the answer itself, but rather dividing the problem up into useful pieces. In this context, “useful” implies that each one is solvable on its own, and represents some meaningful small piece of computation. If you notice, you can easily draw boxes around the three physical locations we discussed:</p>
+
+<p><img src="/assets/marked_up_schematic.png" alt="Marked up schematic" /></p>
+
+<p>The individual pieces may not be implemented by the same computer! You might have to have each piece on a different machine, since they’re in physically different places. This diagram and design doesn’t at all get into how one might transfer a boolean value from one place to another (radio? super long wire?), but for lots of purposes that doesn’t matter. Imagine your boss came up and asked “What does the system do”? They don’t care about the implementation details, they care about functionality. This would be a great diagram to show the high level behavior of the system, without getting bogged down on communication, button size, or other implementation details.</p>
+
+<p>The wise engineer says to create designs (and present designs) at the easiest and most useful level of abstraction. The experienced and artful engineer can identify exactly what that level of abstraction is in their sleep.</p>
+
+<h3 id="design-flaw">Design Flaw</h3>
+
+<p>The critical student will have noticed that there may be a few gaps in our design.</p>
+
+<p>One of them that I’ll address - the astronaut button. Let’s say that our friends detect a problem and want to prevent launch. With our current logic, if they tap their button, they’ll momentarily inhibit the launch, but as soon as they take their finger away the button springs back, allowing the launch again. It would stink to force them to have to hold down the button the whole time. We’d probably want to remember whether they’ve pressed it or not, and inhibit launch until someone corrects the issue that caused them to hit the inhibit button in the first place.</p>
+
+<p>I can think of two ways to do this “remembering”. One is mechanically - don’t use a button, use something more like a light switch that doesn’t “spring-back” to the off position when you’re done. THe other is to remember the button press in software. This requires using <em>memory</em>, which is a concept we’ll cover later in this post.</p>
+
+<h2 id="adders">Adders</h2>
+
+<p>We’re going to move on to a slightly more abstract, but much more realistic example.</p>
+
+<h3 id="binary-addition">Binary Addition</h3>
+
+<p>Recall from the <a href="/blog_posts/2019/06/10/binary.html">binary lesson how we can add together base-2 numbers</a> the same way we add together familiar base-10 numbers. The algorithm that I learned back in the day was:</p>
+
+<ol>
+  <li>Line up the two numbers on top of each other, keeping each place vertically aligned.</li>
+  <li>Starting from the one’s place, add together each single digit number</li>
+  <li>If the result of a particular addition is 10 or greater, “overflow” or “carry” into the next column.</li>
+</ol>
+
+<p>The exact same process works in binary. Recall:</p>
+
+<script type="math/tex; mode=display">67_{10} = 01000011_{2}</script>
+
+<script type="math/tex; mode=display">5_{10} = 00000101_{2}</script>
+
+<p>Adding these two numbers in base-10, I get a result of 72. Let’s do it in binary, to show how a thing that only knows 1 and 0 might go about doing the same calculation:</p>
+
+<p>First, we align the numbers:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+01000011& \\
+\underline{+\quad 00000101}& \\
+ &
+\end{align} %]]></script>
+
+<p>Then, starting from the least significant bit, we start adding.</p>
+
+<p>Note that <script type="math/tex">1_{2} + 1_{2} = 10_{2}</script> (This is just <script type="math/tex">1_{10} + 1_{10} = 2_{10}</script>, which you presumably learned in 1st grade.) Since the addition of two <script type="math/tex">1</script>’s has created a new digit, we have to carry it over to the next column:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+      10& \\
+01000011& \\
+\underline{+\quad 00000101}& \\
+0&
+\end{align} %]]></script>
+
+<p>Rinse-wash-repeat.</p>
+
+<script type="math/tex; mode=display">1_{2} + 1_{2} + 0_{2} = 1_{2} + 1_{2} = 10_{2}</script>
+
+<p>Therefor, we have to carry again.</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+\begin{align}
+     110& \\
+01000011& \\
+\underline{+\quad 00000101}& \\
+00&
+\end{align} %]]></script>
+
+<p>We continue this process until we’ve covered all the bits in the number, and arrive at our result:</p>
+
+<script type="math/tex; mode=display">1001000_{2} = 72_{10}</script>
+
+<p>Huzzah! We have done the calculation using only 1’s and 0’s. Hey, digital logic uses only 1’s and 0’s. Do you think we could design some circuitry to do this? You bet your bottom dollar we can!</p>
+
+<h3 id="patterns-in-binary-addition">Patterns in Binary Addition</h3>
+
+<p>To build the logic, we’ll start by breaking down the problem. Look at a particular column of the above addition operation. Let’s try to describe its’ properties in general:</p>
+
+<ol>
+  <li>It takes two bits as input, one each from the numbers we are trying to add.</li>
+  <li>A third bit comes in from the previous step, to indicate whether the previous step resulted in a “carry” operation or not.</li>
+  <li>It contributes one bit to the result number</li>
+  <li>It also may pass a “carry” bit to the next step</li>
+</ol>
+
+<p>As a bit of bookkeeping, let’s first write out a list of all the possible math facts we could need. Remembering that addition is associative:</p>
+
+<script type="math/tex; mode=display">0_{2} +  0_{2} +  0_{2}  = 00_{2}</script>
+
+<script type="math/tex; mode=display">0_{2} +  0_{2} +  1_{2}  = 00_{2}</script>
+
+<script type="math/tex; mode=display">0_{2} +  1_{2} +  1_{2}  = 10_{2}</script>
+
+<script type="math/tex; mode=display">1_{2} +  1_{2} +  1_{2}  = 11_{2}</script>
+
+<p>Since we’re talking about only one stage, we’ll indicate <em>which</em> stage that is with an index subscript. The first stage will have subscript <script type="math/tex">0</script>, the next subscript <script type="math/tex">1</script> and so on. Some particular (but unspecified) stage - the “<script type="math/tex">i</script>‘th stage” - will have subscript <script type="math/tex">i</script>. As a matter of notation, when looking at the <script type="math/tex">i</script>‘th stage, the <em>next</em> stage will be <script type="math/tex">i+1</script>, and the previous stage will be <script type="math/tex">i-1</script>. We’ll have to explicitly handle the end-cases, but ignore them for now - just think about the middle bits.</p>
+
+<p>To draw this a bit more clearly, let’s cover all 3 inputs and both outputs in a table.</p>
+
+<p>We’ll call the two bits to add <script type="math/tex">A_{i}</script> and <script type="math/tex">B_{i}</script>, and the result <script type="math/tex">R_{i}</script>. Each stage will also output a Carry signal called <script type="math/tex">C_{i}</script>. Since each stage also takes an input from the previous stage’s carry signal, we’ll denote this input with <script type="math/tex">C_{i-1}</script></p>
+
+<table>
+  <thead>
+    <tr>
+      <th><script type="math/tex">A_{i}</script></th>
+      <th><script type="math/tex">B_{i}</script></th>
+      <th><script type="math/tex">C_{i-1}</script></th>
+      <th> </th>
+      <th><script type="math/tex">R_{i}</script></th>
+      <th><script type="math/tex">C_{i}</script></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="single-bit-adder">Single Bit Adder</h3>
+
+<p>A single bit adder will be a device with three inputs (the two bits to add, plus a carry-in bit). It is actually two independent circuits, outputting the Result bit and the Carry-out bit. We’ll design each one, one at a time.</p>
+
+<h4 id="result-bit">Result Bit</h4>
+
+<p>If you stare at the truth table hard enough, you might notice that the result bit is 1 whenever the number of input signals is <em>odd</em>. There are more algorithmic methods you can use to determine this, but recognizing this pattern lets you make the quick shortcut. Recall from previous posts that an <em>XOR</em> gate outputs 1 when an odd number of its inputs are 1. So, we’ll use an XOR gate:</p>
+
+<script type="math/tex; mode=display">R_{i} = A_{i} \oplus B_{i} \oplus C_{i-1}</script>
+
+<h4 id="carry-out-bit">Carry Out Bit</h4>
+
+<p>The carry out bit also has a bit of a pattern to it. Notice that it is true when at least two inputs are true. This can be covered by a series of OR’ed together AND outputs as such:</p>
+
+<script type="math/tex; mode=display">C_{i} = A_{i} B_{i} + A_{i} C_{i-1} + B_{i} C_{i-1}</script>
+
+<p>Again there are algorithms you can use to derive this equation from the truth table, but if you stare at it hard enough, you should be able to convince yourself that this equation is both accurate, and makes sense. For example, think about why we don’t have to handle the all-three-inputs-true case explicitly.</p>
+
+<h4 id="schematic">Schematic</h4>
+
+<p>Based on our observation of the truth table, we can put together this device that can compute one column of the “add two bytes” problem:</p>
+
+<p><img src="/assets/single_bit_adder.png" alt="single bit adder" /></p>
+
+<p>To use many of these devices in larger units, we’ll use an <em>abstraction</em> where we draw just the inputs and outputs, and hide the details of the guts.</p>
+
+<p><img src="/assets/single_bit_adder_abstraction.png" alt="abstraction of single bit adder" /></p>
+
+<h3 id="ripple-carry-adder">Ripple-carry Adder</h3>
+
+<p>The Ripple-carry Adder is a logical next-step to expand the single-bit adder. Earlier in the post we showed the algorithm for doing binary addition. Since it’s a bunch of rinse-wash-repeat steps, it stands to reason that we could make one circuit to do each step, then replicate and string them together. That’s exactly what we’ve done with the single-bit adder - we’ve made one circuit that can perform one step of the addition. A Ripple-carry Adder is simply a set of single-bit adders chained together to do addition of a full byte.</p>
+
+<h3 id="joining-chunks-together">Joining chunks together</h3>
+
+<p>The hookup is pretty much what you’d expect: Every bit in input bytes <script type="math/tex">A</script> and <script type="math/tex">B</script> is piped to the proper single-bit adder stage. The carry bits are passed from one layer to the next. The 0th carry-in bit is hardcoded to zero. The final output is an output of the Ripple-carry Adder, and can be used to know when the sum of the two numbers is outside the range of representable digits by that fixed number of single-bit adders.</p>
+
+<p>For a 4-bit Ripple carry adder, the circuit diagram would look like this:</p>
+
+<p><img src="/assets/four_bit_adder.png" alt="four bit adder" /></p>
+
+<p>Notice how the “carry-out” from each stage <em>ripples</em> into the next stage. Hence the name. Someone was clever like that.</p>
+
+<p>Hopefully you can see - if you need more bits (say, 8, or 64?), you just add more stages.</p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>We’ve discussed digital circuits which are capable of transforming inputs into outputs, but not yet discussed how to create circuits which can remember past events. This will be a critical step if we want to be able to store any data while running our computer programs. We’ll delve into this <a href="/blog_posts/2019/07/06/digital_devices_part2.html">in Part 2!</a></p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Yes, smell. A good engineer uses <em>most</em> of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It’s a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don’t usually recommend the sense of taste for writing software. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><a class="u-url" href="/blog_posts/2019/06/26/digital_devices.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

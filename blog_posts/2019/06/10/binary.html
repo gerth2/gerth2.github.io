@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Binary | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Binary" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Representing Ideas with Symbols" />
+<meta property="og:description" content="Representing Ideas with Symbols" />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/06/10/binary.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/06/10/binary.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-10T09:30:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/06/10/binary.html"},"url":"http://localhost:4000/blog_posts/2019/06/10/binary.html","description":"Representing Ideas with Symbols","headline":"Binary","@type":"BlogPosting","dateModified":"2019-06-10T09:30:00-05:00","datePublished":"2019-06-10T09:30:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Binary</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-06-10T09:30:00-05:00" itemprop="datePublished">Jun 10, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="representing-ideas-with-symbols">Representing Ideas with Symbols</h2>
+
+<p>Consider the following:</p>
+
+<script type="math/tex; mode=display">16.</script>
+
+<p>When you read that, what did you think? You probably said “sixteen” in your head, assuming you think in English. This is a very good answer.</p>
+
+<p>What is “sixteen”, though? It’s a number, that’s for sure. It’s also an idea - a concept.</p>
+
+<p>Here’s what I think of when you say “sixteen”:</p>
+
+<p><img src="/assets/sixteen.png" alt="sixteen boxes" /></p>
+
+<p>Sixteen represents a quantity. There are sixteen boxes.</p>
+
+<iframe src="https://giphy.com/embed/69rOXF4YTDVDD6cwkt" width="480" height="378" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+<p><a href="https://giphy.com/gifs/69rOXF4YTDVDD6cwkt"></a></p>
+
+<p>No, Picard, there are 16 boxes.</p>
+
+<p>We are using the sequence of symbols <script type="math/tex">16</script> to represent this quantity. You’re already very familiar with how this works, but it’s important to dig into the details - it will lead us to a natural way to define the binary system used in computers.</p>
+
+<p>There’s two things to take away from the symbol sequence <script type="math/tex">16.</script>:</p>
+
+<ol>
+  <li>It uses two symbols, <script type="math/tex">1</script> and <script type="math/tex">6</script>, anchored around the decimal point <script type="math/tex">.</script></li>
+  <li>It puts them together in a particular order to give meaning to the quantity. <script type="math/tex">16.</script> and <script type="math/tex">61.</script> are not the same.</li>
+</ol>
+
+<p>The number system we’re talking about is commonly referred to as the <a href="https://en.wikipedia.org/wiki/Hindu%E2%80%93Arabic_numeral_system">Hindu-Arabic number system</a>. It was invented in India in the first century, and quickly its way through the Middle East and into Europe by the Middle Ages.</p>
+
+<p>It has a particular advantage over predicessor methods for representing numbers in two ways:</p>
+
+<ol>
+  <li>There is a limited set of symbols to remember. For most modern mathematics, there are 10 symbols - <script type="math/tex">0</script>, <script type="math/tex">1</script>, <script type="math/tex">2</script>, <script type="math/tex">3</script>, <script type="math/tex">4</script>, <script type="math/tex">5</script>, <script type="math/tex">6</script>, <script type="math/tex">7</script>, <script type="math/tex">8</script>, <script type="math/tex">9</script>. Each represents a particular quantity.</li>
+  <li>The symbols are combined to represent quantities beyond the range of the symbol set. How it accomplishes this is really the <a href="https://en.wikipedia.org/wiki/Secret_ingredient">secret sauce</a> to the whole system.</li>
+</ol>
+
+<p>Each symbol is in some position relative to the “decimal point”. In English, we usually refer to them (from right to left) as the “ones place”, the “tens place”, the “hundreds place”, etc.</p>
+
+<p>Because there is a <script type="math/tex">1</script> in the tens place, we multiply the quantity represented by <script type="math/tex">1</script> by ten. Then, this quantity is added in with the quantity represented by <script type="math/tex">6</script>, which because it is in the ones place, is multiplied by one (aka nothing is done to it). Together, ten and six make for a quantity of 16.</p>
+
+<p><img src="/assets/sixteen_base_10.png" alt="sixteen in base 10" /></p>
+
+<h3 id="the-concept-of-base">The concept of “Base”</h3>
+
+<p>What’s the point of splitting like this? Note that any number in base 10 can be broken into a sum of its component digits.</p>
+
+<script type="math/tex; mode=display">16 = 1*10 + 6*1</script>
+
+<p>This works, no matter how big the number gets.</p>
+
+<script type="math/tex; mode=display">1736 = 1*1000 + 7*100 + 3*10 + 6*1</script>
+
+<p>Notice the pattern on the <script type="math/tex">*1000</script> and <script type="math/tex">*100</script> and <script type="math/tex">*10</script> and such?</p>
+
+<script type="math/tex; mode=display">1736 = 1*10^{3} + 7*10^{2} + 3*10^{1} + 6*10^{0}</script>
+
+<p>Here’s the takeaway: in a positional number system, any quantity is represented by a sum of the digits, each multiplied by some “potency” factor associated with its position in the sequence.</p>
+
+<p>This is why we say we are using a <em>Base 10</em> number system - the “base” of the number raised to some power to get the “potency” of each digit.</p>
+
+<p>You can create a generic formula using a summation:</p>
+
+<script type="math/tex; mode=display">value = \sum_{i=0}^{i=N-1}D_i * 10^{i}</script>
+
+<p>Where</p>
+
+<ul>
+  <li><script type="math/tex">N</script> is the number of digits in the symbol sequence</li>
+  <li><script type="math/tex">D_i</script> is the <script type="math/tex">i</script>‘th digit in the symbol sequence, with 0 being nearest the decimal point.</li>
+</ul>
+
+<p>But here’s the crucial question - <em>why is 10 the base</em>?</p>
+
+<p>There’s lots of argument as to why it is the way it is - some say because you have 10 fingers. But the Mayans used base 20 (apparently they used their toes as well?), and the Babylonians used base 60 (???). Maybe the people who liked base 10 also happened to be the best at winning wars. For better or for worse, that’s how this sort of thing often gets decided.</p>
+
+<p>However, the takeaway you should have - <em>it doesn’t have to be 10</em>. And indeed in designing computing systems, there are better answers.</p>
+
+<h3 id="truefalse">True/False</h3>
+
+<p>Back in the 1800’s there was this guy named <a href="https://en.wikipedia.org/wiki/George_Boole">George Boole</a> was creating a mathematical computation for logical reasoning. Key to this line of thought was describing, associating, and combining the concepts of “True” and “False”. Two opposite fundamentals. Two. Hey, maybe Two is a good number.</p>
+
+<p>Two is also a nice “minimum viable product” for a set of symbols. Let’s think about what you can express using numbering systems that have varying numbers of symbols:</p>
+
+<h4 id="the-zero-symbol-system">The zero-symbol system</h4>
+<p>This system does not let you even write anything down. It is useless. Let us not waste another moment considering this.</p>
+
+<h4 id="the-one-symbol-system">The one-symbol system</h4>
+<p>This is effectively talley marks. Fair enough that it lets you start to express some ideas. However, you have to draw exactly the same number of symbols as the quantity you wish to express. You haven’t really gained anything here. If you already have sixteen boxes, do you need to draw sixteen lines somewhere to indicate that you have sixteen boxes? Seems sort of redundant. Why not just go out and count your boxes, and save the time of writing the talley marks? Maybe if you want to keep your own records. But then the other cavemen just make fun of you for being a nerd.</p>
+
+<p>Strictly speaking, this isn’t a positional number system, since the position doesn’t matter (<script type="math/tex">1^{anything} = 1</script>).</p>
+
+<p>On the upside, addition just becomes string concatenation.</p>
+
+<p>We need to go one higher to realize the benefits of the positional number system.</p>
+
+<h4 id="the-two-symbol-system">The two-symbol system</h4>
+
+<p>Let’s use this one.</p>
+
+<h3 id="truefalse-in-circuitry">True/False in Circuitry</h3>
+
+<p>Unfortunately for Boole, electricity wasn’t fully understood yet - certainly not to the point where people were looking for creative ways to harness it. The “algebra of logic” portion of his work didn’t realize its full potential during his lifetime. It wasn’t till the 1930’s that another fellow by the name of <a href="https://en.wikipedia.org/wiki/Claude_Shannon">Claude Shannon</a> realized that these True/False concepts could be mapped to voltages and currents, and controlled be switches. As part of his Masters thesis, he showed circuitry that could perform the calculations described by Boole and his contemporaries.</p>
+
+<p>The idea was extremely valuable. Perhaps not revolutionary - folks had been fiddling with analog devices that could do math, and later attempted trinary (base 3) and other exotic computer formats. However, the simplicity of designing circuits which only interpret “Voltage” or “No Voltage” has made such two-state designs far superior to any other option. Especially after the invention of the consumer-ready transistor later in the 1940s and 50s, true/false was here to stay.</p>
+
+<p>For this reason, almost all modern computers do math and logic using a base-2 system.</p>
+
+<p>Until we get to quantum computing. At which point, I’ll have to write another blog post.</p>
+
+<h2 id="math-and-conversions-in-binary">Math and Conversions in Binary</h2>
+
+<p>The formula for a number’s value is:</p>
+
+<script type="math/tex; mode=display">value = \sum_{i=0}^{i=N-1}D_i * B^{i}</script>
+
+<p>Where</p>
+
+<ul>
+  <li><script type="math/tex">N</script> is the number of digits in the symbol sequence</li>
+  <li><script type="math/tex">D_i</script> is the <script type="math/tex">i</script>‘th digit in the symbol sequence, with 0 being nearest the decimal point.</li>
+  <li><script type="math/tex">B</script> is the “base” of the number system.</li>
+</ul>
+
+<p>Since we’re using base-2, the formula becomes</p>
+
+<script type="math/tex; mode=display">value = \sum_{i=0}^{i=N}D_i * 2^{i}</script>
+
+<p>Let’s take a quick example of a binary number:</p>
+
+<script type="math/tex; mode=display">10010.</script>
+
+<p>Note the trailing <script type="math/tex">.</script> for the anchor point - usually it’s left off, so we’ll start to do that here.</p>
+
+<p>What quantity is <script type="math/tex">10010</script> ? let’s plug and chug with our formula from above. The summation would unroll to:</p>
+
+<script type="math/tex; mode=display">value = 1*2^{4} + 0*2^{3} + 0*2^{2} + 1*2^{1} + 0*2^{0}</script>
+
+<p>Which simplifies down to:</p>
+
+<script type="math/tex; mode=display">value = 2^{4} + 2^{1} = 16+2 = 18</script>
+
+<p>There we go! A first conversion from binary to base 10!</p>
+
+<p>If you want to go back the other way, all you have to do is decompose a base-10 number into powers of two. I’ll just write out the algorithm here, and then leave it as an exercise to the reader to attempt:</p>
+
+<ol>
+  <li>Start with your number being the number to convert.</li>
+  <li>Find the largest position <script type="math/tex">i</script> such that <script type="math/tex">2^i</script> is <em>equal to or less than</em> your number</li>
+  <li>Place a 1 in this position.</li>
+  <li>Subtract 1 from <script type="math/tex">i</script>., subtract <script type="math/tex">2^i</script> from your number.</li>
+  <li>If <script type="math/tex">i</script> is not yet zero, go to step 1.</li>
+</ol>
+
+<p>What I find super slick about this is that since binary is also a positional number system, just like the base-10 one you’re used to, all the arithmetic tricks and algorithms you learned in first through third grade still apply! Adding by lining up the digits, carrying spill-over to the next place, subtraction with borrowing, even long division - they all still work!</p>
+
+<h3 id="a-note-on-notation">A note on Notation</h3>
+
+<p>There are a lot of notations used “out in the wild” to indicate what base number system you are using. If you see a number, it’s sometimes safe to assume base 10, but sometimes not.</p>
+
+<p><em>There are 10 types of people in the world. Ones who understand binary, and ones who don’t</em></p>
+
+<p>Let’s not let this T-shirt prophecy come true.</p>
+
+<p>Little subscripts on a number indicate it’s base. So <script type="math/tex">10_{10}</script> is Ten. <script type="math/tex">10_{2}</script> is Two. <script type="math/tex">100_{10}</script> is one hundred, while <script type="math/tex">100_{2}</script> is four. Obviously, something like <script type="math/tex">4523_{2}</script> is nonsense and meaningless, and you should tell the author right away so they can correct their error.</p>
+
+<h2 id="representing-ideas-with-bytes">Representing Ideas with Bytes</h2>
+
+<p>We’ve shown how 1’s and 0’s can be assembled together to represent positive integers so far. This is a very very common usage within computing, and in general is the one processors are built around. However, there are a number of other options for interpreting a string of 1’s and 0’s.</p>
+
+<h3 id="truefalse-1">True/False</h3>
+
+<p>We’ve already mentioned this, but the most straightforward mapping of 1’s and 0’s to some concept is simply true and false.</p>
+
+<p>Usually,</p>
+
+<ul>
+  <li>1 -&gt; True -&gt; “ON”</li>
+  <li>0 -&gt; False -&gt; “OFF”</li>
+</ul>
+
+<p>We’ll show later the reason why this interpretation is particularly powerful for making decisions and calculation.</p>
+
+<p>Just like a single base-10 number is often called a “digit”, a single boolean 1 or 0 is called  <em>bit</em></p>
+
+<h3 id="positive-integers-continued">Positive Integers (continued)</h3>
+
+<h4 id="vocabulary">Vocabulary</h4>
+
+<p>Also as we just showed above, positive integers can be calculated by treating 1’s and 0’s as a base-2 number system. This covers a big chunk of the things we want to represent.</p>
+
+<p>It’s also convenient to group sets of 4, 8, 16, 32, or 64 bits into integers to keep track of them easier - even if you are not necessarily trying to represent a number. It’s all 1’s and 0’s at the end of the day, so whatever representation makes life easiest, use that one!</p>
+
+<p>In general, 8 bits is referred to as a <em>byte</em>. Because computer scientists are often cute, they call 4 bits a <em>nibble</em>.</p>
+
+<p>Most modern computers work will do computation on more than one byte at a time. A <em>word</em> is a set of one or more bytes, which the computer works on at the same time.</p>
+
+<p>Within a word, bits must be ordered. The bit closest to the “anchor point” in the “ones” position, is called the <em>Least Significant Bit</em> or <em>LSB</em>. The bit at the opposite end, furthest from the decimal point, is called the <em>Most Significant Bit</em> or <em>MSB</em> or <em>leading bit</em>. Note that similar acronyms are also applied to the first and last byte of a word, so you may need some context to figure out what the author refers to. Capital letter B often means byte, lower-case letter b often means bit.</p>
+
+<h4 id="historical-perspective-on-byte-width">Historical Perspective on Byte Width</h4>
+
+<p>Tiny embedded processors are often still 8-bit (one-byte word). For many years, 32-bit computers (4-byte words) were the standard. Within the last few years 64-bit (8-byte) words has become standard. Later blog posts will delve further into exactly what this implies, but for now just think of it as “how many bits can the computer work on at once”.</p>
+
+<p>Special-purpose computers can have more exotic word-sizes. The older <a href="https://en.wikipedia.org/wiki/Nintendo_64">Nintendo 64 gaming console</a> was one of the first instances of using 64-bit processors in consumer devices, and that was back in the early 1990’s. Even before that, 24 bit processors were common in some audio applications, as 24 bits was considered “good enough” to represent audio that humans could hear. Graphics processing frequently goes big - some bleeding edge graphics cards have parts that work on 512 bits at a time!.</p>
+
+<p>If you use every bit in a word to represent a positive integer, there is a fixed range of numbers you can represent. All bits off of course corresponds to a value of <script type="math/tex">0</script>. For an <script type="math/tex">N</script> bit word, all bits on represents a value of <script type="math/tex">2^{N} - 1</script> (proof left as exercise to the reader). For example, a 32-bit integer can represent values between 0 and 4294967295. It’s a really big range, but it’s not without its limits!</p>
+
+<p>When you treat a set of bits as only positive integers, you are said to be doing <em>unsigned math</em>.</p>
+
+<h3 id="negative-integers">Negative Integers</h3>
+
+<p>Representing negative numbers in a nice way is a bit of a challenge. The truth is you could pick any scheme you want to map sequences of 1’s and 0’s to numbers, but you want to do it in a way that makes calculation easy. If you had to hard code every <script type="math/tex">X-Y</script> combination into your software, you’d get tired and frustrated pretty fast. A healthy dose of laziness is the mark of a good engineer.</p>
+
+<p>The good news is that the most commonly used system is pretty darn good. It’s called <a href="https://en.wikipedia.org/wiki/Two%27s_complement"><em>Two’s Compliment</em></a>. We won’t delve too much into it, but suffice to say it has the following properties:</p>
+
+<ul>
+  <li>The Most Significant Bit represents the sign of the number. 0 means positive, 1 means negative.</li>
+  <li>When the leading bit is 0, bits are interpreted the same way as unsigned integers.</li>
+  <li>When the leading bit is 1, for an N bit number, the value is equal to <script type="math/tex">(-1) * 2^{N} + X</script> where <script type="math/tex">X</script> is the unsigned value of the first <script type="math/tex">N-1</script> bits.</li>
+</ul>
+
+<p>Therefor, a 2’s complement number will have range <script type="math/tex">(-1) * 2^{N-1}</script> to <script type="math/tex">2^{N-1} - 1</script>. Proof is again left as an exercise to the reader.</p>
+
+<p>For example, when <script type="math/tex">N=8</script>,</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Base 2</th>
+      <th>Base 10</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>01111111</td>
+      <td>127</td>
+    </tr>
+    <tr>
+      <td>01111110</td>
+      <td>126</td>
+    </tr>
+    <tr>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+    <tr>
+      <td>00000010</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <td>00000001</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>00000000</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>11111111</td>
+      <td>-1</td>
+    </tr>
+    <tr>
+      <td>11111110</td>
+      <td>-2</td>
+    </tr>
+    <tr>
+      <td>…</td>
+      <td>…</td>
+    </tr>
+    <tr>
+      <td>10000001</td>
+      <td>-127</td>
+    </tr>
+    <tr>
+      <td>10000000</td>
+      <td>-128</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>The key advantage of doing it this way is spelled out in more detail on wikipedia. In short - addition and subtraction <em>just work</em>, without anything special. If you add up -1 and 1, and allow for the carried bit to “fall off” the end of the 8 bit calculation, you get 0.</p>
+
+<p>As you maybe already see, the 2’s compliment pattern is technically circular when the bit width is fixed (as it is in all processors). When you are working with 8 bit integers, and add 1 to 127, in bits, you get <script type="math/tex">01111111_2 + 00000001_2 = 10000000_2 = -128_{10}</script>. This is often called <em>overflow</em> or <em>wraparound</em>. It’s unintuitive at first, but usually indicates a problem with your software - adding two positive numbers should not create a negative one. Some processors can detect this and raise an alarm.</p>
+
+<p>When writing software and designing hardware, use caution when depending on rollover behavior. It’s not always obvious without sufficient documentation, and if anyone accidentally changes variable bit width in the future, they’ll be in for a world of hurt figuring out why the code doesn’t work anymore.</p>
+
+<p>When you treat a set of bits as 2’s compliment integers, you are said to be doing <em>signed math</em>.</p>
+
+<h3 id="fractional-numbers">Fractional Numbers</h3>
+
+<p>Most engineering values in the real world aren’t nice round integers. We need a way to represent some value like <script type="math/tex">1.4623</script>. In broad strokes, there are two ways this is accomplished.</p>
+
+<h4 id="fixed-point">Fixed Point</h4>
+
+<p><a href="https://en.wikipedia.org/wiki/Fixed-point_arithmetic">Fixed Point</a> is largely the historical way that fractional numbers were represented. There’s some more formal math that goes into it, but the best way I know to think of it is that each “bit” represents some fraction of an engineering unit. For example, you could say that a particular variable is scaled at “0.25 RPM per Bit”, implying that the real-world engineering value is always equal to 1/4th the value of the integer you read in software.</p>
+
+<p>This makes it very easy to store a fraction - it’s no different than a normal integer. The only thing to be careful of is when you store, read, or perform math with the stored value - you have to be careful to build in additional conversion factors to make your formulas work properly.</p>
+
+<p>This small bit of extra math can easily be optimized at build time though, so the method is still quite low overhead at runtime. For this reason, it’s usually the best choice when execution speed is of the utmost importance on resource-limited embedded processors.</p>
+
+<p>As you can probably see, there is an obvious limit to the size of the “step” you can represent. In our above example, we can exactly represent a reading of 7.75 RPM, but not 7.8 RPM. The more granularity you desire, the less min/max range you get.</p>
+
+<h4 id="floating-point">Floating Point</h4>
+
+<p><a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">Floating Point</a> is the “newer” way to represent fractional numbers. Floating Point is covered by <a href="https://en.wikipedia.org/wiki/Institute_of_Electrical_and_Electronics_Engineers">IEEE</a> <a href="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">standards documents</a>, which show how to split a number into an exponential representation, then pack it into bits. Again, the mapping is chosen carefully to make the math easy to do while a program is executing.</p>
+
+<p>Floating point is still pretty complex to do by hand. Most modern processors include hardware units to support doing the math. These are not quite as fast as doing integer math, but are far faster than doing it “long hand” within your software implementation.</p>
+
+<p>Due to the proliferation of floating point support in hardware, it’s becoming more and more the standard for how to do engineering math in embedded systems. For FRC robotics purposes, I would recommend using it. Only in cases of extreme optimization does it make sense to go back to using fixed point (or other) representations. However, keep in mind that it does bear a small performance penalty - try not to use floating point math for doing things like counting, where the fractional portion will never be needed.</p>
+
+<h3 id="letters">Letters</h3>
+
+<p>Beyond numbers, there are a lot of other things you might want to represent. Letters are a common one - any time you print something to console, you have to represent a string of characters that forms English words that some human can understand quickly.</p>
+
+<p>To do this, there was again a <a href="https://en.wikipedia.org/wiki/ASCII">standard, called ASCII,</a> put together to map sequences of bits to letters in the alphabet. They started with just the common English/Latin characters, plus a handful of helper symbols and codes designed around how typewriters printed out letters (see <a href="https://en.wikipedia.org/wiki/Carriage_return">Carriage Return</a> and <a href="https://en.wikipedia.org/wiki/Newline">Line Feed</a>). Later standards like <a href="https://en.wikipedia.org/wiki/UTF-8">UTF-8</a> and similar expanded upon this, and <a href="https://xkcd.com/1726/">continue to expand</a> to get more and more languages and systems of writing represented and displayed in computer systems.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We’ve done an overview of some of the methods used to map 1’s and 0’s to various ideas. Going forward, just keep in mind that there exists a number of ways to transform a sequence of 1’s and 0’s into numbers, fractions, letters, and beyond.</p>
+
+<p><em>There are 10 types of people in the world. Ones who understand binary, ones who don’t, and ones who don’t expect base-3</em></p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>We know some basics about the nature of 1’s and 0’s. Next, we’ll learn how to combine them together. Check out <a href="/blog_posts/2019/06/14/boolean_logic.html">Boolean Logic</a> for more details!</p>
+
+  </div><a class="u-url" href="/blog_posts/2019/06/10/binary.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

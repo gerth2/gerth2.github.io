@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Math Primer, Part 2 | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Math Primer, Part 2" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This post is the continuation of our introduction to some of the math that will be useful for the purpose of this blog." />
+<meta property="og:description" content="This post is the continuation of our introduction to some of the math that will be useful for the purpose of this blog." />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/06/01/math_primer2.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/06/01/math_primer2.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-01T09:31:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/06/01/math_primer2.html"},"url":"http://localhost:4000/blog_posts/2019/06/01/math_primer2.html","description":"This post is the continuation of our introduction to some of the math that will be useful for the purpose of this blog.","headline":"Math Primer, Part 2","@type":"BlogPosting","dateModified":"2019-06-01T09:31:00-05:00","datePublished":"2019-06-01T09:31:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Math Primer, Part 2</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-06-01T09:31:00-05:00" itemprop="datePublished">Jun 1, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p>This post is the continuation of our introduction to some of the math that will be useful for the purpose of this blog.</p>
+
+<h2 id="functions-as-representations-of-physical-behavior">Functions as Representations of Physical Behavior</h2>
+
+<p>When working on robots, we largely deal with a specific class of function - one which takes <em>time</em>, <em>system conditions</em>, and <em>starting conditions</em> as input, and transforms them into some physical quantity about the robot we care about. It could be pneumatic pressure in a tank, robot speed, arm location, anything really. All of the questions you could ask about “how fast” or “how much” or “what position” could be answered by functions of this class.</p>
+
+<h3 id="model-creation--analysis">Model Creation &amp; Analysis</h3>
+
+<p>For a given situation, you can often create a <em>model</em> of the behavior you expect to see by writing down a specific equation. Using basic laws like <script type="math/tex">F = ma</script>, you can create a formula that predicts the behavior of a part of your robot. This model will never be perfect - there will always be “real-world” influences on the robot that cause slightly different behavior. However, as long as the model is sufficiently correct, it can be used to learn about the behavior of the robot prior to actually building it. This ability to analyze and learn without spending money is, for FRC purposes, the key benefit to creating these models.</p>
+
+<p>Whether you’re looking to analyze a particular model you created, or look at real-world measurements of behavior, you usually used some form of 2d graph to visualize what is going on. On a cartesian plane, the X axis becomes “Time”, and the Y axis becomes “physical quantity you care about”.</p>
+
+<p>For example, here is a model of pressure in a pneumatic tank, visualized how it changes over time:</p>
+
+<div id="plot2"></div>
+<script>
+functionPlot({
+  target: '#plot2',
+  title: '',
+  grid: true,
+  yAxis: {
+      label: "Pressure (psi)",
+      domain: [0, 150]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-3, 20]
+  },
+  data: [{
+    fn: 'max(0,120-120*exp(-x*0.3))',
+    title: 'Tank Pressure'
+  }]
+})
+</script>
+
+<p>Aside from time, additional inputs to this model include the volume of the tanks, the on/off state of the compressor, the physical capabilities and limitations of the compressor, and the fact the outflow rate is assumed to be zero - ie no cylinder movement, and you’re a <em>really</em> good plumber. Also assumed is that the initial pressure is zero.</p>
+
+<h3 id="deductions">Deductions</h3>
+
+<p>Let’s say you were given this plot. You can answer a lot of questions about your robot right away, just by looking at it. For example,</p>
+
+<ol>
+  <li>The general behavior of pressure it to start at whatever initial value you give, ramp up quickly at first, then level out at the maximum pressure value (120psi for FRC robots)</li>
+  <li>The compressor must not be as good at pumping air when pressure gets higher (since the pressure doesn’t keep going up as fast when pressure gets higher)</li>
+  <li>From zero pressure, it takes around 14 seconds to pressurize to ~120psi. This is useful info to have in the pit!</li>
+</ol>
+
+<h2 id="calculus">Calculus</h2>
+
+<p>The concepts covered in Calculus were simultaneously formalized by Sir Isaac Newton and Gottfried Wilhelm Leibniz in the late 1600s. Calculus is often taken in early college, or as a high-level math elective in high school. Despite having a reputation for difficulty, the fundamental concepts we’ll need from it are pretty trivial, and geometrically focused: <em>slope of a curve</em> and <em>area under a curve</em>. These lead very naturally to working with physical phenomenon are related to <em>rate of change</em> and <em>accumulation of previous values</em>.</p>
+
+<h3 id="slope-of-a-curve--rate-of-change">Slope of a Curve &amp; Rate of Change</h3>
+
+<p>What is more commonly known as <em>Differential Calculus</em> is really the study of the behavior of tangent lines to curves. In our previous example of pressure in a tank, we referred to the fact that pressure builds quickly at first, and tapers out as the pressure approaches the maximum value.</p>
+
+<p>That rate of pressure change is related to a physical quantity - it’s the number of air molecules per second the compressor is placing into the air tanks.</p>
+
+<p>Mathematically, we know any rate is some quantity that changes over time. Let us define a few things:</p>
+
+<p>Let the function <script type="math/tex">P(t)</script> denote the pressure at a time given by <script type="math/tex">t</script>.</p>
+
+<p>We will pick some particular time, and call it <script type="math/tex">t_0</script>. We will also pick some very small duration of time called <script type="math/tex">\Delta t</script>.</p>
+
+<p>Differential Calculus is how you go about finding the “instantaneous” rate of change at some particular time <script type="math/tex">t_0</script>. Doing so is fairly simple. Simply look at the change of pressure over a small duration starting at time <script type="math/tex">t_0</script>, and ending at time <script type="math/tex">t_0 + \Delta t</script>.</p>
+
+<h4 id="calculating-rate-of-change">Calculating Rate of Change</h4>
+
+<p>Let us introduce the notation <script type="math/tex">\dot{P}(t)</script> to denote the <em>rate of change</em> of our function <script type="math/tex">P</script> at the given time <script type="math/tex">t</script>. Let us further introduce the vocabulary word <em>derivative</em> for the “dotted” version of any function. In this case, <script type="math/tex">\dot{P}(t)</script> is the derivative of <script type="math/tex">P(t)</script>.</p>
+
+<p>From studies of algebra, we should know that a line’s slope is defined as “rise over run” or “Change in Y over Change in X”. This concept of slope is analogous to rate of change. We use this fact to define the derivative:</p>
+
+<script type="math/tex; mode=display">\dot{P}(t) = \frac{P(t+\Delta t) - P(t)}{(t+\Delta t) - (t)}</script>
+
+<p>Simplifying a bit,</p>
+
+<script type="math/tex; mode=display">\dot{P}(t) = \frac{P(t+\Delta t) - P(t)}{\Delta t}</script>
+
+<h4 id="calculation-at-a-specific-point">Calculation at a Specific Point</h4>
+
+<p>Graphically, we can pick a particular time <script type="math/tex">t_0</script> on our plot of pressure over time, and start to think about what value our defined <script type="math/tex">\dot{P}(t)</script> would have there. We’ll start by picking <script type="math/tex">t_0 = 2.00</script>.</p>
+
+<div id="plot3"></div>
+<script>
+functionPlot({
+  target: '#plot3',
+  title: '',
+  grid: false,
+  yAxis: {
+      label: "Pressure (psi)",
+      domain: [0, 150]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-3, 20]
+  },
+  data: [
+    {
+      fn: 'max(0,120-120*exp(-x*0.3))',
+      title: 'Tank Pressure'
+    }
+  ],
+  annotations: [{
+    x: 2,
+    text: "t_0 = 2.00s"
+  }]
+})
+</script>
+
+<p>For now, let’s choose <script type="math/tex">\Delta t</script> to be exactly <script type="math/tex">0.02</script> sec. Later posts on control theory will explain why this is a good choice.</p>
+
+<p>Also, I’ll give you two important pieces of information:</p>
+
+<script type="math/tex; mode=display">P(2.00) = 54.1426</script>
+
+<script type="math/tex; mode=display">P(2.02) =  54.5365</script>
+
+<p>On a real robot, these are numbers you’d get from a pressure sensor. If you were working with an equation that described the model of your pneumatics system, you could just plug in the times <script type="math/tex">2.00</script> and <script type="math/tex">2.02</script> to get the numbers. That’s actually what I did.</p>
+
+<p>From here, it’s just plug and chug:</p>
+
+<script type="math/tex; mode=display">\dot{P}(t_0) = \frac{P(t_0+\Delta t) - P(t_0)}{\Delta t} = \frac{54.5365-54.1426}{0.02} = 19.7</script>
+
+<p>So, we have calculated that around the 2.0 second mark, the compressor is increasing the pressure in the system at a rate of 19.7 psi/second.</p>
+
+<h4 id="the-general-solution">The General Solution</h4>
+
+<p>We have just calculated the derivative at a specific time <script type="math/tex">t_0</script>. But, how should we calculate <script type="math/tex">\dot{P}(t)</script>, over all time?</p>
+
+<p>If you have an exact formula, there are various symbolic manipulation techniques that you can apply to get an exact formula for a functions derivative, given the function as input. This is rarely the technique used inside software.</p>
+
+<p>Rather, if you have a series of measurements, you simply let a computer calculate <script type="math/tex">\dot{P}(t)</script> one value at a time, for every measurement you have taken.</p>
+
+<h4 id="visual-interpretation">Visual Interpretation</h4>
+
+<p>In either case, here’s the picture of <script type="math/tex">\dot{P}(t)</script> (red) and <script type="math/tex">P(t)</script> (blue) look like:</p>
+
+<div id="plot4"></div>
+<script>
+functionPlot({
+  target: '#plot4',
+  title: '',
+  grid: false,
+  yAxis: {
+      label: "Value",
+      domain: [0, 150]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [0, 20]
+  },
+  data: [
+    {
+      fn: '120-120*exp(-x*0.3)',
+      title: 'Tank Pressure (psi)',
+      derivative: {
+        fn: '36*exp(-x*0.3)',
+        updateOnMouseMove: true
+      }
+    },
+    {
+      fn: '36*exp(-x*0.3)',
+      title: 'Derivative of Tank Pressure (psi/sec)' 
+    }
+  ],
+  annotations: [{
+    x: 2,
+    text: "t_0 = 2.00s"
+  }]
+})
+</script>
+
+<h4 id="tangent-lines">Tangent Lines</h4>
+
+<p>Note in the mouseover that we are also drawing a line tangent to the curve for <script type="math/tex">P(t)</script>. “Tangent” means intersecting at exactly one point, not two or zero or any other number of points. This is the geometric interpretation of the derivative, which should be apparent from the definitions we’ve gone through so far:</p>
+
+<p><em>A line drawn through the point <script type="math/tex">(t_0, P(t_0))</script> with slope <script type="math/tex">\dot{P}(t_0)</script> will be <strong>tangent</strong> to the curve P(t).</em></p>
+
+<p>Using the <a href="https://www.mathsisfun.com/algebra/line-equation-point-slope.html">point-slope line equation</a>, along with the definitions we have presented thus far, this statement can be proven to be true, but only when you make <script type="math/tex">\Delta t</script> very very very small. The act of taking <script type="math/tex">\Delta t</script> <em>almost</em> to zero but not quite there is the calculus concept of “<em>taking the limit</em> as <script type="math/tex">\Delta t</script> goes to zero.” Though the concept of a <em>limit</em> is an essential concept for understanding calculus deeply, we will skip it for now, as it can often be ignored when writing software.</p>
+
+<h3 id="area-under-a-curve">Area Under a Curve</h3>
+
+<p><em>Integral Calculus</em> is the other half of calculus that most high school students encounter. It primarily concerns itself with determining the area of the space bounded by the X axis, Y axis, the curve of some function, and some end-time.</p>
+
+<p>It has many applications in Robotics, but is a bit more limited. Two aspects are worth considering:</p>
+
+<ol>
+  <li>Integral Calculus is a method for “undoing” the action of taking a derivative.</li>
+  <li>Integral Calculus is a method for calculating how much of something has “accumulated” over time.</li>
+</ol>
+
+<p>These are really the same thing, as we’ll see going forward.</p>
+
+<h4 id="another-motivating-example">Another Motivating Example</h4>
+
+<p>To provide some basis for integral calculus, let us assume we have a robot with a standard tank-drive drivetrain. We’ve written some code to allow us to measure its forward or reverse motion. We’ll assume we’re only driving forward and backward for now.</p>
+
+<p>If you haven’t heard yet, when it comes to motion, calculus is frequently involved. There are three quantities that often come into play. We’ll discuss them further later on, but as a brief introduction, we will define the following:</p>
+
+<ol>
+  <li><script type="math/tex">x(t)</script> is the robot’s <em>position</em> in feet at time <script type="math/tex">t</script>.</li>
+  <li><script type="math/tex">v(t) = \dot{x}(t)</script> is the robot’s <em>velocity</em> in feet per second at time <script type="math/tex">t</script>.
+    <ol>
+      <li><em>velocity</em> is the rate of change of <em>position</em>.</li>
+    </ol>
+  </li>
+  <li><script type="math/tex">a(t) = \dot{v}(t) = \ddot{x}(t)</script> is the robots <em>acceleration</em> in feet per second, per second. Again, at time <script type="math/tex">t</script>.
+    <ol>
+      <li><em>acceleration</em> is the rate of change of <em>velocity</em></li>
+    </ol>
+  </li>
+</ol>
+
+<p>As an example, say the driver operates the robot such that the measured velocity follows this curve:</p>
+
+<div id="plot5"></div>
+<script>
+functionPlot({
+  target: '#plot5',
+  title: '',
+  grid: true,
+  yAxis: {
+      label: "Velocity (ft/sec)",
+      domain: [0, 10]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-1, 25]
+  },
+  data: [
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+    }
+  ]
+})
+</script>
+
+<p>Think about what this physically means:</p>
+
+<ol>
+  <li>The robot starts sitting still at <script type="math/tex">t = 0.0</script></li>
+  <li>The robot begins moving forward within the first second, slowly at first</li>
+  <li>The robot goes faster and faster</li>
+  <li>Around <script type="math/tex">t = 10.0</script> the robot is moving the fastest it did during the run.</li>
+  <li>The fastest the driver got the robot to was ~8ft/sec</li>
+  <li>After the <script type="math/tex">t = 10.0</script> mark, the robot slows down</li>
+  <li>By <script type="math/tex">t = 20.0</script>, the robot has again stopped.</li>
+</ol>
+
+<p>Since the robot was only moving forward, where do you expect it to be at <script type="math/tex">t = 24.0</script> ?</p>
+
+<h4 id="calculating-area-with-stripes">Calculating Area with Stripes</h4>
+
+<p>For very simple curves this calculation of area under a curve is very simple. However, winding, jagged curves require a bit more thought.</p>
+
+<p>Calculating the area of a single rectangle is easy:</p>
+
+<script type="math/tex; mode=display">A = wh</script>
+
+<p>Where</p>
+
+<ol>
+  <li><script type="math/tex">w</script> is the height of the rectangle.</li>
+  <li><script type="math/tex">h</script> is the width of the rectangle.</li>
+  <li><script type="math/tex">A</script> is the area.</li>
+</ol>
+
+<p>If you were to make a shape out of <script type="math/tex">N</script> many rectangles which do not overlap, the total area of that shape is just the sum of the areas:</p>
+
+<script type="math/tex; mode=display">A = \sum_{i=0}^{N} w_i h_i</script>
+
+<p>We can use this concept to calculate the area under more complex curves.</p>
+
+<p>Let’s say we want to calculate the distance the robot has traveled, and all we have is the set of velocity measurements referenced in the above examples. Recall from the introduction:</p>
+
+<ol>
+  <li>Velocity is the <em>derivative</em> of position</li>
+  <li>Integrals undo derivative</li>
+  <li>An integral is calculated by finding area under a curve</li>
+</ol>
+
+<p>So let’s get the area under the given curve! That will tell us the distance the robot traveled from its starting point.</p>
+
+<p>We’ll start by picking a very specific set of rectangles to approximate the region</p>
+
+<div id="plot6"></div>
+<script>
+functionPlot({
+  target: '#plot6',
+  title: '',
+  grid: true,
+  disableZoom:true,
+  yAxis: {
+      label: "Velocity (ft/sec)",
+      domain: [0, 10]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-1, 25]
+  },
+  data: [
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+      range: [0,20],
+      nSamples:11,
+      closed: true
+    },
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+    }
+  ]
+})
+</script>
+
+<p>This particular choice of subdividing the area under the curve is a bit arbitrary, but was chosen to work well for example. We are creating 10 rectangles, each 2 seconds long. The height of each rectangle is defined to be <script type="math/tex">v({t_{end})}</script> where <script type="math/tex">t_{end}</script> is defined to be the end-time for each rectangle.</p>
+
+<p>There are subtle other ways we could choose to subdivide the area, but we won’t get into that now.</p>
+
+<p>If we were to add up all these rectangular areas, we’d get a number that’s a decent guess at the error under the curve. However, it wouldn’t be perfect. As you can clearly see, there is shaded blue outside the red curve area. How do we make it better?</p>
+
+<p>Similar to derivatives, we will “take the limit”. In this case, we’ll try to drive the width of the rectangles to be smaller and smaller.</p>
+
+<p>Trying 1 second width:</p>
+
+<div id="plot7"></div>
+<script>
+functionPlot({
+  target: '#plot7',
+  title: '',
+  grid: true,
+  disableZoom:true,
+  yAxis: {
+      label: "Velocity (ft/sec)",
+      domain: [0, 10]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-1, 25]
+  },
+  data: [
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+      range: [0,20],
+      nSamples:21,
+      closed: true
+    },
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+    }
+  ]
+})
+</script>
+
+<p>And 0.25 second width:</p>
+
+<div id="plot8"></div>
+<script>
+functionPlot({
+  target: '#plot8',
+  title: '',
+  grid: true,
+  disableZoom:true,
+  yAxis: {
+      label: "Velocity (ft/sec)",
+      domain: [0, 10]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-1, 25]
+  },
+  data: [
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+      range: [0,20],
+      nSamples:81,
+      closed: true
+    },
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+    }
+  ]
+})
+</script>
+
+<p>Suddenly, this is looking much better. Let’s try that magic 0.02 second interval:</p>
+
+<div id="plot9"></div>
+<script>
+functionPlot({
+  target: '#plot9',
+  title: '',
+  grid: true,
+  disableZoom:true,
+  yAxis: {
+      label: "Velocity (ft/sec)",
+      domain: [0, 10]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-1, 25]
+  },
+  data: [
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+      range: [0,20],
+      nSamples:4001,
+      closed: true
+    },
+    {
+      fn: '8*exp(-1*pow((x-10),2)/15)',
+      title: 'Robot Velocity v(t)',
+    }
+  ]
+})
+</script>
+
+<p>Pretty darn good. We’ve got something that is clearly a workable approximation, with a trivial-to-calculate sum of rectangle areas as the methodology.</p>
+
+<p>Plugging in our named functions, we arrive at the following relationship:</p>
+
+<script type="math/tex; mode=display">x(t_0) = \sum_{i=1}^{\frac{t_0}{\Delta t}}\dot{x}(i\Delta t) *\Delta t</script>
+
+<p>Note the summation just goes over all rectangles: <script type="math/tex">\frac{t_0}{\Delta t}</script> is just a precise way to count the number of rectangles with the quantities we have. Note also that the quantity <script type="math/tex">i\Delta t</script> just means “time at the end of each rectangle”.</p>
+
+<p>As we take the limit as <script type="math/tex">\Delta t</script> goes to zero, standard calculus textbooks will introduce the more-familiar integral notation:</p>
+
+<script type="math/tex; mode=display">x(t_0) = \int_{0}^{t_0}\dot{x}(t)dt</script>
+
+<p>This is about as far as we’ll need to take the concept of an integral for now. Just remember it involves adding up lots of little bits of previous values to acquire the current value.</p>
+
+<h2 id="further-learning">Further Learning</h2>
+
+<p>Obviously, we are just barely scratching the surface of these topics. For the early learner looking to go further, I have a few recommendations.</p>
+
+<p>If you tend to learn well from lectures, animations, an emphasis on making things intuitive, or anthropomorphic greek letters, I <em>highly</em> recommend the <a href="https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw">youtube channel of Grant Sanderson, “3blue1brown”</a>. In Particular, his <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDMsr9K-rj53DwVRMYO3t5Yr">series on Calculus</a> is a good start, bringing excellent visualization to some of the less-intuitive calculation aspects of the symbolic manipulation side of the topic.</p>
+
+<p>If you learn better from reading books and visualizing at your own pace, or like 100-year-old textbooks, <a href="http://www.gutenberg.org/files/33283/33283-pdf.pdf">Calculus Made Easy</a> is a surprisingly hilarious option.</p>
+
+<p><img src="/assets/calc_made_easy.png" alt="Calculus made easy &amp; subtitle" /></p>
+
+<p>If a title like that doesn’t make you at least want to take a peek, I’m not sure what will.</p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>It’s time to start some real Science! Go check out <a href="/blog_posts/2019/06/05/electronics_basics.html">basics of electronics.</a>.</p>
+
+  </div><a class="u-url" href="/blog_posts/2019/06/01/math_primer2.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

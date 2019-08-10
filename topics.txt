@@ -1,0 +1,266 @@
+Topics to write about
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Learning Sequence
+
+--How to learn to program
+---The bottom-up versus top-down approaches to learning about software writing
+
+--Abstractions
+---definition
+---Practical examples all around us
+---Why they're useful
+---Why they're essential to software writing
+---The whole training sequence will be one abstraction after another. We will start at the lowest possible level, then build upward
+
+--On Learning new concepts
+---Conceptual understanding versus rigirous mathematical understanding
+----Each has its place.
+
+--Electronics basics
+---Current
+---Voltage
+---Resistance
+---Capacitance/Inductance
+---Semiconductors
+
+--Alternate representations of numbers
+---Positional number systems
+----Roman numerals as the anti-example
+---"Base"
+---Binary - why it works.
+---Basic binary arithmetic
+---Hexadecimal
+---The others
+----Octal, trinary
+---Two's complement
+---Floating point
+
+--Boolean logic
+---Functions (just like from math!)
+---Truth Tables
+---AND/OR/NOT
+
+--Digital Electronics Basics - Part 1 - How do we implement logic with electronics?
+---From Analog to Digital
+---Logic Gates
+---Memory & Flip-flops
+---Bits & Bytes
+---The "clock"
+
+--Digital Electronics Basics - Part 2 - Simple but Practicle examples of things to build with digital electronics
+---Ripple Carry adder
+---Simple RAM chip
+---PWM output generator (counter + compare)
+
+--State machines
+---As a mathematical concept
+---How they happen in software
+---How they happen in digital hardware
+---Practical examples:
+----vending machine?
+----Laundry Machine?
+
+--Von Neumann architecture - what most computers look like on the insides
+---Memory
+---Registers
+---ALU
+---Peripherials
+---Stack
+---State machine
+
+--Assembly Language basics
+---the "instruction"
+---Human readable vs. machine readable
+----"Assembly" is a trivial transormation from human readable statements to bits
+---Fetch/decode/execute cycle
+---some basic x86 instructions
+
+
+--Software Language Basics
+---"All good programming languages..."
+----Turing completeness
+----Briding the gap from human to machine _well_
+---Conditional execution
+---Looping execution
+---Input and Output
+---Math operations
+---Data Types
+
+--The compiler: From software to assembly
+---Example of how pseudo code might be transformed to assembly.
+---"high level" versus "low level" programming languages
+
+--The operating system - Part 1 - What is an OS? Why is an OS?
+---Resource Virtualization & Isolation
+---Task Scheduling
+---Synchronization
+---Security
+
+--The operating system - Part 2 - Real-Time operating system requirements
+---Scheduling & deadlines
+---Good vs. Bad synchronization
+---Security in the context of Safety & Testing
+
+--Command line basics
+---Concept of the shell
+---Windows vs. Linux/Unix
+---Example programs
+---Common FRC things to do 
+----SSH 
+----File manipulation
+----Network debuggin
+----top = "What's running?"
+---Google is your friend
+
+--Data Communication
+---How do digital electronics interact with eachother?
+---How does data get from one place to another in one piece?
+---The OSI model
+---FRC-relevant examples
+----Hobby PWM
+----CAN
+----Ethernet
+
+--Common non-FRC embedded development tools
+---Why use alternate systems?
+---What to look for in a system
+----Project requirements - performance, storage, 
+---Examples
+----Arduino
+----MSP430
+----ESP3688
+----Raspberry PI
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The Zen of good software
+
+--Debugging
+---What is a single step debugger
+---How to use it effectively
+
+--Viewing Data
+---Making it accessable and actionable
+---Basic techniques in FRC
+----Print statements
+----SmartDashboard/Shuffleboard
+----Custom solution
+
+--Adding a custom website/server to your robot code
+---Part 1: Introduction & System Architecture
+---Part 2: Jetty and basic configuration
+---Part 3: Gathering data at runtime
+---Part 4: Transfering data through websockets
+---Part 5: Displaying Data in useful ways
+
+--Unit testing
+---Jmock, regression
+---Why, what's good, what's bad
+
+--Defining units & conventions
+---Facilitating coordinate transmorations
+---Enabling rapid debugging (Knowing how it should work before seeing it)
+
+--Data Logging
+---Why, how
+
+--Code comments, and how to format them
+
+--Types of software develompent
+---Embedded
+---Web front-end/back-end
+
+--Development Processes
+---What's good, what's bad
+---What's a "process", how does it apply to software
+
+--Control Theory
+---Analyzing a robot as a system
+---Feedback control, basics
+---PID tuning techniques
+--Software Tracability
+---How do you know what's running on the robot? how can you reproduce it?
+
+--Documentation
+---Good & bad
+---Auto-generation examples
+
+--Safety and Software
+---Best practices in design
+----Deadmans switch
+----Low-energy states
+----Uncommanded motion
+---Best practices in tuning
+----Processes, killswitch, communication
+----Start conservative
+---Mandatory PPE
+
+--Programming Language Selection
+---Choose the tool that fits the solution, not the other way around
+----The danger of "whiz-bang"
+---Kotlin
+---Rust as a replacement for Java?
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Leadership & Structure
+
+--Concensus building
+
+--Agile Communication strategies
+---Standups, Kanban, Gantt charts, burndown
+
+--Keeping your bus factor up
+
+--Analyzing bias
+---Your own
+---Others
+---Bias as the foundation of diversity
+---Using bias to your team's advantage
+
+--Relationships
+---Every relationship is only ever what you make of it
+----Dating and Marriage
+----Employer/employee
+----Student/Teacher
+---Productive relatinoships have people on the same page in all aspects
+---Trust
+---Owning yourself before you can give yourself 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Other
+
+--"Pure science" versus engineering
+---ie Academia vs. Industry
+---My observations, how to get into each field.
+---Knowledge expansion vs. technological progress vs. profit
+
+--Types of college degrees, and what they get you
+---General college advice
+
+--Jokes and humor every programmer should have access to
+
+--Useful websites every programmer should have bookmarked
+
+--The existance of Truth
+---Seprability of true/false
+---Where the world disagrees with this
+---What you have to do to be a good scientist or engineer
+---
+
+-- Common professional engineering phrases, and what they imply
+--- Say the ssame thing, but pick the word that tells the desired narative.
+--- our software has a (bug/defect/limitation/feature)
+--- This is a (problem/oppurtuinty)
+--- The testing is (insufficent/incomplete)
+
+--Coffee
+---History
+---What types are out there
+---How to make it well
+
+--Making great bbq
+---Smoke as a flavoring
+---Making cheap meat taste great
+---Easy methods (pellet grill), hard methods (maintain the fire yourself)

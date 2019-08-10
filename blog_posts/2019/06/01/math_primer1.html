@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Math Primer, Part 1 | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Math Primer, Part 1" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="source: xkcd.com" />
+<meta property="og:description" content="source: xkcd.com" />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/06/01/math_primer1.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/06/01/math_primer1.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-01T09:30:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/06/01/math_primer1.html"},"url":"http://localhost:4000/blog_posts/2019/06/01/math_primer1.html","description":"source: xkcd.com","headline":"Math Primer, Part 1","@type":"BlogPosting","dateModified":"2019-06-01T09:30:00-05:00","datePublished":"2019-06-01T09:30:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Math Primer, Part 1</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-06-01T09:30:00-05:00" itemprop="datePublished">Jun 1, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="https://imgs.xkcd.com/comics/purity.png" alt="XKCD explains where math falls on the spectrum" />
+<sup> source: xkcd.com </sup></p>
+
+<p>Despite many jokes, engineering and math do indeed have a very strong linkage. Some say that mathematics is the language through which science is expressed. Since engineering is relies strongly on science to execute new technology, any engineer should have the basics of mathematics as the foundational tool in their toolkit.</p>
+
+<p>The good news is that, for the purpose of understanding most of the basics of software, only the basics of a few different fields of mathematics are required. Precise computation techniques can be useful, but first and foremost a conceptual understanding is required.</p>
+
+<p>The goal of this post is to go over some of the basic math concepts we’ll be using as we go forward. Deep knowledge will not be needed - we’ll just hit the basics of the concepts we’ll be using later on.</p>
+
+<h2 id="the-basics">The Basics</h2>
+
+<h1 id="algebra--functions">Algebra &amp; Functions</h1>
+
+<p><a href="https://en.wikipedia.org/wiki/Algebra">Algebra</a> is the branch of math that most students start with, early in 9th or 10th grade. Fundamentally, it studies the abstraction of specific numbers into <em>variables</em> (denoted with letters, such as <script type="math/tex">x</script> or <script type="math/tex">y</script>). Algebra defines laws and requirements for how variables can interact with each other. Rather than being locked into only a specific “use-case” of a set of measurements, Algebra allows you to talk about many different scenarios all at once.</p>
+
+<p>This allows us to define <em>equations</em> to show relationships between different physical quantities, and manipulate those equations to learn about new relationships that may not have been obvious at first. Usually, we will want to calculate a certain value, given a set of input values. Algebra is useful in manipulating known equations into a form that has the output on one side of the equation, and all the inputs on the other.</p>
+
+<p>This is the basis of a “function”. Though the concept is not unique to algebra, algebra helps us know how to work with functions. Usually, a function is denoted like this:</p>
+
+<script type="math/tex; mode=display">y = f(x)</script>
+
+<p>Where</p>
+<ul>
+  <li><script type="math/tex">f</script> is the function</li>
+  <li><script type="math/tex">x</script> is the input</li>
+  <li><script type="math/tex">y</script> is the output</li>
+</ul>
+
+<p>When speaking out loud, you would say that “WYE is equal to EFF of ECKS”.</p>
+
+<p>The notation <script type="math/tex">f(x)</script> is an abstraction - it hides the details of what is happening to <script type="math/tex">x</script> behind some function which we have named <script type="math/tex">f</script>.</p>
+
+<p><script type="math/tex">f</script> might mean “calculate the square of the input”. In this particular case, our equation becomes:</p>
+
+<script type="math/tex; mode=display">y = f(x) = x^2</script>
+
+<p>Here, <script type="math/tex">f(x)</script> is just the name for the transformation which is <em>mathematically</em> described by the act of squaring <script type="math/tex">x</script>, which in turn is denoted as <script type="math/tex">x^2</script>, the result of all of which is described by the variable <script type="math/tex">y</script>.</p>
+
+<p>Take a more concrete example with multiple inputs. For those of you who are not familiar, Sir Isaac Newton developed a set of laws of physical motion. They describe how bodies of mass move through space. Newton’s second law is often introduced in its 1-dimensional formula form:</p>
+
+<script type="math/tex; mode=display">F = ma</script>
+
+<p>Where</p>
+<ul>
+  <li><script type="math/tex">m</script> is the mass of the object in <em>kilograms</em> (<script type="math/tex">kg</script>)</li>
+  <li><script type="math/tex">a</script> is the acceleration of the object in <em>meters per second squared</em> (<script type="math/tex">m/s^2</script>)</li>
+  <li><script type="math/tex">F</script> is the force required to cause that mass to accelerate at that rate. Force is measured in units of <em>Newtons</em> (<script type="math/tex">N</script>)</li>
+</ul>
+
+<p>This law defines a function with two inputs - mass and acceleration. It describes what sort of force is needed to cause a given mass to move with a given acceleration. This could be useful to determine how much force your drivetrain is exerting on your robot when you measure how fast it moves across the field.</p>
+
+<p>In particular, the function described by Newton’s second law is simply that multiplying acceleration and mass together produces the required force (when proper units are used). This is admittedly a trivial calculation, but not an unimportant relationship. We use it here for its simplicity, and also because it will come into play later.</p>
+
+<p>Note that since only <script type="math/tex">m</script> and <script type="math/tex">a</script> are on the left hand side of the equation, you could hide the left side behind the function notation. In this case:</p>
+
+<script type="math/tex; mode=display">F = f(m,a)</script>
+
+<p>The laws of algebra allow us to re-arrange the numbers. Let’s assume we divide both sides of the equation by the variable <script type="math/tex">m</script>. This results in the following:</p>
+
+<script type="math/tex; mode=display">F = ma</script>
+
+<script type="math/tex; mode=display">\frac{F}{m} = \frac{ma}{m}</script>
+
+<script type="math/tex; mode=display">\frac{F}{m} = \frac{m}{m}*a</script>
+
+<script type="math/tex; mode=display">\frac{F}{m} = 1*a</script>
+
+<script type="math/tex; mode=display">\frac{F}{m} = a</script>
+
+<script type="math/tex; mode=display">a = \frac{F}{m}</script>
+
+<p>We now have a new function which describes what acceleration should be expected when a force is applied to a mass. This might be useful if you have a pneumatic cylinder pushing with some force on a heavy gamepiece, and want to know how quickly your gamepiece will be moving!.</p>
+
+<p>Admittedly, this is not a particularly deep conclusion. It’s simply an illustration of how algebra concepts <a href="https://en.wikipedia.org/wiki/Dovetail_joint">dovetail</a> nicely with concepts of abstractions and functions.</p>
+
+<p>Note this is a very computer-science oriented approach to using equations and variables. Thinking about algebra, variables, and functions in this context is a purposeful choice at this point. If you go on to study advanced mathematics you will learn new ways to interpret this notation. However, for us and for now, the most useful interpretation is computer-science related.</p>
+
+<h1 id="trig">Trig</h1>
+
+<p>Trigonometry draws from the concepts of algebra, introducing some very specific functions that are useful when doing calculations with both circles and right triangles. Turns out, circles and right triangles come up a lot.</p>
+
+<p>The three functions we’ll particularly point out are called “Sine”, “Cosine”, and “Tangent”. Respectively, they are denoted:</p>
+
+<script type="math/tex; mode=display">\sin(\theta)</script>
+
+<script type="math/tex; mode=display">\cos(\theta)</script>
+
+<script type="math/tex; mode=display">\tan(\theta)</script>
+
+<p>Where</p>
+<ul>
+  <li><script type="math/tex">\theta</script> is an angle in <a href="https://en.wikipedia.org/wiki/Radian"><em>radians</em></a></li>
+</ul>
+
+<p>Note <script type="math/tex">\theta</script> is the greek letter “Theta” (pronounced THEY-ta). It’s just a variable, like <script type="math/tex">x</script>, and in this case, an input to our new function friends sine, cosine, and tangent. Turns out in math there are certain traditions. Since the input to sine, cosine, and tangent is an angle, and angles are generally denoted with a handful of greek letters, we’ll use <script type="math/tex">\theta</script> as the variable for now.</p>
+
+<p>The sine, cosine, and tangent are functions that provide the relationship between an angle in a right triangle, and the ratio of the lengths of the sides of the triangle. The sides are given 3 names:</p>
+
+<ol>
+  <li>The longest side is always the <em>hypotenuse</em>. It is always opposite from the right angle in the right triangle.</li>
+  <li>The side touching the angle in question is the <em>adjacent</em> side.</li>
+  <li>The remaining side is called <em>opposite</em> side.</li>
+</ol>
+
+<p><img src="/assets/rightTriangle.png" alt="circle to sine" /></p>
+
+<p>The length of the sides will be denoted with the variables <script type="math/tex">h</script>, <script type="math/tex">a</script>, and <script type="math/tex">o</script>. Under these conventions, our functions allow us to relate the ratios of lengths of sides of a triangle to the given angle with the following relationships:</p>
+
+<script type="math/tex; mode=display">\sin(\theta) = \frac{o}{h}</script>
+
+<script type="math/tex; mode=display">\cos(\theta) = \frac{a}{h}</script>
+
+<script type="math/tex; mode=display">\tan(\theta) = \frac{o}{a}</script>
+
+<p>Teachers commonly assist students in memorizing these relationships by introducing them to our Native American friend “Soh-cah-toa” (pronounced so-ka-to-ah). My teachers taught me the phrase “Some Old Hippie Caught Another Hippie Tripping On Acid”. To each their own.</p>
+
+<p>Although it may not be obvious from first inspection, Sine/Cosine are very useful in determining X/Y coordinates of a point on a circle, when given a certain number of degrees of traversal around that circle.</p>
+
+<p><img src="/assets/triangleToCircle.png" alt="circle to sine" /></p>
+
+<p>Note, as above, a right triangle can be drawn with one point on the origin <script type="math/tex">(0,0)</script>, the other on our point of interest <script type="math/tex">(x,y)</script>. Given the angle referenced from the positive X axis, sine and cosine can be used to deduce the X/Y coordinates:</p>
+
+<script type="math/tex; mode=display">x = r \cos(\theta)</script>
+
+<script type="math/tex; mode=display">y = r \sin(\theta)</script>
+
+<p>Think about how this might be useful. Say you have a simple arm that rotates to raise and lower the end affecter. The length of the arm is <script type="math/tex">r</script>. The axis of rotation (shaft that supports the arm) goes through the origin. Say you want to calculate how high the arm will raise up when driven through 45 degrees of rotation.</p>
+
+<p>This is the same problem as above! Yay, we already know how to solve it!</p>
+
+<p>Think about how high up and down the arm will be as it rotates around in a full circle. First it goes up, then back down, then up again…. If you were to plot it out, it would look something like this:</p>
+
+<p><img src="https://media.giphy.com/media/F5rQlfTXqCJ8c/giphy.gif" alt="circle to sine" />
+<sup> source: giphy.com </sup></p>
+
+<p>Note the periodic nature of this function - the value of the output goes up and down as the angle goes around the circle, with a repeating pattern. The patter repeats once every time the angle crosses the positive X axis.</p>
+
+<div id="plot1"></div>
+<script>
+functionPlot({
+  target: '#plot1',
+  title: 'sin(x)',
+  grid: true,
+  yAxis: {
+      label: "Function Output",
+      domain: [-1.5, 1.5]
+  },
+  xAxis: {
+      label: "Function Input (angle in Degrees)",
+      domain: [0, 720]
+  },
+  data: [{
+    fn: 'sin(x*PI/180)'
+  }]
+})
+</script>
+
+<p>This repeating, wave-like nature is <a href="https://en.wikipedia.org/wiki/Fourier_transform">actually <em>quite</em> deeply meaningful</a>. But we’ll leave that for another post.</p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>Keep cranking on the math, there is more to learn! Go check out <a href="/blog_posts/2019/06/01/math_primer2.html">Math Primer, part 2</a>.</p>
+
+  </div><a class="u-url" href="/blog_posts/2019/06/01/math_primer1.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>
