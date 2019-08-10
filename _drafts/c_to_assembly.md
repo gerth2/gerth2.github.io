@@ -5,6 +5,7 @@ date:   2019-08-09 09:30:40 -0500
 categories: blog_posts
 ---
 
+_"Programs must be written for people to read, and only incidentally for machines to execute." - H. Abelson and G. Sussman (in ["The Structure and Interpretation of Computer Programs"](https://web.mit.edu/alexmv/6.037/sicp.pdf))_
 
 ## Introduction
 
