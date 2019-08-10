@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Processor Architecture | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Processor Architecture" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth" />
+<meta property="og:description" content="People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth" />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/07/22/vonneumann.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/07/22/vonneumann.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-07-22T09:31:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/07/22/vonneumann.html"},"url":"http://localhost:4000/blog_posts/2019/07/22/vonneumann.html","description":"People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth","headline":"Processor Architecture","@type":"BlogPosting","dateModified":"2019-07-22T09:31:00-05:00","datePublished":"2019-07-22T09:31:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Processor Architecture</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-07-22T09:31:00-05:00" itemprop="datePublished">Jul 22, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><em>People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a></em></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Oooh boy, I am getting excited! More excited than a <a href="https://en.wikipedia.org/wiki/File_Explorer#Search_companion">search companion who can do tricks!</a> Things are starting to get very real now!</p>
+
+<p>We’ve introduced a ton of topics in boolean logic - how to manipulate bits, store them, and use them to represent numbers. It’s time to start digging into how all this comes together to build a real device which can do computation!</p>
+
+<h2 id="the-von-neumann-architecture">The Von Neumann Architecture</h2>
+
+<h3 id="overall">Overall</h3>
+
+<p>Through his work, Von Neumann described a generic <em>architecture</em> for how to construct and lay-out electronic components to fulfill Turing’s requirements. This description has been coined the “Von Neumann Architecture”. It should be noted that since almost all modern processors follow the architecture to some extent, the phrase “Von Neumann Architecture” actually refers more to the set of ideas, rather than one particular design.</p>
+
+<p>Von Neumann divided his world up into four very-high-level components:</p>
+
+<ul>
+  <li><strong>Memory</strong> - A device capable of saving and recalling pieces of information.
+    <ul>
+      <li>Might be broken into multiple parts
+        <ul>
+          <li>Read-only vs. Read/Write</li>
+        </ul>
+      </li>
+      <li>Roughly analogous to the “Tape” in the Turing Machine</li>
+    </ul>
+  </li>
+  <li><strong>Processor Unit</strong> - A device capable of performing a calculation on pieces of information.
+    <ul>
+      <li>Possible calculations:
+        <ul>
+          <li>Math (add subtract multiply divide etc.)</li>
+          <li>Logic (and or not)</li>
+          <li>Comparison (greater than, less than, equal to)</li>
+        </ul>
+      </li>
+      <li>Roughly equivalent to the “Head” in the Turing Machine</li>
+    </ul>
+  </li>
+  <li><strong>Control Unit</strong> - A device to provide coordination between all other units
+    <ul>
+      <li>Produces the control signals that configure all other units</li>
+      <li>Produces the <em>correct</em> signals to implement the Universal Turing Machine</li>
+    </ul>
+  </li>
+  <li><strong>IO</strong> - A set of devices capable of transforming information between representations useful to computers, and representations useful to humans.
+    <ul>
+      <li>Screens, mice, keyboards, etc.</li>
+      <li>Implementation is device specific, but the key is that on one end is an interface that works well with the computer (bits and bytes), and on the other end is a physical thing a human can manipulate or sense.</li>
+      <li>In our Turing Machine association, this is just the way a human can manipulate or interact with the device or the tape.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="processing-unit">Processing Unit</h3>
+
+<p>Storing data is cool, but to do useful processing we have to, well, process the data. Back when we learned about boolean logic, we saw all sorts of ways to mash bits together. The goal now is to build a circuit which can do all the useful things for us.</p>
+
+<p>The collection of circuitry which does the calculations is generally referred to as the <em>Arithmetic Logic Unit</em>, or ALU. It gets its own fancy-pants symbol that looks like a sideways pair of pants:</p>
+
+<p><img src="/assets/ALU.png" alt="ALU" /></p>
+
+<p>Implementations on various processors will vary slightly, but conceptually they all have to have at least 3 inputs:</p>
+
+<ul>
+  <li>A and B - the operands. A and B are the binary numbers we’re going to mash together</li>
+  <li>CTRL - the signals that say <em>how</em> to mash A and B together.</li>
+</ul>
+
+<p>And of course, the set of these three inputs produces the result of the requested calculation.</p>
+
+<p>Keeping with our 32-bit theme, we assume that the ALU is set up to do calculations on 32-bit inputs, and produces a 32-bit result. Other processors may assume otherwise, but this is just our example for now.</p>
+
+<p>CTRL can be any number of bits - it just depends on how many different ways you want to be able to combine the inputs A and B together. For example, if you have 12 combination strategies implemented, you’ll need <script type="math/tex">\lceil log_{2}(12) \rceil = 4</script> bits.</p>
+
+<p>The simplest practical architecture I’ve seen has a very small ALU with only three operations supported:</p>
+
+<ul>
+  <li>Bitwise AND</li>
+  <li>Bitwise NOT</li>
+  <li>Addition</li>
+</ul>
+
+<p>It’s pretty bare-bones. FOr example, to do <script type="math/tex">A - B</script>, , you have to first negate the B operand (which requires a bitwise NOT, then adding 1), then adding A and (-B). Subtraction is a 3 step process, which kinda stinks.</p>
+
+<p>Larger ALU’s will support more operations, including:</p>
+
+<ul>
+  <li>Bitwise OR/NOR/NAND, Subtraction
+    <ul>
+      <li>Keeps common operations down to a single step</li>
+    </ul>
+  </li>
+  <li>Multiplication, Integer Division, Remainder after division
+    <ul>
+      <li>Expanded math abilities on integers</li>
+      <li>Note that floating point (decimal) numbers are frequently handled by a different unit</li>
+    </ul>
+  </li>
+  <li>Bitwise XOR
+    <ul>
+      <li>Super useful for cryptographic and computer security operations</li>
+    </ul>
+  </li>
+  <li>Shift bits left and right by one
+    <ul>
+      <li>super fast way to multiply or divide by 2</li>
+    </ul>
+  </li>
+  <li>Increment, decrement
+    <ul>
+      <li>Super-optimized versions of common math operations</li>
+    </ul>
+  </li>
+</ul>
+
+<p>What set of operations are supported really just depends on processor design. Increasing the number of supported operations increases speed to a point, but always at increased cost and increased potential for things to break.</p>
+
+<p>Conceptually, putting together an ALU is remarkably straightforward. Just package all the circuits which do the operations you want individually, feed them each off of the provided inputs, and use a MUX driven by the CTRL input to select which calculation makes it to the output.</p>
+
+<p><img src="/assets/aluInternals.png" alt="inside ALU" /></p>
+
+<p>In addition to these combination operations, the ALU will often have additional outputs to indicate if the operation resulted in overflow or underflow (ie, result was outside the min or max range of the numbers that can be represented by the 32 bits of the ALU).</p>
+
+<h3 id="control-unit">Control Unit</h3>
+
+<p>The control unit is the heart of this whole system, coordinating the action of registers and the ALU together to do actual calculation. The design of the unit is special tailored to implement the stored-program concept. Again, the exact design of the control unit can vary, but all have to have at least a few basic components and abilities.</p>
+
+<p><img src="/assets/controlUnit.png" alt="Control Unit Top Level" /></p>
+
+<h4 id="registers">Registers</h4>
+
+<p>Fundamentally, every control unit will have a set of registers to store information. These will be faster than the bulk RAM chips you’re familiar with, and serve special uses within the processor. But, fundamentally, they just store a specific set of bits representing some specific, meaningful quantity.</p>
+
+<p>The <em>Memory Address Register</em> (MAR) and <em>Memory Data Register</em> (MDR) are two of the key registers. They are connected directly to the RAM circuitry, and allow the control unit to command unit to read or write from a specific memory address. Along with a couple control signals, the basic process is that the memory address register is first loaded with the desired address. Then, control signals are sent to memory to read or write that address. For read, the data is pulled off the RAM chip and placed into the MDR. Write does similarly, but propagates whatever value was in the MDR (from the control unit’s other parts) and puts it into the address in RAM specified by the MAR. Using this, the control unit can <em>read and write RAM data</em>.</p>
+
+<p>Two more registers form the core of the stored program concept. The processor fundamentally assumes that the instructions it is supposed to execute exist in memory at a certain set of memory instructions. The <em>Program Counter</em> (PC) register stores the memory address of the current instruction being worked on. The <em>Instruction Register</em> (IR) holds the actual instruction while its being worked on.</p>
+
+<p>There are also a set of registers called <em>General Purpose Registers</em> (GPR*). These don’t have a very specific purpose, they are left open for the programmer to use as they see fit while writing programs.</p>
+
+<p>Depending on how the IO devices are designed, there may be some dedicated registers attached to physical, user-interaction input or output devices.</p>
+
+<h4 id="system-bus">System Bus</h4>
+
+<p>As introduced with the tri-state buffer, we know that we can connect multiple digital outputs “together” forming a Bus topology. Von Neumann introduced the idea of a System Bus, where registers (and other components) read and wrote data to a central set of wires. This made interconnects easier, and made checking system functionality more straightforward. Modern processors may use more than one system bus to allow for faster data transfer, but for our purposes we will only consider one.</p>
+
+<h4 id="the-execution-cycle">The Execution Cycle</h4>
+
+<p>Most control units follow a repeating three-step process while running:</p>
+
+<ol>
+  <li>Fetch</li>
+  <li>Decode</li>
+  <li>Execute.</li>
+</ol>
+
+<p><img src="/assets/controlUnitFetch.png" alt="Control Unit Fetch" /></p>
+
+<p>During the <em>Fetch</em> phase, the control unit fetches the next instruction. The Program Counter register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.</p>
+
+<p><img src="/assets/controlUnitDecode.png" alt="Control Unit Decode" /></p>
+
+<p>During the <em>Decode</em> phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.</p>
+
+<p><img src="/assets/controlUnitMath.png" alt="Control Unit Execute - Math" /></p>
+
+<p>During the <em>Execute</em> phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence). The drawing above shows an example where the ALU is used to do math.</p>
+
+<h4 id="decoding--executing-an-instruction">Decoding &amp; Executing an Instruction</h4>
+
+<p>Generally, instructions will command manipulations to registers. Some examples of these:</p>
+
+<ul>
+  <li>Math - Add two general purpose registers, and store the result in a 3rd general purpose register</li>
+  <li>Memory - Load a general purpose register from RAM, or store its contents to RAM</li>
+  <li>“Branching” - Manually adjust the Program Counter if the previous instruction’s result was positive</li>
+  <li>IO - reading/writing from some input or output device.</li>
+</ul>
+
+<p>Instructions will always have two main components: the <em>opcode</em> and the <em>arguments</em>.</p>
+
+<p>Remember that each instruction is just a set of bits. Usually, the first couple bits is the <em>opcode</em>, which identify what the instruction is requesting.</p>
+
+<p>The exact mapping of <em>which</em> bits equate to <em>which</em> operations is dependant on the details of the processor construction. <a href="http://ref.x86asm.net/coder32.html">Here’s an example from x86</a>, which is by far one of the more complex versions.</p>
+
+<p>Simpler machines might have a mapping more like:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>opcode</th>
+      <th> </th>
+      <th>Abrev.</th>
+      <th>Meaning</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0001</td>
+      <td> </td>
+      <td>Add</td>
+      <td>Add two numbers</td>
+    </tr>
+    <tr>
+      <td>0010</td>
+      <td> </td>
+      <td>Sub</td>
+      <td>Subtract two numbers</td>
+    </tr>
+    <tr>
+      <td>0011</td>
+      <td> </td>
+      <td>OR</td>
+      <td>Bitwise OR of two numbers</td>
+    </tr>
+    <tr>
+      <td>0100</td>
+      <td> </td>
+      <td>AND</td>
+      <td>Bitwise AND of two numbers</td>
+    </tr>
+    <tr>
+      <td>0101</td>
+      <td> </td>
+      <td>NOT</td>
+      <td>Bitwise NOT of a numbers</td>
+    </tr>
+    <tr>
+      <td>0111</td>
+      <td> </td>
+      <td>STR</td>
+      <td>Store a value to memory</td>
+    </tr>
+    <tr>
+      <td>1000</td>
+      <td> </td>
+      <td>LD</td>
+      <td>Load a value from memory</td>
+    </tr>
+    <tr>
+      <td>1001</td>
+      <td> </td>
+      <td>BRN</td>
+      <td>Branch to a different instruction if the previous result was negative</td>
+    </tr>
+    <tr>
+      <td>1010</td>
+      <td> </td>
+      <td>BRZ</td>
+      <td>Branch to a different instruction if the previous result was zero</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>And so on. Note that when you see assembly instructions, you’ll almost always see it referred to by its abbreviation, not by the 1’s and 0’s of the opcode. It’s hard to stare at the 1’s a 0’s, your eyes start to go crossed after a while.</p>
+
+<p>The remaining bits are dedicated to the arguments to the opcode. They indicate the specifics of how the processor is to carry out the instruction.</p>
+
+<p>For instructions like Add, Subtract, AND, OR, etc. - the simplest set of arguments indicates a trio of general purpose registers to work with. Usually the arguments will be specified to say “source 1 register”, “source 2 register”, and “result register”. NOT would only need two registers, but is conceptually the same. When the Instruction Register has AND for an opcode, the control unit will use the arguments to configure the signal routing in the processor to pipe the two source register outputs into the ALU, and then the ALU’s output into the result register. One tick of the system clock goes by, the result register is updated, and the instruction is completed!</p>
+
+<p>Opcodes that work with memory addresses (BRN/BRZ,LD/STR) will often make one of the arguments the memory address to work with. More complex “addressing modes” allow the address to be specified relative to the program counter, or some general purpose register.</p>
+
+<h4 id="choosing-the-next-instruction">Choosing the Next Instruction</h4>
+
+<p>Generally, after all decoding and execution has been completed, the Program Counter has to be updated with the next address. Frequently, this just means “add one” to the current program counter. However, the instruction might have some more complex instruction. “Branch” instructions generally alter the add-one behavior conditionally, based on the previous result being positive, zero, or negative (PZN register stores this information every instruction cycle).</p>
+
+<p>The manner in which they alter it can vary far and wide. Usually it involves some offset from the current PC - rather than going to the next instruction, you skip forward by some larger number of addresses, or maybe backward by five addresses… something like that. The size of the jump may be encoded into the instruction word itself, or pulled from a general purpose register, or lots of other options really. At the end of the day, it’s just up to how the instruction is interpreted again to select which calculation is used to update the PC prior to the next execution cycle.</p>
+
+<p><img src="/assets/nextInstructionDecode.png" alt="next instruction" /></p>
+
+<p>The net result is the same though - the PC gets loaded with the address of the next instruction to run, and the cycle may start over!</p>
+
+<p><img src="/assets/controlUnitNextInstruction.png" alt="next instruction calc" /></p>
+
+<h3 id="io-techniques">IO techniques</h3>
+
+<p>In general, any input and output device will have to interact with the processor via some set of bits. For example, a mouse might report its X/Y coordinates as two integers. A screen might require representing every pixel color with one byte of data. Regardless of how it’s actually done, just keep in mind that at the end of the day, it’s just a set of bits that are read from, or go to, the device.</p>
+
+<p>How the processor gets access to these bits happens through two primary methods:</p>
+
+<h4 id="port-mapped">Port Mapped</h4>
+
+<p>Some processors will have dedicated registers inside the control unit for reading and writing data associated with a user IO device. This also means there will have to be dedicated assembly instructions for manipulating that data as part of a program. THis is a very fast method, but can be a bit inflexible, as the processor has to be designed with assumptions about what its IO devices will be. This is bad if you plug or unplug a device from your computer.</p>
+
+<h4 id="memory-mapped">Memory Mapped</h4>
+
+<p>Sometimes, a more flexible technique is to use the same interface the RAM circuitry uses. The IO device “poses” as part of the RAM chip, responding to processor read and write requests just as a RAM chip would. But, rather than storing and recalling data as requested by a processor, the “other end” of each byte is hooked up to some IO device.</p>
+
+<p>This means there are no special assembly instructions required to do IO interaction. As a software writer, you just have to know things like “Memory addresses 0x0000154A and 0x0000154B are mouse X/Y” and “Memory addresses 0x00002000 through 0x00002FFF control the pixels on the screen”. Don’t use these special memory addresses like normal memory (ie, writing to the mouse addresses will probably not end well). But, it’s much more flexible than forcing a Port Mapped architecture.</p>
+
+<p>But, there are plenty of tradeoffs on both sides. You’ll probably see both as you adventure into this wonderful world of processors!</p>
+
+<h2 id="concrete-examples-of-architecture">Concrete Examples of Architecture</h2>
+
+<p>So far, we’ve stuck to generic descriptions of the common things you find inside a processor. Lots of descriptions have just been these hand-wavey “well the actual implementation depends on the processor type”. For the curious, we now present three concrete examples of computer architecure.</p>
+
+<h3 id="lc-3">LC-3</h3>
+
+<p>The “LC-3”, or “Little Computer 3”, is a “fake” architecture. You’ll not find an off-the-shelf chip that implements the “LC-3” architecture. But, it’s a dirt simple architecture - fixed opcode and word widths, simple operations, conveniently sized RAM… the list goes on.</p>
+
+<p><a href="http://lumetta.web.engr.illinois.edu/120-F16/slide-copies/100-the-lc-3-isa.pdf">There are a good number</a> <a href="https://www.cs.utexas.edu/users/fussell/courses/cs310h/lectures/Lecture_10-310h.pdf">of online resources</a> <a href="http://www.ncsa.illinois.edu/People/kindr/teaching/ece190_sp11/lectures/lecture_11.pdf">that explain the architecture</a> - some even down to the gate level. It’s simple enough that the blog author implemented the processor, gate level up, as part of a sophomore year elective class.<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<p>It’s a great place to start, but unfortunately doesn’t directly map to any real architecture. However, the concepts you learn while studying it definitely do apply!</p>
+
+<h3 id="x86">x86</h3>
+
+<p><a href="https://en.wikipedia.org/wiki/X86">x86 Processor Architecture</a> comes from Intel, and dates back to the late 1970’s. Over the years they have added lots and lots of new instructions to it, expanded the data width size, and a whole slew of other alterations, all while keeping the base thing backward compatible. This makes for a <em>very</em> versatile and <em>very</em> powerful processor. The biggest downsides are all rooted in the complexity of the devices - infinite backward compatibility makes for a lot of “legacy” portions of the architecture that aren’t relevant for modern programming. Additionally, you need a <em>lot</em> of gates to make an x86 processor, which generally means they are power hungry (though this has been mitigated in recent years).</p>
+
+<p>Still, the sheer flexibility and power of the architecture means almost every desktop PC (running Windows, Mac, or Linux) has some form of an x86 processor in it, and tons of manufacturers produce a flavor of the architecture.</p>
+
+<p>This was the second assembly language the author learned. Along with three other students, he wrote an operating system from scratch using C and x86 assembly. <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+
+<h3 id="arm">ARM</h3>
+
+<p><a href="https://en.wikipedia.org/wiki/ARM_architecture">Advanced RISC Machine</a> architecture is the new “big kid” on the block. Specifically designed to address some of the x86 shortcomings, it quickly made a name for itself for its simplicity of implementation (therefor requiring fewer transistors, and drawing less power). It came along at just the right time to be adopted by the smartphone revolution, and nearly all smartphones on the market today run some form of this processor. It’s strongly suited toward running mobile, power-sensitive applications. The roboRIO uses an ARM Cortex-A9 processor manufactured by Xilinx.</p>
+
+<h3 id="the-place-of-the-special-purpose-computing-device">The Place of the Special-Purpose Computing Device</h3>
+
+<p>This whole blog post, we’ve been discussing how to made a digital device which can perform general purpose computation. This isn’t to say that general purpose computers are the be-all, end-all of computation. Indeed, the ability to be programmed brings overhead with it. In the fetch/decode/execute cycle, fetch and decode are both only present because the processor has to figure out <em>what</em> it is supposed to be doing at runtime, in addition to actually doing it.</p>
+
+<p>For this reason, when bleeding edge speed or absolutely minimal power consumption is required, it <em>sometimes</em> still makes sense to give up the ability to be programmed to gain that speed or efficiency. Digital Devices can still be custom designed to fit a very specific purpose. These are often called <em>Application Specific Integrated Circuits</em> (ASIC’s).</p>
+
+<p>Common applications include video/audio processing, computer networking devices, and scientific research equipment.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Phew, that was a lot, and way more hand-wavey than I had initially intended. None the less, we still have built up an understanding of what the main components of a processor are, how those things come to be from smaller digital circuits, and how they can execute individual stored instructions.</p>
+
+<p>Next up, we’ll take a survey of common programming language constructs, and later dig into how those constructs might be implemented in assembly code. Keep reading at <a href="/blog_posts/2019/07/28/programming_language_intro.html">Programming Languages Introduction!</a>.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>Lots of students <a href="https://www.google.com/search?safe=active&amp;rlz=1C1CHBF_enUS840US840&amp;ei=JIUuXcOzF8m4tAbC4bv4Cw&amp;q=uiuc+ece+385+github&amp;oq=uiuc+ece+385+github&amp;gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8">post their solutions on github</a>, which seems like a violation of academic integrity, if you ask me. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>Again, lots of students <a href="https://www.google.com/search?q=uiuc+ece+391+github&amp;rlz=1C1CHBF_enUS840US840&amp;oq=uiuc+ece+391+github&amp;aqs=chrome..69i57.5400j0j7&amp;sourceid=chrome&amp;ie=UTF-8">decided to post their solutions online</a>. Tisk tisk. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><a class="u-url" href="/blog_posts/2019/07/22/vonneumann.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

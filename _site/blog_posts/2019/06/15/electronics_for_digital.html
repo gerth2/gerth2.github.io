@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Introduction to Electronics Pt 2 - the Digital Revolution | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Introduction to Electronics Pt 2 - the Digital Revolution" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-15T09:30:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital.html"},"url":"http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital.html","description":"Introduction","headline":"Introduction to Electronics Pt 2 - the Digital Revolution","@type":"BlogPosting","dateModified":"2019-06-15T09:30:00-05:00","datePublished":"2019-06-15T09:30:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Introduction to Electronics Pt 2 - the Digital Revolution</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-06-15T09:30:00-05:00" itemprop="datePublished">Jun 15, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>A mentor from <a href="https://www.thebluealliance.com/team/2102">Team 2102</a> had a great suggestion on how to re-work the electronics section to introduce things from a digital-first perspective. This post is a result of that rework, plus some extra facts I find useful.</p>
+
+<h2 id="a-brief-history">A Brief History</h2>
+
+<p>Doing digital electronics fundamentally requires devices that have <em>discrete</em> states - on and off. Resistors, Capacitors, Inductors, and the like are called <em>linear</em> electronic devices because, simply put, they do not have on/off states. They transition smoothly from one voltage/current operation point to another, usually in a very linear fashion (if you look at the right variables).</p>
+
+<p>Compare this with a light switch in your house - it has no in-between states. As you slide it from the up position to the down position, the state rapidly changes between on and off at some point (defined by the mechanical construction of the inner components). This is the sort of behavior a system that works with 1’s and 0’s exclusively will need to do calculation.</p>
+
+<p>The earliest of electronic calculating machines used <a href="https://en.wikipedia.org/wiki/Relay">electronic <em>relays</em>.</a> Just like the <a href="https://www.vexrobotics.com/217-0220.html">Vex Spike</a> double relay you may be familiar with - these are simple devices that switch an output on and off in response to an input voltage. The input voltage generates a small magnetic field in a coil of wire, which mechanically moves contacts from one position to another, completing or breaking a circuit. It’s just a switch that can be turned on and off with electricity.</p>
+
+<p>Relays have their faults - the coils can get <em>very</em> power hungry and dissipate a lot of energy as heat. Additionally, the presence of moving parts is always a source of failure, and relays can be unreliable. Additionally, the fact that a mechanism has to physically move from one location to another makes them relatively slow - to increase the speed you have to increase the forces on the mechanism, which leads to less reliability and even more power consumption.</p>
+
+<p>The next development was the invention of the <a href="https://en.wikipedia.org/wiki/Vacuum_tube"><em>vacuum tube</em></a>. These little devices used heated metal grids to get electrons to flow from one point to another, within a near-airless environment in a glass tube. By carefully changing voltages on plates and aligning them in just the right way, you could use a very small control signal to turn on and off a larger current flow (very similar to a relay). Though also useful as amplifiers, they were easy to use as switches that can be turned on and off with electricity.</p>
+
+<p>Again though, there were disadvantages. Although switching speeds were vastly increased over mechanical relays, the glass-vacuum setup made them physically fragile. Just like light-bulbs, the glass could crack, or the internals could short out and break. Additionally, the heater element required lots of energy, and took time to “warm up” before it could be used. Still, they were practical enough that <a href="https://en.wikipedia.org/wiki/List_of_vacuum_tube_computers">many early computers</a> were designed and built with them.</p>
+
+<p>The Transistor was the next development. <a href="https://en.wikipedia.org/wiki/History_of_the_transistor">Three gentlemen</a> were awarded the nobel prize for inventing the “solid state” device to control current. Gone were the days of mechanical monsters or fragile glass tubes - their device was a simple hunk of specially-treated material with some wires coming out. Equal parts engineering and hard scientific research, Bell Labs and various universities rapidly developed the first prototypes into commercially marketable products, which in turn made them all the more common-place (and therefor cheap).</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/Bardeen_Shockley_Brattain_1948.JPG" alt="three inventors" /></p>
+
+<p>Modern processors aren’t even built out of manufactured transistors anymore - the <em>circuit chip</em> is made up of transistors, and lots of other components, but all are created with a photomicrography process that literally eteches the components into a monolithic piece of silicon. But that’s a topic for a future post…</p>
+
+<p>For now, let’s delve into the materials used inside of the transistor to explain a bit about its functionality.</p>
+
+<h2 id="semiconductors">Semiconductors</h2>
+
+<p>Of particular interest to computer engineers is a very particular class of materials called <em>Semiconductors</em> These materials have the ability to change between conductor and insulator depending on how voltages are applied to them.</p>
+
+<h3 id="physical-construction">Physical Construction</h3>
+
+<p>Semiconductors are primarily made of specially processed silicon, formed into a very regular lattice-like structure on the atomic level, then carefully “doped” with impurities that introduce mobile charged particles. These can be actual electrons, or a void where an electron could fit in (called a “hole”), which is effectively a positive charge carrier.</p>
+
+<p>Remember that a conductor has free particles to carry charge, while insulators do not. Undoped silicon is effectively an insulator, because all electrons are tightly bound into the lattice. Doped silicon does have extra electrons (or holes) which can move around, as they are not tightly bound to the lattice, and are therefor effectively conductors.</p>
+
+<p>Layers of differently-doped material are fused in specific physical configurations to construct useful devices.</p>
+
+<p>When a doped region with extra electrons is fused to a doped region with holes, some electrons naturally migrate into the holes near the junction. This forms what is called the “depletion layer” near the junction. This depletion layer is effectively an insulator, since there are no free electrons to carry current through the region.</p>
+
+<h3 id="electrical-properties">Electrical Properties</h3>
+
+<p>Applying a voltage across this depletion region will exert an extra force on the electrons. Depending on the direction of the voltage, you may end up with more electrons  hopping into holes (expanding the depletion region), or knocking electrons out of holes (shrinking the depletion region). As the voltage gets big enough to drive the depletion region to near zero size, the resistance of the material goes down, and it transforms into a conductor overall.</p>
+
+<p><img src="/assets/diode.png" alt="depletion layer and diode" /></p>
+
+<p>This is the useful property of semiconductors - by applying a voltage to one part, the material property can be converted between insulator and conductor.</p>
+
+<h3 id="transistor-as-a-switch">Transistor as a Switch</h3>
+
+<p>It is commonly said that computers store information using 1’s and 0’s. These “bits” of information are represented inside the circuitry of the processor as high and low voltages. To store, combine, and manipulate the information, it is necessary to have circutry which can manipulate the high and low voltages dynamically.</p>
+
+<p>Transistors contain 3 or more regions of semiconductor material. The simplest type have what is referred to as a Base, Collector, and Emitter region.</p>
+
+<p><img src="/assets/bjt.png" alt="bjt diagram" /></p>
+
+<p>Usually the line diagram with the “arrow pointing in” is used to represent the transistor in schematics.</p>
+
+<p>By injecting a voltage (and tiny current) at the base, the motion of electrons causes an avalanche effect if the collector &amp; emitter have a voltage across them. The tiny input force causes a much larger output force, though it saturates at a certain point. This association allows one electrical signal to impact the flow of another signal, much as a human turning a light switch on and off impacts the flow of electricity to a lamp.</p>
+
+<p><img src="/assets/bjt_as_switch.png" alt="bjt as switch" /></p>
+
+<p>This switching action of the transistor is the basis upon which information can be manipulated. By carefully combining transistors, along with small numbers of other components, basic “logic gates” can be built up. These rudamentory gates have one or more inputs, and a single output, and computer boolean operations like AND, OR, and NOT with electronics.</p>
+
+<p>The exact construction of logic gates from transistors is beyond the scope of this blog because, indeed, learning about how it <em>actually</em> works requires a much deeper dive into the various types of transistors available. In my opinion, this is a topic better suited for folks interested in designing processor circuitry, rather than writing software. For the curious, <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html">HyperPhysics</a> has some examples of how gates can be constructed from the BJT transistors we have explained already.</p>
+
+<p>Therefor, we make the following two abstractions:</p>
+
+<ol>
+  <li><em>A transistor is a device which controls the flow of electricity</em></li>
+  <li><em>Transistors can be combined to build logic gates, which implement basic logic functions</em></li>
+</ol>
+
+<p>Just remember these two, and you’ll be fine going forward!</p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>We’ve scratched the surface of Analog, and shown how you can start to go Digital. If you haven’t yet, go lay the groundwork of some basic Digital concepts with <a href="/blog_posts/2019/06/10/binary.html">Binary</a>.</p>
+
+
+  </div><a class="u-url" href="/blog_posts/2019/06/15/electronics_for_digital.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

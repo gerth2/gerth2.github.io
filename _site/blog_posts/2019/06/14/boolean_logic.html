@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Boolean Logic | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Boolean Logic" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="“All you need is NAND… ba da da da da” - Professor Michael Loui, 2010, UIUC" />
+<meta property="og:description" content="“All you need is NAND… ba da da da da” - Professor Michael Loui, 2010, UIUC" />
+<link rel="canonical" href="http://localhost:4000/blog_posts/2019/06/14/boolean_logic.html" />
+<meta property="og:url" content="http://localhost:4000/blog_posts/2019/06/14/boolean_logic.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-14T09:30:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog_posts/2019/06/14/boolean_logic.html"},"url":"http://localhost:4000/blog_posts/2019/06/14/boolean_logic.html","description":"“All you need is NAND… ba da da da da” - Professor Michael Loui, 2010, UIUC","headline":"Boolean Logic","@type":"BlogPosting","dateModified":"2019-06-14T09:30:00-05:00","datePublished":"2019-06-14T09:30:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Boolean Logic</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-06-14T09:30:00-05:00" itemprop="datePublished">Jun 14, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><em>“All you need is NAND… ba da da da da” - <a href="http://publish.illinois.edu/loui/">Professor Michael Loui</a>, 2010, UIUC</em></p>
+
+<h2 id="combining-bits">Combining Bits</h2>
+
+<p>In this post, we’ll start to dig into how you combine bits together. <a href="/blog_posts/2019/06/10/binary.html">Previously</a> we’ve looked at how to interpret, generate, and analyze sets of bits. Now we want to do operations on them. Just like how you add and subtract numbers, so to can 1’s and 0’s be combined and manipulated.</p>
+
+<p>If you remember our friend Mr. Boole from previous posts, what we’re about to go through is a primer on the logical system he formulated.</p>
+
+<h2 id="boolean-functions">Boolean Functions</h2>
+
+<p>Recall from the <a href="/blog_posts/2019/06/01/math_primer1.html">math primer</a> how we looked at the concept of a <em>function</em> as an <a href="/blog_posts/2019/05/26/abstraction.html">abstraction</a> of mathematical behavior. Just like with normal base-10 numbers, functions can be defined for acting on boolean numbers too!</p>
+
+<p>We often describe a boolean function with what’s called a <em>truth table</em>. Due to the <em>discrete</em> nature of only allowing each input to be True or False, it’s often easy to completely enumerate the set of all possible inputs to the function.</p>
+
+<p>The functions we’ll concern ourselves with take <script type="math/tex">N</script> inputs, and produce a single output.</p>
+
+<p>If you recall some of the math we learned in previous posts, you could probably have guessed that a function with <script type="math/tex">N</script> boolean inputs has <script type="math/tex">2^N</script> possible input combinations, which means it has <script type="math/tex">2^N</script> outputs to describe in a truth table. Of course, each of those <script type="math/tex">2^N</script> outputs will be simply 1 or 0, but <em>which ones are 1</em> and <em>which ones are 0</em> is the question a truth table answers for you.</p>
+
+<p>As a sample with <script type="math/tex">N=3</script>, we will organize truth tables like this:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th>In2</th>
+      <th>In3</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>All <script type="math/tex">N</script> inputs come first, and the output is in the last column. This isn’t a particularly interesting function, as it always outputs the same thing, no matter what the input is. I like to call this function “a wire connected to +5V”.</p>
+
+<p>Let’s dig a bit deeper into some interesting functions. They don’t call them <strong>fun</strong>ctions for nothing.</p>
+
+<h2 id="fundamental-logic-functions">Fundamental Logic Functions</h2>
+
+<p>Most of the basic boolean functions have particular names. There are 3 very basic ones that almost all lessons on boolean logic will start with: AND, OR, and NOT.</p>
+
+<p>Whoever came up with the names deserves a snickers bar, because the names actually make a ton of sense.</p>
+
+<h3 id="not">NOT</h3>
+
+<p>The simplest boolean function of interest to us has only <script type="math/tex">N=1</script> inputs, which means there are two possible output states.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As you can see, NOT performs an <em>inversion</em> of the boolean state. 1 is not 0, and 0 is not 1.</p>
+
+<p>When you are writing an equation, you’ll generally use capital letters like <script type="math/tex">A</script> or <script type="math/tex">B</script> or <script type="math/tex">X</script> or <script type="math/tex">Y</script> to indicate a variable which is boolean, and can take on 1 or 0 values.</p>
+
+<p>For hopefully obvious reasons, the letters <script type="math/tex">I</script> and <script type="math/tex">O</script> are poor choices for boolean variable names.</p>
+
+<p>If we assume that <script type="math/tex">A</script> is our input, and <script type="math/tex">B</script> is our output, we would denote the NOT function as the following:</p>
+
+<script type="math/tex; mode=display">B = \overline{A}</script>
+
+<p>This is to say that <script type="math/tex">B</script> is the logical “NOT” of <script type="math/tex">A</script>. Or, another way, to calculate <script type="math/tex">B</script>, you invert <script type="math/tex">A</script>.</p>
+
+<h3 id="and">AND</h3>
+
+<p>AND is another fundamental function, but it takes two inputs, implying that there are four possible output states.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th>In2</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As you can see, AND outputs a 1 <em>if and only if</em> both inputs are 1. In all other cases, the output is 0.</p>
+
+<p>This is another great name for a function. The output is 1 if the first input is 1 <strong>and</strong> the second input is 1.</p>
+
+<p>When you describe AND in an equation, you write it like multiplication. This means you might put a dot between the inputs, or maybe just write them next to each other. For example:</p>
+
+<script type="math/tex; mode=display">C = A \cdot B</script>
+
+<script type="math/tex; mode=display">C = AB</script>
+
+<p>Both of these equations denote that <script type="math/tex">C</script> is calculated as the logical AND of input variables <script type="math/tex">A</script> and <script type="math/tex">B</script></p>
+
+<h3 id="or">OR</h3>
+
+<p>OR is our last fundamental function. Like AND, it takes two inputs. Like AND, it is also fairly well named.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th>In2</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>You can see that OR outputs a 1 when <em>either</em> of its inputs is true - that is to say the output is 1 if the first input is 1, or the second input is 1.</p>
+
+<p>Note that if both inputs are 1, the output remains 1 - this is a bit of a departure from how most folks interpret the word “or”. If your mom asked you “Do you want to go to Disney World or Universal Studios?” she probably wouldn’t be all that pleased if you said “Both!”. But ignoring this for now…</p>
+
+<p>When you describe OR in an equation, you write it like addition. This means you have to use a plus symbol. For example:</p>
+
+<script type="math/tex; mode=display">C = A + B</script>
+
+<p>This is the way to denote that <script type="math/tex">C</script> is calculated as the logical OR of inputs <script type="math/tex">A</script> and <script type="math/tex">B</script>.</p>
+
+<h2 id="equations-order-of-operations">Equations, Order of Operations</h2>
+
+<p>As we’ve shown already, boolean operations can be indicated with equations, just like regular math. Similar to regular base-10 math, you use variables that take on the value of 1 or 0, constant 1’s and 0’s, equals signs, an order of operations (with parenthesis to change it)… most of what applies in normal math applies here too!</p>
+
+<p>For example, take the following equation:</p>
+
+<script type="math/tex; mode=display">D = f(A,B,C) = A \cdot \overline{(B+C)}</script>
+
+<p>Let’s break this function named <script type="math/tex">f</script> down into its components. Order of operations would dictate that you evaluate the inside of the parenthesis first. In this case, you first evaluate the OR of <script type="math/tex">B</script> and <script type="math/tex">C</script>.</p>
+
+<p>The NOT bar is drawn over that whole quantity, so you calculate the NOT of the whole quantity <script type="math/tex">(B + C)</script>. That is to say - you first calcualte <script type="math/tex">B</script> OR <script type="math/tex">C</script>, then invert the result.</p>
+
+<p>Finally, <script type="math/tex">A</script> is AND’ed with the result of that calculation. This produces the result <script type="math/tex">D</script>.</p>
+
+<p>In general, order of operations will be:</p>
+
+<ol>
+  <li>Interior of Parenthesis</li>
+  <li>NOT</li>
+  <li>AND</li>
+  <li>OR</li>
+</ol>
+
+<p>Note that the NOT operation of putting a bar over a variable (or many) is kinda like parenthesis, where you are inverting a set of variables. Generally it’s better to be more verbose in calculations, and ask questions if the notation is unclear.</p>
+
+<p>When writing these formulas down (on paper or in code), I always recommend <a href="https://en.wiktionary.org/wiki/go_the_whole_hog">to go whole hog</a> on parenthesis. If there’s even a slight chance order of operation might be ambiguous, put them en. Even if this is redundant, it’s always better to ensure you communicate your intention to the reader, or the compiler.</p>
+
+<h3 id="properties-of-boolean-calculations">Properties of Boolean Calculations</h3>
+
+<p>You may have heard certain terms from your math class like the “associative” property and the “communicative” property. I don’t like to get too stuck on terminology like this - it’s good to know it so you can communicate with others, but even more important you know the underlying concept. Suffice to say, for software writing’s sake, here’s a handful of useful ideas to keep in mind:</p>
+
+<ul>
+  <li>The order of the inputs to AND and OR don’t matter. You can freely exchange inputs 1 and 2, and output is unchanged (inspect the truth tables, it’s easy to prove this by just looking at them). This can help you simplify calculations.</li>
+  <li>Any quantity ANDed with 1 will be itself, and any quantity ORed with 0 will be itself
+    <ul>
+      <li>This is often called the “identity” property. What it means is that if you see a <script type="math/tex">+0</script> or <script type="math/tex">\cdot 1</script> in an equation, you can trim it off without consequence. This is a useful fact when looking for ways to speed up a calculation.</li>
+    </ul>
+  </li>
+  <li>Any quantity ANDed with 0 will be 0, and any quantity ORed with 1 will be 1
+    <ul>
+      <li>This is often called the “short circuit” property. What it means is that if you see a <script type="math/tex">+1</script> or <script type="math/tex">\cdot 0</script>, you don’t even have to bother doing the other half of the calculation, you already know the outcome. This is a <em>very</em> useful fact when looking for ways to speed up a calculation.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="gates--drawing-diagrams">Gates &amp; Drawing Diagrams</h2>
+
+<p>Written out equations are not the only way to represent a binary equation. Indeed, this particular form of math has become strongly oriented toward creating real-world circuits which do useful things. As a result of that, it is common to represent a boolean calculation using a schematic or diagram, indicating how one could potentially create hardware to perform the associated calculation.</p>
+
+<h3 id="logic-gates">Logic Gates</h3>
+
+<p>The diagrams that are drawn indicate how entities called <em>logic gates</em> will be hooked together to represent a whole circuit. A logic gate is an <em>abstraction</em> of the electrical circuitry (probably involving transistors) which could implement the logic function represented.</p>
+
+<p>All of the fundamental operations we have mentioned so far have special symbols to indicate their identity.</p>
+
+<h4 id="not-gate-symbol">NOT Gate Symbol</h4>
+
+<p><img src="/assets/not.png" alt="NOT Gate Symbol" /></p>
+
+<h4 id="and-gate-symbol">AND Gate Symbol</h4>
+
+<p><img src="/assets/and.png" alt="AND Gate Symbol" /></p>
+
+<h4 id="or-gate-symbol">OR Gate Symbol</h4>
+
+<p><img src="/assets/or.png" alt="OR Gate Symbol" /></p>
+
+<h3 id="logic-diagrams">Logic Diagrams</h3>
+
+<p>When you combine multiple gates together, and hook them together in a particular way, you get what most folks will call a <em>logic diagram</em> describing your boolean function.</p>
+
+<p>Take our previous simple example of a boolean function <script type="math/tex">f</script></p>
+
+<script type="math/tex; mode=display">D = f(A,B,C) = A \cdot \overline{(B+C)}</script>
+
+<p>Using our symbols, we can draw them together with function inputs and outputs, to graphically represent the same equation:</p>
+
+<p><img src="/assets/simple_logic_diagram.png" alt="Simple logic diagram" /></p>
+
+<p>Note how <em>information</em> flows from left to right, just like you read. Your inputs are all on the left hand side, propagate through gates which transform and manipulate it, and eventually produce a single, final output on the right-hand side. This left-to-right flow convention is very commonly used in diagrams.</p>
+
+<h2 id="2-level-logic">2-Level Logic</h2>
+
+<p>As it turns out, all boolean functions, no matter how complex, can be broken down into a two-level hierarchy. This can be either a set of AND calculations OR’ed together, or a set of OR calculations AND’ed together. You may have to invert some of the inputs with NOT operations, but otherwise, it’s just two levels of gates.</p>
+
+<p>For software purposes, this is a useful fact to remember, but proving it is a bit more than what I’d want to get into in this post. Suffice to say, there are proofs that show arbitrarily large equations can be reduced into this manageable structure. Because of this, when analyzing or thinking about boolean logic, just keep in mind that two layers of gates is all that you will ever <em>need</em>.</p>
+
+<h2 id="derived-gates">Derived Gates</h2>
+
+<h3 id="xor">XOR</h3>
+
+<p>There is a somewhat common gate called the “Exclusive OR” that calculates the more traditional “This or That (but not both)” meaning of the word “or”:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th>In2</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Another interpretation that’s often useful is that XOR outputs 1 when its inputs are <em>different</em>, but 0 when they are the <em>same</em>.</p>
+
+<p>There is an equation symbol for it, but it’s not commonly used.</p>
+
+<script type="math/tex; mode=display">C = A \oplus B</script>
+
+<p>Indicates that C is the logical XOR of inputs A and B.</p>
+
+<h3 id="nand-nor">NAND, NOR</h3>
+
+<p>Finally, there are some additional gates which it’s good to be aware of:</p>
+
+<h4 id="nand">NAND:</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th>In2</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>NAND, or “Not AND” is just that - it’s an AND gate, but with the output inverted.</p>
+
+<h4 id="nor">NOR</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>In1</th>
+      <th>In2</th>
+      <th> </th>
+      <th>Out</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>0</td>
+      <td> </td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td>0</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>0</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>1</td>
+      <td> </td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>NOR, or “Not OR” is just that - it’s an OR gate, but with the output inverted.</p>
+
+<h4 id="symbols">Symbols</h4>
+
+<p>Of course, there are symbols for these gates as well.</p>
+
+<p><img src="/assets/xor_nor_nand.png" alt="other gates symbols" /></p>
+
+<p>From left to right, they are XOR, NOR, and NAND. Outputs are at the top, inputs are at the bottom.</p>
+
+<p>Note for NAND and NOR, the little circle on the output indicates the inversion operation. You may see that little circle elsewhere too - just know it implies “invert” on the signal it’s placed on.</p>
+
+<h3 id="why-nandnor">Why NAND/NOR</h3>
+
+<p>As it turns out, when you go look at the transistor configurations required to create normal AND/OR gates, they’re actually NAND/NOR with an inverter on the output. In terms of design optimization, it actually is easier to design the logic in terms of NAND/NOR, because you will use fewer transistors in the final design. This makes for cheaper, simpler, and more energy-efficient designs - all around a good thing!</p>
+
+<p>Even better - most modern electronics design tools can do the AND/OR to NAND/NOR transformation automatically for you, which means you can design in whatever set of gates is easiest for you to think about. Then the computer design tool can do the plug-and-chug to create a more efficient implementation.</p>
+
+<p>Furthermore, NAND and NOR have the interesting property of being able to emulate all the trivial gates themselves. Without a formal proof, and presented in pictures only, the evidence is presented below. Fun homework: Create a truth table for each of the below circuits to prove that they do in fact do what I claim they do.</p>
+
+<h4 id="not-with-nand">NOT with NAND:</h4>
+
+<p><img src="/assets/nand_not.png" alt="NOT from Nand" /></p>
+
+<h4 id="and-with-nand">AND with NAND:</h4>
+
+<p><img src="/assets/nand_and.png" alt="AND from Nand" /></p>
+
+<h4 id="or-with-nand">OR with NAND:</h4>
+
+<p><img src="/assets/nand_or.png" alt="OR from Nand" /></p>
+
+<h4 id="so-what">So what</h4>
+
+<p>Recall from further up that <em>any</em> boolean function can be represented Here’s the additional punchline, as Professor Loui sang to us in ECE 101 (to the tune of the Beatles “All You Need is Love”) - “All you need is NAND… ba da da da da”. Only having to have one gate around can also help simplify designs sometimes - whether that’s a software tool that’s trying to create the most optimum configuration of transistors for your design, or whether you just don’t want to buy 10 types of circuit chips from <a href="https://www.digikey.com">Digikey</a> for your project…. having just one gate type is often not a bad thing. Huzzah for standardization!</p>
+
+<h2 id="further-study-in-boolean-logic">Further Study in Boolean Logic</h2>
+
+<h3 id="proofs--formal-math">Proofs &amp; Formal Math</h3>
+
+<p>If you spend some time looking through literature on this topic, you’ll find lots of formal proofs using axioms and things like “DeMorgan’s Law”. These are definitely good to take a peek through, but don’t have a ton of bearing on your ability to write good software. I’m also of the opinion that most of it is pretty self-evident if you stare at it long enough, to the point where it doesn’t make sense to do a formal introduction to them in this blog. As we get into discussing good coding techniques, these principles will naturally fall out.</p>
+
+<h3 id="electronics">Electronics</h3>
+
+<p>So, in case you were wondering, you can go out and buy logic gates! You will need to choose the right set of chips for the voltages you are using to represent 1 and 0. If you happen to go with the very-common answer of 5V = 1, 0V = 0, then Texas Instruments has for many many years made a beautiful line of <a href="https://en.wikipedia.org/wiki/7400-series_integrated_circuits">“74- series” chips</a> which robustly implement logic gates in a cute little <a href="https://en.wikipedia.org/wiki/Dual_in-line_package">DIP package</a>. Lots of other manufacturers make pin-compatible versions of them. If you’re starting off, I recommend getting a <a href="https://www.amazon.com/Electronics-Salon-74HCxx-Assortment-High-Speed-Si-Gate/dp/B016ME1WH2/ref=sr_1_4?keywords=74+series+logic+kit&amp;qid=1560517053&amp;s=gateway&amp;sr=8-4">“variety pack”</a> with spares of each to enable experimentation and play.</p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>We’ve covered the basics of how bits can be combined and manipulated with fundamental logic gates. Moving forward, we’ll start to combine these gates into useful digital circuitry, building up to the main components of a computer processor.  Go check out <a href="/blog_posts/2019/06/26/digital_devices.html">Digital Devices</a>.</p>
+
+<p>Alternately, we’ll also cover some of the practical implications when building digital circuitry in the real world. For Extra Credit, check out <a href="/blog_posts/2019/06/15/electronics_for_digital.html">Electronics Part 2</a>.</p>
+
+  </div><a class="u-url" href="/blog_posts/2019/06/14/boolean_logic.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>
