@@ -82,7 +82,23 @@
 
 <h2 id="c-code-to-x86">C code to x86</h2>
 
+<p>Even though it’s not directly applicable to FRC robots, let’s do a brief description of how C code turns into bits on a processor. If you’re in C++ the process will be extremely similar. Java a little bit less similar (the tools have different names and act at different times, but ultimately do the same job). Labview will be out of scope for now, <a href="http://www.ni.com/tutorial/11472/en/">though NI does have some good documentation on how they do their thing</a>.</p>
+
 <h3 id="basics-of-the-compilation-process">Basics of the Compilation Process</h3>
+
+<h4 id="toolchain">Toolchain</h4>
+
+<p>In C code land, the there are two tools that work together to create bits.</p>
+
+<p>The <em>Compiler</em> is responsible for converting the .c text files into <em>mostly</em> 1’s and 0’s which can be run on the processor. However, it doesn’t compute the final layout in memory - it’s designed to work on single .c files at a time. In a multi-file project, files frequently access variables defined in other files. To account for this, the compiler will assign placeholders to things it knows about, or is <em>promised</em> will exist elsewhere. The results of this operation produces <em>object files</em>, frequently named the same as the source code file, with the file extension <em>.o</em>.</p>
+
+<p>The <em>Linker</em> is responsible pulling together all the various .o files created by the compiler, along with any built-in system libraries (like, where functions like <code class="highlighter-rouge">printf()</code> are implemented for your machine), and creating the final .exe. This means the <em>linker</em> creates the final memory address layout, and is what actually confirms that all the variable placeholders that were promised actually exist.</p>
+
+<p>For simple projects, these steps often happen together in the same executable, right after each other, transparent to the user. More complex projects split the steps up and manually coordinate them using a <em>make</em> utility.</p>
+
+<p>For our discussion, we’re going to focus on how the <em>Compiler</em> does its work, carefully avoiding some of the hoops the linker has to jump through. It will be an abbreviated process that works for small files, which will be sufficient to start learning.</p>
+
+<h4 id="parsing">Parsing</h4>
 
 <h3 id="examples">Examples</h3>
 

@@ -27,7 +27,23 @@ Finding the answer is easy. Finding the question is hard.
 
 ## C code to x86
 
+Even though it's not directly applicable to FRC robots, let's do a brief description of how C code turns into bits on a processor. If you're in C++ the process will be extremely similar. Java a little bit less similar (the tools have different names and act at different times, but ultimately do the same job). Labview will be out of scope for now, [though NI does have some good documentation on how they do their thing](http://www.ni.com/tutorial/11472/en/).
+
 ### Basics of the Compilation Process
+
+#### Toolchain
+
+In C code land, the there are two tools that work together to create bits. 
+
+The _Compiler_ is responsible for converting the .c text files into _mostly_ 1's and 0's which can be run on the processor. However, it doesn't compute the final layout in memory - it's designed to work on single .c files at a time. In a multi-file project, files frequently access variables defined in other files. To account for this, the compiler will assign placeholders to things it knows about, or is _promised_ will exist elsewhere. The results of this operation produces _object files_, frequently named the same as the source code file, with the file extension _.o_.
+
+The _Linker_ is responsible pulling together all the various .o files created by the compiler, along with any built-in system libraries (like, where functions like `printf()` are implemented for your machine), and creating the final .exe. This means the _linker_ creates the final memory address layout, and is what actually confirms that all the variable placeholders that were promised actually exist.
+
+For simple projects, these steps often happen together in the same executable, right after each other, transparent to the user. More complex projects split the steps up and manually coordinate them using a _make_ utility. 
+
+For our discussion, we're going to focus on how the _Compiler_ does its work, carefully avoiding some of the hoops the linker has to jump through. It will be an abbreviated process that works for small files, which will be sufficient to start learning.
+
+#### Parsing
 
 ### Examples
 
