@@ -109,6 +109,88 @@ section .data
 
 #### If Statements
 
+_If_ statements get a bit more complex. One basic strategy is to compute the condition on the inside of the `()`'s, then use `cmp`/`jmp` to go to different sections of code. Choose a flavor of `jmp` to match the condition. Finally, use unconditional `jmp`'s to "rejoin" code after execution has completed.
+
+```c
+int output = 5;
+int input1 = 25;
+int input2 = 43;
+
+void main(void){
+    if(input1 > input2){
+        output = 7;
+    } else {
+        output = output * 2;
+    }
+    output = output + 5;
+    return;
+}
+```
+
+Similar to above, we create global variables, and produce some reasonable-looking assembly instructions:
+
+```nasm
+section .text
+
+_main:
+    mov  EAX, [input1]   ; Load the inputs
+    mov  EBX, [input2]   
+
+    cmp EAX, EBX         ; Run comparison operation
+    jle _else_start      ; Jump to else if condition is not satisfied
+
+_if_start:
+    mov ECX, 7
+    jmp _after_if
+
+_else_start:
+    mov ECX, [output]
+    imul ECX, 2
+
+_after_if:
+    add ECX, 5
+    mov [output], ECX
+
+    ; We are done executing - return control to the operating system
+    retn 
+
+; ----------------------------------------------------------------------------
+; Global Variables
+
+section .data
+    output      DD 5
+    input1      DD 25
+    input2      DD 43
+```
+
+There are a few interesting things to note here. 
+
+Since we have a limited number of variables, we make the assumption that `EAX` will correspond to `input1`, `EBX` will correspond to `input2`, and `ECX` will correspond to `output`. Before using the registers we load them from their global variables, and then move back to memory at the very end.
+
+Note that even though in C code we compare if `input1` is _greater_ than `input2`, in assembly we use a `jle` - or _jump if less than or equal to_. This is because we chose to check the _opposite_ of the C code condition, and jump to the _else_ statement. We also could have done the comparison more akin to the C code:
+
+```nasm
+_main:
+    ...
+
+    cmp EAX, EBX         ; Run comparison operation
+    jg  _if_start
+    jmp _else_start
+
+_if_start:
+    ...
+
+_else_start:
+    ...
+```
+
+However, this requires two assembly instructions, so it's a slightly larger program. Most compilers are capable of generating code both ways, and allow you to tell it "optimize for speed" or "optimize for program size", and it will choose between options like these to best fit your needs.
+
+Note that `output` actually acts as an input of sorts, in the body of the `else` statement. Therefor, in the assembly code, we can _delay_ loading `ECX` from memory until we know for sure we need it - this helps prevent unnecessary operations. 
+
+Note also the lack of a `jmp` at the end of section `_else_start`. It's not needed, since the next operation is always the `_after_if` statement. We can save a tiny bit of memory by not putting it in, as the processor will do the right thing without it naturally.
+
+
 #### For Loop
 
 
