@@ -109,7 +109,7 @@ section .data
 
 #### If Statements
 
-_If_ statements get a bit more complex. One basic strategy is to compute the condition on the inside of the `()`'s, then use `cmp`/`jmp` to go to different sections of code. Choose a flavor of `jmp` to match the condition. Finally, use unconditional `jmp`'s to "rejoin" code after execution has completed.
+`If` statements get a bit more complex. One basic strategy is to compute the condition on the inside of the `()`'s, then use `cmp`/`jmp` to go to different sections of code. Choose a flavor of `jmp` to match the condition. Finally, use unconditional `jmp`'s to "rejoin" code after execution has completed.
 
 ```c
 int output = 5;
@@ -249,7 +249,7 @@ section .data
     iter        DD 0
 ```
 
-The key here is that 
+
 
 ## Notes
 
