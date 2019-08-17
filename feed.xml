@@ -1,4 +1,263 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-08-11T07:40:17-05:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">x86 Assembly Introduction</title><link href="http://localhost:4000/blog_posts/2019/08/10/x86_intro.html" rel="alternate" type="text/html" title="x86 Assembly Introduction" /><published>2019-08-10T09:30:40-05:00</published><updated>2019-08-10T09:30:40-05:00</updated><id>http://localhost:4000/blog_posts/2019/08/10/x86_intro</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/08/10/x86_intro.html">&lt;p&gt;&lt;em&gt;“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - &lt;a href=&quot;https://github.com/stedolan&quot;&gt;Stephen Dolan&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-17T18:18:06-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">C to Assembly</title><link href="/blog_posts/2019/08/17/c_to_assembly.html" rel="alternate" type="text/html" title="C to Assembly" /><published>2019-08-17T09:30:40-05:00</published><updated>2019-08-17T09:30:40-05:00</updated><id>/blog_posts/2019/08/17/c_to_assembly</id><content type="html" xml:base="/blog_posts/2019/08/17/c_to_assembly.html">&lt;p&gt;&lt;em&gt;“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in &lt;a href=&quot;https://web.mit.edu/alexmv/6.037/sicp.pdf&quot;&gt;“The Structure and Interpretation of Computer Programs”&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This post is going to be like the ending of a Hallmark movie. If you’ve been even mildly following so far, you could have predicted it from a mile away. What we’re about to do is show how C code gets transformed into x86 assembly. With this keystone topic in place we now see the full cascade:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;C syntax is built into assembly instructions&lt;/li&gt;
+  &lt;li&gt;Assembly instructions are built into bits&lt;/li&gt;
+  &lt;li&gt;Bits are loaded into RAM&lt;/li&gt;
+  &lt;li&gt;RAM is used to evolve the state of registers in a processor over time&lt;/li&gt;
+  &lt;li&gt;Registers in the processor, and the logic gluing them together, are built up from logic gates&lt;/li&gt;
+  &lt;li&gt;Logic gates are built up from transistors&lt;/li&gt;
+  &lt;li&gt;Transistors are analog electrical components that follow basic laws of physics&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;With this capstone, you’ll have a &lt;em&gt;very&lt;/em&gt; good grasp of the same background knowledge that’s sitting inside my head as I write code. Not all the knowledge, and not all the answers for sure - but you’ll know enough to &lt;em&gt;know how to ask questions&lt;/em&gt;. This is probably the biggest thing I run into while doing technical work. For better or worse, &lt;em&gt;you don’t know what you don’t know&lt;/em&gt;. It’s impossible to get all the knowledge into your head at once. What you do want to get into your head is a framework for how things work - this way, when it matters, you know what to go look up - how to start a search for the info you actually need. We’ll always have textbooks and the Internet for that.&lt;/p&gt;
+
+&lt;p&gt;Finding the answer is easy. Finding the question is hard.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikiquote.org/wiki/Family_Guy/Season_6&quot;&gt;But I digest.&lt;/a&gt; On to our inevitable conclusion…&lt;/p&gt;
+
+&lt;h2 id=&quot;c-code-to-x86&quot;&gt;C code to x86&lt;/h2&gt;
+
+&lt;p&gt;Even though it’s not directly applicable to FRC robots, let’s do a brief description of how C code turns into bits on a processor. If you’re in C++ the process will be extremely similar. Java a little bit less similar (the tools have different names and act at different times, but ultimately do the same job). Labview will be out of scope for now, &lt;a href=&quot;http://www.ni.com/tutorial/11472/en/&quot;&gt;though NI does have some good documentation on how they do their thing&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;basics-of-the-compilation-process&quot;&gt;Basics of the Compilation Process&lt;/h3&gt;
+
+&lt;h4 id=&quot;toolchain&quot;&gt;Toolchain&lt;/h4&gt;
+
+&lt;p&gt;In C code land, the there are two tools that work together to create bits.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;Compiler&lt;/em&gt; is responsible for converting the .c text files into &lt;em&gt;mostly&lt;/em&gt; 1’s and 0’s which can be run on the processor. However, it doesn’t compute the final layout in memory - it’s designed to work on single .c files at a time. In a multi-file project, files frequently access variables defined in other files. To account for this, the compiler will assign placeholders to things it knows about, or is &lt;em&gt;promised&lt;/em&gt; will exist elsewhere. The results of this operation produces &lt;em&gt;object files&lt;/em&gt;, frequently named the same as the source code file, with the file extension &lt;em&gt;.o&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;Linker&lt;/em&gt; is responsible pulling together all the various .o files created by the compiler, along with any built-in system libraries (like, where functions like &lt;code class=&quot;highlighter-rouge&quot;&gt;printf()&lt;/code&gt; are implemented for your machine), and creating the final .exe. This means the &lt;em&gt;linker&lt;/em&gt; creates the final memory address layout, and is what actually confirms that all the variable placeholders that were promised actually exist.&lt;/p&gt;
+
+&lt;p&gt;For simple projects, these steps often happen together in the same executable, right after each other, transparent to the user. More complex projects split the steps up and manually coordinate them using a &lt;em&gt;make&lt;/em&gt; utility.&lt;/p&gt;
+
+&lt;p&gt;For our discussion, we’re going to focus on how the &lt;em&gt;Compiler&lt;/em&gt; does its work, carefully avoiding some of the hoops the linker has to jump through. It will be an abbreviated process that works for small files, which will be sufficient to start learning.&lt;/p&gt;
+
+&lt;h4 id=&quot;lexing--parsing--compiling--linking-oh-my&quot;&gt;Lexing &amp;amp; Parsing &amp;amp; Compiling &amp;amp; Linking, oh my!&lt;/h4&gt;
+
+&lt;p&gt;The compiler’s job is generally divided into 3 phases.&lt;/p&gt;
+
+&lt;p&gt;The first step is to walk through the input file line by line, and separate out each part of each statement. For example, given &lt;code class=&quot;highlighter-rouge&quot;&gt;out = in * 6.0 + 5/in2;&lt;/code&gt;, the first step is to identify that the character strings &lt;code class=&quot;highlighter-rouge&quot;&gt;out&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;in2&lt;/code&gt; are variables, &lt;code class=&quot;highlighter-rouge&quot;&gt;6.0&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt; are constants, and &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; are all math and assignment operations. Sometimes, when you see &lt;em&gt;syntax errors&lt;/em&gt;, they come from this first step, where the compiler can’t properly separate out a line into known components. Each of these components is called a &lt;em&gt;token&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The second step is to build up a representation of which variables are related to each other, into something called an &lt;a href=&quot;https://en.wikipedia.org/wiki/Abstract_syntax_tree&quot;&gt;&lt;em&gt;abstract syntax tree&lt;/em&gt;&lt;/a&gt; (or AST). In our previous example, this representation would show the hierarchy of how &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; is being multiplied by &lt;code class=&quot;highlighter-rouge&quot;&gt;6&lt;/code&gt;, and how that result must be added with &lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt; divided by another variable named &lt;code class=&quot;highlighter-rouge&quot;&gt;in2&lt;/code&gt;, and how that whole thing gets stored into a variable named &lt;code class=&quot;highlighter-rouge&quot;&gt;out&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The advantage of generating this intermediate representation is having the ability to further understand how each element of code is related to each other. It is the representation that makes it easy to identify when variables haven’t been declared properly (or were misspelled), when variables are read before they are written to, or when code statements don’t actually have any effect on program execution.&lt;/p&gt;
+
+&lt;p&gt;After generating and analyzing the AST, the compiler can finally start to generate assembly instructions. Memory locations for variables are laid out as needed, appropriate assembly functions are chosen to perform the associations described by the tree.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;exact&lt;/em&gt; specifics, of course, will vary language to language, and compiler to compiler. Digging into the specifics of how a particular version of a particular compiler is academically interesting, but actually violates the intent - the Compiler is a tool to be trusted to take your C code, and turn it into executable files. You can always deconstruction what happened if you need to, but generally you won’t need to do that!&lt;/p&gt;
+
+&lt;h3 id=&quot;examples&quot;&gt;Examples&lt;/h3&gt;
+
+&lt;p&gt;Still though, let’s dig into a few examples concretely of how this would play out. We’ll be doing things simply enough such that we won’t be simmulating the full compiler process, but jumping straight to assembly code.&lt;/p&gt;
+
+&lt;h4 id=&quot;variables-and-math&quot;&gt;Variables and Math&lt;/h4&gt;
+
+&lt;p&gt;Let’s take a super simple example. In C code:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This super trivial program calculates a new value for the variable &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;. It’s good that all the variables we’re using are declared, and the program is free of syntax errors.&lt;/p&gt;
+
+&lt;p&gt;To get something like this in assembly code, we’ll need a few things:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Three memory addresses to hold our three variables&lt;/li&gt;
+  &lt;li&gt;A segment of code to implement the &lt;code class=&quot;highlighter-rouge&quot;&gt;main()&lt;/code&gt; function&lt;/li&gt;
+  &lt;li&gt;Assembly instructions that work from the &lt;em&gt;inside outward&lt;/em&gt; on our one line of code that does real computation.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Since this is pretty straightforward, let’s just jump right in!&lt;/p&gt;
+
+&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input2]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Load the inner-most input&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;imul&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; perform input2*5&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input1]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; add input1 to that result&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;[output],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; move the full calculation out to the output variable&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
+
+&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;if-statements&quot;&gt;If Statements&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;If&lt;/code&gt; statements get a bit more complex. One basic strategy is to compute the condition on the inside of the &lt;code class=&quot;highlighter-rouge&quot;&gt;()&lt;/code&gt;’s, then use &lt;code class=&quot;highlighter-rouge&quot;&gt;cmp&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; to go to different sections of code. Choose a flavor of &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; to match the condition. Finally, use unconditional &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt;’s to “rejoin” code after execution has completed.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Similar to above, we create global variables, and produce some reasonable-looking assembly instructions:&lt;/p&gt;
+
+&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input1]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Load the inputs&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input2]&lt;/span&gt;   
+
+    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run comparison operation&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;; Jump to else if condition is not satisfied&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_if_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_after_if&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output]&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;imul&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_after_if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
+
+&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are a few interesting things to note here.&lt;/p&gt;
+
+&lt;p&gt;Since we have a limited number of variables, we make the assumption that &lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; will correspond to &lt;code class=&quot;highlighter-rouge&quot;&gt;input1&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt; will correspond to &lt;code class=&quot;highlighter-rouge&quot;&gt;input2&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; will correspond to &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;. Before using the registers we load them from their global variables, and then move back to memory at the very end.&lt;/p&gt;
+
+&lt;p&gt;Note that even though in C code we compare if &lt;code class=&quot;highlighter-rouge&quot;&gt;input1&lt;/code&gt; is &lt;em&gt;greater&lt;/em&gt; than &lt;code class=&quot;highlighter-rouge&quot;&gt;input2&lt;/code&gt;, in assembly we use a &lt;code class=&quot;highlighter-rouge&quot;&gt;jle&lt;/code&gt; - or &lt;em&gt;jump if less than or equal to&lt;/em&gt;. This is because we chose to check the &lt;em&gt;opposite&lt;/em&gt; of the C code condition, and jump to the &lt;em&gt;else&lt;/em&gt; statement. We also could have done the comparison more akin to the C code:&lt;/p&gt;
+
+&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run comparison operation&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jg&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_if_start&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_if_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;However, this requires two assembly instructions, so it’s a slightly larger program. Most compilers are capable of generating code both ways, and allow you to tell it “optimize for speed” or “optimize for program size”, and it will choose between options like these to best fit your needs.&lt;/p&gt;
+
+&lt;p&gt;Note that &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt; actually acts as an input of sorts, in the body of the &lt;code class=&quot;highlighter-rouge&quot;&gt;else&lt;/code&gt; statement. Therefor, in the assembly code, we can &lt;em&gt;delay&lt;/em&gt; loading &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; from memory until we know for sure we need it - this helps prevent unnecessary operations.&lt;/p&gt;
+
+&lt;p&gt;Note also the lack of a &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; at the end of section &lt;code class=&quot;highlighter-rouge&quot;&gt;_else_start&lt;/code&gt;. It’s not needed, since the next operation is always the &lt;code class=&quot;highlighter-rouge&quot;&gt;_after_if&lt;/code&gt; statement. We can save a tiny bit of memory by not putting it in, as the processor will do the right thing without it naturally.&lt;/p&gt;
+
+&lt;h4 id=&quot;for-loop&quot;&gt;For Loop&lt;/h4&gt;
+
+&lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;for&lt;/code&gt; loop is more or less a combination of the IF statement, with a bit of creative jumping. Take for example this simple C code:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In yet another contrived example, we take some input value (25 here), and for that many loops, add the input into some other variable called &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;. After &lt;code class=&quot;highlighter-rouge&quot;&gt;input1&lt;/code&gt; loops, we are done. In assembly, the compiler will have to add the logic of checking “if done”, jumping &lt;em&gt;back&lt;/em&gt; in time if needed to repeat the code. The assembly code could produce something like this:&lt;/p&gt;
+
+&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input1]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Load the inputs. EAX will hold input1&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[iter]&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;; EBX will hold our value for iter&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; ECX will hold our value for output.&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;; Perform Loop startup code, &quot;iter=0&quot;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_loop_check&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run comparison operation&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_loop_body_start&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; if iter &amp;lt; input1, run a loop&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_loop_body_end&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Otherwise, we are done. Skip past the loop body to the end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_loop_body_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run the loop body code. In our case, this is just &quot;output += input1&quot; &lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;; Perform the loop iteration code, &quot;iter++&quot;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_loop_check&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;; Go back up to check the iteration condition&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;_loop_body_end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;; Return the newly calculated values to their memory locations&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[iter],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;
+
+    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
+
+&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
+
+&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;        &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note you can see distinct instructions for all the major components of our standard &lt;code class=&quot;highlighter-rouge&quot;&gt;for&lt;/code&gt; loop - the initialization, the loop condition check, the iteration logic, and of course the contents of the &lt;code class=&quot;highlighter-rouge&quot;&gt;for&lt;/code&gt; loop body itself.&lt;/p&gt;
+
+&lt;h2 id=&quot;notes&quot;&gt;Notes&lt;/h2&gt;
+
+&lt;p&gt;It should be strongly noted that the examples here are for demonstration purposes only - they show &lt;em&gt;one&lt;/em&gt; possible way to translate &lt;em&gt;specific examples&lt;/em&gt; of higher-level language (C) into a lower level language (x86 asm). More experienced readers may observe that I’ve casually skirted concepts like local variables, the .bss segment, function calls, debugging symbols, optimization, not-always-storing-variables-in-registers, and a whole host of other compiler-related topics that are relevant if you want to write your own compiler. However, though that may be a post one day, it’s not the purpose of this post.&lt;/p&gt;
+
+&lt;p&gt;All a reader should walk away with is a simple understanding - Higher level languages &lt;em&gt;can&lt;/em&gt; be translated to lower level languages. The syntax of each language defines the constraints on how such a translation will happen, which in turn is what drives the rules on why we write programs the way we do.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;And this, sadly, is the end of our initial training. We’ve walked ourselves all the way from base physics and math principles, up through the way that boolean logic can be used to perform useful computation, and how circuits can implement that logic and store data. We’ve looked at how to assemble the circuitry into a useful architecture, which can store and execute instructions. And finally, we’ve looked at how the high level languages we are familiar with get translated into those instructions. It is indeed a lot of information, and you shoudl be proud that you have made it to this point.&lt;/p&gt;
+
+&lt;p&gt;But, the work is not yet complete! Expect many more blog posts. We have so much more to discuss about software - both the hard technical skills, and the soft skills of working on a software development team.&lt;/p&gt;
+
+&lt;p&gt;Stay tuned for many more. And until next time, happy coding!&lt;/p&gt;
+
+&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
+
+&lt;p&gt;To be honest, I am no sure yet. Maybe go get yourself some food.&lt;/p&gt;
+
+&lt;p&gt;If you’re not hungry, go back to the home page and find another blog post!&lt;/p&gt;</content><author><name></name></author><summary type="html">“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)</summary></entry><entry><title type="html">x86 Assembly Introduction</title><link href="/blog_posts/2019/08/10/x86_intro.html" rel="alternate" type="text/html" title="x86 Assembly Introduction" /><published>2019-08-10T09:30:40-05:00</published><updated>2019-08-10T09:30:40-05:00</updated><id>/blog_posts/2019/08/10/x86_intro</id><content type="html" xml:base="/blog_posts/2019/08/10/x86_intro.html">&lt;p&gt;&lt;em&gt;“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - &lt;a href=&quot;https://github.com/stedolan&quot;&gt;Stephen Dolan&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -380,7 +639,7 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;With the end of this post, hopefully we’ve presented a decent introduction to the bare-bones components of x86, a real assembly language that works on real processors. We’ll use this knowledge to help deconstruct how our high level language (C code) gets converted to 1’s and 0’s on a processor, with x86 assembly as the intermediate description of the bits. Coming soon!&lt;/p&gt;
+&lt;p&gt;With the end of this post, hopefully we’ve presented a decent introduction to the bare-bones components of x86, a real assembly language that works on real processors. We’ll use this knowledge to help deconstruct how our high level language (C code) gets converted to 1’s and 0’s on a processor, with x86 assembly as the intermediate description of the bits. &lt;a href=&quot;/blog_posts/2019/08/17/c_to_assembly.html&quot;&gt;Check out the last chapter here!&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
@@ -388,7 +647,7 @@
       &lt;p&gt;When I say workhorse, I really do mean it works hard, and can do a lot! Turns out, &lt;a href=&quot;https://youtu.be/R7EEoWg6Ekk?t=39&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; by itself is &lt;em&gt;Turing Complete&lt;/em&gt;&lt;/a&gt;. That’s right, you could build a computer that only know how to do &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt;, or limit yourself to only using &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt;, and still be able to &lt;em&gt;compute anything you want to&lt;/em&gt;. And even more so, &lt;a href=&quot;https://github.com/xoreaxeaxeax/movfuscator&quot;&gt;&lt;em&gt;someone did it&lt;/em&gt;&lt;/a&gt;. Seriously, this is one of my favorite exercises in all of computer science, just for its simultaneous absurdity and technical prowess. The video is long, but actually worthwhile, and totally approachable to someone who has kept pace with this blog thus far! &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan</summary></entry><entry><title type="html">Programming Language - C Syntax</title><link href="http://localhost:4000/blog_posts/2019/07/28/programming_language_c_syntax.html" rel="alternate" type="text/html" title="Programming Language - C Syntax" /><published>2019-07-28T09:31:00-05:00</published><updated>2019-07-28T09:31:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/07/28/programming_language_c_syntax</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/07/28/programming_language_c_syntax.html">&lt;p&gt;&lt;em&gt;C is quirky, flawed, and an enormous success. - &lt;a href=&quot;https://en.wikipedia.org/wiki/Dennis_Ritchie&quot;&gt;Dennis Ritchie, co-creator of the C programming language&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan</summary></entry><entry><title type="html">Programming Language - C Syntax</title><link href="/blog_posts/2019/07/28/programming_language_c_syntax.html" rel="alternate" type="text/html" title="Programming Language - C Syntax" /><published>2019-07-28T09:31:00-05:00</published><updated>2019-07-28T09:31:00-05:00</updated><id>/blog_posts/2019/07/28/programming_language_c_syntax</id><content type="html" xml:base="/blog_posts/2019/07/28/programming_language_c_syntax.html">&lt;p&gt;&lt;em&gt;C is quirky, flawed, and an enormous success. - &lt;a href=&quot;https://en.wikipedia.org/wiki/Dennis_Ritchie&quot;&gt;Dennis Ritchie, co-creator of the C programming language&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -836,7 +1095,7 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;We’re nearing the end of the story-arc for our introductory content! Next up, we’ll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. &lt;a href=&quot;/blog_posts/2019/08/10/x86_intro.html&quot;&gt;To get started, check out our introduction to the x86 assembly language!&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">C is quirky, flawed, and an enormous success. - Dennis Ritchie, co-creator of the C programming language.</summary></entry><entry><title type="html">Programming Languages - Introduction</title><link href="http://localhost:4000/blog_posts/2019/07/28/programming_language_intro.html" rel="alternate" type="text/html" title="Programming Languages - Introduction" /><published>2019-07-28T09:30:00-05:00</published><updated>2019-07-28T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/07/28/programming_language_intro</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/07/28/programming_language_intro.html">&lt;p&gt;&lt;em&gt;Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.  - &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;We’re nearing the end of the story-arc for our introductory content! Next up, we’ll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. &lt;a href=&quot;/blog_posts/2019/08/10/x86_intro.html&quot;&gt;To get started, check out our introduction to the x86 assembly language!&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">C is quirky, flawed, and an enormous success. - Dennis Ritchie, co-creator of the C programming language.</summary></entry><entry><title type="html">Programming Languages - Introduction</title><link href="/blog_posts/2019/07/28/programming_language_intro.html" rel="alternate" type="text/html" title="Programming Languages - Introduction" /><published>2019-07-28T09:30:00-05:00</published><updated>2019-07-28T09:30:00-05:00</updated><id>/blog_posts/2019/07/28/programming_language_intro</id><content type="html" xml:base="/blog_posts/2019/07/28/programming_language_intro.html">&lt;p&gt;&lt;em&gt;Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.  - &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -937,7 +1196,7 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;In our next post, we will look into the details of the syntax of the C programming language, to see how it implements these components to accomplish the goals of a high-level programming language. See &lt;a href=&quot;/blog_posts/2019/07/28/programming_language_c_syntax.html&quot;&gt;C Syntax here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do. - Donald Knuth</summary></entry><entry><title type="html">Processor Architecture</title><link href="http://localhost:4000/blog_posts/2019/07/22/vonneumann.html" rel="alternate" type="text/html" title="Processor Architecture" /><published>2019-07-22T09:31:00-05:00</published><updated>2019-07-22T09:31:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/07/22/vonneumann</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/07/22/vonneumann.html">&lt;p&gt;&lt;em&gt;People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In our next post, we will look into the details of the syntax of the C programming language, to see how it implements these components to accomplish the goals of a high-level programming language. See &lt;a href=&quot;/blog_posts/2019/07/28/programming_language_c_syntax.html&quot;&gt;C Syntax here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do. - Donald Knuth</summary></entry><entry><title type="html">Processor Architecture</title><link href="/blog_posts/2019/07/22/vonneumann.html" rel="alternate" type="text/html" title="Processor Architecture" /><published>2019-07-22T09:31:00-05:00</published><updated>2019-07-22T09:31:00-05:00</updated><id>/blog_posts/2019/07/22/vonneumann</id><content type="html" xml:base="/blog_posts/2019/07/22/vonneumann.html">&lt;p&gt;&lt;em&gt;People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -1276,7 +1535,7 @@
       &lt;p&gt;Again, lots of students &lt;a href=&quot;https://www.google.com/search?q=uiuc+ece+391+github&amp;amp;rlz=1C1CHBF_enUS840US840&amp;amp;oq=uiuc+ece+391+github&amp;amp;aqs=chrome..69i57.5400j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;decided to post their solutions online&lt;/a&gt;. Tisk tisk. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth</summary></entry><entry><title type="html">Processor Architecture Primer</title><link href="http://localhost:4000/blog_posts/2019/07/22/processor_arch_primer.html" rel="alternate" type="text/html" title="Processor Architecture Primer" /><published>2019-07-22T09:30:00-05:00</published><updated>2019-07-22T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/07/22/processor_arch_primer</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/07/22/processor_arch_primer.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth</summary></entry><entry><title type="html">Processor Architecture Primer</title><link href="/blog_posts/2019/07/22/processor_arch_primer.html" rel="alternate" type="text/html" title="Processor Architecture Primer" /><published>2019-07-22T09:30:00-05:00</published><updated>2019-07-22T09:30:00-05:00</updated><id>/blog_posts/2019/07/22/processor_arch_primer</id><content type="html" xml:base="/blog_posts/2019/07/22/processor_arch_primer.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;We’re on the verge of being able to describe all the main components of real processors! Huzzah, we are well on our way to getting real software up and running! Get excited!&lt;/p&gt;
 
@@ -1446,7 +1705,7 @@
       &lt;p&gt;For the curious, formal systems of modeling the state of analog electronics in a “digital-useful” way can &lt;a href=&quot;https://en.wikipedia.org/wiki/Logic_level&quot;&gt;go up to having 9 states&lt;/a&gt;. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Digital Devices Part Two - Sequential Logic</title><link href="http://localhost:4000/blog_posts/2019/07/06/digital_devices_part2.html" rel="alternate" type="text/html" title="Digital Devices Part Two - Sequential Logic" /><published>2019-07-06T09:30:00-05:00</published><updated>2019-07-06T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/07/06/digital_devices_part2</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/07/06/digital_devices_part2.html">&lt;p&gt;This post is the continuation of &lt;a href=&quot;/blog_posts/2019/06/26/digital_devices.html&quot;&gt;Part 1&lt;/a&gt; in our series on digital devices.&lt;/p&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Digital Devices Part Two - Sequential Logic</title><link href="/blog_posts/2019/07/06/digital_devices_part2.html" rel="alternate" type="text/html" title="Digital Devices Part Two - Sequential Logic" /><published>2019-07-06T09:30:00-05:00</published><updated>2019-07-06T09:30:00-05:00</updated><id>/blog_posts/2019/07/06/digital_devices_part2</id><content type="html" xml:base="/blog_posts/2019/07/06/digital_devices_part2.html">&lt;p&gt;This post is the continuation of &lt;a href=&quot;/blog_posts/2019/06/26/digital_devices.html&quot;&gt;Part 1&lt;/a&gt; in our series on digital devices.&lt;/p&gt;
 
 &lt;h2 id=&quot;combinational-versus-sequential-logic&quot;&gt;Combinational versus Sequential Logic&lt;/h2&gt;
 
@@ -1856,7 +2115,7 @@
       &lt;p&gt;Forgive the odd drawing here - you can ignore the numbers right by the gates. I’m testing out using &lt;a href=&quot;http://kicad-pcb.org/&quot;&gt;KiCad&lt;/a&gt; for schematic capture and design. It’s a bit cumbersome for these educational purposes, but can draw simple logic diagrams well. Looks super powerful as an electronic schematic and printed circuit board design tool though! I highly recommend it so far! &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt; &lt;a href=&quot;#fnref:4:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">This post is the continuation of Part 1 in our series on digital devices.</summary></entry><entry><title type="html">Digital Devices</title><link href="http://localhost:4000/blog_posts/2019/06/26/digital_devices.html" rel="alternate" type="text/html" title="Digital Devices" /><published>2019-06-26T09:30:00-05:00</published><updated>2019-06-26T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/06/26/digital_devices</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/06/26/digital_devices.html">&lt;p&gt;&lt;img src=&quot;/assets/word_problems.jpg&quot; alt=&quot;word problems from Bill Waterson&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">This post is the continuation of Part 1 in our series on digital devices.</summary></entry><entry><title type="html">Digital Devices</title><link href="/blog_posts/2019/06/26/digital_devices.html" rel="alternate" type="text/html" title="Digital Devices" /><published>2019-06-26T09:30:00-05:00</published><updated>2019-06-26T09:30:00-05:00</updated><id>/blog_posts/2019/06/26/digital_devices</id><content type="html" xml:base="/blog_posts/2019/06/26/digital_devices.html">&lt;p&gt;&lt;img src=&quot;/assets/word_problems.jpg&quot; alt=&quot;word problems from Bill Waterson&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Calvin and Hobbes, by Bill Waterson&lt;/em&gt;&lt;/p&gt;
 
@@ -2280,7 +2539,7 @@
       &lt;p&gt;Yes, smell. A good engineer uses &lt;em&gt;most&lt;/em&gt; of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It’s a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don’t usually recommend the sense of taste for writing software. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Introduction to Electronics Pt 2 - the Digital Revolution</title><link href="http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital.html" rel="alternate" type="text/html" title="Introduction to Electronics Pt 2 - the Digital Revolution" /><published>2019-06-15T09:30:00-05:00</published><updated>2019-06-15T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/06/15/electronics_for_digital.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Introduction to Electronics Pt 2 - the Digital Revolution</title><link href="/blog_posts/2019/06/15/electronics_for_digital.html" rel="alternate" type="text/html" title="Introduction to Electronics Pt 2 - the Digital Revolution" /><published>2019-06-15T09:30:00-05:00</published><updated>2019-06-15T09:30:00-05:00</updated><id>/blog_posts/2019/06/15/electronics_for_digital</id><content type="html" xml:base="/blog_posts/2019/06/15/electronics_for_digital.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;A mentor from &lt;a href=&quot;https://www.thebluealliance.com/team/2102&quot;&gt;Team 2102&lt;/a&gt; had a great suggestion on how to re-work the electronics section to introduce things from a digital-first perspective. This post is a result of that rework, plus some extra facts I find useful.&lt;/p&gt;
 
@@ -2357,7 +2616,7 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;We’ve scratched the surface of Analog, and shown how you can start to go Digital. If you haven’t yet, go lay the groundwork of some basic Digital concepts with &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;Binary&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Boolean Logic</title><link href="http://localhost:4000/blog_posts/2019/06/14/boolean_logic.html" rel="alternate" type="text/html" title="Boolean Logic" /><published>2019-06-14T09:30:00-05:00</published><updated>2019-06-14T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/06/14/boolean_logic</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/06/14/boolean_logic.html">&lt;p&gt;&lt;em&gt;“All you need is NAND… ba da da da da” - &lt;a href=&quot;http://publish.illinois.edu/loui/&quot;&gt;Professor Michael Loui&lt;/a&gt;, 2010, UIUC&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;We’ve scratched the surface of Analog, and shown how you can start to go Digital. If you haven’t yet, go lay the groundwork of some basic Digital concepts with &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;Binary&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Boolean Logic</title><link href="/blog_posts/2019/06/14/boolean_logic.html" rel="alternate" type="text/html" title="Boolean Logic" /><published>2019-06-14T09:30:00-05:00</published><updated>2019-06-14T09:30:00-05:00</updated><id>/blog_posts/2019/06/14/boolean_logic</id><content type="html" xml:base="/blog_posts/2019/06/14/boolean_logic.html">&lt;p&gt;&lt;em&gt;“All you need is NAND… ba da da da da” - &lt;a href=&quot;http://publish.illinois.edu/loui/&quot;&gt;Professor Michael Loui&lt;/a&gt;, 2010, UIUC&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;combining-bits&quot;&gt;Combining Bits&lt;/h2&gt;
 
@@ -2871,330 +3130,4 @@
 
 &lt;p&gt;We’ve covered the basics of how bits can be combined and manipulated with fundamental logic gates. Moving forward, we’ll start to combine these gates into useful digital circuitry, building up to the main components of a computer processor.  Go check out &lt;a href=&quot;/blog_posts/2019/06/26/digital_devices.html&quot;&gt;Digital Devices&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Alternately, we’ll also cover some of the practical implications when building digital circuitry in the real world. For Extra Credit, check out &lt;a href=&quot;/blog_posts/2019/06/15/electronics_for_digital.html&quot;&gt;Electronics Part 2&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">“All you need is NAND… ba da da da da” - Professor Michael Loui, 2010, UIUC</summary></entry><entry><title type="html">Binary</title><link href="http://localhost:4000/blog_posts/2019/06/10/binary.html" rel="alternate" type="text/html" title="Binary" /><published>2019-06-10T09:30:00-05:00</published><updated>2019-06-10T09:30:00-05:00</updated><id>http://localhost:4000/blog_posts/2019/06/10/binary</id><content type="html" xml:base="http://localhost:4000/blog_posts/2019/06/10/binary.html">&lt;h2 id=&quot;representing-ideas-with-symbols&quot;&gt;Representing Ideas with Symbols&lt;/h2&gt;
-
-&lt;p&gt;Consider the following:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;16.&lt;/script&gt;
-
-&lt;p&gt;When you read that, what did you think? You probably said “sixteen” in your head, assuming you think in English. This is a very good answer.&lt;/p&gt;
-
-&lt;p&gt;What is “sixteen”, though? It’s a number, that’s for sure. It’s also an idea - a concept.&lt;/p&gt;
-
-&lt;p&gt;Here’s what I think of when you say “sixteen”:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sixteen.png&quot; alt=&quot;sixteen boxes&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Sixteen represents a quantity. There are sixteen boxes.&lt;/p&gt;
-
-&lt;iframe src=&quot;https://giphy.com/embed/69rOXF4YTDVDD6cwkt&quot; width=&quot;480&quot; height=&quot;378&quot; frameborder=&quot;0&quot; class=&quot;giphy-embed&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-&lt;p&gt;&lt;a href=&quot;https://giphy.com/gifs/69rOXF4YTDVDD6cwkt&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;No, Picard, there are 16 boxes.&lt;/p&gt;
-
-&lt;p&gt;We are using the sequence of symbols &lt;script type=&quot;math/tex&quot;&gt;16&lt;/script&gt; to represent this quantity. You’re already very familiar with how this works, but it’s important to dig into the details - it will lead us to a natural way to define the binary system used in computers.&lt;/p&gt;
-
-&lt;p&gt;There’s two things to take away from the symbol sequence &lt;script type=&quot;math/tex&quot;&gt;16.&lt;/script&gt;:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;It uses two symbols, &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt;, anchored around the decimal point &lt;script type=&quot;math/tex&quot;&gt;.&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;It puts them together in a particular order to give meaning to the quantity. &lt;script type=&quot;math/tex&quot;&gt;16.&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;61.&lt;/script&gt; are not the same.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The number system we’re talking about is commonly referred to as the &lt;a href=&quot;https://en.wikipedia.org/wiki/Hindu%E2%80%93Arabic_numeral_system&quot;&gt;Hindu-Arabic number system&lt;/a&gt;. It was invented in India in the first century, and quickly its way through the Middle East and into Europe by the Middle Ages.&lt;/p&gt;
-
-&lt;p&gt;It has a particular advantage over predicessor methods for representing numbers in two ways:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;There is a limited set of symbols to remember. For most modern mathematics, there are 10 symbols - &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;3&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;4&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;5&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;7&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;8&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;9&lt;/script&gt;. Each represents a particular quantity.&lt;/li&gt;
-  &lt;li&gt;The symbols are combined to represent quantities beyond the range of the symbol set. How it accomplishes this is really the &lt;a href=&quot;https://en.wikipedia.org/wiki/Secret_ingredient&quot;&gt;secret sauce&lt;/a&gt; to the whole system.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Each symbol is in some position relative to the “decimal point”. In English, we usually refer to them (from right to left) as the “ones place”, the “tens place”, the “hundreds place”, etc.&lt;/p&gt;
-
-&lt;p&gt;Because there is a &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; in the tens place, we multiply the quantity represented by &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; by ten. Then, this quantity is added in with the quantity represented by &lt;script type=&quot;math/tex&quot;&gt;6&lt;/script&gt;, which because it is in the ones place, is multiplied by one (aka nothing is done to it). Together, ten and six make for a quantity of 16.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sixteen_base_10.png&quot; alt=&quot;sixteen in base 10&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;the-concept-of-base&quot;&gt;The concept of “Base”&lt;/h3&gt;
-
-&lt;p&gt;What’s the point of splitting like this? Note that any number in base 10 can be broken into a sum of its component digits.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;16 = 1*10 + 6*1&lt;/script&gt;
-
-&lt;p&gt;This works, no matter how big the number gets.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;1736 = 1*1000 + 7*100 + 3*10 + 6*1&lt;/script&gt;
-
-&lt;p&gt;Notice the pattern on the &lt;script type=&quot;math/tex&quot;&gt;*1000&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;*100&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;*10&lt;/script&gt; and such?&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;1736 = 1*10^{3} + 7*10^{2} + 3*10^{1} + 6*10^{0}&lt;/script&gt;
-
-&lt;p&gt;Here’s the takeaway: in a positional number system, any quantity is represented by a sum of the digits, each multiplied by some “potency” factor associated with its position in the sequence.&lt;/p&gt;
-
-&lt;p&gt;This is why we say we are using a &lt;em&gt;Base 10&lt;/em&gt; number system - the “base” of the number raised to some power to get the “potency” of each digit.&lt;/p&gt;
-
-&lt;p&gt;You can create a generic formula using a summation:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;value = \sum_{i=0}^{i=N-1}D_i * 10^{i}&lt;/script&gt;
-
-&lt;p&gt;Where&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the number of digits in the symbol sequence&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;D_i&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;‘th digit in the symbol sequence, with 0 being nearest the decimal point.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;But here’s the crucial question - &lt;em&gt;why is 10 the base&lt;/em&gt;?&lt;/p&gt;
-
-&lt;p&gt;There’s lots of argument as to why it is the way it is - some say because you have 10 fingers. But the Mayans used base 20 (apparently they used their toes as well?), and the Babylonians used base 60 (???). Maybe the people who liked base 10 also happened to be the best at winning wars. For better or for worse, that’s how this sort of thing often gets decided.&lt;/p&gt;
-
-&lt;p&gt;However, the takeaway you should have - &lt;em&gt;it doesn’t have to be 10&lt;/em&gt;. And indeed in designing computing systems, there are better answers.&lt;/p&gt;
-
-&lt;h3 id=&quot;truefalse&quot;&gt;True/False&lt;/h3&gt;
-
-&lt;p&gt;Back in the 1800’s there was this guy named &lt;a href=&quot;https://en.wikipedia.org/wiki/George_Boole&quot;&gt;George Boole&lt;/a&gt; was creating a mathematical computation for logical reasoning. Key to this line of thought was describing, associating, and combining the concepts of “True” and “False”. Two opposite fundamentals. Two. Hey, maybe Two is a good number.&lt;/p&gt;
-
-&lt;p&gt;Two is also a nice “minimum viable product” for a set of symbols. Let’s think about what you can express using numbering systems that have varying numbers of symbols:&lt;/p&gt;
-
-&lt;h4 id=&quot;the-zero-symbol-system&quot;&gt;The zero-symbol system&lt;/h4&gt;
-&lt;p&gt;This system does not let you even write anything down. It is useless. Let us not waste another moment considering this.&lt;/p&gt;
-
-&lt;h4 id=&quot;the-one-symbol-system&quot;&gt;The one-symbol system&lt;/h4&gt;
-&lt;p&gt;This is effectively talley marks. Fair enough that it lets you start to express some ideas. However, you have to draw exactly the same number of symbols as the quantity you wish to express. You haven’t really gained anything here. If you already have sixteen boxes, do you need to draw sixteen lines somewhere to indicate that you have sixteen boxes? Seems sort of redundant. Why not just go out and count your boxes, and save the time of writing the talley marks? Maybe if you want to keep your own records. But then the other cavemen just make fun of you for being a nerd.&lt;/p&gt;
-
-&lt;p&gt;Strictly speaking, this isn’t a positional number system, since the position doesn’t matter (&lt;script type=&quot;math/tex&quot;&gt;1^{anything} = 1&lt;/script&gt;).&lt;/p&gt;
-
-&lt;p&gt;On the upside, addition just becomes string concatenation.&lt;/p&gt;
-
-&lt;p&gt;We need to go one higher to realize the benefits of the positional number system.&lt;/p&gt;
-
-&lt;h4 id=&quot;the-two-symbol-system&quot;&gt;The two-symbol system&lt;/h4&gt;
-
-&lt;p&gt;Let’s use this one.&lt;/p&gt;
-
-&lt;h3 id=&quot;truefalse-in-circuitry&quot;&gt;True/False in Circuitry&lt;/h3&gt;
-
-&lt;p&gt;Unfortunately for Boole, electricity wasn’t fully understood yet - certainly not to the point where people were looking for creative ways to harness it. The “algebra of logic” portion of his work didn’t realize its full potential during his lifetime. It wasn’t till the 1930’s that another fellow by the name of &lt;a href=&quot;https://en.wikipedia.org/wiki/Claude_Shannon&quot;&gt;Claude Shannon&lt;/a&gt; realized that these True/False concepts could be mapped to voltages and currents, and controlled be switches. As part of his Masters thesis, he showed circuitry that could perform the calculations described by Boole and his contemporaries.&lt;/p&gt;
-
-&lt;p&gt;The idea was extremely valuable. Perhaps not revolutionary - folks had been fiddling with analog devices that could do math, and later attempted trinary (base 3) and other exotic computer formats. However, the simplicity of designing circuits which only interpret “Voltage” or “No Voltage” has made such two-state designs far superior to any other option. Especially after the invention of the consumer-ready transistor later in the 1940s and 50s, true/false was here to stay.&lt;/p&gt;
-
-&lt;p&gt;For this reason, almost all modern computers do math and logic using a base-2 system.&lt;/p&gt;
-
-&lt;p&gt;Until we get to quantum computing. At which point, I’ll have to write another blog post.&lt;/p&gt;
-
-&lt;h2 id=&quot;math-and-conversions-in-binary&quot;&gt;Math and Conversions in Binary&lt;/h2&gt;
-
-&lt;p&gt;The formula for a number’s value is:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;value = \sum_{i=0}^{i=N-1}D_i * B^{i}&lt;/script&gt;
-
-&lt;p&gt;Where&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the number of digits in the symbol sequence&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;D_i&lt;/script&gt; is the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;‘th digit in the symbol sequence, with 0 being nearest the decimal point.&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; is the “base” of the number system.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Since we’re using base-2, the formula becomes&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;value = \sum_{i=0}^{i=N}D_i * 2^{i}&lt;/script&gt;
-
-&lt;p&gt;Let’s take a quick example of a binary number:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;10010.&lt;/script&gt;
-
-&lt;p&gt;Note the trailing &lt;script type=&quot;math/tex&quot;&gt;.&lt;/script&gt; for the anchor point - usually it’s left off, so we’ll start to do that here.&lt;/p&gt;
-
-&lt;p&gt;What quantity is &lt;script type=&quot;math/tex&quot;&gt;10010&lt;/script&gt; ? let’s plug and chug with our formula from above. The summation would unroll to:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;value = 1*2^{4} + 0*2^{3} + 0*2^{2} + 1*2^{1} + 0*2^{0}&lt;/script&gt;
-
-&lt;p&gt;Which simplifies down to:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;value = 2^{4} + 2^{1} = 16+2 = 18&lt;/script&gt;
-
-&lt;p&gt;There we go! A first conversion from binary to base 10!&lt;/p&gt;
-
-&lt;p&gt;If you want to go back the other way, all you have to do is decompose a base-10 number into powers of two. I’ll just write out the algorithm here, and then leave it as an exercise to the reader to attempt:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Start with your number being the number to convert.&lt;/li&gt;
-  &lt;li&gt;Find the largest position &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;2^i&lt;/script&gt; is &lt;em&gt;equal to or less than&lt;/em&gt; your number&lt;/li&gt;
-  &lt;li&gt;Place a 1 in this position.&lt;/li&gt;
-  &lt;li&gt;Subtract 1 from &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;., subtract &lt;script type=&quot;math/tex&quot;&gt;2^i&lt;/script&gt; from your number.&lt;/li&gt;
-  &lt;li&gt;If &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; is not yet zero, go to step 1.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;What I find super slick about this is that since binary is also a positional number system, just like the base-10 one you’re used to, all the arithmetic tricks and algorithms you learned in first through third grade still apply! Adding by lining up the digits, carrying spill-over to the next place, subtraction with borrowing, even long division - they all still work!&lt;/p&gt;
-
-&lt;h3 id=&quot;a-note-on-notation&quot;&gt;A note on Notation&lt;/h3&gt;
-
-&lt;p&gt;There are a lot of notations used “out in the wild” to indicate what base number system you are using. If you see a number, it’s sometimes safe to assume base 10, but sometimes not.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;There are 10 types of people in the world. Ones who understand binary, and ones who don’t&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Let’s not let this T-shirt prophecy come true.&lt;/p&gt;
-
-&lt;p&gt;Little subscripts on a number indicate it’s base. So &lt;script type=&quot;math/tex&quot;&gt;10_{10}&lt;/script&gt; is Ten. &lt;script type=&quot;math/tex&quot;&gt;10_{2}&lt;/script&gt; is Two. &lt;script type=&quot;math/tex&quot;&gt;100_{10}&lt;/script&gt; is one hundred, while &lt;script type=&quot;math/tex&quot;&gt;100_{2}&lt;/script&gt; is four. Obviously, something like &lt;script type=&quot;math/tex&quot;&gt;4523_{2}&lt;/script&gt; is nonsense and meaningless, and you should tell the author right away so they can correct their error.&lt;/p&gt;
-
-&lt;h2 id=&quot;representing-ideas-with-bytes&quot;&gt;Representing Ideas with Bytes&lt;/h2&gt;
-
-&lt;p&gt;We’ve shown how 1’s and 0’s can be assembled together to represent positive integers so far. This is a very very common usage within computing, and in general is the one processors are built around. However, there are a number of other options for interpreting a string of 1’s and 0’s.&lt;/p&gt;
-
-&lt;h3 id=&quot;truefalse-1&quot;&gt;True/False&lt;/h3&gt;
-
-&lt;p&gt;We’ve already mentioned this, but the most straightforward mapping of 1’s and 0’s to some concept is simply true and false.&lt;/p&gt;
-
-&lt;p&gt;Usually,&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;1 -&amp;gt; True -&amp;gt; “ON”&lt;/li&gt;
-  &lt;li&gt;0 -&amp;gt; False -&amp;gt; “OFF”&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;We’ll show later the reason why this interpretation is particularly powerful for making decisions and calculation.&lt;/p&gt;
-
-&lt;p&gt;Just like a single base-10 number is often called a “digit”, a single boolean 1 or 0 is called  &lt;em&gt;bit&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;positive-integers-continued&quot;&gt;Positive Integers (continued)&lt;/h3&gt;
-
-&lt;h4 id=&quot;vocabulary&quot;&gt;Vocabulary&lt;/h4&gt;
-
-&lt;p&gt;Also as we just showed above, positive integers can be calculated by treating 1’s and 0’s as a base-2 number system. This covers a big chunk of the things we want to represent.&lt;/p&gt;
-
-&lt;p&gt;It’s also convenient to group sets of 4, 8, 16, 32, or 64 bits into integers to keep track of them easier - even if you are not necessarily trying to represent a number. It’s all 1’s and 0’s at the end of the day, so whatever representation makes life easiest, use that one!&lt;/p&gt;
-
-&lt;p&gt;In general, 8 bits is referred to as a &lt;em&gt;byte&lt;/em&gt;. Because computer scientists are often cute, they call 4 bits a &lt;em&gt;nibble&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Most modern computers work will do computation on more than one byte at a time. A &lt;em&gt;word&lt;/em&gt; is a set of one or more bytes, which the computer works on at the same time.&lt;/p&gt;
-
-&lt;p&gt;Within a word, bits must be ordered. The bit closest to the “anchor point” in the “ones” position, is called the &lt;em&gt;Least Significant Bit&lt;/em&gt; or &lt;em&gt;LSB&lt;/em&gt;. The bit at the opposite end, furthest from the decimal point, is called the &lt;em&gt;Most Significant Bit&lt;/em&gt; or &lt;em&gt;MSB&lt;/em&gt; or &lt;em&gt;leading bit&lt;/em&gt;. Note that similar acronyms are also applied to the first and last byte of a word, so you may need some context to figure out what the author refers to. Capital letter B often means byte, lower-case letter b often means bit.&lt;/p&gt;
-
-&lt;h4 id=&quot;historical-perspective-on-byte-width&quot;&gt;Historical Perspective on Byte Width&lt;/h4&gt;
-
-&lt;p&gt;Tiny embedded processors are often still 8-bit (one-byte word). For many years, 32-bit computers (4-byte words) were the standard. Within the last few years 64-bit (8-byte) words has become standard. Later blog posts will delve further into exactly what this implies, but for now just think of it as “how many bits can the computer work on at once”.&lt;/p&gt;
-
-&lt;p&gt;Special-purpose computers can have more exotic word-sizes. The older &lt;a href=&quot;https://en.wikipedia.org/wiki/Nintendo_64&quot;&gt;Nintendo 64 gaming console&lt;/a&gt; was one of the first instances of using 64-bit processors in consumer devices, and that was back in the early 1990’s. Even before that, 24 bit processors were common in some audio applications, as 24 bits was considered “good enough” to represent audio that humans could hear. Graphics processing frequently goes big - some bleeding edge graphics cards have parts that work on 512 bits at a time!.&lt;/p&gt;
-
-&lt;p&gt;If you use every bit in a word to represent a positive integer, there is a fixed range of numbers you can represent. All bits off of course corresponds to a value of &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;. For an &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; bit word, all bits on represents a value of &lt;script type=&quot;math/tex&quot;&gt;2^{N} - 1&lt;/script&gt; (proof left as exercise to the reader). For example, a 32-bit integer can represent values between 0 and 4294967295. It’s a really big range, but it’s not without its limits!&lt;/p&gt;
-
-&lt;p&gt;When you treat a set of bits as only positive integers, you are said to be doing &lt;em&gt;unsigned math&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;negative-integers&quot;&gt;Negative Integers&lt;/h3&gt;
-
-&lt;p&gt;Representing negative numbers in a nice way is a bit of a challenge. The truth is you could pick any scheme you want to map sequences of 1’s and 0’s to numbers, but you want to do it in a way that makes calculation easy. If you had to hard code every &lt;script type=&quot;math/tex&quot;&gt;X-Y&lt;/script&gt; combination into your software, you’d get tired and frustrated pretty fast. A healthy dose of laziness is the mark of a good engineer.&lt;/p&gt;
-
-&lt;p&gt;The good news is that the most commonly used system is pretty darn good. It’s called &lt;a href=&quot;https://en.wikipedia.org/wiki/Two%27s_complement&quot;&gt;&lt;em&gt;Two’s Compliment&lt;/em&gt;&lt;/a&gt;. We won’t delve too much into it, but suffice to say it has the following properties:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The Most Significant Bit represents the sign of the number. 0 means positive, 1 means negative.&lt;/li&gt;
-  &lt;li&gt;When the leading bit is 0, bits are interpreted the same way as unsigned integers.&lt;/li&gt;
-  &lt;li&gt;When the leading bit is 1, for an N bit number, the value is equal to &lt;script type=&quot;math/tex&quot;&gt;(-1) * 2^{N} + X&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; is the unsigned value of the first &lt;script type=&quot;math/tex&quot;&gt;N-1&lt;/script&gt; bits.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Therefor, a 2’s complement number will have range &lt;script type=&quot;math/tex&quot;&gt;(-1) * 2^{N-1}&lt;/script&gt; to &lt;script type=&quot;math/tex&quot;&gt;2^{N-1} - 1&lt;/script&gt;. Proof is again left as an exercise to the reader.&lt;/p&gt;
-
-&lt;p&gt;For example, when &lt;script type=&quot;math/tex&quot;&gt;N=8&lt;/script&gt;,&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Base 2&lt;/th&gt;
-      &lt;th&gt;Base 10&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;01111111&lt;/td&gt;
-      &lt;td&gt;127&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;01111110&lt;/td&gt;
-      &lt;td&gt;126&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;…&lt;/td&gt;
-      &lt;td&gt;…&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;00000010&lt;/td&gt;
-      &lt;td&gt;2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;00000001&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;00000000&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;11111111&lt;/td&gt;
-      &lt;td&gt;-1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;11111110&lt;/td&gt;
-      &lt;td&gt;-2&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;…&lt;/td&gt;
-      &lt;td&gt;…&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;10000001&lt;/td&gt;
-      &lt;td&gt;-127&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;10000000&lt;/td&gt;
-      &lt;td&gt;-128&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;The key advantage of doing it this way is spelled out in more detail on wikipedia. In short - addition and subtraction &lt;em&gt;just work&lt;/em&gt;, without anything special. If you add up -1 and 1, and allow for the carried bit to “fall off” the end of the 8 bit calculation, you get 0.&lt;/p&gt;
-
-&lt;p&gt;As you maybe already see, the 2’s compliment pattern is technically circular when the bit width is fixed (as it is in all processors). When you are working with 8 bit integers, and add 1 to 127, in bits, you get &lt;script type=&quot;math/tex&quot;&gt;01111111_2 + 00000001_2 = 10000000_2 = -128_{10}&lt;/script&gt;. This is often called &lt;em&gt;overflow&lt;/em&gt; or &lt;em&gt;wraparound&lt;/em&gt;. It’s unintuitive at first, but usually indicates a problem with your software - adding two positive numbers should not create a negative one. Some processors can detect this and raise an alarm.&lt;/p&gt;
-
-&lt;p&gt;When writing software and designing hardware, use caution when depending on rollover behavior. It’s not always obvious without sufficient documentation, and if anyone accidentally changes variable bit width in the future, they’ll be in for a world of hurt figuring out why the code doesn’t work anymore.&lt;/p&gt;
-
-&lt;p&gt;When you treat a set of bits as 2’s compliment integers, you are said to be doing &lt;em&gt;signed math&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;fractional-numbers&quot;&gt;Fractional Numbers&lt;/h3&gt;
-
-&lt;p&gt;Most engineering values in the real world aren’t nice round integers. We need a way to represent some value like &lt;script type=&quot;math/tex&quot;&gt;1.4623&lt;/script&gt;. In broad strokes, there are two ways this is accomplished.&lt;/p&gt;
-
-&lt;h4 id=&quot;fixed-point&quot;&gt;Fixed Point&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Fixed-point_arithmetic&quot;&gt;Fixed Point&lt;/a&gt; is largely the historical way that fractional numbers were represented. There’s some more formal math that goes into it, but the best way I know to think of it is that each “bit” represents some fraction of an engineering unit. For example, you could say that a particular variable is scaled at “0.25 RPM per Bit”, implying that the real-world engineering value is always equal to 1/4th the value of the integer you read in software.&lt;/p&gt;
-
-&lt;p&gt;This makes it very easy to store a fraction - it’s no different than a normal integer. The only thing to be careful of is when you store, read, or perform math with the stored value - you have to be careful to build in additional conversion factors to make your formulas work properly.&lt;/p&gt;
-
-&lt;p&gt;This small bit of extra math can easily be optimized at build time though, so the method is still quite low overhead at runtime. For this reason, it’s usually the best choice when execution speed is of the utmost importance on resource-limited embedded processors.&lt;/p&gt;
-
-&lt;p&gt;As you can probably see, there is an obvious limit to the size of the “step” you can represent. In our above example, we can exactly represent a reading of 7.75 RPM, but not 7.8 RPM. The more granularity you desire, the less min/max range you get.&lt;/p&gt;
-
-&lt;h4 id=&quot;floating-point&quot;&gt;Floating Point&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Floating-point_arithmetic&quot;&gt;Floating Point&lt;/a&gt; is the “newer” way to represent fractional numbers. Floating Point is covered by &lt;a href=&quot;https://en.wikipedia.org/wiki/Institute_of_Electrical_and_Electronics_Engineers&quot;&gt;IEEE&lt;/a&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Double-precision_floating-point_format&quot;&gt;standards documents&lt;/a&gt;, which show how to split a number into an exponential representation, then pack it into bits. Again, the mapping is chosen carefully to make the math easy to do while a program is executing.&lt;/p&gt;
-
-&lt;p&gt;Floating point is still pretty complex to do by hand. Most modern processors include hardware units to support doing the math. These are not quite as fast as doing integer math, but are far faster than doing it “long hand” within your software implementation.&lt;/p&gt;
-
-&lt;p&gt;Due to the proliferation of floating point support in hardware, it’s becoming more and more the standard for how to do engineering math in embedded systems. For FRC robotics purposes, I would recommend using it. Only in cases of extreme optimization does it make sense to go back to using fixed point (or other) representations. However, keep in mind that it does bear a small performance penalty - try not to use floating point math for doing things like counting, where the fractional portion will never be needed.&lt;/p&gt;
-
-&lt;h3 id=&quot;letters&quot;&gt;Letters&lt;/h3&gt;
-
-&lt;p&gt;Beyond numbers, there are a lot of other things you might want to represent. Letters are a common one - any time you print something to console, you have to represent a string of characters that forms English words that some human can understand quickly.&lt;/p&gt;
-
-&lt;p&gt;To do this, there was again a &lt;a href=&quot;https://en.wikipedia.org/wiki/ASCII&quot;&gt;standard, called ASCII,&lt;/a&gt; put together to map sequences of bits to letters in the alphabet. They started with just the common English/Latin characters, plus a handful of helper symbols and codes designed around how typewriters printed out letters (see &lt;a href=&quot;https://en.wikipedia.org/wiki/Carriage_return&quot;&gt;Carriage Return&lt;/a&gt; and &lt;a href=&quot;https://en.wikipedia.org/wiki/Newline&quot;&gt;Line Feed&lt;/a&gt;). Later standards like &lt;a href=&quot;https://en.wikipedia.org/wiki/UTF-8&quot;&gt;UTF-8&lt;/a&gt; and similar expanded upon this, and &lt;a href=&quot;https://xkcd.com/1726/&quot;&gt;continue to expand&lt;/a&gt; to get more and more languages and systems of writing represented and displayed in computer systems.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;We’ve done an overview of some of the methods used to map 1’s and 0’s to various ideas. Going forward, just keep in mind that there exists a number of ways to transform a sequence of 1’s and 0’s into numbers, fractions, letters, and beyond.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;There are 10 types of people in the world. Ones who understand binary, ones who don’t, and ones who don’t expect base-3&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;We know some basics about the nature of 1’s and 0’s. Next, we’ll learn how to combine them together. Check out &lt;a href=&quot;/blog_posts/2019/06/14/boolean_logic.html&quot;&gt;Boolean Logic&lt;/a&gt; for more details!&lt;/p&gt;</content><author><name></name></author><summary type="html">Representing Ideas with Symbols</summary></entry></feed>
+&lt;p&gt;Alternately, we’ll also cover some of the practical implications when building digital circuitry in the real world. For Extra Credit, check out &lt;a href=&quot;/blog_posts/2019/06/15/electronics_for_digital.html&quot;&gt;Electronics Part 2&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">“All you need is NAND… ba da da da da” - Professor Michael Loui, 2010, UIUC</summary></entry></feed>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>C to Assembly | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="C to Assembly" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)" />
+<meta property="og:description" content="“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)" />
+<link rel="canonical" href="/blog_posts/2019/08/17/c_to_assembly.html" />
+<meta property="og:url" content="/blog_posts/2019/08/17/c_to_assembly.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-08-17T09:30:40-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/08/17/c_to_assembly.html"},"url":"/blog_posts/2019/08/17/c_to_assembly.html","description":"“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)","headline":"C to Assembly","@type":"BlogPosting","dateModified":"2019-08-17T09:30:40-05:00","datePublished":"2019-08-17T09:30:40-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">C to Assembly</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-08-17T09:30:40-05:00" itemprop="datePublished">Aug 17, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><em>“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in <a href="https://web.mit.edu/alexmv/6.037/sicp.pdf">“The Structure and Interpretation of Computer Programs”</a>)</em></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This post is going to be like the ending of a Hallmark movie. If you’ve been even mildly following so far, you could have predicted it from a mile away. What we’re about to do is show how C code gets transformed into x86 assembly. With this keystone topic in place we now see the full cascade:</p>
+
+<ol>
+  <li>C syntax is built into assembly instructions</li>
+  <li>Assembly instructions are built into bits</li>
+  <li>Bits are loaded into RAM</li>
+  <li>RAM is used to evolve the state of registers in a processor over time</li>
+  <li>Registers in the processor, and the logic gluing them together, are built up from logic gates</li>
+  <li>Logic gates are built up from transistors</li>
+  <li>Transistors are analog electrical components that follow basic laws of physics</li>
+</ol>
+
+<p>With this capstone, you’ll have a <em>very</em> good grasp of the same background knowledge that’s sitting inside my head as I write code. Not all the knowledge, and not all the answers for sure - but you’ll know enough to <em>know how to ask questions</em>. This is probably the biggest thing I run into while doing technical work. For better or worse, <em>you don’t know what you don’t know</em>. It’s impossible to get all the knowledge into your head at once. What you do want to get into your head is a framework for how things work - this way, when it matters, you know what to go look up - how to start a search for the info you actually need. We’ll always have textbooks and the Internet for that.</p>
+
+<p>Finding the answer is easy. Finding the question is hard.</p>
+
+<p><a href="https://en.wikiquote.org/wiki/Family_Guy/Season_6">But I digest.</a> On to our inevitable conclusion…</p>
+
+<h2 id="c-code-to-x86">C code to x86</h2>
+
+<p>Even though it’s not directly applicable to FRC robots, let’s do a brief description of how C code turns into bits on a processor. If you’re in C++ the process will be extremely similar. Java a little bit less similar (the tools have different names and act at different times, but ultimately do the same job). Labview will be out of scope for now, <a href="http://www.ni.com/tutorial/11472/en/">though NI does have some good documentation on how they do their thing</a>.</p>
+
+<h3 id="basics-of-the-compilation-process">Basics of the Compilation Process</h3>
+
+<h4 id="toolchain">Toolchain</h4>
+
+<p>In C code land, the there are two tools that work together to create bits.</p>
+
+<p>The <em>Compiler</em> is responsible for converting the .c text files into <em>mostly</em> 1’s and 0’s which can be run on the processor. However, it doesn’t compute the final layout in memory - it’s designed to work on single .c files at a time. In a multi-file project, files frequently access variables defined in other files. To account for this, the compiler will assign placeholders to things it knows about, or is <em>promised</em> will exist elsewhere. The results of this operation produces <em>object files</em>, frequently named the same as the source code file, with the file extension <em>.o</em>.</p>
+
+<p>The <em>Linker</em> is responsible pulling together all the various .o files created by the compiler, along with any built-in system libraries (like, where functions like <code class="highlighter-rouge">printf()</code> are implemented for your machine), and creating the final .exe. This means the <em>linker</em> creates the final memory address layout, and is what actually confirms that all the variable placeholders that were promised actually exist.</p>
+
+<p>For simple projects, these steps often happen together in the same executable, right after each other, transparent to the user. More complex projects split the steps up and manually coordinate them using a <em>make</em> utility.</p>
+
+<p>For our discussion, we’re going to focus on how the <em>Compiler</em> does its work, carefully avoiding some of the hoops the linker has to jump through. It will be an abbreviated process that works for small files, which will be sufficient to start learning.</p>
+
+<h4 id="lexing--parsing--compiling--linking-oh-my">Lexing &amp; Parsing &amp; Compiling &amp; Linking, oh my!</h4>
+
+<p>The compiler’s job is generally divided into 3 phases.</p>
+
+<p>The first step is to walk through the input file line by line, and separate out each part of each statement. For example, given <code class="highlighter-rouge">out = in * 6.0 + 5/in2;</code>, the first step is to identify that the character strings <code class="highlighter-rouge">out</code>, <code class="highlighter-rouge">in</code>, and <code class="highlighter-rouge">in2</code> are variables, <code class="highlighter-rouge">6.0</code> and <code class="highlighter-rouge">5</code> are constants, and <code class="highlighter-rouge">=</code>, <code class="highlighter-rouge">*</code>, <code class="highlighter-rouge">+</code>, and <code class="highlighter-rouge">/</code> are all math and assignment operations. Sometimes, when you see <em>syntax errors</em>, they come from this first step, where the compiler can’t properly separate out a line into known components. Each of these components is called a <em>token</em>.</p>
+
+<p>The second step is to build up a representation of which variables are related to each other, into something called an <a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree"><em>abstract syntax tree</em></a> (or AST). In our previous example, this representation would show the hierarchy of how <code class="highlighter-rouge">in</code> is being multiplied by <code class="highlighter-rouge">6</code>, and how that result must be added with <code class="highlighter-rouge">5</code> divided by another variable named <code class="highlighter-rouge">in2</code>, and how that whole thing gets stored into a variable named <code class="highlighter-rouge">out</code>.</p>
+
+<p>The advantage of generating this intermediate representation is having the ability to further understand how each element of code is related to each other. It is the representation that makes it easy to identify when variables haven’t been declared properly (or were misspelled), when variables are read before they are written to, or when code statements don’t actually have any effect on program execution.</p>
+
+<p>After generating and analyzing the AST, the compiler can finally start to generate assembly instructions. Memory locations for variables are laid out as needed, appropriate assembly functions are chosen to perform the associations described by the tree.</p>
+
+<p>The <em>exact</em> specifics, of course, will vary language to language, and compiler to compiler. Digging into the specifics of how a particular version of a particular compiler is academically interesting, but actually violates the intent - the Compiler is a tool to be trusted to take your C code, and turn it into executable files. You can always deconstruction what happened if you need to, but generally you won’t need to do that!</p>
+
+<h3 id="examples">Examples</h3>
+
+<p>Still though, let’s dig into a few examples concretely of how this would play out. We’ll be doing things simply enough such that we won’t be simmulating the full compiler process, but jumping straight to assembly code.</p>
+
+<h4 id="variables-and-math">Variables and Math</h4>
+
+<p>Let’s take a super simple example. In C code:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">output</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">input1</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">input2</span> <span class="o">=</span> <span class="mi">43</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">input1</span> <span class="o">+</span> <span class="n">input2</span><span class="o">*</span><span class="mi">5</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>This super trivial program calculates a new value for the variable <code class="highlighter-rouge">output</code>. It’s good that all the variables we’re using are declared, and the program is free of syntax errors.</p>
+
+<p>To get something like this in assembly code, we’ll need a few things:</p>
+
+<ol>
+  <li>Three memory addresses to hold our three variables</li>
+  <li>A segment of code to implement the <code class="highlighter-rouge">main()</code> function</li>
+  <li>Assembly instructions that work from the <em>inside outward</em> on our one line of code that does real computation.</li>
+</ol>
+
+<p>Since this is pretty straightforward, let’s just jump right in!</p>
+
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">section</span> <span class="p">.</span><span class="n">text</span>
+
+<span class="n">_main</span><span class="o">:</span>
+    <span class="k">mov</span>  <span class="n">EAX</span><span class="p">,</span> <span class="p">[input2]</span>   <span class="c">; Load the inner-most input</span>
+    <span class="k">imul</span> <span class="n">EAX</span><span class="p">,</span> <span class="mi">5</span>          <span class="c">; perform input2*5</span>
+    <span class="k">add</span>  <span class="n">EAX</span><span class="p">,</span> <span class="p">[input1]</span>   <span class="c">; add input1 to that result</span>
+    <span class="k">mov</span>  <span class="p">[output],</span> <span class="n">EAX</span>   <span class="c">; move the full calculation out to the output variable</span>
+
+    <span class="c">; We are done executing - return control to the operating system</span>
+    <span class="k">retn</span> 
+
+<span class="c">; ----------------------------------------------------------------------------</span>
+<span class="c">; Global Variables</span>
+
+<span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
+    <span class="n">output</span>      <span class="kt">DD</span> <span class="mi">5</span>
+    <span class="n">input1</span>      <span class="kt">DD</span> <span class="mi">25</span>
+    <span class="n">input2</span>      <span class="kt">DD</span> <span class="mi">43</span>
+</code></pre></div></div>
+
+<h4 id="if-statements">If Statements</h4>
+
+<p><code class="highlighter-rouge">If</code> statements get a bit more complex. One basic strategy is to compute the condition on the inside of the <code class="highlighter-rouge">()</code>’s, then use <code class="highlighter-rouge">cmp</code>/<code class="highlighter-rouge">jmp</code> to go to different sections of code. Choose a flavor of <code class="highlighter-rouge">jmp</code> to match the condition. Finally, use unconditional <code class="highlighter-rouge">jmp</code>’s to “rejoin” code after execution has completed.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">output</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">input1</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">input2</span> <span class="o">=</span> <span class="mi">43</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">input1</span> <span class="o">&gt;</span> <span class="n">input2</span><span class="p">){</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">output</span> <span class="o">+</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Similar to above, we create global variables, and produce some reasonable-looking assembly instructions:</p>
+
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">section</span> <span class="p">.</span><span class="n">text</span>
+
+<span class="n">_main</span><span class="o">:</span>
+    <span class="k">mov</span>  <span class="n">EAX</span><span class="p">,</span> <span class="p">[input1]</span>   <span class="c">; Load the inputs</span>
+    <span class="k">mov</span>  <span class="n">EBX</span><span class="p">,</span> <span class="p">[input2]</span>   
+
+    <span class="k">cmp</span> <span class="n">EAX</span><span class="p">,</span> <span class="n">EBX</span>         <span class="c">; Run comparison operation</span>
+    <span class="k">jle</span> <span class="n">_else_start</span>      <span class="c">; Jump to else if condition is not satisfied</span>
+
+<span class="n">_if_start</span><span class="o">:</span>
+    <span class="k">mov</span> <span class="n">ECX</span><span class="p">,</span> <span class="mi">7</span>
+    <span class="k">jmp</span> <span class="n">_after_if</span>
+
+<span class="n">_else_start</span><span class="o">:</span>
+    <span class="k">mov</span> <span class="n">ECX</span><span class="p">,</span> <span class="p">[output]</span>
+    <span class="k">imul</span> <span class="n">ECX</span><span class="p">,</span> <span class="mi">2</span>
+
+<span class="n">_after_if</span><span class="o">:</span>
+    <span class="k">add</span> <span class="n">ECX</span><span class="p">,</span> <span class="mi">5</span>
+    <span class="k">mov</span> <span class="p">[output],</span> <span class="n">ECX</span>
+
+    <span class="c">; We are done executing - return control to the operating system</span>
+    <span class="k">retn</span> 
+
+<span class="c">; ----------------------------------------------------------------------------</span>
+<span class="c">; Global Variables</span>
+
+<span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
+    <span class="n">output</span>      <span class="kt">DD</span> <span class="mi">5</span>
+    <span class="n">input1</span>      <span class="kt">DD</span> <span class="mi">25</span>
+    <span class="n">input2</span>      <span class="kt">DD</span> <span class="mi">43</span>
+</code></pre></div></div>
+
+<p>There are a few interesting things to note here.</p>
+
+<p>Since we have a limited number of variables, we make the assumption that <code class="highlighter-rouge">EAX</code> will correspond to <code class="highlighter-rouge">input1</code>, <code class="highlighter-rouge">EBX</code> will correspond to <code class="highlighter-rouge">input2</code>, and <code class="highlighter-rouge">ECX</code> will correspond to <code class="highlighter-rouge">output</code>. Before using the registers we load them from their global variables, and then move back to memory at the very end.</p>
+
+<p>Note that even though in C code we compare if <code class="highlighter-rouge">input1</code> is <em>greater</em> than <code class="highlighter-rouge">input2</code>, in assembly we use a <code class="highlighter-rouge">jle</code> - or <em>jump if less than or equal to</em>. This is because we chose to check the <em>opposite</em> of the C code condition, and jump to the <em>else</em> statement. We also could have done the comparison more akin to the C code:</p>
+
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_main</span><span class="o">:</span>
+    <span class="p">...</span>
+
+    <span class="k">cmp</span> <span class="n">EAX</span><span class="p">,</span> <span class="n">EBX</span>         <span class="c">; Run comparison operation</span>
+    <span class="k">jg</span>  <span class="n">_if_start</span>
+    <span class="k">jmp</span> <span class="n">_else_start</span>
+
+<span class="n">_if_start</span><span class="o">:</span>
+    <span class="p">...</span>
+
+<span class="n">_else_start</span><span class="o">:</span>
+    <span class="p">...</span>
+</code></pre></div></div>
+
+<p>However, this requires two assembly instructions, so it’s a slightly larger program. Most compilers are capable of generating code both ways, and allow you to tell it “optimize for speed” or “optimize for program size”, and it will choose between options like these to best fit your needs.</p>
+
+<p>Note that <code class="highlighter-rouge">output</code> actually acts as an input of sorts, in the body of the <code class="highlighter-rouge">else</code> statement. Therefor, in the assembly code, we can <em>delay</em> loading <code class="highlighter-rouge">ECX</code> from memory until we know for sure we need it - this helps prevent unnecessary operations.</p>
+
+<p>Note also the lack of a <code class="highlighter-rouge">jmp</code> at the end of section <code class="highlighter-rouge">_else_start</code>. It’s not needed, since the next operation is always the <code class="highlighter-rouge">_after_if</code> statement. We can save a tiny bit of memory by not putting it in, as the processor will do the right thing without it naturally.</p>
+
+<h4 id="for-loop">For Loop</h4>
+
+<p>A <code class="highlighter-rouge">for</code> loop is more or less a combination of the IF statement, with a bit of creative jumping. Take for example this simple C code:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="n">output</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">input1</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">){</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">iter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">iter</span> <span class="o">&lt;</span> <span class="n">input1</span><span class="p">;</span> <span class="n">iter</span><span class="o">++</span><span class="p">){</span>
+        <span class="n">output</span> <span class="o">+=</span> <span class="n">input1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>In yet another contrived example, we take some input value (25 here), and for that many loops, add the input into some other variable called <code class="highlighter-rouge">output</code>. After <code class="highlighter-rouge">input1</code> loops, we are done. In assembly, the compiler will have to add the logic of checking “if done”, jumping <em>back</em> in time if needed to repeat the code. The assembly code could produce something like this:</p>
+
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">section</span> <span class="p">.</span><span class="n">text</span>
+
+<span class="n">_main</span><span class="o">:</span>
+    <span class="k">mov</span>  <span class="n">EAX</span><span class="p">,</span> <span class="p">[input1]</span>   <span class="c">; Load the inputs. EAX will hold input1</span>
+    <span class="k">mov</span>  <span class="n">EBX</span><span class="p">,</span> <span class="p">[iter]</span>     <span class="c">; EBX will hold our value for iter</span>
+    <span class="k">mov</span>  <span class="n">ECX</span><span class="p">,</span> <span class="p">[output]</span>   <span class="c">; ECX will hold our value for output.</span>
+
+    <span class="k">mov</span> <span class="n">EBX</span><span class="p">,</span> <span class="mi">0</span>           <span class="c">; Perform Loop startup code, "iter=0"</span>
+
+<span class="n">_loop_check</span><span class="o">:</span>
+    <span class="k">cmp</span> <span class="n">EBX</span><span class="p">,</span> <span class="n">EAX</span>         <span class="c">; Run comparison operation</span>
+    <span class="k">jl</span> <span class="n">_loop_body_start</span>  <span class="c">; if iter &lt; input1, run a loop</span>
+    <span class="k">jmp</span> <span class="n">_loop_body_end</span>   <span class="c">; Otherwise, we are done. Skip past the loop body to the end</span>
+
+<span class="n">_loop_body_start</span><span class="o">:</span>
+    <span class="k">add</span> <span class="n">ECX</span><span class="p">,</span> <span class="n">EAX</span>         <span class="c">; Run the loop body code. In our case, this is just "output += input1" </span>
+
+    <span class="k">add</span> <span class="n">EBX</span><span class="p">,</span> <span class="mi">1</span>           <span class="c">; Perform the loop iteration code, "iter++"</span>
+    <span class="k">jmp</span> <span class="n">_loop_check</span>      <span class="c">; Go back up to check the iteration condition</span>
+
+<span class="n">_loop_body_end</span><span class="o">:</span>
+
+    <span class="k">mov</span> <span class="p">[output],</span> <span class="n">ECX</span>    <span class="c">; Return the newly calculated values to their memory locations</span>
+    <span class="k">mov</span> <span class="p">[iter],</span> <span class="n">EBX</span>
+
+    <span class="c">; We are done executing - return control to the operating system</span>
+    <span class="k">retn</span> 
+
+<span class="c">; ----------------------------------------------------------------------------</span>
+<span class="c">; Global Variables</span>
+
+<span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
+    <span class="n">output</span>      <span class="kt">DD</span> <span class="mi">0</span>
+    <span class="n">input1</span>      <span class="kt">DD</span> <span class="mi">25</span>
+    <span class="n">iter</span>        <span class="kt">DD</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<p>Note you can see distinct instructions for all the major components of our standard <code class="highlighter-rouge">for</code> loop - the initialization, the loop condition check, the iteration logic, and of course the contents of the <code class="highlighter-rouge">for</code> loop body itself.</p>
+
+<h2 id="notes">Notes</h2>
+
+<p>It should be strongly noted that the examples here are for demonstration purposes only - they show <em>one</em> possible way to translate <em>specific examples</em> of higher-level language (C) into a lower level language (x86 asm). More experienced readers may observe that I’ve casually skirted concepts like local variables, the .bss segment, function calls, debugging symbols, optimization, not-always-storing-variables-in-registers, and a whole host of other compiler-related topics that are relevant if you want to write your own compiler. However, though that may be a post one day, it’s not the purpose of this post.</p>
+
+<p>All a reader should walk away with is a simple understanding - Higher level languages <em>can</em> be translated to lower level languages. The syntax of each language defines the constraints on how such a translation will happen, which in turn is what drives the rules on why we write programs the way we do.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>And this, sadly, is the end of our initial training. We’ve walked ourselves all the way from base physics and math principles, up through the way that boolean logic can be used to perform useful computation, and how circuits can implement that logic and store data. We’ve looked at how to assemble the circuitry into a useful architecture, which can store and execute instructions. And finally, we’ve looked at how the high level languages we are familiar with get translated into those instructions. It is indeed a lot of information, and you shoudl be proud that you have made it to this point.</p>
+
+<p>But, the work is not yet complete! Expect many more blog posts. We have so much more to discuss about software - both the hard technical skills, and the soft skills of working on a software development team.</p>
+
+<p>Stay tuned for many more. And until next time, happy coding!</p>
+
+<h2 id="next-steps---where-are-we-going">Next Steps - Where are we going?</h2>
+
+<p>To be honest, I am no sure yet. Maybe go get yourself some food.</p>
+
+<p>If you’re not hungry, go back to the home page and find another blog post!</p>
+
+  </div><a class="u-url" href="/blog_posts/2019/08/17/c_to_assembly.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>
