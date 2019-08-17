@@ -193,5 +193,80 @@ Note also the lack of a `jmp` at the end of section `_else_start`. It's not need
 
 #### For Loop
 
+A `for` loop is more or less a combination of the IF statement, with a bit of creative jumping. Take for example this simple C code:
+
+```c
+int output = 0;
+int input1 = 25;
+int iter = 0;
+
+void main(void){
+    for(iter = 0; iter < input1; iter++){
+        output += input1;
+    }
+    return;
+}
+```
+
+In yet another contrived example, we take some input value (25 here), and for that many loops, add the input into some other variable called `output`. After `input1` loops, we are done. In assembly, the compiler will have to add the logic of checking "if done", jumping _back_ in time if needed to repeat the code. The assembly code could produce something like this:
+
+
+```nasm
+section .text
+
+_main:
+    mov  EAX, [input1]   ; Load the inputs. EAX will hold input1
+    mov  EBX, [iter]     ; EBX will hold our value for iter
+    mov  ECX, [output]   ; ECX will hold our value for output.
+
+    mov EBX, 0           ; Perform Loop startup code, "iter=0"
+
+_loop_check:
+    cmp EBX, EAX         ; Run comparison operation
+    jl _loop_body_start  ; if iter < input1, run a loop
+    jmp _loop_body_end   ; Otherwise, we are done. Skip past the loop body to the end
+
+_loop_body_start:
+    add ECX, EAX         ; Run the loop body code. In our case, this is just "output += input1" 
+
+    add EBX, 1           ; Perform the loop iteration code, "iter++"
+    jmp _loop_check      ; Go back up to check the iteration condition
+
+_loop_body_end:
+
+    mov [output], ECX    ; Return the newly calcualted values to their memory locations
+    mov [iter], EBX
+
+    ; We are done executing - return control to the operating system
+    retn 
+
+; ----------------------------------------------------------------------------
+; Global Variables
+
+section .data
+    output      DD 0
+    input1      DD 25
+    iter        DD 0
+```
+
+The key here is that 
+
+## Notes
+
+It should be strongly noted that the examples here are for demonstration purposes only - they show _one_ possible way to translate _specific examples_ of higher-level language (C) into a lower level language (x86 asm). More experienced readers may observe that I've casually skirted concepts like local variables, the .bss segment, function calls, debugging symbols, optimization, not-always-storing-variables-in-registers, and a whole host of other compiler-related topics that are relevant if you want to write your own compiler. However, though that may be a post one day, it's not the purpose of this post. 
+
+All a reader should walk away with is a simple understanding - Higher level languages _can_ be translated to lower level languages. The syntax of each language defines the constraints on how such a translation will happen, which in turn is what drives the rules on why we write programs the way we do.
+
+## Conclusion
+
+And this, sadly, is the end of our inital training. We've walked ourselves all the way from base physics and math principles, up through the way that boolean logic can be used to perform useful computation, and how circuits can implement that logic and store data. We've looked at how to assemble the circuitry into a useful architecture, which can store and execute instructions. And finally, we've looked at how the high level languages we are familiar with get translated into those instructions. It is indeed a lot of information, and you shoudl be proud that you have made it to this point.
+
+But, the work is not yet complete! Expect many more blog posts. We have so much more to discuss about software - both the hard technical skills, and the soft skills of working on a software development team.
+
+Stay tuned for many more. And until next time, happy coding!
 
 ## Next Steps - Where are we going?
+
+To be honest, I am no sure yet. Maybe go get yourself some food. 
+
+If you're not hungry, go back to the home page and find another blog post!
