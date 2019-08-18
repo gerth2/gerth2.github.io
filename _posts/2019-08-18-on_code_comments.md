@@ -1,11 +1,13 @@
 ---
 layout: post
 title:  "Good Comments"
-date:   2019-08-10 09:30:40 -0500
+date:   2019-08-18 09:30:40 -0500
 categories: blog_posts
 ---
 
-![the 99 percent](https://i.redd.it/fqq6ummu09431.png)
+![the 90 percent](https://i.redd.it/fqq6ummu09431.png)
+
+*source: reddit.com*
 
 ## Introduction
 
@@ -15,9 +17,9 @@ Full disclosure - by most standards, I am _horrible_ at writing code comments. H
 
 I'm hoping to share a tidbit of the wisdom I've gotten so far. Rather than corrupt young minds with my excessively verbose ways, I'm hoping we can sorta meet in the middle - get an idea for what "good" or "too much" might look like, and land somewhere in the vicinity of "optimal".
 
-All this ties back to a broader discussion of what "good code" is. It's one sub-component of making sure your code is easily comprehensible, which allows for faster modification, which allows for faster delivery, which generally keeps the other subteams happy.
+All this ties back to a broader discussion of what "good code" is. It's one sub-component of making sure your code is easily comprehensible, which allows for faster modification, which allows for faster delivery of functional software, which generally keeps the other subteams happy.
 
-## What to comment on
+## What to Comment On
 
 The first thing folks should know is that the text inside a comment needs to be helpful. The golden rule of commenting:
 
@@ -27,19 +29,22 @@ The absolute worst form of code commenting, that I truly and utterly abhor:
 
 ```c
 double periodic(){
+    //Here is the start of the function named "periodic"
 
-    //Declare two local variables for speed and encoderReading
+    //I have declared two local variables named speed and encoderReading
     double speed;
     double encoderReading;
 
-    //set Encoder reading to the return value from the function getSensorValue()
+    //set encoderReading to the return value from the thing getSensorValue()
     encoderReading = getSensorValue();
 
-    //Divide encoderReading by ten and then multiply by sixty.
+    //Divide encoderReading by ten and then multiply by fifty.
     speed = encoderReading / 10 * 60;
 
-    //Return the value within the variable Speed
+    //Return the value within the variable Speed to the caller function
     return speed;
+
+    //This function is now done
 }
 ```
 
@@ -48,6 +53,14 @@ Well, ok. Maybe you've seen comments like these on the blog. But that's differen
 Production robot code is not the place to put tutorials on the nuances of Java/C++/Kotlin/insert-obscure-language-here. 
 
 The comments in the above example contain _literally_ zero additional information. You are literally sucking up bits of storage on your PC's hard drive with no added benefit. Even worse, you have written code that _appears_ to have at least some volume of contents, but on closer inspection has _lied_ about its usefulness. 
+
+Even worse, some of the comments have _wrong_ information. You may laugh, but this happens all the time - developer A writes the code and the comment, developer B comes along and updates the code but not the comment. Then developer C is confused and frustrated. 
+
+And, believe it or not, often developers A, B, and C are the same person. I've been there.
+
+<picture>
+
+*source: me.me or Stephen Hillenburg, you choose.*
 
 Please please please please please never ever ever write comments like this.
 
@@ -161,3 +174,4 @@ int myCode(){
 
 If you are super careful with how you do something like this, you can use specialized programs like [Javadoc](https://en.wikipedia.org/wiki/Javadoc) or [Doxygen](https://en.wikipedia.org/wiki/Doxygen) to convert these comment blocks into some very nice looking and easy-to-navigate HTML, producing non-code documentation of how your code works. It's super useful if someone else has to use your code (like if you were writing _for_ WPI), but is also just nice to have as a reference anyway.
 
+One closing note - I always recommend using proper grammar, punctuation, capitalization, spelling, etc. when writing comments. Even if your meaning is communicated without these, taking the time on the comments indicates you also took time writing the code, and are competent at your job. Which, presumably, is the message you'd like to communicate outward.
