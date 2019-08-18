@@ -15,7 +15,7 @@ Full disclosure - by most standards, I am _horrible_ at writing code comments. H
 
 I'm hoping to share a tidbit of the wisdom I've gotten so far. Rather than corrupt young minds with my excessively verbose ways, I'm hoping we can sorta meet in the middle - get an idea for what "good" or "too much" might look like, and land somewhere in the vicinity of "optimal".
 
-FYI all this does tie back to our prior discussion on what "good code" is. It's one sub-component of making sure your code is easily comprehensible, which allows for faster modification, which allows for faster delivery, which generally keeps the other subteams happy.
+All this ties back to a broader discussion of what "good code" is. It's one sub-component of making sure your code is easily comprehensible, which allows for faster modification, which allows for faster delivery, which generally keeps the other subteams happy.
 
 ## What to comment on
 
@@ -73,7 +73,7 @@ double periodic(){
 
 The comments are like a good tour guide in the art gallery - they never describe the actual painting itself, but rather give context to the author's thought process, and how it connects to the broader culture and time in which it was created. Write your comments to be good tour guides to your own thought process, assumptions, and desires.
 
-A good practice is to leave a note when you still need to come back and finish something:
+A good practice is to [always leave a note](https://www.youtube.com/watch?v=eNZsWIzEhP4) when you still need to come back and finish something:
 
 ```c
 double periodic(){
@@ -126,13 +126,38 @@ When doing the same thing with comments, I've got some favorite ascii-art style 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 //~~ Here is a new section of code
-void myCode(){
+int myCode(){
     print("yay!");
+    return 42;
 }
 //~~ Now the code is done.
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
 
-Feel free to take and tweak these as you prefer.
+Feel free to take and tweak these as you prefer. 
 
 ## Standardization strategies
+
+One of the key to writing good code is consistency - making similar things look similar makes your code way easier to read and comprehend, especially to someone who isn't familiar with it. It helps them know that once they've learned one thing in the code, if they see it again, they don't have to re-learn it. 
+
+A good chunk of this consistency is keeping the _quantity_ of your comments level throughout the code. As a team, decide what an appropriate level is, and try to stick to it. Make note of it while reviewing each other's code, and add or remove as needed to keep the level even.
+
+Once nice practice is to put a description block above every major public function or method. Include key information, such as a description of the function's usage, what its inputs are supposed to be, what its return value is, any global variables it modifies, etc.
+
+```c
+//***************************************************************
+//** Function Name: myCode
+//** Description: Displays a happy message, and calculates
+//**               the meaning of life.
+//** Inputs: None
+//** Outputs: Returns the meaning to life, in an integer.
+//** Globals: No interaction
+//***************************************************************
+int myCode(){
+    print("yay!");
+    return 42;
+}
+```
+
+If you are super careful with how you do something like this, you can use specialized programs like [Javadoc](https://en.wikipedia.org/wiki/Javadoc) or [Doxygen](https://en.wikipedia.org/wiki/Doxygen) to convert these comment blocks into some very nice looking and easy-to-navigate HTML, producing non-code documentation of how your code works. It's super useful if someone else has to use your code (like if you were writing _for_ WPI), but is also just nice to have as a reference anyway.
+
