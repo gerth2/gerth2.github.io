@@ -1,4 +1,171 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-17T18:18:06-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">C to Assembly</title><link href="/blog_posts/2019/08/17/c_to_assembly.html" rel="alternate" type="text/html" title="C to Assembly" /><published>2019-08-17T09:30:40-05:00</published><updated>2019-08-17T09:30:40-05:00</updated><id>/blog_posts/2019/08/17/c_to_assembly</id><content type="html" xml:base="/blog_posts/2019/08/17/c_to_assembly.html">&lt;p&gt;&lt;em&gt;“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in &lt;a href=&quot;https://web.mit.edu/alexmv/6.037/sicp.pdf&quot;&gt;“The Structure and Interpretation of Computer Programs”&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-18T18:00:17-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T09:30:40-05:00</published><updated>2019-08-18T09:30:40-05:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: reddit.com&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Code comments are one of those things that you have to see lots of wrong examples, before you get good at making them right.&lt;/p&gt;
+
+&lt;p&gt;Full disclosure - by most standards, I am &lt;em&gt;horrible&lt;/em&gt; at writing code comments. However, my problem is the opposite that most newbies have - I write far too much in comments.&lt;/p&gt;
+
+&lt;p&gt;I’m hoping to share a tidbit of the wisdom I’ve gotten so far. Rather than corrupt young minds with my excessively verbose ways, I’m hoping we can sorta meet in the middle - get an idea for what “good” or “too much” might look like, and land somewhere in the vicinity of “optimal”.&lt;/p&gt;
+
+&lt;p&gt;All this ties back to a broader discussion of what “good code” is. It’s one sub-component of making sure your code is easily comprehensible, which allows for faster modification, which allows for faster delivery of functional software, which generally keeps the other subteams happy.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-to-comment-on&quot;&gt;What to Comment On&lt;/h2&gt;
+
+&lt;p&gt;The first thing folks should know is that the text inside a comment needs to be helpful. The golden rule of commenting:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;COMMENTS SAY &lt;em&gt;WHY&lt;/em&gt; THE CODE IS THE WAY IT IS, NEVER &lt;em&gt;WHAT&lt;/em&gt; IT IS DOING&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The absolute worst form of code commenting, that I truly and utterly abhor:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//Here is the start of the function named &quot;periodic&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//I have declared two local variables named speed and encoderReading&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//set encoderReading to the return value from the thing getSensorValue()&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getSensorValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//Divide encoderReading by ten and then multiply by fifty.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//Return the value within the variable Speed to the caller function&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;//This function is now done&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Well, ok. Maybe you’ve seen comments like these on the blog. But that’s different- when I explain &lt;em&gt;what&lt;/em&gt; code is doing, it’s to help teach new people.&lt;/p&gt;
+
+&lt;p&gt;Production robot code is not the place to put tutorials on the nuances of Java/C++/Kotlin/insert-obscure-language-here.&lt;/p&gt;
+
+&lt;p&gt;The comments in the above example contain &lt;em&gt;literally&lt;/em&gt; zero additional information. You are literally sucking up bits of storage on your PC’s hard drive with no added benefit. Even worse, you have written code that &lt;em&gt;appears&lt;/em&gt; to have at least some volume of contents, but on closer inspection has &lt;em&gt;lied&lt;/em&gt; about its usefulness.&lt;/p&gt;
+
+&lt;p&gt;Even worse, some of the comments have &lt;em&gt;wrong&lt;/em&gt; information. You may laugh, but this happens all the time - developer A writes the code and the comment, developer B comes along and updates the code but not the comment. Then developer C is confused and frustrated.&lt;/p&gt;
+
+&lt;p&gt;And, believe it or not, often developers A, B, and C are the same person. I’ve been there.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/it_was_me.png&quot; alt=&quot;it was me all the time&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: me.me or Stephen Hillenburg, you choose.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Please please please please please never ever ever write comments like this.&lt;/p&gt;
+
+&lt;p&gt;Here’s a much better approach:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+
+    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Stores Speed in RPM&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Stores encoder measured speed in pulses per second&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Read all inputs&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Sample from the encoders&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getSensorValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;// Convert to RPM&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// Encoder is measuring a target which produces 10 pulses per revolution&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;//  and speed is supposed to be per-minute, not per-second.&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The comments are like a good tour guide in the art gallery - they never describe the actual painting itself, but rather give context to the author’s thought process, and how it connects to the broader culture and time in which it was created. Write your comments to be good tour guides to your own thought process, assumptions, and desires.&lt;/p&gt;
+
+&lt;p&gt;A good practice is to &lt;a href=&quot;https://www.youtube.com/watch?v=eNZsWIzEhP4&quot;&gt;always leave a note&lt;/a&gt; when you still need to come back and finish something:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Got condition 1!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;//TODO&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This helps you and the next person recall that the code isn’t finished, and there will be more functionality. It also means that if you’re ever wondering “what else should I do?”, one quick answer is search for all occurrences of the string &lt;code class=&quot;highlighter-rouge&quot;&gt;TODO&lt;/code&gt; in your code files. If you find &lt;code class=&quot;highlighter-rouge&quot;&gt;//TODO&lt;/code&gt; comments, well, you’ve got something to do!&lt;/p&gt;
+
+&lt;h2 id=&quot;ascii-aesthetics-for-visual-separation&quot;&gt;ASCII-Aesthetics for Visual Separation&lt;/h2&gt;
+
+&lt;p&gt;I’ve been a fan of using comments, whitespace, and ascii art to visually separate different parts of a source code file, as I wish a user to see them separately. This means I’ll usually add some extra spaces between function definitions, maybe an extra newline here or there within a function to mark off different segments of execution.  It’s all about communication - if you want the reader to see two things together, remove whitespace. If you want them to see two things separately, add more whitespace.&lt;/p&gt;
+
+&lt;p&gt;For example:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;do_the_thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;While this C code works just fine, I personally like to add a bit more whitespace to separate out the components of the &lt;code class=&quot;highlighter-rouge&quot;&gt;if()&lt;/code&gt; statement condition, into the parts that a human more easily parses:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;do_the_thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Not everyone is like me, though, and I’m not even super consistent with my own styles. Still, I feel there’s some value in visually separating things that are (somehow) separate, and visually aligning things which are (somehow) aligned. Communicating intent. That’s all we’re doing here.&lt;/p&gt;
+
+&lt;p&gt;When doing the same thing with comments, I’ve got some favorite ascii-art style ways of doing this visual separation as well:&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//----------------------------------------------&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// This is a block of comment, hard to miss&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//----------------------------------------------&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// Here is another block, even harder to miss.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//!! HERE IS A SUPER URGENT WARNING YOU CANNOT MISS !!&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//~~ Here is a new section of code&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yay!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//~~ Now the code is done.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Feel free to take and tweak these as you prefer.&lt;/p&gt;
+
+&lt;h2 id=&quot;standardization-strategies&quot;&gt;Standardization strategies&lt;/h2&gt;
+
+&lt;p&gt;One of the key to writing good code is consistency - making similar things look similar makes your code way easier to read and comprehend, especially to someone who isn’t familiar with it. It helps them know that once they’ve learned one thing in the code, if they see it again, they don’t have to re-learn it.&lt;/p&gt;
+
+&lt;p&gt;A good chunk of this consistency is keeping the &lt;em&gt;quantity&lt;/em&gt; of your comments level throughout the code. As a team, decide what an appropriate level is, and try to stick to it. Make note of it while reviewing each other’s code, and add or remove as needed to keep the level even.&lt;/p&gt;
+
+&lt;p&gt;Once nice practice is to put a description block above every major public function or method. Include key information, such as a description of the function’s usage, what its inputs are supposed to be, what its return value is, any global variables it modifies, etc.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//***************************************************************&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//** Function Name: myCode&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//** Description: Displays a happy message, and calculates&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//**               the meaning of life.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//** Inputs: None&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//** Outputs: Returns the meaning to life, in an integer.&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//** Globals: No interaction&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;//***************************************************************&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yay!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;If you are super careful with how you do something like this, you can use specialized programs like &lt;a href=&quot;https://en.wikipedia.org/wiki/Javadoc&quot;&gt;Javadoc&lt;/a&gt; or &lt;a href=&quot;https://en.wikipedia.org/wiki/Doxygen&quot;&gt;Doxygen&lt;/a&gt; to convert these comment blocks into some very nice looking and easy-to-navigate HTML, producing non-code documentation of how your code works. It’s super useful if someone else has to use your code (like if you were writing &lt;em&gt;for&lt;/em&gt; WPI), but is also just nice to have as a reference anyway.&lt;/p&gt;
+
+&lt;p&gt;One closing note - I always recommend using proper grammar, punctuation, capitalization, spelling, etc. when writing comments. Even if your meaning is communicated without these, taking the time on the comments indicates you also took time writing the code, and are competent at your job. Which, presumably, is the message you’d like to communicate outward.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you’ve got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">C to Assembly</title><link href="/blog_posts/2019/08/17/c_to_assembly.html" rel="alternate" type="text/html" title="C to Assembly" /><published>2019-08-17T09:30:40-05:00</published><updated>2019-08-17T09:30:40-05:00</updated><id>/blog_posts/2019/08/17/c_to_assembly</id><content type="html" xml:base="/blog_posts/2019/08/17/c_to_assembly.html">&lt;p&gt;&lt;em&gt;“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in &lt;a href=&quot;https://web.mit.edu/alexmv/6.037/sicp.pdf&quot;&gt;“The Structure and Interpretation of Computer Programs”&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -2616,518 +2783,4 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;We’ve scratched the surface of Analog, and shown how you can start to go Digital. If you haven’t yet, go lay the groundwork of some basic Digital concepts with &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;Binary&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Boolean Logic</title><link href="/blog_posts/2019/06/14/boolean_logic.html" rel="alternate" type="text/html" title="Boolean Logic" /><published>2019-06-14T09:30:00-05:00</published><updated>2019-06-14T09:30:00-05:00</updated><id>/blog_posts/2019/06/14/boolean_logic</id><content type="html" xml:base="/blog_posts/2019/06/14/boolean_logic.html">&lt;p&gt;&lt;em&gt;“All you need is NAND… ba da da da da” - &lt;a href=&quot;http://publish.illinois.edu/loui/&quot;&gt;Professor Michael Loui&lt;/a&gt;, 2010, UIUC&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;combining-bits&quot;&gt;Combining Bits&lt;/h2&gt;
-
-&lt;p&gt;In this post, we’ll start to dig into how you combine bits together. &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;Previously&lt;/a&gt; we’ve looked at how to interpret, generate, and analyze sets of bits. Now we want to do operations on them. Just like how you add and subtract numbers, so to can 1’s and 0’s be combined and manipulated.&lt;/p&gt;
-
-&lt;p&gt;If you remember our friend Mr. Boole from previous posts, what we’re about to go through is a primer on the logical system he formulated.&lt;/p&gt;
-
-&lt;h2 id=&quot;boolean-functions&quot;&gt;Boolean Functions&lt;/h2&gt;
-
-&lt;p&gt;Recall from the &lt;a href=&quot;/blog_posts/2019/06/01/math_primer1.html&quot;&gt;math primer&lt;/a&gt; how we looked at the concept of a &lt;em&gt;function&lt;/em&gt; as an &lt;a href=&quot;/blog_posts/2019/05/26/abstraction.html&quot;&gt;abstraction&lt;/a&gt; of mathematical behavior. Just like with normal base-10 numbers, functions can be defined for acting on boolean numbers too!&lt;/p&gt;
-
-&lt;p&gt;We often describe a boolean function with what’s called a &lt;em&gt;truth table&lt;/em&gt;. Due to the &lt;em&gt;discrete&lt;/em&gt; nature of only allowing each input to be True or False, it’s often easy to completely enumerate the set of all possible inputs to the function.&lt;/p&gt;
-
-&lt;p&gt;The functions we’ll concern ourselves with take &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; inputs, and produce a single output.&lt;/p&gt;
-
-&lt;p&gt;If you recall some of the math we learned in previous posts, you could probably have guessed that a function with &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; boolean inputs has &lt;script type=&quot;math/tex&quot;&gt;2^N&lt;/script&gt; possible input combinations, which means it has &lt;script type=&quot;math/tex&quot;&gt;2^N&lt;/script&gt; outputs to describe in a truth table. Of course, each of those &lt;script type=&quot;math/tex&quot;&gt;2^N&lt;/script&gt; outputs will be simply 1 or 0, but &lt;em&gt;which ones are 1&lt;/em&gt; and &lt;em&gt;which ones are 0&lt;/em&gt; is the question a truth table answers for you.&lt;/p&gt;
-
-&lt;p&gt;As a sample with &lt;script type=&quot;math/tex&quot;&gt;N=3&lt;/script&gt;, we will organize truth tables like this:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt;In2&lt;/th&gt;
-      &lt;th&gt;In3&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;All &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; inputs come first, and the output is in the last column. This isn’t a particularly interesting function, as it always outputs the same thing, no matter what the input is. I like to call this function “a wire connected to +5V”.&lt;/p&gt;
-
-&lt;p&gt;Let’s dig a bit deeper into some interesting functions. They don’t call them &lt;strong&gt;fun&lt;/strong&gt;ctions for nothing.&lt;/p&gt;
-
-&lt;h2 id=&quot;fundamental-logic-functions&quot;&gt;Fundamental Logic Functions&lt;/h2&gt;
-
-&lt;p&gt;Most of the basic boolean functions have particular names. There are 3 very basic ones that almost all lessons on boolean logic will start with: AND, OR, and NOT.&lt;/p&gt;
-
-&lt;p&gt;Whoever came up with the names deserves a snickers bar, because the names actually make a ton of sense.&lt;/p&gt;
-
-&lt;h3 id=&quot;not&quot;&gt;NOT&lt;/h3&gt;
-
-&lt;p&gt;The simplest boolean function of interest to us has only &lt;script type=&quot;math/tex&quot;&gt;N=1&lt;/script&gt; inputs, which means there are two possible output states.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;As you can see, NOT performs an &lt;em&gt;inversion&lt;/em&gt; of the boolean state. 1 is not 0, and 0 is not 1.&lt;/p&gt;
-
-&lt;p&gt;When you are writing an equation, you’ll generally use capital letters like &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;X&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;Y&lt;/script&gt; to indicate a variable which is boolean, and can take on 1 or 0 values.&lt;/p&gt;
-
-&lt;p&gt;For hopefully obvious reasons, the letters &lt;script type=&quot;math/tex&quot;&gt;I&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;O&lt;/script&gt; are poor choices for boolean variable names.&lt;/p&gt;
-
-&lt;p&gt;If we assume that &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; is our input, and &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; is our output, we would denote the NOT function as the following:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;B = \overline{A}&lt;/script&gt;
-
-&lt;p&gt;This is to say that &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; is the logical “NOT” of &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;. Or, another way, to calculate &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;, you invert &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;and&quot;&gt;AND&lt;/h3&gt;
-
-&lt;p&gt;AND is another fundamental function, but it takes two inputs, implying that there are four possible output states.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt;In2&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;As you can see, AND outputs a 1 &lt;em&gt;if and only if&lt;/em&gt; both inputs are 1. In all other cases, the output is 0.&lt;/p&gt;
-
-&lt;p&gt;This is another great name for a function. The output is 1 if the first input is 1 &lt;strong&gt;and&lt;/strong&gt; the second input is 1.&lt;/p&gt;
-
-&lt;p&gt;When you describe AND in an equation, you write it like multiplication. This means you might put a dot between the inputs, or maybe just write them next to each other. For example:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C = A \cdot B&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C = AB&lt;/script&gt;
-
-&lt;p&gt;Both of these equations denote that &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; is calculated as the logical AND of input variables &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;or&quot;&gt;OR&lt;/h3&gt;
-
-&lt;p&gt;OR is our last fundamental function. Like AND, it takes two inputs. Like AND, it is also fairly well named.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt;In2&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;You can see that OR outputs a 1 when &lt;em&gt;either&lt;/em&gt; of its inputs is true - that is to say the output is 1 if the first input is 1, or the second input is 1.&lt;/p&gt;
-
-&lt;p&gt;Note that if both inputs are 1, the output remains 1 - this is a bit of a departure from how most folks interpret the word “or”. If your mom asked you “Do you want to go to Disney World or Universal Studios?” she probably wouldn’t be all that pleased if you said “Both!”. But ignoring this for now…&lt;/p&gt;
-
-&lt;p&gt;When you describe OR in an equation, you write it like addition. This means you have to use a plus symbol. For example:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C = A + B&lt;/script&gt;
-
-&lt;p&gt;This is the way to denote that &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt; is calculated as the logical OR of inputs &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;equations-order-of-operations&quot;&gt;Equations, Order of Operations&lt;/h2&gt;
-
-&lt;p&gt;As we’ve shown already, boolean operations can be indicated with equations, just like regular math. Similar to regular base-10 math, you use variables that take on the value of 1 or 0, constant 1’s and 0’s, equals signs, an order of operations (with parenthesis to change it)… most of what applies in normal math applies here too!&lt;/p&gt;
-
-&lt;p&gt;For example, take the following equation:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D = f(A,B,C) = A \cdot \overline{(B+C)}&lt;/script&gt;
-
-&lt;p&gt;Let’s break this function named &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; down into its components. Order of operations would dictate that you evaluate the inside of the parenthesis first. In this case, you first evaluate the OR of &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;The NOT bar is drawn over that whole quantity, so you calculate the NOT of the whole quantity &lt;script type=&quot;math/tex&quot;&gt;(B + C)&lt;/script&gt;. That is to say - you first calcualte &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; OR &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;, then invert the result.&lt;/p&gt;
-
-&lt;p&gt;Finally, &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; is AND’ed with the result of that calculation. This produces the result &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;In general, order of operations will be:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Interior of Parenthesis&lt;/li&gt;
-  &lt;li&gt;NOT&lt;/li&gt;
-  &lt;li&gt;AND&lt;/li&gt;
-  &lt;li&gt;OR&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Note that the NOT operation of putting a bar over a variable (or many) is kinda like parenthesis, where you are inverting a set of variables. Generally it’s better to be more verbose in calculations, and ask questions if the notation is unclear.&lt;/p&gt;
-
-&lt;p&gt;When writing these formulas down (on paper or in code), I always recommend &lt;a href=&quot;https://en.wiktionary.org/wiki/go_the_whole_hog&quot;&gt;to go whole hog&lt;/a&gt; on parenthesis. If there’s even a slight chance order of operation might be ambiguous, put them en. Even if this is redundant, it’s always better to ensure you communicate your intention to the reader, or the compiler.&lt;/p&gt;
-
-&lt;h3 id=&quot;properties-of-boolean-calculations&quot;&gt;Properties of Boolean Calculations&lt;/h3&gt;
-
-&lt;p&gt;You may have heard certain terms from your math class like the “associative” property and the “communicative” property. I don’t like to get too stuck on terminology like this - it’s good to know it so you can communicate with others, but even more important you know the underlying concept. Suffice to say, for software writing’s sake, here’s a handful of useful ideas to keep in mind:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The order of the inputs to AND and OR don’t matter. You can freely exchange inputs 1 and 2, and output is unchanged (inspect the truth tables, it’s easy to prove this by just looking at them). This can help you simplify calculations.&lt;/li&gt;
-  &lt;li&gt;Any quantity ANDed with 1 will be itself, and any quantity ORed with 0 will be itself
-    &lt;ul&gt;
-      &lt;li&gt;This is often called the “identity” property. What it means is that if you see a &lt;script type=&quot;math/tex&quot;&gt;+0&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;\cdot 1&lt;/script&gt; in an equation, you can trim it off without consequence. This is a useful fact when looking for ways to speed up a calculation.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Any quantity ANDed with 0 will be 0, and any quantity ORed with 1 will be 1
-    &lt;ul&gt;
-      &lt;li&gt;This is often called the “short circuit” property. What it means is that if you see a &lt;script type=&quot;math/tex&quot;&gt;+1&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;\cdot 0&lt;/script&gt;, you don’t even have to bother doing the other half of the calculation, you already know the outcome. This is a &lt;em&gt;very&lt;/em&gt; useful fact when looking for ways to speed up a calculation.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;gates--drawing-diagrams&quot;&gt;Gates &amp;amp; Drawing Diagrams&lt;/h2&gt;
-
-&lt;p&gt;Written out equations are not the only way to represent a binary equation. Indeed, this particular form of math has become strongly oriented toward creating real-world circuits which do useful things. As a result of that, it is common to represent a boolean calculation using a schematic or diagram, indicating how one could potentially create hardware to perform the associated calculation.&lt;/p&gt;
-
-&lt;h3 id=&quot;logic-gates&quot;&gt;Logic Gates&lt;/h3&gt;
-
-&lt;p&gt;The diagrams that are drawn indicate how entities called &lt;em&gt;logic gates&lt;/em&gt; will be hooked together to represent a whole circuit. A logic gate is an &lt;em&gt;abstraction&lt;/em&gt; of the electrical circuitry (probably involving transistors) which could implement the logic function represented.&lt;/p&gt;
-
-&lt;p&gt;All of the fundamental operations we have mentioned so far have special symbols to indicate their identity.&lt;/p&gt;
-
-&lt;h4 id=&quot;not-gate-symbol&quot;&gt;NOT Gate Symbol&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/not.png&quot; alt=&quot;NOT Gate Symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;and-gate-symbol&quot;&gt;AND Gate Symbol&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/and.png&quot; alt=&quot;AND Gate Symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;or-gate-symbol&quot;&gt;OR Gate Symbol&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/or.png&quot; alt=&quot;OR Gate Symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;logic-diagrams&quot;&gt;Logic Diagrams&lt;/h3&gt;
-
-&lt;p&gt;When you combine multiple gates together, and hook them together in a particular way, you get what most folks will call a &lt;em&gt;logic diagram&lt;/em&gt; describing your boolean function.&lt;/p&gt;
-
-&lt;p&gt;Take our previous simple example of a boolean function &lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt;&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D = f(A,B,C) = A \cdot \overline{(B+C)}&lt;/script&gt;
-
-&lt;p&gt;Using our symbols, we can draw them together with function inputs and outputs, to graphically represent the same equation:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/simple_logic_diagram.png&quot; alt=&quot;Simple logic diagram&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note how &lt;em&gt;information&lt;/em&gt; flows from left to right, just like you read. Your inputs are all on the left hand side, propagate through gates which transform and manipulate it, and eventually produce a single, final output on the right-hand side. This left-to-right flow convention is very commonly used in diagrams.&lt;/p&gt;
-
-&lt;h2 id=&quot;2-level-logic&quot;&gt;2-Level Logic&lt;/h2&gt;
-
-&lt;p&gt;As it turns out, all boolean functions, no matter how complex, can be broken down into a two-level hierarchy. This can be either a set of AND calculations OR’ed together, or a set of OR calculations AND’ed together. You may have to invert some of the inputs with NOT operations, but otherwise, it’s just two levels of gates.&lt;/p&gt;
-
-&lt;p&gt;For software purposes, this is a useful fact to remember, but proving it is a bit more than what I’d want to get into in this post. Suffice to say, there are proofs that show arbitrarily large equations can be reduced into this manageable structure. Because of this, when analyzing or thinking about boolean logic, just keep in mind that two layers of gates is all that you will ever &lt;em&gt;need&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;derived-gates&quot;&gt;Derived Gates&lt;/h2&gt;
-
-&lt;h3 id=&quot;xor&quot;&gt;XOR&lt;/h3&gt;
-
-&lt;p&gt;There is a somewhat common gate called the “Exclusive OR” that calculates the more traditional “This or That (but not both)” meaning of the word “or”:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt;In2&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Another interpretation that’s often useful is that XOR outputs 1 when its inputs are &lt;em&gt;different&lt;/em&gt;, but 0 when they are the &lt;em&gt;same&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;There is an equation symbol for it, but it’s not commonly used.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C = A \oplus B&lt;/script&gt;
-
-&lt;p&gt;Indicates that C is the logical XOR of inputs A and B.&lt;/p&gt;
-
-&lt;h3 id=&quot;nand-nor&quot;&gt;NAND, NOR&lt;/h3&gt;
-
-&lt;p&gt;Finally, there are some additional gates which it’s good to be aware of:&lt;/p&gt;
-
-&lt;h4 id=&quot;nand&quot;&gt;NAND:&lt;/h4&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt;In2&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;NAND, or “Not AND” is just that - it’s an AND gate, but with the output inverted.&lt;/p&gt;
-
-&lt;h4 id=&quot;nor&quot;&gt;NOR&lt;/h4&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;In1&lt;/th&gt;
-      &lt;th&gt;In2&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;NOR, or “Not OR” is just that - it’s an OR gate, but with the output inverted.&lt;/p&gt;
-
-&lt;h4 id=&quot;symbols&quot;&gt;Symbols&lt;/h4&gt;
-
-&lt;p&gt;Of course, there are symbols for these gates as well.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/xor_nor_nand.png&quot; alt=&quot;other gates symbols&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;From left to right, they are XOR, NOR, and NAND. Outputs are at the top, inputs are at the bottom.&lt;/p&gt;
-
-&lt;p&gt;Note for NAND and NOR, the little circle on the output indicates the inversion operation. You may see that little circle elsewhere too - just know it implies “invert” on the signal it’s placed on.&lt;/p&gt;
-
-&lt;h3 id=&quot;why-nandnor&quot;&gt;Why NAND/NOR&lt;/h3&gt;
-
-&lt;p&gt;As it turns out, when you go look at the transistor configurations required to create normal AND/OR gates, they’re actually NAND/NOR with an inverter on the output. In terms of design optimization, it actually is easier to design the logic in terms of NAND/NOR, because you will use fewer transistors in the final design. This makes for cheaper, simpler, and more energy-efficient designs - all around a good thing!&lt;/p&gt;
-
-&lt;p&gt;Even better - most modern electronics design tools can do the AND/OR to NAND/NOR transformation automatically for you, which means you can design in whatever set of gates is easiest for you to think about. Then the computer design tool can do the plug-and-chug to create a more efficient implementation.&lt;/p&gt;
-
-&lt;p&gt;Furthermore, NAND and NOR have the interesting property of being able to emulate all the trivial gates themselves. Without a formal proof, and presented in pictures only, the evidence is presented below. Fun homework: Create a truth table for each of the below circuits to prove that they do in fact do what I claim they do.&lt;/p&gt;
-
-&lt;h4 id=&quot;not-with-nand&quot;&gt;NOT with NAND:&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/nand_not.png&quot; alt=&quot;NOT from Nand&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;and-with-nand&quot;&gt;AND with NAND:&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/nand_and.png&quot; alt=&quot;AND from Nand&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;or-with-nand&quot;&gt;OR with NAND:&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/nand_or.png&quot; alt=&quot;OR from Nand&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;so-what&quot;&gt;So what&lt;/h4&gt;
-
-&lt;p&gt;Recall from further up that &lt;em&gt;any&lt;/em&gt; boolean function can be represented Here’s the additional punchline, as Professor Loui sang to us in ECE 101 (to the tune of the Beatles “All You Need is Love”) - “All you need is NAND… ba da da da da”. Only having to have one gate around can also help simplify designs sometimes - whether that’s a software tool that’s trying to create the most optimum configuration of transistors for your design, or whether you just don’t want to buy 10 types of circuit chips from &lt;a href=&quot;https://www.digikey.com&quot;&gt;Digikey&lt;/a&gt; for your project…. having just one gate type is often not a bad thing. Huzzah for standardization!&lt;/p&gt;
-
-&lt;h2 id=&quot;further-study-in-boolean-logic&quot;&gt;Further Study in Boolean Logic&lt;/h2&gt;
-
-&lt;h3 id=&quot;proofs--formal-math&quot;&gt;Proofs &amp;amp; Formal Math&lt;/h3&gt;
-
-&lt;p&gt;If you spend some time looking through literature on this topic, you’ll find lots of formal proofs using axioms and things like “DeMorgan’s Law”. These are definitely good to take a peek through, but don’t have a ton of bearing on your ability to write good software. I’m also of the opinion that most of it is pretty self-evident if you stare at it long enough, to the point where it doesn’t make sense to do a formal introduction to them in this blog. As we get into discussing good coding techniques, these principles will naturally fall out.&lt;/p&gt;
-
-&lt;h3 id=&quot;electronics&quot;&gt;Electronics&lt;/h3&gt;
-
-&lt;p&gt;So, in case you were wondering, you can go out and buy logic gates! You will need to choose the right set of chips for the voltages you are using to represent 1 and 0. If you happen to go with the very-common answer of 5V = 1, 0V = 0, then Texas Instruments has for many many years made a beautiful line of &lt;a href=&quot;https://en.wikipedia.org/wiki/7400-series_integrated_circuits&quot;&gt;“74- series” chips&lt;/a&gt; which robustly implement logic gates in a cute little &lt;a href=&quot;https://en.wikipedia.org/wiki/Dual_in-line_package&quot;&gt;DIP package&lt;/a&gt;. Lots of other manufacturers make pin-compatible versions of them. If you’re starting off, I recommend getting a &lt;a href=&quot;https://www.amazon.com/Electronics-Salon-74HCxx-Assortment-High-Speed-Si-Gate/dp/B016ME1WH2/ref=sr_1_4?keywords=74+series+logic+kit&amp;amp;qid=1560517053&amp;amp;s=gateway&amp;amp;sr=8-4&quot;&gt;“variety pack”&lt;/a&gt; with spares of each to enable experimentation and play.&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;We’ve covered the basics of how bits can be combined and manipulated with fundamental logic gates. Moving forward, we’ll start to combine these gates into useful digital circuitry, building up to the main components of a computer processor.  Go check out &lt;a href=&quot;/blog_posts/2019/06/26/digital_devices.html&quot;&gt;Digital Devices&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Alternately, we’ll also cover some of the practical implications when building digital circuitry in the real world. For Extra Credit, check out &lt;a href=&quot;/blog_posts/2019/06/15/electronics_for_digital.html&quot;&gt;Electronics Part 2&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">“All you need is NAND… ba da da da da” - Professor Michael Loui, 2010, UIUC</summary></entry></feed>
+&lt;p&gt;We’ve scratched the surface of Analog, and shown how you can start to go Digital. If you haven’t yet, go lay the groundwork of some basic Digital concepts with &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;Binary&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
