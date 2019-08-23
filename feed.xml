@@ -1,4 +1,192 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-18T18:00:17-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T09:30:40-05:00</published><updated>2019-08-18T09:30:40-05:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-23T15:50:20-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T09:30:40-05:00</published><updated>2019-08-23T09:30:40-05:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This will be a bit of self promotion, but hopefully educational at the same time. Here’s a confession - I have many computers in my life &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. They have come and gone over the years, and all played a crucial role in my education and learning, leading me toward the engineer I am today.&lt;/p&gt;
+
+&lt;p&gt;I wanted to spend a post talking about the machines I currently use to do my thing.&lt;/p&gt;
+
+&lt;p&gt;For context, if you happen to go to my &lt;a href=&quot;https://www.linkedin.com/in/christopher-gerth-7b8b52126/&quot;&gt;linkedin page&lt;/a&gt;, you’ll notice I’m an &lt;em&gt;embedded&lt;/em&gt; software engineer by day. Basically, this just means my day job is the same as my robotics software-mentor job - just on bigger and yellower machines. My hobbies (robotics and otherwise) tend to flow straight from this occupation.&lt;/p&gt;
+
+&lt;p&gt;What I’ll talk through are what sorts of machines I use day to day to accomplish my personal and mentorship software development tasks. I hope that by getting some insight into how I’ve configured the tools around me, you may get some ideas of your own to form your own custom toolkit to support your hobbies!&lt;/p&gt;
+
+&lt;h2 id=&quot;computer-hardware&quot;&gt;Computer Hardware&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-main-show---the-desktop&quot;&gt;The Main Show - the Desktop&lt;/h3&gt;
+
+&lt;p&gt;My “daily driver” machine is my custom-built desktop. It was fairly up-to-date when I built it in 2013, but it has aged very well - it’s still more than fast enough to run any internet browsing, code editing and building, and occasional video games I throw at it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thePC.jpg&quot; alt=&quot;thePC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Some basic specs:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Intel i5 3350P CPU - 3.10 GHz&lt;/li&gt;
+  &lt;li&gt;8GB RAM&lt;/li&gt;
+  &lt;li&gt;128 GB Main SSD, 1Tb expansion Drive&lt;/li&gt;
+  &lt;li&gt;NVIDIA GeForce GTX 660&lt;/li&gt;
+  &lt;li&gt;Windows 10 Professional&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Samsung-LU28E570DS-ZA-Led-Lit-Monitor/dp/B07FBNPTDD/ref=sr_1_1?keywords=samsung+4k+monitor&amp;amp;qid=1566526097&amp;amp;s=gateway&amp;amp;sr=8-1&quot;&gt;Samsung 4K 28-inch monitor&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;I’ve gone back and forth on this over the years. I really like all the screen real estate in one spot, and Windows 10 is great about managing it&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Mad-Catz-RAT4-Programmable-Adjustable/dp/B01JBZMGAG&quot;&gt;RAT4 Mouse&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Gotta get something that looks cool, and has programmable buttons. If you’ve never experienced a mouse with a dedicated “back” button, you haven’t lived!&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Adesso-AKB-635UB-Easy-Touch-635/dp/B00SX4X8WW/ref=sr_1_3?keywords=adesso+mechanical+keyboard&amp;amp;qid=1566526455&amp;amp;s=gateway&amp;amp;sr=8-3&quot;&gt;Adesso Mechanical Keyboard&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Mine is similar to this one, I don’t think they sell it anymore.&lt;/li&gt;
+      &lt;li&gt;Mine has &lt;a href=&quot;https://www.keyboardco.com/blog/index.php/2012/12/an-introduction-to-cherry-mx-mechanical-switches/&quot;&gt;Cherry Blue switches&lt;/a&gt; - the really &lt;em&gt;really&lt;/em&gt; clicky ones. Drives the wife mad. But I &lt;em&gt;love&lt;/em&gt; the tactile feel.
+        &lt;ul&gt;
+          &lt;li&gt;Of course, it’s not for everyone. Try a bunch of different keyboards to see which one you like.&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Mousepad is a chunk of fabric-covered neoprene that was surplus from the manufacture of &lt;a href=&quot;https://www.hakenaudio.com/&quot;&gt;Haken Continuum&lt;/a&gt; continuous keyboard. It’s a fun souvenir from one of my favorite college classes.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/thePCGuts.jpg&quot; alt=&quot;thePCGuts&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Again keep in mind - these specs are 6 years old at the time of writing. If I ever happen upon a spare couple hundred dollars, I this will probably be the first thing I upgrade. However, it’s still running so fast, it’s hard to bring myself to do so.&lt;/p&gt;
+
+&lt;p&gt;None of this is really top-of-the-line - it’s middle to cheap, but more than sufficient to support my personal coding and development projects.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-new-guy---the-laptop&quot;&gt;The New Guy - the Laptop&lt;/h3&gt;
+
+&lt;p&gt;For folks who do lots of FRC software mentoring, turns out the vast majority of my coding occurs on the road. For this reason, I recently splurged on getting a good machine that would take all the software-writing punishment I could throw at it. My choice? The &lt;a href=&quot;https://consumer.huawei.com/us/tablets/matebook-x-pro/&quot;&gt;Huawei MateBook X Pro&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://gloimg.gbtcdn.com/soa/gb/pdm-product-pic/Electronic/2018/07/09/goods_img_big-v1/20180709131041_59936.jpg&quot; alt=&quot;matebook&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: gearbest.com&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;That’s right - I got the Chinese hardware. But I have to say, it’s super awesome. Sleek and light, phenomenal battery life, a brilliant and giant display (my key criteria), and a pretty good keyboard and trackpad make for an excellent coding machine on the road.&lt;/p&gt;
+
+&lt;p&gt;The device sports a plethora of USB-C connectors. I usually carry dongle adapters to get me to VGA and HDMI, as well as extra USB and Ethernet ports (all very important for robot usage).&lt;/p&gt;
+
+&lt;p&gt;To address the elephant at the time of this post - &lt;em&gt;Yes, Huawei devices are considered a security risk in the US&lt;/em&gt;. Most of the concern has been targeted at their servers and networking hardware, as it relates to the 5G expansion of wireless telecom carriers. Their consumer hardware is under target too. It was a risk I took when purchasing. I’m hoping the situation gets cleared up soon, but also keeping my finger on the pulse of the conversation, and actively monitoring network traffic. If something starts “phoning home”, I will probably re-evaluate what sort of network permissions this device will get.&lt;/p&gt;
+
+&lt;p&gt;No major changes to the OS or hardware since I’ve gotten it. I’ve got exactly what they say they sell on their website.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-old-standby---the-server&quot;&gt;The Old Standby - the Server&lt;/h3&gt;
+
+&lt;p&gt;At my home, I run one additional machine that acts as a server. I run a Dell PowerEdge R200 in my basement.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;2.33GHz Xenon CPU&lt;/li&gt;
+  &lt;li&gt;4GB RAM&lt;/li&gt;
+  &lt;li&gt;128 GB SSD&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;\assets\server.png&quot; alt=&quot;the server&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It’s really not much - the thing is 10 years old. I got it for a &lt;em&gt;steep&lt;/em&gt; discount on eBay - just had to provide my own hard drive.&lt;/p&gt;
+
+&lt;p&gt;I run &lt;a href=&quot;https://www.archlinux.org/&quot;&gt;ArchLinux&lt;/a&gt;, one of the most trimmed down operating systems with the &lt;a href=&quot;https://www.linux.com/what-is-linux/&quot;&gt;Linux Kernel&lt;/a&gt; you can get. It’s a “no batteries included” approach to design - which means you get lots of configurability as a user. This server is the platform for a large number of continuous-running applications I keep at my house.&lt;/p&gt;
+
+&lt;h3 id=&quot;network-storage&quot;&gt;Network Storage&lt;/h3&gt;
+
+&lt;p&gt;For saving files and doing server backup, I run a 2-TB &lt;a href=&quot;https://www.buffalotech.com/products/category/network-attached-storage&quot;&gt;Buffalo Network Attached Storage&lt;/a&gt; device, with two hot-swapable drives in a RAID configuration allowing for full redundancy. It’s primarily to supplement the other devices on the network - I’ll get into that later.&lt;/p&gt;
+
+&lt;h3 id=&quot;other-home-networking-equipment&quot;&gt;Other Home Networking Equipment&lt;/h3&gt;
+
+&lt;p&gt;Along with the server, my small rack downstairs consists of two ethernet switches (one providing Power Over Ethernet, one not), an old Netgear combination Router &amp;amp; Wifi access point, and our modem. We’re lucky and have fiber internet service - I’m currently on a 300MBps plan that makes for a &lt;em&gt;blazing&lt;/em&gt; fast experience.&lt;/p&gt;
+
+&lt;p&gt;When I moved into the house, one of my first projects was to install &lt;a href=&quot;https://www.monoprice.com/product?p_id=8103&quot;&gt;Cat6 ethernet wiring&lt;/a&gt; throughout the house. I added 7 new ports on two floors of the house, and ran all the wiring back down to the server &amp;amp; ethernet switches. This allows our media station (Roku &amp;amp; smart DVD Player) the desktop, and a few wired security cameras to connect to wired internet, even though they’re all in different rooms than the rest of the equipment. It also means the noisy server lives downstairs behind closed doors.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/networkEquipment.png&quot; alt=&quot;Network Equip&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In a super simplified (to the point of inaccurate) diagram, here’s how it all is hooked together:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/simplifiedNetwork.png&quot; alt=&quot;Home Network Diagram&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;key-software&quot;&gt;Key Software&lt;/h2&gt;
+
+&lt;p&gt;This hardware would be nothing without the software that sits on top of it to be useful. I’ll give a quick survey of the pieces of software that get used on a daily basis in my household.&lt;/p&gt;
+
+&lt;h3 id=&quot;on-the-desktop--laptop&quot;&gt;On the Desktop &amp;amp; Laptop&lt;/h3&gt;
+
+&lt;p&gt;I have a strong preference for free software because I like to spend my money on other things, like food. Sometimes you have to pay for good stuff. However, we are lucky that in today’s world, the majority of the tools needed for day-to-day software development can be acquired free of cost!&lt;/p&gt;
+
+&lt;h4 id=&quot;development-environment&quot;&gt;Development Environment&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt; is my preferred code editor. The ability to support so many languages so flexibly, along with tons of built-in tools.&lt;/p&gt;
+
+&lt;p&gt;I’m also a huge fan of dark mode, and I really like the built-in color theme. Call me shallow, but if you have to stare at code all day long, might as well do it in a way that looks ascetically pleasing to you!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/vsCodeSample.png&quot; alt=&quot;VSCodeSample&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://git-scm.com/&quot;&gt;Git&lt;/a&gt; is a daily part of my development experience. Ever since I learned how to use it in college and on my first job, it’s become an indispensible tool for keeping track of how I change my software over time, organizing my development process, and creating backups of projects. Though I often manipulate my repos via the command line, I still really like having a nice visualization of my version tree. &lt;a href=&quot;https://gitextensions.github.io/&quot;&gt;Git Extensions&lt;/a&gt; is my current choice for doing this, but there’s lots of great alternatives.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/gitExtensionsSample.png&quot; alt=&quot;GitExtensionsSample&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;When connecting to the server, I generally use &lt;a href=&quot;https://en.wikipedia.org/wiki/Secure_Shell&quot;&gt;SSH&lt;/a&gt; to get access to a command line on the other machine. &lt;a href=&quot;https://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;Putty&lt;/a&gt; is my tool of choice to get this done on Windows, though the one built into Git’s command prompt works just fine too.&lt;/p&gt;
+
+&lt;p&gt;Connecting between the Windows machines usually involves Window’s built-in Remote Desktop application.&lt;/p&gt;
+
+&lt;p&gt;For working with C code, I tend to prefer the &lt;a href=&quot;http://www.mingw.org/wiki/MSYS&quot;&gt;msys/minGW&lt;/a&gt; to get the parts of the GNU/Linux environment on my Windows machines required to build and link C code to an executable. &lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt; is another super common option.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.python.org/&quot;&gt;Python&lt;/a&gt; is my go-to language for most projects - it’s got easy &amp;amp; c-like syntax, cross-platform abilities, and batteries-included philosophy makes it a good choice for creating highly functional prototypes and super-flexible applications. For pure speed or robustness other options may be better, but Python is still my daily-driver for a language to implement my ideas in.&lt;/p&gt;
+
+&lt;h4 id=&quot;general-engineering-tools&quot;&gt;General Engineering Tools&lt;/h4&gt;
+
+&lt;p&gt;Of recent, &lt;a href=&quot;https://discordapp.com/&quot;&gt;Discord&lt;/a&gt; has become the defacto tool for maintaining communication in our FRC team, amongst friends, and even family.&lt;/p&gt;
+
+&lt;p&gt;For CAD, I tend to like &lt;a href=&quot;https://librecad.org/&quot;&gt;LibreCAD&lt;/a&gt; in the 2D drawings, and use &lt;a href=&quot;https://www.autodesk.com/products/inventor/overview&quot;&gt;Autodesk Inventor&lt;/a&gt; for 3D work. Both have many alternatives, these are simply the ones that I learned first, so I’m still the most efficient with them. I don’t have to do this super often, so I tend to stick with what I know, rather than invest in a new tool.&lt;/p&gt;
+
+&lt;p&gt;For electronics work, I have a few tools of choice. For doing research on the functionality of circuits and simulating their behavior, I use a program called &lt;a href=&quot;https://www.analog.com/en/design-center/design-tools-and-calculators/ltspice-simulator.html&quot;&gt;LTspice&lt;/a&gt;. It’s a bit obtuse to get used to, I learned it in college. It helps when designing analog circuitry and validating functionality prior to building a real circuit.&lt;/p&gt;
+
+&lt;p&gt;When designing an actual circuit that I’ll build, I switch over to a different tool. &lt;a href=&quot;http://www.kicad-pcb.org/&quot;&gt;KiCad&lt;/a&gt; has been my choice of recent, though &lt;a href=&quot;https://www.autodesk.com/products/eagle/free-download&quot;&gt;Autodesk Eagle&lt;/a&gt; was my choice in college. Both give a vast library of components that you first assemble into a nice circuit schematic, then lay out physically on a &lt;a href=&quot;https://en.wikipedia.org/wiki/Printed_circuit_board&quot;&gt;printed circuit board (PCB)&lt;/a&gt;. In addition to printing the schematic, you can export various files from the PCB design side that manufacturers can use to create a custom board for you. This will likely be the subject of a future blog post.&lt;/p&gt;
+
+&lt;h4 id=&quot;documentation&quot;&gt;Documentation&lt;/h4&gt;
+
+&lt;p&gt;For documenting my work, I tend toward two tools.&lt;/p&gt;
+
+&lt;p&gt;For simple technical documentation, I really &lt;em&gt;really&lt;/em&gt; like &lt;a href=&quot;https://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt;. That’s what this website is (mostly) written in! My liking is primarily because it’s super simple to write - basically just editing a text file. The rendering into nicely-formatted viewing is done by some other tool. To me, this is awesome because even if the visualization tool goes extinct, the base content is still super accessible and readable (unlike Microsoft Word or the like). Github and its clones support it natively, so &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files you produce display very nicely via their web interface (which is how most 3rd party folks will first see your projects). The feature set provided is, for me, “just-right” - simple formatting of code, images, headings, lists. All without the overhead of pure HTML/CSS/Javascript to accomplish the same thing. Of course, if doing a website from the ground up, you’ll want to be more familiar with those. However, for something like this blog, Markdown is an awesome choice for entering the information with enough complexity to fully describe your ideas, without unneeded overhead.&lt;/p&gt;
+
+&lt;p&gt;For more formal documentation (think, scientific papers or resumes), &lt;a href=&quot;https://www.latex-project.org/&quot;&gt;LaTeX&lt;/a&gt; is by far king, and I also love it. It produces &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleLib/blob/master/doc/current_limiting.pdf&quot;&gt;beautifully formatted documents&lt;/a&gt; with top-of-the-line scientific equation editing. It also does great resumes - I recently moved mine over using the &lt;a href=&quot;https://ctan.org/pkg/moderncv?lang=en&quot;&gt;ModernCV&lt;/a&gt; templates! It’s a bit obtuse to learn at first, but the end results are well worth it!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/latexResume.png&quot; alt=&quot;LatexResume&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Looks even better unredacted!&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;on-the-server&quot;&gt;On the Server&lt;/h3&gt;
+
+&lt;p&gt;The Gerth Household Server (affectionately nicknamed “Geezer” for its age) runs a number of applications which improve out lives on daily basis. I got into having a household server after my college laptop’s screen died, leaving it only useful by SSH or Remote Desktop access. I was bored one weekend, got Arch Linux up and running, and it kinda just snowballed from there. A few years back I finally decided running my laptop to death wasn’t a great idea, and swapped for the PowerEdge server hardware.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.home-assistant.io/&quot;&gt;HomeAssistant&lt;/a&gt; is our home automation hub. It was one of the first things I attempted to get running on the server, and has been serving use well ever since! We’ve got a number of wifi-controlled light switches and outlets, smart speakers, &lt;a href=&quot;https://github.com/gerth2/smarthome-devices&quot;&gt;some homebrew devices&lt;/a&gt;, and of course many networked devices. HomeAssistant has a ton of built-in functionality - you just have to configure it that “yes, these things are in my home” and it will automatically do some really slick integration, providing a super useful user interface for controlling the devices. Additionally, I can write automation scripts to allow the smart speakers to trigger action on light switches and whatnot. Highly recommended!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/hassSample.png&quot; alt=&quot;Home Assistant Sample&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt; is my go-to service for hosting repos online, and making them publicly available. However, there are a handful of projects I really &lt;em&gt;don’t&lt;/em&gt; want to make it outside my home network. Some of them concern the internal configuration of my network, others contain personal info (like my tax returns or resumes). To still be able to have totally-private, not-at-all-in-the-outside-world git projects backed up on a separate device from my PC or laptop, the server also runs an instance of &lt;a href=&quot;https://gitea.io/en-us/&quot;&gt;Gitea&lt;/a&gt;, a simple Github-lookalike that I host myself. I’ll also back up critical projects (like this blog!) just in case Github disappears off the face of the earth - my data won’t disappear with it. Though I will have to find another host.&lt;/p&gt;
+
+&lt;p&gt;For home media, we use &lt;a href=&quot;https://www.plex.tv/&quot;&gt;Plex&lt;/a&gt; to stream media files from our NAS to various viewing screens throughout the house. Both TV’s have some smarts built into them to where they can stream from the server.&lt;/p&gt;
+
+&lt;p&gt;Both Gitea and Plex are backed up against the Network Attached Storage device, which is nice, since the big files don’t take up space on the server’s internal hard drives.&lt;/p&gt;
+
+&lt;p&gt;For monitoring the server status, aside from just remoting in via SSH and running &lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt;, I recently installed &lt;a href=&quot;https://www.netdata.cloud/&quot;&gt;NETDATA&lt;/a&gt; to provide a slick web-based view of how the server is running at the moment. It’s made basic checkups much quicker!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/netdataSample.png&quot; alt=&quot;netdata sample&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;All of the applications are contained behind our router’s firewall - no one should be able to access them externally. While on the go, my wife and I use &lt;a href=&quot;https://openvpn.net/&quot;&gt;openVPN&lt;/a&gt; on our phones and laptops to connect back to the home network. The server runs the server-side implementation of openVPN.&lt;/p&gt;
+
+&lt;p&gt;The concept of this &lt;a href=&quot;https://en.wikipedia.org/wiki/Virtual_private_network&quot;&gt;Virtual Private Network&lt;/a&gt; is simply putting your data in a “tunnel” - one end on the device your using, the other end inside our home network. This not only makes sure we have access to our home network applications, but also that we can protect our data from potentially untrusted wifi networks (Sorry random coffee shop XYZ, your baristas make great coffee, but probably don’t spend a ton of time analyzing the security of their local branch’s networking equipment). By encrypting our data with our own trusted devices and security keys, we can up our safety factor online quite a bit.&lt;/p&gt;
+
+&lt;p&gt;The server also happens to be hooked up to an amplifier that powers some weatherproof speakers we have outside. The server runs both a &lt;a href=&quot;https://github.com/PromyLOPh/pianobar&quot;&gt;Pianobar&lt;/a&gt; instance controlled within HomeAssistant, as well as a &lt;a href=&quot;https://github.com/duncanthrax/scream&quot;&gt;Scream&lt;/a&gt; server. Using these, we can play and stream audio to our outdoor speakers from quite a few different devices.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Ok, this is enough of a technical flex for now. I’m not necessarily recommending that anyone use these tools, or endorsing them in any particular way, other than to say that they work well for my family’s current purposes. If you’re in need of similar solutions, try out the tools and let me know what you think! I’m by no means an expert in any of them, but would be happy to give more feedback if needed.&lt;/p&gt;
+
+&lt;p&gt;Happy coding!&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;Though, not as many as my friend whose insurance company wanted to classify him as a small business due to his sheer quantity of high-powered hardware. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T09:30:40-05:00</published><updated>2019-08-18T09:30:40-05:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;source: reddit.com&lt;/em&gt;&lt;/p&gt;
 
@@ -2706,81 +2894,4 @@
       &lt;p&gt;Yes, smell. A good engineer uses &lt;em&gt;most&lt;/em&gt; of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It’s a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don’t usually recommend the sense of taste for writing software. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Introduction to Electronics Pt 2 - the Digital Revolution</title><link href="/blog_posts/2019/06/15/electronics_for_digital.html" rel="alternate" type="text/html" title="Introduction to Electronics Pt 2 - the Digital Revolution" /><published>2019-06-15T09:30:00-05:00</published><updated>2019-06-15T09:30:00-05:00</updated><id>/blog_posts/2019/06/15/electronics_for_digital</id><content type="html" xml:base="/blog_posts/2019/06/15/electronics_for_digital.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;A mentor from &lt;a href=&quot;https://www.thebluealliance.com/team/2102&quot;&gt;Team 2102&lt;/a&gt; had a great suggestion on how to re-work the electronics section to introduce things from a digital-first perspective. This post is a result of that rework, plus some extra facts I find useful.&lt;/p&gt;
-
-&lt;h2 id=&quot;a-brief-history&quot;&gt;A Brief History&lt;/h2&gt;
-
-&lt;p&gt;Doing digital electronics fundamentally requires devices that have &lt;em&gt;discrete&lt;/em&gt; states - on and off. Resistors, Capacitors, Inductors, and the like are called &lt;em&gt;linear&lt;/em&gt; electronic devices because, simply put, they do not have on/off states. They transition smoothly from one voltage/current operation point to another, usually in a very linear fashion (if you look at the right variables).&lt;/p&gt;
-
-&lt;p&gt;Compare this with a light switch in your house - it has no in-between states. As you slide it from the up position to the down position, the state rapidly changes between on and off at some point (defined by the mechanical construction of the inner components). This is the sort of behavior a system that works with 1’s and 0’s exclusively will need to do calculation.&lt;/p&gt;
-
-&lt;p&gt;The earliest of electronic calculating machines used &lt;a href=&quot;https://en.wikipedia.org/wiki/Relay&quot;&gt;electronic &lt;em&gt;relays&lt;/em&gt;.&lt;/a&gt; Just like the &lt;a href=&quot;https://www.vexrobotics.com/217-0220.html&quot;&gt;Vex Spike&lt;/a&gt; double relay you may be familiar with - these are simple devices that switch an output on and off in response to an input voltage. The input voltage generates a small magnetic field in a coil of wire, which mechanically moves contacts from one position to another, completing or breaking a circuit. It’s just a switch that can be turned on and off with electricity.&lt;/p&gt;
-
-&lt;p&gt;Relays have their faults - the coils can get &lt;em&gt;very&lt;/em&gt; power hungry and dissipate a lot of energy as heat. Additionally, the presence of moving parts is always a source of failure, and relays can be unreliable. Additionally, the fact that a mechanism has to physically move from one location to another makes them relatively slow - to increase the speed you have to increase the forces on the mechanism, which leads to less reliability and even more power consumption.&lt;/p&gt;
-
-&lt;p&gt;The next development was the invention of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Vacuum_tube&quot;&gt;&lt;em&gt;vacuum tube&lt;/em&gt;&lt;/a&gt;. These little devices used heated metal grids to get electrons to flow from one point to another, within a near-airless environment in a glass tube. By carefully changing voltages on plates and aligning them in just the right way, you could use a very small control signal to turn on and off a larger current flow (very similar to a relay). Though also useful as amplifiers, they were easy to use as switches that can be turned on and off with electricity.&lt;/p&gt;
-
-&lt;p&gt;Again though, there were disadvantages. Although switching speeds were vastly increased over mechanical relays, the glass-vacuum setup made them physically fragile. Just like light-bulbs, the glass could crack, or the internals could short out and break. Additionally, the heater element required lots of energy, and took time to “warm up” before it could be used. Still, they were practical enough that &lt;a href=&quot;https://en.wikipedia.org/wiki/List_of_vacuum_tube_computers&quot;&gt;many early computers&lt;/a&gt; were designed and built with them.&lt;/p&gt;
-
-&lt;p&gt;The Transistor was the next development. &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_the_transistor&quot;&gt;Three gentlemen&lt;/a&gt; were awarded the nobel prize for inventing the “solid state” device to control current. Gone were the days of mechanical monsters or fragile glass tubes - their device was a simple hunk of specially-treated material with some wires coming out. Equal parts engineering and hard scientific research, Bell Labs and various universities rapidly developed the first prototypes into commercially marketable products, which in turn made them all the more common-place (and therefor cheap).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/c/c2/Bardeen_Shockley_Brattain_1948.JPG&quot; alt=&quot;three inventors&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Modern processors aren’t even built out of manufactured transistors anymore - the &lt;em&gt;circuit chip&lt;/em&gt; is made up of transistors, and lots of other components, but all are created with a photomicrography process that literally eteches the components into a monolithic piece of silicon. But that’s a topic for a future post…&lt;/p&gt;
-
-&lt;p&gt;For now, let’s delve into the materials used inside of the transistor to explain a bit about its functionality.&lt;/p&gt;
-
-&lt;h2 id=&quot;semiconductors&quot;&gt;Semiconductors&lt;/h2&gt;
-
-&lt;p&gt;Of particular interest to computer engineers is a very particular class of materials called &lt;em&gt;Semiconductors&lt;/em&gt; These materials have the ability to change between conductor and insulator depending on how voltages are applied to them.&lt;/p&gt;
-
-&lt;h3 id=&quot;physical-construction&quot;&gt;Physical Construction&lt;/h3&gt;
-
-&lt;p&gt;Semiconductors are primarily made of specially processed silicon, formed into a very regular lattice-like structure on the atomic level, then carefully “doped” with impurities that introduce mobile charged particles. These can be actual electrons, or a void where an electron could fit in (called a “hole”), which is effectively a positive charge carrier.&lt;/p&gt;
-
-&lt;p&gt;Remember that a conductor has free particles to carry charge, while insulators do not. Undoped silicon is effectively an insulator, because all electrons are tightly bound into the lattice. Doped silicon does have extra electrons (or holes) which can move around, as they are not tightly bound to the lattice, and are therefor effectively conductors.&lt;/p&gt;
-
-&lt;p&gt;Layers of differently-doped material are fused in specific physical configurations to construct useful devices.&lt;/p&gt;
-
-&lt;p&gt;When a doped region with extra electrons is fused to a doped region with holes, some electrons naturally migrate into the holes near the junction. This forms what is called the “depletion layer” near the junction. This depletion layer is effectively an insulator, since there are no free electrons to carry current through the region.&lt;/p&gt;
-
-&lt;h3 id=&quot;electrical-properties&quot;&gt;Electrical Properties&lt;/h3&gt;
-
-&lt;p&gt;Applying a voltage across this depletion region will exert an extra force on the electrons. Depending on the direction of the voltage, you may end up with more electrons  hopping into holes (expanding the depletion region), or knocking electrons out of holes (shrinking the depletion region). As the voltage gets big enough to drive the depletion region to near zero size, the resistance of the material goes down, and it transforms into a conductor overall.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/diode.png&quot; alt=&quot;depletion layer and diode&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is the useful property of semiconductors - by applying a voltage to one part, the material property can be converted between insulator and conductor.&lt;/p&gt;
-
-&lt;h3 id=&quot;transistor-as-a-switch&quot;&gt;Transistor as a Switch&lt;/h3&gt;
-
-&lt;p&gt;It is commonly said that computers store information using 1’s and 0’s. These “bits” of information are represented inside the circuitry of the processor as high and low voltages. To store, combine, and manipulate the information, it is necessary to have circutry which can manipulate the high and low voltages dynamically.&lt;/p&gt;
-
-&lt;p&gt;Transistors contain 3 or more regions of semiconductor material. The simplest type have what is referred to as a Base, Collector, and Emitter region.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/bjt.png&quot; alt=&quot;bjt diagram&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Usually the line diagram with the “arrow pointing in” is used to represent the transistor in schematics.&lt;/p&gt;
-
-&lt;p&gt;By injecting a voltage (and tiny current) at the base, the motion of electrons causes an avalanche effect if the collector &amp;amp; emitter have a voltage across them. The tiny input force causes a much larger output force, though it saturates at a certain point. This association allows one electrical signal to impact the flow of another signal, much as a human turning a light switch on and off impacts the flow of electricity to a lamp.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/bjt_as_switch.png&quot; alt=&quot;bjt as switch&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This switching action of the transistor is the basis upon which information can be manipulated. By carefully combining transistors, along with small numbers of other components, basic “logic gates” can be built up. These rudamentory gates have one or more inputs, and a single output, and computer boolean operations like AND, OR, and NOT with electronics.&lt;/p&gt;
-
-&lt;p&gt;The exact construction of logic gates from transistors is beyond the scope of this blog because, indeed, learning about how it &lt;em&gt;actually&lt;/em&gt; works requires a much deeper dive into the various types of transistors available. In my opinion, this is a topic better suited for folks interested in designing processor circuitry, rather than writing software. For the curious, &lt;a href=&quot;http://hyperphysics.phy-astr.gsu.edu/hbase/Electronic/trangate.html&quot;&gt;HyperPhysics&lt;/a&gt; has some examples of how gates can be constructed from the BJT transistors we have explained already.&lt;/p&gt;
-
-&lt;p&gt;Therefor, we make the following two abstractions:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;em&gt;A transistor is a device which controls the flow of electricity&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Transistors can be combined to build logic gates, which implement basic logic functions&lt;/em&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Just remember these two, and you’ll be fine going forward!&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;We’ve scratched the surface of Analog, and shown how you can start to go Digital. If you haven’t yet, go lay the groundwork of some basic Digital concepts with &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;Binary&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
