@@ -58,13 +58,14 @@ Even worse, some of the comments have _wrong_ information. You may laugh, but th
 
 And, believe it or not, often developers A, B, and C are the same person. I've been there.
 
-<picture>
+![it was me all the time](/assets/it_was_me.png)
 
 *source: me.me or Stephen Hillenburg, you choose.*
 
 Please please please please please never ever ever write comments like this.
 
 Here's a much better approach:
+
 ```c
 double periodic(){
 
@@ -175,3 +176,7 @@ int myCode(){
 If you are super careful with how you do something like this, you can use specialized programs like [Javadoc](https://en.wikipedia.org/wiki/Javadoc) or [Doxygen](https://en.wikipedia.org/wiki/Doxygen) to convert these comment blocks into some very nice looking and easy-to-navigate HTML, producing non-code documentation of how your code works. It's super useful if someone else has to use your code (like if you were writing _for_ WPI), but is also just nice to have as a reference anyway.
 
 One closing note - I always recommend using proper grammar, punctuation, capitalization, spelling, etc. when writing comments. Even if your meaning is communicated without these, taking the time on the comments indicates you also took time writing the code, and are competent at your job. Which, presumably, is the message you'd like to communicate outward.
+
+## Conclusion
+
+Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you've got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!
