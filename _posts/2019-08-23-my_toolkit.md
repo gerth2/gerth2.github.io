@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "My Computer Engineering Toolkit"
-date:   2019-08-16 09:30:40 -0500
+date:   2019-08-23 09:30:40 -0500
 categories: blog_posts
 ---
 
@@ -36,7 +36,7 @@ Some basic specs:
    * Gotta get something that looks cool, and has programmable buttons. If you've never experienced a mouse with a dedicated "back" button, you haven't lived!
  * [Adesso Mechanical Keyboard](https://www.amazon.com/Adesso-AKB-635UB-Easy-Touch-635/dp/B00SX4X8WW/ref=sr_1_3?keywords=adesso+mechanical+keyboard&qid=1566526455&s=gateway&sr=8-3)
    * Mine is similar to this one, I don't think they sell it anymore.
-   * Mine has [Cherry Blue switches](https://www.keyboardco.com/blog/index.php/2012/12/an-introduction-to-cherry-mx-mechanical-switches/) - the really _really_ clicky ones. Drives the wife mad. But I _love_the tactile feel.
+   * Mine has [Cherry Blue switches](https://www.keyboardco.com/blog/index.php/2012/12/an-introduction-to-cherry-mx-mechanical-switches/) - the really _really_ clicky ones. Drives the wife mad. But I _love_ the tactile feel.
      * Of course, it's not for everyone. Try a bunch of different keyboards to see which one you like.
  * Mousepad is a chunk of fabric-covered neoprene that was surplus from the manufacture of [Haken Continuum](https://www.hakenaudio.com/) continuous keyboard. It's a fun souvenir from one of my favorite college classes.
 
@@ -54,7 +54,7 @@ For folks who do lots of FRC software mentoring, turns out the vast majority of 
 
 *source: gearbest.com*
 
-That's right - I got the Chinese hardware. But I have to say, it's super awesome. Sleek and light, phenominal battery life, a brilliant and giant display (my key criteria), and a pretty good keyboard and trackpad make for an excellent coding machine on the road. 
+That's right - I got the Chinese hardware. But I have to say, it's super awesome. Sleek and light, phenomenal battery life, a brilliant and giant display (my key criteria), and a pretty good keyboard and trackpad make for an excellent coding machine on the road. 
 
 The device sports a plethora of USB-C connectors. I usually carry dongle adapters to get me to VGA and HDMI, as well as extra USB and Ethernet ports (all very important for robot usage). 
 
@@ -162,15 +162,15 @@ For monitoring the server status, aside from just remoting in via SSH and runnin
 
 ![netdata sample](/assets/netdataSample.png)
 
-All of the applications are contained behind our router's firewall - no one should be able to access them externally. While on the go, my wife and I use [openVPN](https://openvpn.net/) on our phones and laptops to connect back to the home network. The server runs the server-side implementation of openVPN with custom-configured encryption. 
+All of the applications are contained behind our router's firewall - no one should be able to access them externally. While on the go, my wife and I use [openVPN](https://openvpn.net/) on our phones and laptops to connect back to the home network. The server runs the server-side implementation of openVPN.
 
-The concept of this [Virtual Private Network](https://en.wikipedia.org/wiki/Virtual_private_network) is simply putting your data in a "tunnel" - one end on the device your using, the other end inside our home network. This not only makes sure we have access to our home network applications, but also that we can protect our data from potentially untrusted wifi networks (Sorry Starbucks, your baristas make great coffee, but probably don't spend a ton of time analyzing the security of their local branch's networking equipment). By encrypting our data with our own trusted devices and security keys, we can up our safety factor online quite a bit.
+The concept of this [Virtual Private Network](https://en.wikipedia.org/wiki/Virtual_private_network) is simply putting your data in a "tunnel" - one end on the device your using, the other end inside our home network. This not only makes sure we have access to our home network applications, but also that we can protect our data from potentially untrusted wifi networks (Sorry random coffee shop XYZ, your baristas make great coffee, but probably don't spend a ton of time analyzing the security of their local branch's networking equipment). By encrypting our data with our own trusted devices and security keys, we can up our safety factor online quite a bit.
 
 The server also happens to be hooked up to an amplifier that powers some weatherproof speakers we have outside. The server runs both a [Pianobar](https://github.com/PromyLOPh/pianobar) instance controlled within HomeAssistant, as well as a [Scream](https://github.com/duncanthrax/scream) server. Using these, we can play and stream audio to our outdoor speakers from quite a few different devices.
 
 ## Conclusion
 
-Ok, enough of a technical flex for now. I'm not necessarily recommending that anyone use these tools, or endorsing them in any particular way, other than to say that they work well for my family's current purposes. If you're in need of similar solutions, try out the tools and let me know what you think! I'm by no means an expert in any of them, but would be happy to give more feedback if needed.
+Ok, this is enough of a technical flex for now. I'm not necessarily recommending that anyone use these tools, or endorsing them in any particular way, other than to say that they work well for my family's current purposes. If you're in need of similar solutions, try out the tools and let me know what you think! I'm by no means an expert in any of them, but would be happy to give more feedback if needed.
 
 Happy coding!
 
