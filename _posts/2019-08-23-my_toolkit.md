@@ -40,7 +40,7 @@ Some basic specs:
      * Of course, it's not for everyone. Try a bunch of different keyboards to see which one you like.
  * Mousepad is a chunk of fabric-covered neoprene that was surplus from the manufacture of [Haken Continuum](https://www.hakenaudio.com/) continuous keyboard. It's a fun souvenir from one of my favorite college classes.
 
-![thePCGuts](/assets/thePCGuts.jpg)
+![thePCGuts](/assets/thePCguts.jpg)
 
 Again keep in mind - these specs are 6 years old at the time of writing. If I ever happen upon a spare couple hundred dollars, I this will probably be the first thing I upgrade. However, it's still running so fast, it's hard to bring myself to do so.
 
