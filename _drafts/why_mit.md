@@ -7,12 +7,60 @@ categories: blog_posts
 
 ## Introduction
 
-open source software & licenses
+[Open source software is definitely an interesting beast.](https://www.sparkfun.com/news/2506) I didn't spend too much time thinking about it until my college years, and the more I consider it the more impressive it gets. CAD programs, programming languages, even whole operating systems are developed by massive teams of people who have never met each other in person, and just enjoy engineering _so much_ they do it in their _personal time for free_. And the software that is produced can be crazy good!
+
+The software that is produced has _inherent value_. It's useful! That means that if I have money, and I need software XYZ, and you are selling software XYZ, I very well might pay money to you to get software XYZ. If you happen to be in the business of making money (as a lot of us are), it would make sense to sell software XYZ. Or take it, and use it in some... unsavory... manner. 
+
+At the end of the day, most open source software developers want to do just that - _develop open source software_. They may or may not want others to take and sell and do as they please with it, but they generally don't want to be bothered having to think about it. That would be open-source lawyering, which is not something I have known software engineers to enjoy.
+
+With this in mind, most open source software is assigned some specific _license_ to help take care of these issues.
+
+I am by no means an expert in this area, so please don't take this post as real legal advice. What you can take it for is a summary of my knowledge at the time of writing, and the reasons I use for the license I usually select.
+
+## Copyright Basics
+
+In the United States, [Copyright Laws](https://en.wikipedia.org/wiki/Software_copyright) say that anything you write, including source code, by default cannot be used by others. There are some limits to this, including if your source code is not original, or they change it a _lot_, or various other conditions.
+
+However, these defaults and conditions are not consistent in other countries. To keep things simple, it is worthwhile to lay out the exact terms of usage of your _creative work_ in specific legal language within a license file.
+
+You can technically put whatever you want in a license, but it's best to have a lawyer write it, so that you have some assurance your license will hold up in international courts of law. [There are many popular licenses available](https://opensource.org/licenses), and you can pick and choose from them as you choose.
+
+For my projects, and most FRC projects, I usually choose the _MIT License_ (named after that same college with the really smart people).
 
 ## MIT Basics
 
+The "MIT License" is one of the most permissive open source licenses available. Individuals can take the source code and use it however they want. Companies can do the same, including using it to make money with their own products. Anyone can modify their copy of code as they see fit, and they don't have to report the changes back to you. 
+
+Someone could turn around and sell the source code verbatim, but given that it's already freely available, that doesn't seem like a good way to make money.
+
+The biggest thing they can't do is strip away the license - any redistribution must include your initial MIT licensing. They must also retain your initial copyright notice, which helps contain a reference back to the original author.
+
+Finally, the software is always provided "As-Is" - it is intended for _no particular purposes at all_. This is a fancy way of saying that, even if I describe the project as "Software for an FRC Robot", it was never _really, leagally_ intended for that. 
+
 ## Why MIT
 
-## Other options
+Especially for FRC purposes, I choose MIT for a few reasons.
+
+For one, it's a serious license. Lots of "real" projects use it, so it is _extermely_ likely to hold up in court, in case I ever have to do that. There are some [much more light-hearted](https://en.wikipedia.org/wiki/WTFPL) licenses out there, but I question whether these would actually hold up in court.
+
+Secondly, it is very open, which is what I want robot software to be. I want it to be super simple for other FRC teams to take our code and use it as they need. I'd appreciate if they give us a shout-out, or let us know if they find problems, or show us how they improved it, but I'd never _force_ that to be required. Build season is short, we've got bigger things to worry about.
+
+Even with companies - even though it would be _nice_ if they gave us some money for using our code, I still wouldn't hold it against them if they seriously thought some random code written by a bunch of sleep-deprived high schoolers was better than their engineers could come up with. Are they hiring? I've got some resumes for interns I can forward.
+
+But, most importantly - it ensures the software will only ever be provided "As-Is". Here's the critical thing I worry about - say you claimed your software performed some function safely (as lots of our code comments do). Now say someone copy-pasted that code onto a different robot, fired it up, exercised some bug, and the robot ran over a small child and injured them (ow!). Then they came and sued me because our code claimed it was safe, but in fact it was not. 
+
+This is a hopeless situation. Once I publish code on Github, I have no way of knowing who will copy and paste it, or how they will use it. I have no way of guaranteeing safety of functionality.
+
+Hopefully any judge who knows how software works wouldn't actually side with the other person. Even still, I'd prefer not to take the chance. I'd rather be writing software than worrying about whether I'll be sued or not. So, I am always sure to include an MIT License. Having this present is the legally-binding way of saying to a consumer of the software "It's your responsibility to validate functionality, not mine".
+
+Again, I am no lawyer, so I can't say my line of thought is 100% correct here. It's highly influenced by my personal research and desire to sleep well at night, but not much else.
+
+## Other Options
+
+There are a bunch of other licenses which have some features you might want. These include requiring people who modify the code to notify you of changes. They also may restrict certain phrases or logos as trademarked, prevent changing the license, or prevent for-profit usage. [GPL-3](https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)) and [Apache 2.0](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)) are two other common licenses.
+
+As a side note - I _always_ subscribe to the notion of what the industry calls "beerware", under a broader definition. If I have ever used your open source software, and you happen to be in the Peoria IL area with some time to burn, a round of your favorite drinks or food is on me. And I've got plenty of good local suggestions! Perhaps for another post.
 
 ## Conclusion
+
+Looking to choose a license for your project? Choose wisely! [There are many good tools online](https://choosealicense.com/) to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!
