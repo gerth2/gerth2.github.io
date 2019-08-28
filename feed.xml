@@ -1,4 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-23T15:50:20-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T09:30:40-05:00</published><updated>2019-08-23T09:30:40-05:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-27T22:36:51-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T09:30:40-05:00</published><updated>2019-08-27T09:30:40-05:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.sparkfun.com/news/2506&quot;&gt;Open source software is definitely an interesting beast.&lt;/a&gt; I didn’t spend too much time thinking about it until my college years, and the more I consider it the more impressive it gets. CAD programs, programming languages, even whole operating systems are developed by massive teams of people who have never met each other in person, and just enjoy engineering &lt;em&gt;so much&lt;/em&gt; they do it in their &lt;em&gt;personal time for free&lt;/em&gt;. And the software that is produced can be crazy good!&lt;/p&gt;
+
+&lt;p&gt;The software that is produced has &lt;em&gt;inherent value&lt;/em&gt;. It’s useful! That means that if I have money, and I need software XYZ, and you are selling software XYZ, I very well might pay money to you to get software XYZ. If you happen to be in the business of making money (as a lot of us are), it would make sense to sell software XYZ. Or take it, and use it in some… unsavory… manner.&lt;/p&gt;
+
+&lt;p&gt;At the end of the day, most open source software developers want to do just that - &lt;em&gt;develop open source software&lt;/em&gt;. They may or may not want others to take and sell and do as they please with it, but they generally don’t want to be bothered having to think about it. That would be open-source lawyering, which is not something I have known software engineers to enjoy.&lt;/p&gt;
+
+&lt;p&gt;With this in mind, most open source software is assigned some specific &lt;em&gt;license&lt;/em&gt; to help take care of these issues.&lt;/p&gt;
+
+&lt;p&gt;I am by no means an expert in this area, so please don’t take this post as real legal advice. What you can take it for is a summary of my knowledge at the time of writing, and the reasons I use for the license I usually select.&lt;/p&gt;
+
+&lt;h2 id=&quot;copyright-basics&quot;&gt;Copyright Basics&lt;/h2&gt;
+
+&lt;p&gt;In the United States, &lt;a href=&quot;https://en.wikipedia.org/wiki/Software_copyright&quot;&gt;Copyright Laws&lt;/a&gt; say that anything you write, including source code, by default cannot be used by others. There are some limits to this, including if your source code is not original, or they change it a &lt;em&gt;lot&lt;/em&gt;, or various other conditions.&lt;/p&gt;
+
+&lt;p&gt;However, these defaults and conditions are not consistent in other countries. To keep things simple, it is worthwhile to lay out the exact terms of usage of your &lt;em&gt;creative work&lt;/em&gt; in specific legal language within a license file.&lt;/p&gt;
+
+&lt;p&gt;You can technically put whatever you want in a license, but it’s best to have a lawyer write it, so that you have some assurance your license will hold up in international courts of law. &lt;a href=&quot;https://opensource.org/licenses&quot;&gt;There are many popular licenses available&lt;/a&gt;, and you can pick and choose from them as you choose.&lt;/p&gt;
+
+&lt;p&gt;For my projects, and most FRC projects, I usually choose the &lt;em&gt;MIT License&lt;/em&gt; (named after that same college with the really smart people).&lt;/p&gt;
+
+&lt;h2 id=&quot;mit-basics&quot;&gt;MIT Basics&lt;/h2&gt;
+
+&lt;p&gt;The “MIT License” is one of the most permissive open source licenses available. Individuals can take the source code and use it however they want. Companies can do the same, including using it to make money with their own products. Anyone can modify their copy of code as they see fit, and they don’t have to report the changes back to you.&lt;/p&gt;
+
+&lt;p&gt;Someone could turn around and sell the source code verbatim, but given that it’s already freely available, that doesn’t seem like a good way to make money.&lt;/p&gt;
+
+&lt;p&gt;The biggest thing they can’t do is strip away the license - any redistribution must include your initial MIT licensing. They must also retain your initial copyright notice, which helps contain a reference back to the original author.&lt;/p&gt;
+
+&lt;p&gt;Finally, the software is always provided “As-Is” - it is intended for &lt;em&gt;no particular purposes at all&lt;/em&gt;. This is a fancy way of saying that, even if I describe the project as “Software for an FRC Robot”, it was never &lt;em&gt;really, leagally&lt;/em&gt; intended for that.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-mit&quot;&gt;Why MIT&lt;/h2&gt;
+
+&lt;p&gt;Especially for FRC purposes, I choose MIT for a few reasons.&lt;/p&gt;
+
+&lt;p&gt;For one, it’s a serious license. Lots of “real” projects use it, so it is &lt;em&gt;extermely&lt;/em&gt; likely to hold up in court, in case I ever have to do that. There are some &lt;a href=&quot;https://en.wikipedia.org/wiki/WTFPL&quot;&gt;much more light-hearted&lt;/a&gt; licenses out there, but I question whether these would actually hold up in court.&lt;/p&gt;
+
+&lt;p&gt;Secondly, it is very open, which is what I want robot software to be. I want it to be super simple for other FRC teams to take our code and use it as they need. I’d appreciate if they give us a shout-out, or let us know if they find problems, or show us how they improved it, but I’d never &lt;em&gt;force&lt;/em&gt; that to be required. Build season is short, we’ve got bigger things to worry about.&lt;/p&gt;
+
+&lt;p&gt;Even with companies - even though it would be &lt;em&gt;nice&lt;/em&gt; if they gave us some money for using our code, I still wouldn’t hold it against them if they seriously thought some random code written by a bunch of sleep-deprived high schoolers was better than their engineers could come up with. Are they hiring? I’ve got some resumes for interns I can forward.&lt;/p&gt;
+
+&lt;p&gt;But, most importantly - it ensures the software will only ever be provided “As-Is”. Here’s the critical thing I worry about - say you claimed your software performed some function safely (as lots of our code comments do). Now say someone copy-pasted that code onto a different robot, fired it up, exercised some bug, and the robot ran over a small child and injured them (ow!). Then they came and sued me because our code claimed it was safe, but in fact it was not.&lt;/p&gt;
+
+&lt;p&gt;This is a hopeless situation. Once I publish code on Github, I have no way of knowing who will copy and paste it, or how they will use it. I have no way of guaranteeing safety of functionality.&lt;/p&gt;
+
+&lt;p&gt;Hopefully any judge who knows how software works wouldn’t actually side with the other person. Even still, I’d prefer not to take the chance. I’d rather be writing software than worrying about whether I’ll be sued or not. So, I am always sure to include an MIT License. Having this present is the legally-binding way of saying to a consumer of the software “It’s your responsibility to validate functionality, not mine”.&lt;/p&gt;
+
+&lt;p&gt;Again, I am no lawyer, so I can’t say my line of thought is 100% correct here. It’s highly influenced by my personal research and desire to sleep well at night, but not much else.&lt;/p&gt;
+
+&lt;h2 id=&quot;other-options&quot;&gt;Other Options&lt;/h2&gt;
+
+&lt;p&gt;There are a bunch of other licenses which have some features you might want. These include requiring people who modify the code to notify you of changes. They also may restrict certain phrases or logos as trademarked, prevent changing the license, or prevent for-profit usage. &lt;a href=&quot;https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)&quot;&gt;GPL-3&lt;/a&gt; and &lt;a href=&quot;https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)&quot;&gt;Apache 2.0&lt;/a&gt; are two other common licenses.&lt;/p&gt;
+
+&lt;p&gt;As a side note - I &lt;em&gt;always&lt;/em&gt; subscribe to the notion of what the industry calls “beerware”, under a broader definition. If I have ever used your open source software, and you happen to be in the Peoria IL area with some time to burn, a round of your favorite drinks or food is on me. And I’ve got plenty of good local suggestions! Perhaps for another post.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T09:30:40-05:00</published><updated>2019-08-23T09:30:40-05:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This will be a bit of self promotion, but hopefully educational at the same time. Here’s a confession - I have many computers in my life &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. They have come and gone over the years, and all played a crucial role in my education and learning, leading me toward the engineer I am today.&lt;/p&gt;
 
@@ -46,7 +104,7 @@
   &lt;li&gt;Mousepad is a chunk of fabric-covered neoprene that was surplus from the manufacture of &lt;a href=&quot;https://www.hakenaudio.com/&quot;&gt;Haken Continuum&lt;/a&gt; continuous keyboard. It’s a fun souvenir from one of my favorite college classes.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/thePCGuts.jpg&quot; alt=&quot;thePCGuts&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/thePCguts.jpg&quot; alt=&quot;thePCGuts&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Again keep in mind - these specs are 6 years old at the time of writing. If I ever happen upon a spare couple hundred dollars, I this will probably be the first thing I upgrade. However, it’s still running so fast, it’s hard to bring myself to do so.&lt;/p&gt;
 
@@ -2470,428 +2528,4 @@
       &lt;p&gt;Forgive the odd drawing here - you can ignore the numbers right by the gates. I’m testing out using &lt;a href=&quot;http://kicad-pcb.org/&quot;&gt;KiCad&lt;/a&gt; for schematic capture and design. It’s a bit cumbersome for these educational purposes, but can draw simple logic diagrams well. Looks super powerful as an electronic schematic and printed circuit board design tool though! I highly recommend it so far! &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt; &lt;a href=&quot;#fnref:4:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">This post is the continuation of Part 1 in our series on digital devices.</summary></entry><entry><title type="html">Digital Devices</title><link href="/blog_posts/2019/06/26/digital_devices.html" rel="alternate" type="text/html" title="Digital Devices" /><published>2019-06-26T09:30:00-05:00</published><updated>2019-06-26T09:30:00-05:00</updated><id>/blog_posts/2019/06/26/digital_devices</id><content type="html" xml:base="/blog_posts/2019/06/26/digital_devices.html">&lt;p&gt;&lt;img src=&quot;/assets/word_problems.jpg&quot; alt=&quot;word problems from Bill Waterson&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Calvin and Hobbes, by Bill Waterson&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;on-word-problems&quot;&gt;On Word Problems&lt;/h2&gt;
-
-&lt;p&gt;As engineers, we almost always start with word problems. You know those paragraphs that your math teacher writes out that you have to &lt;em&gt;read&lt;/em&gt; and then they make you extract the useful information to formulate some formulas, then solve them, then get the actual answer? Yea, those. I used to love those, because the paragraph-format meant the teacher couldn’t fit as many problems on one page, which meant shorter homework assignments!&lt;/p&gt;
-
-&lt;p&gt;Never in my professional life have I ever been asked “what’s &lt;script type=&quot;math/tex&quot;&gt;465 + 236&lt;/script&gt;?”. Many times, I’ve had someone come to my desk and ask me a question that took ten sentences to explain, but at the end of the day all I had to do was calculate &lt;script type=&quot;math/tex&quot;&gt;465 + 236&lt;/script&gt;. That and listen to them, which is a whole skill (nay, art?) unto itself.&lt;/p&gt;
-
-&lt;p&gt;In previous posts, we’ve seen how logic gates can be combined to manipulate bits. There’s obviously a ton of different ways you could combine a set of bits… OR’ing them together, AND’ing them together, some combination of the two… But, why would you do such things?&lt;/p&gt;
-
-&lt;p&gt;Word problems. Every engineering problem starts as a word problem. So to learn about digital devices, we’re going to frame a couple word problems. Some of them may seem a bit odd at first, but I promise they’re building up to something very useful. Keep in mind, we’re laying the foundation for understanding the guts of a computer, which is going to help us write better software.&lt;/p&gt;
-
-&lt;h2 id=&quot;rocket-launch-controller&quot;&gt;Rocket Launch Controller&lt;/h2&gt;
-
-&lt;p&gt;Well, a contrived one at least. Part of one, not the whole thing.&lt;/p&gt;
-
-&lt;p&gt;Let’s imagine a usual rocket launch. We’re sending some people into space atop a very &lt;em&gt;very&lt;/em&gt; powerful flaming pushy thing. You want to be sure everyone is OK with going to space before you actually try to go to space.&lt;/p&gt;
-
-&lt;p&gt;Mission control is keeping track of the launch, and  has the responsibility of initiating it. Maybe we could give them one big launch button. But, this could be problematic - what if someone trips and falls and lands on the button? Then our rocket gets launched unexpectedly. This could be bad &lt;script type=&quot;math/tex&quot;&gt;^{citation needed}&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;For safety’s sake, let’s build two buttons and put them on opposite sides of the room. The rocket shouldn’t launch unless two &lt;em&gt;different&lt;/em&gt; launch control engineers push both the buttons at the same time. “Hey Bob, ya ready?” “Yea Joe, let’s light this candle!” “Ok, push the button” “Sounds good!” BWWWUWUSUSHSHSHSHSHSHSHSHHHHhhhhhhh……&lt;/p&gt;
-
-&lt;p&gt;But, we also have astronauts in the capsule. Mission control is pretty good at their jobs, but they aren’t at the rocket. Despite all their instruments, they still don’t hear, feel, or smell&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; the behavior of the rocket. Maybe it’s wise to give our astronaut friends a “kill switch” of sorts inside the capsule. That way, if something seems off, they can activate some sort of “emergency stop” or “override” to prevent launch control from starting the rocket.&lt;/p&gt;
-
-&lt;p&gt;Buttons make great sources of boolean inputs. Though we won’t go into the details just yet, suffice to say that you have three boolean inputs, representing each of our three buttons. We’ll call the two in the launch control room &lt;script type=&quot;math/tex&quot;&gt;L_1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt;. We’ll call the “emergency-stop” button near the astronauts &lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt;. For all buttons, a value of True indicates the button is pressed, and False indicates it’s not pressed.&lt;/p&gt;
-
-&lt;p&gt;We will have a single output called &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;. When it’s True, it will trigger the ignitors to start the rocket, and send the thing to space. When False, the rocket remains on the launch pad.&lt;/p&gt;
-
-&lt;p&gt;How do we want to design this digital circuit to control the launch functionality as described? Let’s break it down into little chunks.&lt;/p&gt;
-
-&lt;p&gt;The launch room is kind of its own entity, with its own behavior, and own set of inputs. Let’s deal with that one first.&lt;/p&gt;
-
-&lt;p&gt;What is the information that comes out of the launch room that the rocket ignitors care about? I’d say that the information the rocket cares about is “Both buttons or pressed” - either they’re both pressed, or their not both pressed. Let’s call this intermediate value &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;.&lt;/p&gt;
-
-&lt;p&gt;Looking inside the launch room, the logic should be pretty simple. Two inputs, one output. Let’s enumerate what we want to happen for each input:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;L_1&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;L_2&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;No button is pressed. Don’t Launch.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;Only one button is pressed. Don’t Launch Yet.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;Only one button is pressed. Don’t Launch Yet.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;Both buttons are pressed. Go for Launch!&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Astute readers will notice that this actually is a very familiar function - it’s just an AND gate!&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;B = L_1 \cdot L_2&lt;/script&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/mission_control.png&quot; alt=&quot;mission control button schematic&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;There we go, quite simple!&lt;/p&gt;
-
-&lt;p&gt;Now let’s move on to the astronauts. They’ve got one button that when pressed should indicate “inhibit launch”.&lt;/p&gt;
-
-&lt;p&gt;It’s generally a good idea to try to keep things as similar as possible. Since Launch Control has a single output that indicates “Go for Launch”, lets give our astronauts the same output. We need to design a circuit that takes their inhibit button value and converts it into a “Go for launch” output. We’ll call the astronaut output &lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;. Again enumerating with a truth table:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;E&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;Astronauts are not pushing their button. Everything must be ok, go for launch!&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;Astronauts detected a problem and pushed their button! Don’t Launch!&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Astute readers will again notice this is actually a very familiar function - it’s just a NOT gate.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C = \overline{E}&lt;/script&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/astronaut_button.png&quot; alt=&quot;Astronaut button schematic&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Excellent! We have now devices for both the Launch Control room and the Astronauts capsule controls, each with an output that says “Light the rocket” or “Don’t light the rocket”. The rocket ignition mechanism now has to take these two signals, and combine them together. Note from our initial requirement, we know we don’t want to launch the rocket unless both the astronauts and launch control decide it’s time to go.&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;C&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;No one wants to launch the rocket. Don’t Launch.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;Astronauts say they’re ok to launch, but Launch Control doesn’t agree. Don’t Launch Yet.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;Launch Control wants to go, but astronauts saw a problem. Don’t Launch Yet.&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;Astronauts say they are good to go, and Launch Control says good to go!  Light the Rocket!&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Even the least astute of readers should be able to recognize this now. It’s another AND gate!&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;A = B \cdot C&lt;/script&gt;
-
-&lt;p&gt;We can now put all 3 pieces of the puzzle together. Substituting equations:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;A = (B) \cdot (C)&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;A = (L_1 \cdot L_2) \cdot \overline{E}&lt;/script&gt;
-
-&lt;p&gt;In diagrams, we’d draw this as:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/full_schematic.png&quot; alt=&quot;Full Schematic&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This simple logic diagram shows how we could implement logic to accomplish our basic launch control system.&lt;/p&gt;
-
-&lt;h3 id=&quot;notes-on-subdividing&quot;&gt;Notes on Subdividing&lt;/h3&gt;
-
-&lt;p&gt;Admittedly, this is a pretty simple system, and we took a very verbose and roundabout way to design it. I bet many of you saw the ending well before we got there. That’s perfectly fine! The big takeaway is not just the answer itself, but rather dividing the problem up into useful pieces. In this context, “useful” implies that each one is solvable on its own, and represents some meaningful small piece of computation. If you notice, you can easily draw boxes around the three physical locations we discussed:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/marked_up_schematic.png&quot; alt=&quot;Marked up schematic&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The individual pieces may not be implemented by the same computer! You might have to have each piece on a different machine, since they’re in physically different places. This diagram and design doesn’t at all get into how one might transfer a boolean value from one place to another (radio? super long wire?), but for lots of purposes that doesn’t matter. Imagine your boss came up and asked “What does the system do”? They don’t care about the implementation details, they care about functionality. This would be a great diagram to show the high level behavior of the system, without getting bogged down on communication, button size, or other implementation details.&lt;/p&gt;
-
-&lt;p&gt;The wise engineer says to create designs (and present designs) at the easiest and most useful level of abstraction. The experienced and artful engineer can identify exactly what that level of abstraction is in their sleep.&lt;/p&gt;
-
-&lt;h3 id=&quot;design-flaw&quot;&gt;Design Flaw&lt;/h3&gt;
-
-&lt;p&gt;The critical student will have noticed that there may be a few gaps in our design.&lt;/p&gt;
-
-&lt;p&gt;One of them that I’ll address - the astronaut button. Let’s say that our friends detect a problem and want to prevent launch. With our current logic, if they tap their button, they’ll momentarily inhibit the launch, but as soon as they take their finger away the button springs back, allowing the launch again. It would stink to force them to have to hold down the button the whole time. We’d probably want to remember whether they’ve pressed it or not, and inhibit launch until someone corrects the issue that caused them to hit the inhibit button in the first place.&lt;/p&gt;
-
-&lt;p&gt;I can think of two ways to do this “remembering”. One is mechanically - don’t use a button, use something more like a light switch that doesn’t “spring-back” to the off position when you’re done. THe other is to remember the button press in software. This requires using &lt;em&gt;memory&lt;/em&gt;, which is a concept we’ll cover later in this post.&lt;/p&gt;
-
-&lt;h2 id=&quot;adders&quot;&gt;Adders&lt;/h2&gt;
-
-&lt;p&gt;We’re going to move on to a slightly more abstract, but much more realistic example.&lt;/p&gt;
-
-&lt;h3 id=&quot;binary-addition&quot;&gt;Binary Addition&lt;/h3&gt;
-
-&lt;p&gt;Recall from the &lt;a href=&quot;/blog_posts/2019/06/10/binary.html&quot;&gt;binary lesson how we can add together base-2 numbers&lt;/a&gt; the same way we add together familiar base-10 numbers. The algorithm that I learned back in the day was:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Line up the two numbers on top of each other, keeping each place vertically aligned.&lt;/li&gt;
-  &lt;li&gt;Starting from the one’s place, add together each single digit number&lt;/li&gt;
-  &lt;li&gt;If the result of a particular addition is 10 or greater, “overflow” or “carry” into the next column.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The exact same process works in binary. Recall:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;67_{10} = 01000011_{2}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;5_{10} = 00000101_{2}&lt;/script&gt;
-
-&lt;p&gt;Adding these two numbers in base-10, I get a result of 72. Let’s do it in binary, to show how a thing that only knows 1 and 0 might go about doing the same calculation:&lt;/p&gt;
-
-&lt;p&gt;First, we align the numbers:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-01000011&amp; \\
-\underline{+\quad 00000101}&amp; \\
- &amp;
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Then, starting from the least significant bit, we start adding.&lt;/p&gt;
-
-&lt;p&gt;Note that &lt;script type=&quot;math/tex&quot;&gt;1_{2} + 1_{2} = 10_{2}&lt;/script&gt; (This is just &lt;script type=&quot;math/tex&quot;&gt;1_{10} + 1_{10} = 2_{10}&lt;/script&gt;, which you presumably learned in 1st grade.) Since the addition of two &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt;’s has created a new digit, we have to carry it over to the next column:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-      10&amp; \\
-01000011&amp; \\
-\underline{+\quad 00000101}&amp; \\
-0&amp;
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;Rinse-wash-repeat.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;1_{2} + 1_{2} + 0_{2} = 1_{2} + 1_{2} = 10_{2}&lt;/script&gt;
-
-&lt;p&gt;Therefor, we have to carry again.&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
-\begin{align}
-     110&amp; \\
-01000011&amp; \\
-\underline{+\quad 00000101}&amp; \\
-00&amp;
-\end{align} %]]&gt;&lt;/script&gt;
-
-&lt;p&gt;We continue this process until we’ve covered all the bits in the number, and arrive at our result:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;1001000_{2} = 72_{10}&lt;/script&gt;
-
-&lt;p&gt;Huzzah! We have done the calculation using only 1’s and 0’s. Hey, digital logic uses only 1’s and 0’s. Do you think we could design some circuitry to do this? You bet your bottom dollar we can!&lt;/p&gt;
-
-&lt;h3 id=&quot;patterns-in-binary-addition&quot;&gt;Patterns in Binary Addition&lt;/h3&gt;
-
-&lt;p&gt;To build the logic, we’ll start by breaking down the problem. Look at a particular column of the above addition operation. Let’s try to describe its’ properties in general:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;It takes two bits as input, one each from the numbers we are trying to add.&lt;/li&gt;
-  &lt;li&gt;A third bit comes in from the previous step, to indicate whether the previous step resulted in a “carry” operation or not.&lt;/li&gt;
-  &lt;li&gt;It contributes one bit to the result number&lt;/li&gt;
-  &lt;li&gt;It also may pass a “carry” bit to the next step&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;As a bit of bookkeeping, let’s first write out a list of all the possible math facts we could need. Remembering that addition is associative:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;0_{2} +  0_{2} +  0_{2}  = 00_{2}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;0_{2} +  0_{2} +  1_{2}  = 00_{2}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;0_{2} +  1_{2} +  1_{2}  = 10_{2}&lt;/script&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;1_{2} +  1_{2} +  1_{2}  = 11_{2}&lt;/script&gt;
-
-&lt;p&gt;Since we’re talking about only one stage, we’ll indicate &lt;em&gt;which&lt;/em&gt; stage that is with an index subscript. The first stage will have subscript &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt;, the next subscript &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; and so on. Some particular (but unspecified) stage - the “&lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;‘th stage” - will have subscript &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;. As a matter of notation, when looking at the &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt;‘th stage, the &lt;em&gt;next&lt;/em&gt; stage will be &lt;script type=&quot;math/tex&quot;&gt;i+1&lt;/script&gt;, and the previous stage will be &lt;script type=&quot;math/tex&quot;&gt;i-1&lt;/script&gt;. We’ll have to explicitly handle the end-cases, but ignore them for now - just think about the middle bits.&lt;/p&gt;
-
-&lt;p&gt;To draw this a bit more clearly, let’s cover all 3 inputs and both outputs in a table.&lt;/p&gt;
-
-&lt;p&gt;We’ll call the two bits to add &lt;script type=&quot;math/tex&quot;&gt;A_{i}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B_{i}&lt;/script&gt;, and the result &lt;script type=&quot;math/tex&quot;&gt;R_{i}&lt;/script&gt;. Each stage will also output a Carry signal called &lt;script type=&quot;math/tex&quot;&gt;C_{i}&lt;/script&gt;. Since each stage also takes an input from the previous stage’s carry signal, we’ll denote this input with &lt;script type=&quot;math/tex&quot;&gt;C_{i-1}&lt;/script&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;A_{i}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;B_{i}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;C_{i-1}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;R_{i}&lt;/script&gt;&lt;/th&gt;
-      &lt;th&gt;&lt;script type=&quot;math/tex&quot;&gt;C_{i}&lt;/script&gt;&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;single-bit-adder&quot;&gt;Single Bit Adder&lt;/h3&gt;
-
-&lt;p&gt;A single bit adder will be a device with three inputs (the two bits to add, plus a carry-in bit). It is actually two independent circuits, outputting the Result bit and the Carry-out bit. We’ll design each one, one at a time.&lt;/p&gt;
-
-&lt;h4 id=&quot;result-bit&quot;&gt;Result Bit&lt;/h4&gt;
-
-&lt;p&gt;If you stare at the truth table hard enough, you might notice that the result bit is 1 whenever the number of input signals is &lt;em&gt;odd&lt;/em&gt;. There are more algorithmic methods you can use to determine this, but recognizing this pattern lets you make the quick shortcut. Recall from previous posts that an &lt;em&gt;XOR&lt;/em&gt; gate outputs 1 when an odd number of its inputs are 1. So, we’ll use an XOR gate:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;R_{i} = A_{i} \oplus B_{i} \oplus C_{i-1}&lt;/script&gt;
-
-&lt;h4 id=&quot;carry-out-bit&quot;&gt;Carry Out Bit&lt;/h4&gt;
-
-&lt;p&gt;The carry out bit also has a bit of a pattern to it. Notice that it is true when at least two inputs are true. This can be covered by a series of OR’ed together AND outputs as such:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_{i} = A_{i} B_{i} + A_{i} C_{i-1} + B_{i} C_{i-1}&lt;/script&gt;
-
-&lt;p&gt;Again there are algorithms you can use to derive this equation from the truth table, but if you stare at it hard enough, you should be able to convince yourself that this equation is both accurate, and makes sense. For example, think about why we don’t have to handle the all-three-inputs-true case explicitly.&lt;/p&gt;
-
-&lt;h4 id=&quot;schematic&quot;&gt;Schematic&lt;/h4&gt;
-
-&lt;p&gt;Based on our observation of the truth table, we can put together this device that can compute one column of the “add two bytes” problem:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/single_bit_adder.png&quot; alt=&quot;single bit adder&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To use many of these devices in larger units, we’ll use an &lt;em&gt;abstraction&lt;/em&gt; where we draw just the inputs and outputs, and hide the details of the guts.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/single_bit_adder_abstraction.png&quot; alt=&quot;abstraction of single bit adder&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;ripple-carry-adder&quot;&gt;Ripple-carry Adder&lt;/h3&gt;
-
-&lt;p&gt;The Ripple-carry Adder is a logical next-step to expand the single-bit adder. Earlier in the post we showed the algorithm for doing binary addition. Since it’s a bunch of rinse-wash-repeat steps, it stands to reason that we could make one circuit to do each step, then replicate and string them together. That’s exactly what we’ve done with the single-bit adder - we’ve made one circuit that can perform one step of the addition. A Ripple-carry Adder is simply a set of single-bit adders chained together to do addition of a full byte.&lt;/p&gt;
-
-&lt;h3 id=&quot;joining-chunks-together&quot;&gt;Joining chunks together&lt;/h3&gt;
-
-&lt;p&gt;The hookup is pretty much what you’d expect: Every bit in input bytes &lt;script type=&quot;math/tex&quot;&gt;A&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;B&lt;/script&gt; is piped to the proper single-bit adder stage. The carry bits are passed from one layer to the next. The 0th carry-in bit is hardcoded to zero. The final output is an output of the Ripple-carry Adder, and can be used to know when the sum of the two numbers is outside the range of representable digits by that fixed number of single-bit adders.&lt;/p&gt;
-
-&lt;p&gt;For a 4-bit Ripple carry adder, the circuit diagram would look like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/four_bit_adder.png&quot; alt=&quot;four bit adder&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Notice how the “carry-out” from each stage &lt;em&gt;ripples&lt;/em&gt; into the next stage. Hence the name. Someone was clever like that.&lt;/p&gt;
-
-&lt;p&gt;Hopefully you can see - if you need more bits (say, 8, or 64?), you just add more stages.&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;We’ve discussed digital circuits which are capable of transforming inputs into outputs, but not yet discussed how to create circuits which can remember past events. This will be a critical step if we want to be able to store any data while running our computer programs. We’ll delve into this &lt;a href=&quot;/blog_posts/2019/07/06/digital_devices_part2.html&quot;&gt;in Part 2!&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Yes, smell. A good engineer uses &lt;em&gt;most&lt;/em&gt; of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It’s a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don’t usually recommend the sense of taste for writing software. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">This post is the continuation of Part 1 in our series on digital devices.</summary></entry></feed>
