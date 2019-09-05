@@ -1,4 +1,82 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-08-27T22:38:58-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T09:30:40-05:00</published><updated>2019-08-27T09:30:40-05:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-09-05T18:30:29-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T09:30:40-05:00</published><updated>2019-09-05T09:30:40-05:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This post is largely inspired by &lt;a href=&quot;https://hbr.org/2017/08/high-performing-teams-need-psychological-safety-heres-how-to-create-it&quot;&gt;Laura Delizonna’s excellent article in the Harvard Business Review&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;All technical team environments will operate best when team members do their best work. Effective teams go out of their way to &lt;em&gt;enable&lt;/em&gt; team members to perform well. Although every member will be different to some extent, there are many common team behaviors and qualities that are worth at least considering, if not implementing, in your own team.&lt;/p&gt;
+
+&lt;p&gt;Throughout this discussion, keep in mind that no matter whether or not you have leadership responsibilities on a team, each member of a team is a steward of team culture. The culture is kept and maintained by each individual - leader and individual contributor alike. By acting in accordance with positive, desireable aspects of culture, you yourself build up the team to be a better form of itself.&lt;/p&gt;
+
+&lt;p&gt;With that in mind, let’s explore a few of the aspects of productive, happy technical teams.&lt;/p&gt;
+
+&lt;h2 id=&quot;cultivating-positivity-for-growth&quot;&gt;Cultivating Positivity for Growth&lt;/h2&gt;
+
+&lt;p&gt;Keeping a positive attitude is, for me, the foundation of a good team.&lt;/p&gt;
+
+&lt;p&gt;Technical subjects are, for better or worse, dry and impartial. Physics and Math are governed by cold and impartial laws. Though advantageous for their consistency, these laws do little to reassure human beings of their inherent value and worth. &lt;em&gt;Before&lt;/em&gt; spending time delving into these technical topics, it’s well worth the time to establish that you are &lt;em&gt;happy&lt;/em&gt; to simply be in the presence of your teammates. Make them know that you enjoy being with them - even if you’re not looking forward to the events of the day. Establishing knowledge of the desire to &lt;em&gt;be&lt;/em&gt; a team will provide the motivation to grow as a team.&lt;/p&gt;
+
+&lt;p&gt;An established positive attitude greatly helps people be &lt;em&gt;internally motivated&lt;/em&gt; to find solutions to problems. They know their time is appreciated and well spent, and that their efforts are worthwhile for the success of the team. When individuals actively seek out solutions to problems, without relying on the solution of other team members, they grow their own capability and skill. This growth is essential for future team success.&lt;/p&gt;
+
+&lt;p&gt;A positive team is one which is &lt;em&gt;inherently fun&lt;/em&gt; to be a part of. Not because someone made it fun, but because the team transforms the work into something which can be enjoyed. Something which has a purpose and meaning, and goes beyond a simple task to “take care of”. Team members build each other up, strengthening relationships of trust and mutual respect.&lt;/p&gt;
+
+&lt;h2 id=&quot;building-trust-for-growth&quot;&gt;Building Trust for Growth&lt;/h2&gt;
+
+&lt;p&gt;When we trust our teammates, we believe they will deliver on what we expect of them. Placing this trust in others, with the right attitude, gives them the opportunity to rise to the occasion. Your trust gives them the opportunity to grow - either through success or failure.&lt;/p&gt;
+
+&lt;p&gt;If the other team members succeed and meet your expectations, the other team member has learned a new skill and done something they ordinarily would not have done themselves. A trusting team is one that can grow and expand without fear.&lt;/p&gt;
+
+&lt;p&gt;By giving them trust, and appropriately handling failure, even this can still be a learning experience&lt;/p&gt;
+
+&lt;h2 id=&quot;feeling-safe---handling-failure-for-growth&quot;&gt;Feeling Safe - Handling Failure for Growth&lt;/h2&gt;
+
+&lt;p&gt;A fundamental goal of any technical team should be to mitigate the fallout of failure. Every team member will fail at some point. However, a team member should never be &lt;em&gt;afraid&lt;/em&gt; to fail. The fear of failure will block people from taking risks, and learning new skills. This in turn kills the growth mindset that is at the &lt;em&gt;very core&lt;/em&gt; of any FRC program. Additionally, given the pace of technological advance, any technical team which is unable to embrace change through active growth will &lt;em&gt;very quickly&lt;/em&gt; become obsolete. Fear of failure will absolutely &lt;em&gt;kill&lt;/em&gt; your team.&lt;/p&gt;
+
+&lt;p&gt;Mitigating the fear of failure can be done through many ways. A few of my favorites:&lt;/p&gt;
+
+&lt;h3 id=&quot;short-term-focus-on-solution-not-problem&quot;&gt;Short Term: Focus on Solution, not Problem&lt;/h3&gt;
+
+&lt;p&gt;When failure occurs, the knee-jerk reaction is frequently to zero in on the problem. It’s glaring, everyone can see it, everyone is worried about it. It’s natural to focus on the problem. Well-meant or not, the focus is good at first - ensure that all team members understand the impacts of the problem, and those empowered to solve it understand it enough to go forward.&lt;/p&gt;
+
+&lt;p&gt;But then, shift 100% to the solution. No more complaining, whining, finger-pointing, or getting distracted with “what-if” scenarios. Establish a laser-focus on finding a solution, and don’t look back till you have one. Even if it’s the most horrible hack you’ve ever seen, find something that &lt;em&gt;works&lt;/em&gt; (and is of course, &lt;em&gt;safe&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Separate things you can change from those you cannot, and focus on the former. The whole team depends on you to &lt;em&gt;solve&lt;/em&gt; the problem, so don’t waste their time by focusing on things you cannot change.&lt;/p&gt;
+
+&lt;h3 id=&quot;long-term-establish-root-cause-and-solve&quot;&gt;Long Term: Establish Root Cause and Solve&lt;/h3&gt;
+
+&lt;p&gt;Once the problem is solved, wrap back around for a &lt;em&gt;retrospective&lt;/em&gt;. Try to dig deep to realize why the problem started in the first place. There may be many causes. Causes will be related to each other, some being effects of the next. &lt;a href=&quot;https://en.wikipedia.org/wiki/Five_whys&quot;&gt;Ask the question “Why?” five times, and answer it genuinely each time.&lt;/a&gt; Keep going if you can.&lt;/p&gt;
+
+&lt;p&gt;Inevitably, people will be involved. You must use &lt;em&gt;compassion&lt;/em&gt; when dealing with people. People, in general, do not act out of malice. With few exceptions, people do not generally &lt;em&gt;try&lt;/em&gt; to cause problems. It would be disingenuous to assume this to be the case from the start. People make decisions based on their own knowledge, biases, hopes, dreams, and opinions. Every person does this. Rarely is the person the issue - much more frequently, the &lt;em&gt;inputs&lt;/em&gt; to their problem solving methodologies were flawed.&lt;/p&gt;
+
+&lt;p&gt;Once you feel comfortable you know why something happened, go about fixing it. Sometimes, it might just be some additional learning or training for a few team members. Sometimes, there’s a &lt;em&gt;process&lt;/em&gt; change to make, wherein your team modifies the usual steps it does while performing a task to prevent a problem from reoccurring.&lt;/p&gt;
+
+&lt;p&gt;This process is a key component of what Dr. Delizonna refers to as “Replacing Blame with Curiosity”. This is an absolutely critical aspect to handling failures - the team attitude should be to approach all problems with a fundamental desire to learn about them and fix them, rather than establish blame. Focus on the solution, not solely on the actual problem itself.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-basket-cases&quot;&gt;The Basket Cases&lt;/h3&gt;
+
+&lt;p&gt;Sometimes, you get a rotten apple of a team member. Someone who can’t work on the team. Someone who &lt;em&gt;trys&lt;/em&gt; to make you fail.&lt;/p&gt;
+
+&lt;p&gt;Or sometimes, it’s the other way around. You find yourself on a team that refuses to have a positive attitude. A team that prioritizes griping over solution finding.&lt;/p&gt;
+
+&lt;p&gt;In both cases, be &lt;em&gt;absolutely&lt;/em&gt; sure your observations are not biased. Have you talked to anyone else about your observations? Have you brought them up with the person/people in question, that you have your issues with? Have you confirmed, beyond all doubt, that no reasonable measure of personal change on your part will bring about the change you wish to see?&lt;/p&gt;
+
+&lt;p&gt;If so, there are drastic actions that can be taken.&lt;/p&gt;
+
+&lt;p&gt;One option is bringing in some higher authority to address the issue with their larger metaphorical “hammer”. This assumes such an authority exists.&lt;/p&gt;
+
+&lt;p&gt;Temporary or permanent separation from the team is another options. Sometimes it is the only one. Keep in mind that this separation fundamentally ends the goal of team growth that all technical teams should strive for, so it must be used with extreme caution.&lt;/p&gt;
+
+&lt;p&gt;Above all, keep in mind these “basket cases” are &lt;em&gt;different&lt;/em&gt; from technical problems. They are &lt;em&gt;people problems&lt;/em&gt;, and need to be addressed separately and differently from your usual technical problems. Most importantly, all interactions of this nature must be done with compassion for all the people involved, especially the group that stands to suffer the most from the solution. But, as Dr. Woodie Flowers reminds us, keep in mind a “complex definition of fairness” to ensure everyone’s needs are met as best possible.&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability-feedback-measurement&quot;&gt;Vulnerability, Feedback, Measurement&lt;/h2&gt;
+
+&lt;p&gt;All of the aforementioned ideas are just that - ideas. They aren’t a prescriptive way to organize a team - indeed, if I knew how to tell you that, I’d be a much richer man. What I can tell you is this - &lt;em&gt;be vulnerable&lt;/em&gt;. Talk about these things with your team members. Bring them up (appropriately), and talk as a team about what you expect from each other. Let down your guard, and speak frankly.  Establish not just where you are, but where you want the team to be. Then build a roadmap for how to get there. As problems arise, discuss them swiftly and frankly, investigate with curiosity, design and implement a solution.&lt;/p&gt;
+
+&lt;p&gt;Seeking constant feedback from each other is the key way that you, as a team, ensure your day to day interactions remain positive and productive.&lt;/p&gt;
+
+&lt;p&gt;Additionally, consider a formal measurement of team engagement. Opinion surveys, “1 to 10” rank questions about team environment and member feelings, free-response anonymous questions may help track team engagement, uncover unknown issues, and show your team’s sustainable growth over many years.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T09:30:40-05:00</published><updated>2019-08-27T09:30:40-05:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.sparkfun.com/news/2506&quot;&gt;Open source software is definitely an interesting beast.&lt;/a&gt; I didn’t spend too much time thinking about it until my college years, and the more I consider it the more impressive it gets. CAD programs, programming languages, even whole operating systems are developed by massive teams of people who have never met each other in person, and just enjoy engineering &lt;em&gt;so much&lt;/em&gt; they do it in their &lt;em&gt;personal time for free&lt;/em&gt;. And the software that is produced can be crazy good!&lt;/p&gt;
 
@@ -2118,414 +2196,4 @@
       &lt;p&gt;For the curious, formal systems of modeling the state of analog electronics in a “digital-useful” way can &lt;a href=&quot;https://en.wikipedia.org/wiki/Logic_level&quot;&gt;go up to having 9 states&lt;/a&gt;. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Digital Devices Part Two - Sequential Logic</title><link href="/blog_posts/2019/07/06/digital_devices_part2.html" rel="alternate" type="text/html" title="Digital Devices Part Two - Sequential Logic" /><published>2019-07-06T09:30:00-05:00</published><updated>2019-07-06T09:30:00-05:00</updated><id>/blog_posts/2019/07/06/digital_devices_part2</id><content type="html" xml:base="/blog_posts/2019/07/06/digital_devices_part2.html">&lt;p&gt;This post is the continuation of &lt;a href=&quot;/blog_posts/2019/06/26/digital_devices.html&quot;&gt;Part 1&lt;/a&gt; in our series on digital devices.&lt;/p&gt;
-
-&lt;h2 id=&quot;combinational-versus-sequential-logic&quot;&gt;Combinational versus Sequential Logic&lt;/h2&gt;
-
-&lt;p&gt;So far, we have discussed circuits which take a set of inputs, and produce an output. They do not “remember” any particular piece of information - their outputs are a function current inputs only. They keep no record of past inputs. These are called &lt;em&gt;Combinational Logic&lt;/em&gt; circuits.&lt;/p&gt;
-
-&lt;p&gt;As we mentioned earlier in the case of the astronaut button, sometimes it is useful to remember information about past information. Circuitry which accomplishes this memory is called &lt;em&gt;Sequential Logic&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;All the logic gates we’ve shown so far are by themselves combinational devices. However, we’ll now introduce a class of devices where outputs are &lt;em&gt;carefully&lt;/em&gt; fed back into inputs, allowing the device to retain information over time. We will be able to build these up into a full RAM chip, just like you have on your computer to store information!&lt;/p&gt;
-
-&lt;h2 id=&quot;flip-flop&quot;&gt;Flip Flop&lt;/h2&gt;
-
-&lt;p&gt;The most fundamental unit of memory storage is usually referred to as a &lt;a href=&quot;https://en.wikipedia.org/wiki/Flip-flop_(electronics)&quot;&gt;&lt;em&gt;flip flop&lt;/em&gt;&lt;/a&gt;. Much like the beach-oriented footwear, they flip and flop back and forth between true and false, with transitions triggered by certain input conditions. They also come in a number of different flavors. The easiest to analyze at first is often called the “SR Latch”, which we’ll look into as an example. Then we’ll abstract away the details and talk about a few other varieties.&lt;/p&gt;
-
-&lt;h3 id=&quot;gate-propagation-delay&quot;&gt;Gate Propagation Delay&lt;/h3&gt;
-
-&lt;p&gt;One thing we haven’t touched on yet - how long does it take a gate to do a calculation? So far we’ve kinda just ignored it - effectively assumed the answer is “infinitely fast”. Of course, nothing is infinitely fast. Voltages can’t change instantaneously, electrons take time to move around! When you apply a certain input combination to a gate, the reaction is quite quick - usually on the order of &lt;em&gt;nanoseconds&lt;/em&gt;. However, it’s not literally instantaneous. &lt;a href=&quot;https://en.wikipedia.org/wiki/Propagation_delay&quot;&gt;&lt;em&gt;Propagation delay&lt;/em&gt;&lt;/a&gt; is the name given to this duration between applying inputs, and seeing the correct output.&lt;/p&gt;
-
-&lt;p&gt;This is yet another example of abstraction. For combinational logic, we are able to ignore this gate delay - assuming it is faster than anything we would ever care about (ie &lt;em&gt;instantaneous&lt;/em&gt;). For sequential logic, understanding the function of our new flip-flop friends requires we at least keep this delay in mind.&lt;/p&gt;
-
-&lt;h3 id=&quot;basic-flip-flop-ideas&quot;&gt;Basic Flip Flop Ideas&lt;/h3&gt;
-
-&lt;p&gt;The key to any flip-flop - we take the output, and route it back to an input. Due to gate delay, this effectively makes the “previous output” an input. When the previous output is an input, we can use it to remember what the output &lt;em&gt;used&lt;/em&gt; to be. With some clever design, we can in fact make some useful memory happen.&lt;/p&gt;
-
-&lt;p&gt;The SR Latch consists of two &lt;em&gt;cross-coupled&lt;/em&gt; NAND gates, hooked up like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/c/c6/R-S_mk2.gif&quot; alt=&quot;SR Latch&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Wikipedia has the best picture of this I’ve seen so far, so I use theirs.&lt;/p&gt;
-
-&lt;p&gt;The &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; input is for “Set”, and the &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; input is for “Reset”. The output is named &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;. Note by the GIF:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;When you set &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; to 1 and &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; to 0, this will cause the &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; output to go to 1&lt;/li&gt;
-  &lt;li&gt;When you set &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; to 0 and &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; to 1, this will cause the &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; output to go to 0&lt;/li&gt;
-  &lt;li&gt;When you set both &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; to 0, it causes &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; to maintain its value&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Number 3 is the magic of the device - by leaving both inputs at 0, your output retains its previous value. This illustrates how you can hook gates up in a way to remember something about the previous inputs.&lt;/p&gt;
-
-&lt;p&gt;Note how the loop-back of outputs back into input only makes sense if you assume gate delays are present. There is a &lt;em&gt;very&lt;/em&gt; slight delay between a change in input and a change in output, as shown in the gif. If you assume things change instantaneously, you get logical conflicts and are setting 1 equal to 0 (which implies a short circuit, which usually means &lt;a href=&quot;https://en.wikipedia.org/wiki/Magic_smoke&quot;&gt;magic smoke&lt;/a&gt; is getting out ). But, due to gate delays, for carefully designed circuits this is not a problem. When you buy the real chips that have SR Latches in them, the silicon has been carefully designed to make the gate delays &lt;em&gt;just right&lt;/em&gt; so this all works out. And then you as the user don’t have to worry about it. Yay abstraction!&lt;/p&gt;
-
-&lt;p&gt;The astute reader may notice that there is a key flaw &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; to this configuration: Look what happens if you set both inputs to 1. Starting near &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; - &lt;script type=&quot;math/tex&quot;&gt;\overline{1 + Q} = \overline{Q}&lt;/script&gt;, meaning &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; is equal to &lt;script type=&quot;math/tex&quot;&gt;\overline{Q}&lt;/script&gt;. Wait a minute. True can’t be equal to False. Huh.&lt;/p&gt;
-
-&lt;p&gt;In reality what happens here depends on how your gates are constructed with transistors (you have to go one layer down in the layers of abstraction). You might get oscillation, or maybe short circuits and magic smoke. Depends. No matter what, setting both inputs to 1 is a bad idea. Due to this, it’s common to put additional gates in front of the S and R inputs to facilitate ensuring you never get the latch into a wacky state.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-clock-signal&quot;&gt;The Clock Signal&lt;/h3&gt;
-
-&lt;p&gt;To properly motivate the specific flavor of flip-flop that we will be talking about, we will first take a tangent into a bit of processor design.&lt;/p&gt;
-
-&lt;p&gt;Think about when you read about specifications for a processor. One of the most common specs you read about is the processor’s speed, which is measured in some units of &lt;em&gt;Hertz&lt;/em&gt;. Modern desktop processors are rated to run at around 2 to 3 GHz (Giga-Hertz, or &lt;script type=&quot;math/tex&quot;&gt;10^{9}&lt;/script&gt; Cycles per Second). This speed rating roughly corresponds to the number of operations the processor can do per second. But what it &lt;em&gt;really&lt;/em&gt; references to is the &lt;em&gt;clock speed&lt;/em&gt; of the processor &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&quot;https://en.wikipedia.org/wiki/Clock_signal&quot;&gt;&lt;em&gt;clock&lt;/em&gt;&lt;/a&gt; in a digital circuit is just a specially-designated signal. The clock cycles repeatedly between 1 and 0 and 1 and 0 at some specific frequency. Digital devices are designed to take a clock signal as one of their inputs to help it to stay in synchronization with other devices in the system.&lt;/p&gt;
-
-&lt;p&gt;Circuits are designed such that at every &lt;em&gt;edge&lt;/em&gt; of the clock, or every transition from 0 to 1 (or so we will assume for now), it is assumed that all inputs to a particular digital device are &lt;em&gt;stable&lt;/em&gt; and therefore &lt;em&gt;available&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;The maximum clock speed is dictated by the worst-case propagation delay from the circuits that make up the system. If you have constructed some circuit with 10 AND gates passing each output to the next one’s input - you have to wait 10 times the gate delay before you know that your output is stable. Assuming that output goes to another circuit’s input, and they share a clock, you can’t run your clock faster than each portion of the circuit can update the inputs of the next portion.&lt;/p&gt;
-
-&lt;p&gt;This is why reducing the number of layers of gates is important - the fewer layers you have, the less input to output delay you have, and the faster you can run your digital circuit’s clock. This means faster computation, which is generally regarded as a good thing!&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;but-mommy-where-do-baby-clocks-come-from&quot;&gt;But Mommy, Where do Baby Clocks Come From?&lt;/h4&gt;
-
-&lt;p&gt;Don’t worry child, we will tell you when you are older.&lt;/p&gt;
-
-&lt;p&gt;Actually, it doesn’t matter too much for our design purposes. This is the beauty of abstraction - you don’t need to know &lt;em&gt;how&lt;/em&gt; a clock signal is generated to &lt;em&gt;use&lt;/em&gt; it. But for the curious, we will indulge you momentarily.&lt;/p&gt;
-
-&lt;p&gt;A clock is just a repeating waveform, and can be derived from any repeating pattern in nature. Common ways of generating it include:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Getting it from the power line (usually a nice 60Hz in North America, unless your &lt;a href=&quot;https://en.wikipedia.org/wiki/Utility_frequency#Stability&quot;&gt;power company screws up&lt;/a&gt;.)&lt;/li&gt;
-  &lt;li&gt;Repeatedly charging and discharging a capacitor through a resistor and a non-linear switching circuit (for example, see &lt;a href=&quot;https://en.wikipedia.org/wiki/555_timer_IC&quot;&gt;“555 timer” circuit design&lt;/a&gt;).&lt;/li&gt;
-  &lt;li&gt;Amplifying the vibrations of a specially-designed &lt;a href=&quot;https://en.wikipedia.org/wiki/Crystal_oscillator&quot;&gt;crystal made of quartz.&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/NIST-F2&quot;&gt;Using lasers to toss caesium atoms in the air then measuring their atomic energy state decay&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://xkcd.com/730/&quot;&gt;A whole host of other things&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;In addition, there’s a whole science to distributing this clock signal carefully to all the circuit elements, so they actually receive nice clean 0-to-1 transitions at the same time. Especially when clock frequencies get high, those wires inside your processor start to act less like ideal wires, and &lt;a href=&quot;https://en.wikipedia.org/wiki/Transmission_line&quot;&gt;more like radio antennas&lt;/a&gt;. It gets mucky fast.&lt;/p&gt;
-
-&lt;p&gt;We don’t like to think about all this at once. So we use our powers of &lt;em&gt;abstraction&lt;/em&gt; to simply say &lt;em&gt;we trust a clock signal exists and works well, now we will use it&lt;/em&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-d-flip-flop-from-gates&quot;&gt;The D flip-flop from Gates.&lt;/h3&gt;
-
-&lt;p&gt;Here’s our design goal - we want to build a device where we can predictably control when the output changes based on some clock signal input. We will have a single input that dictates when the &lt;em&gt;next&lt;/em&gt; output will be, and when the clock input &lt;em&gt;changes&lt;/em&gt; from 0 to 1, we will update our output to match our input. At all other times, the output should retain its state.&lt;/p&gt;
-
-&lt;p&gt;We do this by cascading multiple SR latches together, such that an input, or some feedback value, “drops through” each layer as the clock swings from 0 to 1. Neglecting gate propagation delay, the 0 to 1 &lt;em&gt;rising edge&lt;/em&gt; of the clock will be the event that ultimately causes a new input to appear at the output.&lt;/p&gt;
-
-&lt;p&gt;I am again in debt to Wikipedia for providing some images of gate configurations. Far easier than drawing it myself, and equally correct.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Edge_triggered_D_flip_flop.svg/1920px-Edge_triggered_D_flip_flop.svg.png&quot; alt=&quot;Edge Triggered D Flip Flop&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It might be a bit hard to trace the functionality, but it’s actually pretty straightforward. When the input labeled &lt;em&gt;Clock&lt;/em&gt; goes from a 0 to a 1, the output &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; takes on whatever value is applied at the &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; input. &lt;script type=&quot;math/tex&quot;&gt;\overline{Q}&lt;/script&gt; is of course always the inverse of &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;abstraction&quot;&gt;Abstraction&lt;/h3&gt;
-
-&lt;p&gt;When you draw out one of these devices in a circuit diagram, it’s actually confusing to do it with gates. Astute document readers might recognize “oh that’s a D flip flop!”. But in reality, you don’t want to make people think about that, you just want them to know it. So, there’s a fairly generic symbol that gets drawn:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/D-Type_Flip-flop.svg/1920px-D-Type_Flip-flop.svg.png&quot; alt=&quot;D Flip Flop symbol from Wikipedia&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The ports are labeled about as you’d expect from above. The little notched &lt;script type=&quot;math/tex&quot;&gt;&gt;&lt;/script&gt; indicates the clock input.&lt;/p&gt;
-
-&lt;p&gt;The &lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt; ports are often omitted from other drawings. They will force the output to 1 (&lt;script type=&quot;math/tex&quot;&gt;S&lt;/script&gt;) or 0 (&lt;script type=&quot;math/tex&quot;&gt;R&lt;/script&gt;) immediately, regardless of the value of the clock or &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt;. This is useful for a &lt;em&gt;reset&lt;/em&gt; circuit, which (when activated) puts all the devices into a known state. This is useful when first powering on (or rebooting) your computer - depending on the exact transistor layout, the state of each flip flop may not be guaranteed when you first apply power to the circuit. Some might be 1, some might be 0…who knows. To get around this, designers usually just build in the ability to force every piece of the circuit to a known state.&lt;/p&gt;
-
-&lt;h3 id=&quot;but-why-a-clock&quot;&gt;But, Why a Clock?&lt;/h3&gt;
-
-&lt;p&gt;The reason for triggering on the rising edge is for &lt;em&gt;synchronization&lt;/em&gt; across the larger system. Think about a computer chip - you’ll have many many many of these memory components spread throughout your processor, RAM, peripherals, device drivers, etc. You want to be sure that they all change state at the same time, so you design your circuit with a rising-edge paradigm in mind. Namely - when the clock is not having a rising edge, you have that whole time to do all the combinational logic. Signals propagate around, change gate state, do calculations and whatnot…. you can do whatever you like in this time, just as long as &lt;em&gt;all Flip Flop inputs&lt;/em&gt; and stable before the &lt;em&gt;next clock rising edge&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;For the sake of completeness, it should be noted that digital circuits are often &lt;em&gt;falling edge&lt;/em&gt; triggered. This changes the circuit design a bit, but the concept remains the same. It doesn’t matter if your clock goes “1 0 1 0…” or “0 1 0 1…”. General design principles would say to keep all your devices the same - all rising edge or all falling edge triggered. But even this can be violated if you’re careful enough. Not worth focusing on too much now, but just for awareness - rising-ege isn’t the only option.&lt;/p&gt;
-
-&lt;h2 id=&quot;counter&quot;&gt;Counter&lt;/h2&gt;
-
-&lt;p&gt;Let’s put together a circuit combining two things we have just learned about - adders and flip flops. Our goal will be to build a device which keeps track of time, counting the number of clock cycles. To keep things simple, we’re going to pretend that we’re building a clock for planet Zorgon. It’s a zippy but precise planet, revolving once around its axis once every 16 seconds exactly. Our Zorgon clock therefor just needs to count up from 0 to 15 to track all the seconds in the day, then reset back to 0 after the 15th second (when it is the next day).&lt;/p&gt;
-
-&lt;p&gt;If you recall from the binary lesson, if we have 4 bits and treat them as an unsigned integer, we can exactly represent the numbers 0 through 15 (since &lt;script type=&quot;math/tex&quot;&gt;15 = (2^{4}-1&lt;/script&gt;)). They don’t call Zorgon the “Planet of Simplifying Mathematical Coincidences” for nothing!&lt;/p&gt;
-
-&lt;p&gt;To store the present time, we will use 4 D flip flops in parallel. This is nothing fancy, just creating a new digital device with three main ports. A 4-bit input, with one bit going to the &lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt; input each flip flop. The 4-bit output comes directly from the individual &lt;script type=&quot;math/tex&quot;&gt;Q&lt;/script&gt; bits at the output of each flip flop. The clock input is still one bit, and drives all flip flop clocks simultaneously. Effectively, we’ve created a flip flop that stores 4 bits at a time, rather than one. This device is often called a &lt;em&gt;register&lt;/em&gt;&lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/register.png&quot; alt=&quot;4 bit register&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Rather than drawing all 4 gates every time, we’ll put all this in a nice little box labeled “Register”:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/4bitRegister.png&quot; alt=&quot;4 bit register abstraction symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Note the little “/” marks on the input and output ports with the number &lt;script type=&quot;math/tex&quot;&gt;4&lt;/script&gt; below it. That’s just a notation way to say “here are four wires that should remain together”. You should always think of those four bits together as representing “time of day”, so we’ll draw them together to help not confuse the reader. Some programs may use a thicker line to show the “bundle” of data wires.&lt;/p&gt;
-
-&lt;p&gt;We will make the assumption that we have a clock signal that already runs at 1 Hz (this is not hard to create). &lt;em&gt;Hz&lt;/em&gt; (abbreviation for “Hertz”) means “cycles per second”. Since each cycle of the clock waveform has exactly one rising edge and one falling edge, we expect once per second our (rising edge triggered) flip flops will propagate their input to the output.&lt;/p&gt;
-
-&lt;p&gt;Here’s the key to the design: the &lt;em&gt;output&lt;/em&gt; of the register will be used to represent the &lt;em&gt;present&lt;/em&gt; time on Zorgon. Every rising edge of the clock, we will want to increase the present time by 1 (since, of course, time goes forward). To do this, we need to ensure that at all times, the input to the register is the current time, plus 1. This will ensure that when the clock has a rising edge, the new time (cur_time + 1) is propagated to the output, and the output (representing current time) updates properly.&lt;/p&gt;
-
-&lt;p&gt;We’ll take a quick shortcut to represent our four bit adder from last time as one block:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/4bitAdder.png&quot; alt=&quot;4 bit adder abstraction symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;“Inside the box” we’ve accounted for the fact that the carry-in signal is hardcoded to 0, and the carry out signal is unused and not connected.&lt;/p&gt;
-
-&lt;p&gt;We’ll hook up a circuit like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/zorgonClock.png&quot; alt=&quot;Zorgon Clock&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We see our 4-bit ripple carry adder, like we had &lt;a href=&quot;/blog_posts/2019/06/26/digital_devices.html&quot;&gt;last time&lt;/a&gt;. That “constant value” of 1 is achieved by simply connecting the 0th bit to a high voltage, and all the other bits to ground.&lt;/p&gt;
-
-&lt;p&gt;There! With just a few components, we’re able to create a circuit that keeps track of the present time of (Zorgon) day, and outputs it in a binary format!&lt;/p&gt;
-
-&lt;h3 id=&quot;a-zorgon-alarm-clock&quot;&gt;A Zorgon Alarm Clock&lt;/h3&gt;
-
-&lt;p&gt;Knowing the current time of day is cool, but what if you want to be notified at a certain time every day? Say, for example, the time you want to wake up at! This is a device most folks would call an &lt;em&gt;alarm clock&lt;/em&gt;. As the english name suggests, we could start with our clock, and add an alarm circuit to it.&lt;/p&gt;
-
-&lt;p&gt;The alarm circuit is simple. We shall define it as such: it takes two inputs: the current time of day, and the desired time of alarm. Current time comes from our existing clock circuit, and desired alarm time has to come as input from the user. If you want to be woken up by your alarm on the 4th second of the day, you would provide the input bits &lt;script type=&quot;math/tex&quot;&gt;0100_2&lt;/script&gt;. Providing user input in digital circuits like this is usually just done through switches that selectively tie digital signals to ground or 5V. Something like &lt;a href=&quot;https://www.jameco.com/z/78B04ST-Grayhill-DIP-Switch-On-Off-Single-Pole-Single-Throw-4-Raised-Slide-0-15-Amp-30-Volt-PC-Pins-2000-Cycle-2-5mm-Through-Hole-Tube_696950.html?%20CID=GOOG&amp;amp;gclid=Cj0KCQjwgezoBRDNARIsAGzEfe7hcHovtbSrxWYDnhEjBbvDTIrS4ydOLhCMUV2kU8dR8l9B52EvHOcaAtGKEALw_wcB&quot;&gt;this&lt;/a&gt; - you’ve possibly seen these in old garage door openers? Maybe? Or maybe I’m getting old.&lt;/p&gt;
-
-&lt;p&gt;In any case, we will define that the output of our alarm circuitry is a single bit. It shall be 1 when the current time matches the alarm time, and 0 otherwise. We’ll assume it’s hooked up to some loud buzzer, or a motor that drives a 2x4 into your skull, or releases a flock of penguins, or something “alerting” of that nature. But through the power of abstraction, we will simply leave it at 1 = “alert” and 0 = “no alert”.&lt;/p&gt;
-
-&lt;p&gt;To calculate the output, we need to calculate if the two inputs are &lt;em&gt;exactly&lt;/em&gt; equal. Doing this across four bits is quite trivial - for two four-bit numbers to be &lt;em&gt;exactly&lt;/em&gt; equal, it just means that every one of their bits is equal.&lt;/p&gt;
-
-&lt;p&gt;Recall that the output of an XOR gate reports when two bits are different (1 for different, 0 for same). By putting an inverter on the output of an XOR gate, we’ve created an XNOR gate, which produces 1 when the bits are the same, but 0 when they are different.&lt;/p&gt;
-
-&lt;p&gt;Similarly, a 4-input AND gate will output 1 when all 4 inputs are true, and 0 otherwise (1 or more inputs are 0).&lt;/p&gt;
-
-&lt;p&gt;Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate “are my two 4-bit inputs exactly equal” &lt;sup id=&quot;fnref:4:1&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/alarm_circuit.png&quot; alt=&quot;Alarm Comparison Circuit&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here we’ve used names A and B for the 4-bit inputs (A consists of A_0, A_1, A_2, and A_3). A is the current time, B is the set time from the user (though order technically won’t matter).&lt;/p&gt;
-
-&lt;p&gt;We’ll wrap this circuit up into a nice little box that compares two four-bit numbers for equality:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/compareEq.png&quot; alt=&quot;Compare Equality abstraction symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We can then hook this guy up to our existing clock circuit, and we suddenly can be woken up at the proper time on planet Zorgon!&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/zorgonAlarmClock.png&quot; alt=&quot;Zorgon Alarm Clock Circuit&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Huzzah!&lt;/p&gt;
-
-&lt;h3 id=&quot;too-close-to-home&quot;&gt;Too close to home&lt;/h3&gt;
-
-&lt;p&gt;“But But But!”, you say. “We live on planet Earth! A Zorgon clock is useless for day to day life!”. I hear you, and do not disagree. Let’s think through what we’d have to do to make this clock work on Earth (where there are &lt;script type=&quot;math/tex&quot;&gt;24 * 60 * 60 = 86400&lt;/script&gt; seconds in one day).&lt;/p&gt;
-
-&lt;p&gt;For starters, we’ll need more bits. &lt;script type=&quot;math/tex&quot;&gt;log_{2}(86400) = 16.3984&lt;/script&gt;, so we’ll need at least 17 bits to represent the present “second of the day”. This should be easy enough - just expand both the register and the adder to have 17 bits, and re-connect wires.&lt;/p&gt;
-
-&lt;p&gt;The second problem is that on Zorgon, the counter “rolled over” back to 0 at just the right time. This is because of the way binary addition works when you have a fixed set of output bits:&lt;/p&gt;
-
-&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;0001_{2} + 1111_{2} = 10000_{2}&lt;/script&gt; But because of how the ripple-carry adder is implemented, that top bit “drops off”, or is otherwise discarded. This leaves the result of the addition operation as &lt;script type=&quot;math/tex&quot;&gt;0000_{2} = 0_{10}&lt;/script&gt;&lt;/p&gt;
-
-&lt;p&gt;Earth is not nearly as nice. We have to manually reset the count back to zero on the start of each day. Let us create a “new-day-detection” circuit which uses that same comparison logic in the Alarm Clock to check whether the current second count is the last second of the day (second &lt;script type=&quot;math/tex&quot;&gt;86399_{10} = 10101000101111111_2&lt;/script&gt; ). When all 17 bits of the current time are exactly equal to the last second of the day, the logic outputs a 1.&lt;/p&gt;
-
-&lt;h4 id=&quot;the-mux&quot;&gt;The MUX&lt;/h4&gt;
-
-&lt;p&gt;There is another combinational logic device I’d like to quickly introduce you to - it’s called a &lt;em&gt;multiplexer&lt;/em&gt;, or &lt;em&gt;mux&lt;/em&gt; for short. It has a set of input signals, some &lt;em&gt;select lines&lt;/em&gt;, and a single output. Based on the value at the &lt;em&gt;select line&lt;/em&gt; inputs, the appropriate input is propagated to the output.&lt;/p&gt;
-
-&lt;p&gt;From similar reasoning that we used above, the number of select lines required is equal to &lt;script type=&quot;math/tex&quot;&gt;\lceil log_{2}(N) \rceil&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; is the number of distinct inputs to be selected between.&lt;/p&gt;
-
-&lt;p&gt;A non-traditional looking truth table will summarize this behavior succinctly:&lt;/p&gt;
-
-&lt;p&gt;For a mux with data inputs A and B:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;SEL&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;A&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;B&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;Perhaps more traditionally for the case where A and B are both 1 bit:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;SEL&lt;/th&gt;
-      &lt;th&gt;A&lt;/th&gt;
-      &lt;th&gt;B&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;OUT&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;You could go create this out of individual gates at this point - an exercise which is left up to the user.&lt;/p&gt;
-
-&lt;p&gt;Just like we’ve ganged &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; flip-flops together in parallel to make an &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; bit register, you can also gang &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; 1-bit mux’s together to make an &lt;script type=&quot;math/tex&quot;&gt;N&lt;/script&gt; bit mux, which is what we’ll need for Earth clock.&lt;/p&gt;
-
-&lt;p&gt;The multiplexer is used enough that it gets its own special symbol. Here’s one drawn where A and B are both 4 bits wide.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/mux.png&quot; alt=&quot;Multiplexer symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;new-dawn&quot;&gt;New Dawn&lt;/h4&gt;
-
-&lt;p&gt;In particular, when our “new day detection” circuitry indicates that the next second is the start of a new day (and the current time should therefor be 0), we can use that 1-bit output and a mux to switch the value of the input to the registers:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/earthAlarmClock.png&quot; alt=&quot;Simple Earth Alarm Clock&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here, we see that when our “next-day” detection logic indicates the next second should be 0, we pass in a constant value of all-0-bits to the input of the register. In all other cases, we continue to pass the same thing we used to pass - current time + 1.&lt;/p&gt;
-
-&lt;p&gt;The alarm circuitry would need very little adjustment - only to increase the total number of input switches used to select the “alarm” time.&lt;/p&gt;
-
-&lt;p&gt;And just like that, we’ve constructed a functional earth alarm clock. Good job team!&lt;/p&gt;
-
-&lt;h2 id=&quot;ram&quot;&gt;RAM&lt;/h2&gt;
-
-&lt;p&gt;While our alarm clock adventures have been fun, it turns most people &lt;a href=&quot;https://www.amazon.com/s?k=alarm+clock&amp;amp;ref=nb_sb_noss_2&quot;&gt;don’t build their alarm clocks from scratch.&lt;/a&gt;. The ones on the market have far more features and it rarely makes sense to build one yourself like we described, unless you want to just have some fun.&lt;/p&gt;
-
-&lt;p&gt;Building your own RAM chips is also not recommended for anything except leisure. However, it’s worthwhile going over the basics of what features a piece of Random-Access Memory has to support, and propose one way of going about doing this with the circuits we know about.&lt;/p&gt;
-
-&lt;h3 id=&quot;accessing-randomly&quot;&gt;Accessing Randomly&lt;/h3&gt;
-
-&lt;p&gt;Computer Memory is a digital device which stores and recalls large chunks of data. As you may know, and as we already mentioned, RAM is an acronym which stands for “Random Access Memory” - it means that a user of a RAM chip can access any particular part of memory at any time. It also implies that the user can write a new value to any particular part of memory at any time. As a side note, the other common type of memory is called ROM, for “Read Only Memory”. This type can store information, but not change it.&lt;/p&gt;
-
-&lt;p&gt;When reading and writing to a RAM chip, the &lt;em&gt;location&lt;/em&gt; where things are stored is referred to as an “address”. In general, on a chip, the addresses are just numbered 0, 1, 2, … up through the maximum size of the chip. When you see a chip say it can store 1 MB (&lt;a href=&quot;https://en.wikipedia.org/wiki/Megabyte&quot;&gt;megabyte&lt;/a&gt; ~= &lt;script type=&quot;math/tex&quot;&gt;10^6&lt;/script&gt; bytes), this refers to the quantity of addresses available for storing data. If each address refers to one byte, the memory is said to be &lt;em&gt;byte addressable&lt;/em&gt; and the addresses would go from 0 up through 1048576 or so.&lt;/p&gt;
-
-&lt;p&gt;Think of addresses just like the addresses on houses. Each house has a mailbox, and each house has a number on it. When you want to “store” (ie give) data to a certain mailbox, you provide both the “data” (your package or letter) and the address to put it in. A mailman then does the job of storing the data in the right spot. The data remains there till the owner recalls it from the appropriate mailbox. The numbers of the address help coordinate the data going to the right spot, so the right person gets it back out.&lt;/p&gt;
-
-&lt;p&gt;Of course, in real RAM, there’s usually no restrictions on who can read or write to each address - unlike in the US, where &lt;a href=&quot;https://www.law.cornell.edu/uscode/text/18/1702&quot;&gt;taking someone else’s mail is a felony&lt;/a&gt;. Computers are supposed to be general purpose computation devices, so it’s rare that hardware enforces read/write restrictions based on identity. This sort of security, if required, is usually added by software or specialized processor hardware.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-prototype-ram-chip&quot;&gt;The Prototype RAM Chip&lt;/h3&gt;
-
-&lt;p&gt;Every RAM chip will have to have a few connections:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;An input for the address from which to read data&lt;/li&gt;
-  &lt;li&gt;An output which contains the data recalled from the read address&lt;/li&gt;
-  &lt;li&gt;An input for the address to which to write data&lt;/li&gt;
-  &lt;li&gt;An input for the data to write at the write address&lt;/li&gt;
-  &lt;li&gt;A clock to synchronize read/write operations with data input and output.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Depending on what brand and model of RAM chip you have, you may see certain of these functions tied together (ie one address for read/write) or split apart (ie two clocks - one for read and one for write). Some have enable lines to turn on or off read/write functionality as needed. All these features are nice to have, but add cost and increase pin count. So, it’s all just an engineering tradeoff. Pick the RAM chip with all the features you &lt;em&gt;need&lt;/em&gt;, and that matches your budget.&lt;/p&gt;
-
-&lt;p&gt;When a processor wants to store a value, the process is generally:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Assert the bits of value onto the data input&lt;/li&gt;
-  &lt;li&gt;Assert the bits of the address onto the write address input&lt;/li&gt;
-  &lt;li&gt;Allow the clock cycle to occur.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Reading back a value is very similar:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Assert the bits of the address onto the read address input&lt;/li&gt;
-  &lt;li&gt;Allow the clock cycle to occur&lt;/li&gt;
-  &lt;li&gt;Read the value of the bits on the data output&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Note that most RAM chips do not store their value over power cycle. When you remove power from the device, all the data disappears. When you re-apply power, the device reads all 0’s or all 1’s (depends on the underlying technology).&lt;/p&gt;
-
-&lt;h3 id=&quot;internals-of-a-theoretical-ram-chip&quot;&gt;Internals of a Theoretical RAM Chip&lt;/h3&gt;
-
-&lt;p&gt;I don’t want to get too deep into how to design the internals of the RAM chip. This is because the actual way they are made is highly optimized (some using only a single transistor per bit storage), and it looks very dissimilar from the usual gate logic we think about digital logic in. Still, it is very possible to construct a RAM chip from only the gates and flip-flops we already know about, and is an interesting thought experiment to figure out how to make it happen.&lt;/p&gt;
-
-&lt;p&gt;Here’s the highlights of a plausible (abet inefficient) way to do it - I’ll leave the details of the implementation up to the reader to sort out.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Each address has, at its core, an 8-bit register (same as above) to store the value.
-    &lt;ul&gt;
-      &lt;li&gt;Every register is fed from the same clock.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;One giant MUX at the output takes the read address input, and selects the proper register to pass to the output&lt;/li&gt;
-  &lt;li&gt;Each register’s output loops back around to its input through a mux and some digital logic, such that the value &lt;em&gt;usually&lt;/em&gt; never changes (output of register fed right back to input).
-    &lt;ul&gt;
-      &lt;li&gt;However, that input logic is set up such that when the write address input matches that register’s address, the data from the write data input is used instead.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;There are some key inefficiencies with this system, however:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Muxes which select between 1,000,000 inputs are ineffective to make as a single unit. It’s more efficient to split it up into lots of little tiny pieces.&lt;/li&gt;
-  &lt;li&gt;At scale, gate delays may start to limit clock speed. Having additional buffers to temporarily store the read/write values while the internal circuitry changes state can help mitigate this
-    &lt;ul&gt;
-      &lt;li&gt;It’s worthwhile noting that in modern processors, RAM is usually asynchronous from and slower than the main processor. This can sometimes be part of the reason extra chips are needed on a motherboard to “drive” the RAM chips, converting data between the domain of the processor and the memory circuits.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The loop-back circuitry on every register can be eliminated by having two clocks (one for read, one for write), or some set of “enable bit” inputs that the processor controls - writes are commanded only when required.&lt;/li&gt;
-  &lt;li&gt;The read-mux and write-mux circuitry can sometimes be combined into the inside of the register in an enable/disable fashion.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For more info on “real” RAM chips, search around for “Memory Cell”, like on &lt;a href=&quot;https://en.wikipedia.org/wiki/Memory_cell_(computing)&quot;&gt;wikipedia&lt;/a&gt;. The key takeaway is that there are a huge number of different ways to implement RAM, but that shouldn’t matter. As far as the processor is concerned, it’s just an abstract device which can store and recall data from little mailboxes we call “addresses”&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;With the introduction of combinational circuits like adders and mux’s, and some sequential logic like registers and RAM, we’re now &lt;em&gt;almost&lt;/em&gt; ready to start delving into how these are combined together in a traditional processor. We’ll start to cover this in a primer discussion on &lt;a href=&quot;/blog_posts/2019/07/22/processor_arch_primer.html&quot;&gt;Processor Architecture&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Flaw - or &lt;em&gt;limitation&lt;/em&gt; or &lt;em&gt;opportunity&lt;/em&gt;. All words could apply, just pick the one that says what you want to say. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:2&quot;&gt;
-      &lt;p&gt;Or at least, it ought to. Sometimes the marketing department has other ideas. But we still like them, because they help sell the things, which makes money, and lets the engineers make more things, and have food to eat. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:3&quot;&gt;
-      &lt;p&gt;Turns out, because of gate delay, the ripple-carry adder is actually a bad design for an adder circuit. Think about what happens if you had 1000 stages. How long do you have to wait for the full result to be available? Think about how many gate propagations are needed to calculate the final carry-out signal. Dis nasty. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:4&quot;&gt;
-      &lt;p&gt;Forgive the odd drawing here - you can ignore the numbers right by the gates. I’m testing out using &lt;a href=&quot;http://kicad-pcb.org/&quot;&gt;KiCad&lt;/a&gt; for schematic capture and design. It’s a bit cumbersome for these educational purposes, but can draw simple logic diagrams well. Looks super powerful as an electronic schematic and printed circuit board design tool though! I highly recommend it so far! &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt; &lt;a href=&quot;#fnref:4:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">This post is the continuation of Part 1 in our series on digital devices.</summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
