@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Productive Team Mentality"
-date:   2019-08-16 09:30:40 -0500
+date:   2019-09-05 09:30:40 -0500
 categories: blog_posts
 ---
 
@@ -10,9 +10,9 @@ categories: blog_posts
 
 This post is largely inspired by [Laura Delizonna's excellent article in the Harvard Business Review](https://hbr.org/2017/08/high-performing-teams-need-psychological-safety-heres-how-to-create-it).
 
-All technical team environments will operate best when they enable their team members to do their best work. Although every member will be different to some extent, there are many common behaviors and qualities that are worth at least considering, if not implementing in your own team. 
+All technical team environments will operate best when team members do their best work. Effective teams go out of their way to _enable_ team members to perform well. Although every member will be different to some extent, there are many common team behaviors and qualities that are worth at least considering, if not implementing, in your own team. 
 
-Throughout this discussion, keep in mind that no matter whether or not you have leadership responsibilities on a team, each member of a team is a steward of team culture. The culture is kept and maintained by each individual, not by the team leadership. By acting in accordance with positive, desireable aspects of culture, you yourself build up the team to be a better form of itself.
+Throughout this discussion, keep in mind that no matter whether or not you have leadership responsibilities on a team, each member of a team is a steward of team culture. The culture is kept and maintained by each individual - leader and individual contributor alike. By acting in accordance with positive, desireable aspects of culture, you yourself build up the team to be a better form of itself.
 
 With that in mind, let's explore a few of the aspects of productive, happy technical teams.
 
@@ -20,11 +20,11 @@ With that in mind, let's explore a few of the aspects of productive, happy techn
 
 Keeping a positive attitude is, for me, the foundation of a good team.
 
-Technical subjects are, unfortunately, dry and impartial. Physics and Math are governed by cold and impartial laws which, though advantageous for their consistency, do little to reassure human beings of their inherent value and worth. _Before_ spending time delving into these technical topics, it's well worth the time to establish that you are _happy_ to simply be in the presence of your teammates. Make them know that you enjoy being with them - even if you're not looking forward to the events of the day. Establishing this knowledge of desire to _be_ a team will provide the motivation to grow as a team.
+Technical subjects are, for better or worse, dry and impartial. Physics and Math are governed by cold and impartial laws. Though advantageous for their consistency, these laws do little to reassure human beings of their inherent value and worth. _Before_ spending time delving into these technical topics, it's well worth the time to establish that you are _happy_ to simply be in the presence of your teammates. Make them know that you enjoy being with them - even if you're not looking forward to the events of the day. Establishing knowledge of the desire to _be_ a team will provide the motivation to grow as a team.
 
 An established positive attitude greatly helps people be _internally motivated_ to find solutions to problems. They know their time is appreciated and well spent, and that their efforts are worthwhile for the success of the team. When individuals actively seek out solutions to problems, without relying on the solution of other team members, they grow their own capability and skill. This growth is essential for future team success.
 
-A positive team is one which is _inherently fun_ to be a part of. Not because someone made it fun, but because the team and the work itself is considered fun. Team members build each other up, strengthening relationships of trust and mutual respect. 
+A positive team is one which is _inherently fun_ to be a part of. Not because someone made it fun, but because the team transforms the work into something which can be enjoyed. Something which has a purpose and meaning, and goes beyond a simple task to "take care of". Team members build each other up, strengthening relationships of trust and mutual respect. 
 
 ## Building Trust for Growth
 
@@ -44,7 +44,7 @@ Mitigating the fear of failure can be done through many ways. A few of my favori
 
 When failure occurs, the knee-jerk reaction is frequently to zero in on the problem. It's glaring, everyone can see it, everyone is worried about it. It's natural to focus on the problem. Well-meant or not, the focus is good at first - ensure that all team members understand the impacts of the problem, and those empowered to solve it understand it enough to go forward.
 
-But then, shift 100% to the solution. No more complaining, whining, or getting distracted with "what-if" scenarios. Establish a laser-focus on finding a solution, and don't look back till you have one. Even if it's the most horrible hack you've ever seen, find something that _works_ (and is of course, _safe_). 
+But then, shift 100% to the solution. No more complaining, whining, finger-pointing, or getting distracted with "what-if" scenarios. Establish a laser-focus on finding a solution, and don't look back till you have one. Even if it's the most horrible hack you've ever seen, find something that _works_ (and is of course, _safe_). 
 
 Separate things you can change from those you cannot, and focus on the former. The whole team depends on you to _solve_ the problem, so don't waste their time by focusing on things you cannot change.
 
@@ -56,7 +56,7 @@ Inevitably, people will be involved. You must use _compassion_ when dealing with
 
 Once you feel comfortable you know why something happened, go about fixing it. Sometimes, it might just be some additional learning or training for a few team members. Sometimes, there's a _process_ change to make, wherein your team modifies the usual steps it does while performing a task to prevent a problem from reoccurring.
 
-This process is a key component of what Dr. Delizonna refers to as "Replacing Blame with Curiosity". This is an absolutely critical aspect to handling failures - the team attitude should be to approach all problems with a fundamental desire to learn about them and fix them, rather than establish blame. Focus on the solution, not on the actual problem itself. 
+This process is a key component of what Dr. Delizonna refers to as "Replacing Blame with Curiosity". This is an absolutely critical aspect to handling failures - the team attitude should be to approach all problems with a fundamental desire to learn about them and fix them, rather than establish blame. Focus on the solution, not solely on the actual problem itself. 
 
 ### The Basket Cases
 
@@ -68,7 +68,7 @@ In both cases, be _absolutely_ sure your observations are not biased. Have you t
 
 If so, there are drastic actions that can be taken. 
 
-One option is bringing in some higher authority to address the issue with their larger metaphorical "hammer". THis assumes such an authority exists. 
+One option is bringing in some higher authority to address the issue with their larger metaphorical "hammer". This assumes such an authority exists. 
 
 Temporary or permanent separation from the team is another options. Sometimes it is the only one. Keep in mind that this separation fundamentally ends the goal of team growth that all technical teams should strive for, so it must be used with extreme caution.
 
@@ -76,7 +76,7 @@ Above all, keep in mind these "basket cases" are _different_ from technical prob
 
 ## Vulnerability, Feedback, Measurement
 
-All of the aforementioned ideas are just that - ideas. They aren't a prescriptive way to organize a team - indeed, if I knew how to tell you that, I'd be a much richer man. What I can tell you is this - _be vulnerable_. Talk about these things with your team members. Bring them up (appropriately), and talk as a team about what you expect from each other. Establish not just where you are, but where you want the team to be. Then build a roadmap for how to get there. As problems arise, discuss them swiftly and frankly, investigate with curiosity, design and implement a solution.
+All of the aforementioned ideas are just that - ideas. They aren't a prescriptive way to organize a team - indeed, if I knew how to tell you that, I'd be a much richer man. What I can tell you is this - _be vulnerable_. Talk about these things with your team members. Bring them up (appropriately), and talk as a team about what you expect from each other. Let down your guard, and speak frankly.  Establish not just where you are, but where you want the team to be. Then build a roadmap for how to get there. As problems arise, discuss them swiftly and frankly, investigate with curiosity, design and implement a solution.
 
 Seeking constant feedback from each other is the key way that you, as a team, ensure your day to day interactions remain positive and productive.
 
