@@ -1,4 +1,207 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-09-05T18:30:29-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T09:30:40-05:00</published><updated>2019-09-05T09:30:40-05:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-09-07T13:47:32-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T09:30:40-05:00</published><updated>2019-09-07T09:30:40-05:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;One of the most eye-opening courses I took in college was an &lt;a href=&quot;https://courses.grainger.illinois.edu/ece486&quot;&gt;introduction to control theory course&lt;/a&gt;. The topic was brand new to me. Prior to taking the course, I had never even heard of this concept of “control theory”.&lt;/p&gt;
+
+&lt;p&gt;The course provided a brand new level of abstraction for thinking about how software fits in with the rest of the world. It provided the tools and vision for creating software and physical devices in harmony, to produce desireable, accurate, repeatable actions.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Software and physical devices in harmony&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Sounds sorta familiar, huh?&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/sw_hw_254.png&quot; alt=&quot;software and hardware together&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Source: team254.com&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;I did a couple cool projects in the class, but largely didn’t touch the subject much academically. But boy, did it influence the way that I approach problem solving. And it has been the single greatest driving force in my design philosophy for robotics - both in college, and into FRC mentoring.&lt;/p&gt;
+
+&lt;p&gt;I want to start a series of posts on the topic. We’ll start by talking more about the formal definitions of “System” and “Controls”, dig into a bit of the math (with lots of pictures, don’t worry), and finally talk a bit about controller design - leading into the mysterious land of &lt;em&gt;PID&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you’ve spent any time around robotics, you’ve most certainly heard the term PID - this mystical thing that you put in code, and then it magically solves problems! Right?&lt;/p&gt;
+
+&lt;p&gt;Eeeh, not so much. It can solve certain problems, but only under certain constraints. The study of Control Theory will give us the answers on &lt;em&gt;which&lt;/em&gt; problems and &lt;em&gt;which&lt;/em&gt; constraints.&lt;/p&gt;
+
+&lt;p&gt;The ultimate goal? &lt;a href=&quot;https://vimeo.com/110346531&quot;&gt;Make mechanical systems do our bidding&lt;/a&gt;. Nothing more, nothing less. Let’s dive in!&lt;/p&gt;
+
+&lt;h2 id=&quot;defining-a-system&quot;&gt;Defining a &lt;em&gt;System&lt;/em&gt;&lt;/h2&gt;
+
+&lt;p&gt;A &lt;em&gt;Control System&lt;/em&gt;, or simply a &lt;em&gt;System&lt;/em&gt;, is a carefully-selected collection of mechanical parts, electronics, and software. Additionally, these pieces interact with each other. That’s it. Its super vague by itself. The academic treatment is purposefully vague, so as to explore the surprising similarities between seemingly disparate situations.&lt;/p&gt;
+
+&lt;p&gt;Usually, a control system in robotics consists of the following components:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;An &lt;em&gt;Input Command&lt;/em&gt;, which describes what the mechanism &lt;em&gt;should&lt;/em&gt; be doing.
+    &lt;ul&gt;
+      &lt;li&gt;This could be from a human operator’s gamepad, or maybe an autonomous routine.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;Controller&lt;/em&gt;, a piece of software running on a processor which you can freely adjust
+    &lt;ul&gt;
+      &lt;li&gt;This usually lives on the roboRIO, but the software itself can be written as you please.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;An &lt;em&gt;Actuator&lt;/em&gt;, the set of electronics and motors and solenoids which exert a force on the mechanism
+    &lt;ul&gt;
+      &lt;li&gt;FRC rules restrict your set of choices here, but still allow some freedom.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;End Effector&lt;/em&gt;, the part of the mechanism you are attempting to move in some “desired” manner.
+    &lt;ul&gt;
+      &lt;li&gt;This is usually the thing your mechanical team designs and builds. There is some potential to change it, but its design is often fixed.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;Feedback Sensor&lt;/em&gt;, something which measures the mechanism, and provides information to the Controller.
+    &lt;ul&gt;
+      &lt;li&gt;This can often be freely chosen, though due to mechanical constraints often has to be mounted in a certain location on the mechanism.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As you can probably see, every control system has some parts which you can freely design (like the software in the Controller), some components which you have much less control over (like the actuator, or the mechanism connecting the end effector. The goal is to use the components you &lt;em&gt;can&lt;/em&gt; freely design to make the components you &lt;em&gt;can’t&lt;/em&gt; freely design still do what you want.&lt;/p&gt;
+
+&lt;h3 id=&quot;practical-example&quot;&gt;Practical Example&lt;/h3&gt;
+
+&lt;p&gt;As a concrete example, think about a shooter wheel from 2016 or 2017 games. In both games, a common design was to launch a ball by spinning a rubber wheel up to a certain speed, then injecting the ball into the spinning wheel. The common “controls” requirement (aka “desired” behavior) was to ensure the wheel had a particular speed prior to injecting the ball, in order to keep the trajectory consistent. Here’s a concrete example of components that could be used to build up such a system:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The &lt;em&gt;Input Command&lt;/em&gt; came from a button on an XBOX controller. Pressed and the command is something like 1000RPM, released and the command is 0 RPM.&lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;Controller&lt;/em&gt;, as always, was some software on the roboRIO. We’ll delve into the design of this software later.&lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;Actuator&lt;/em&gt; was some speed controller (like a Victor SP) wired to a motor (like a 775 Pro)&lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;End Effector&lt;/em&gt; was some rotating, rubberized wheel. Usually, this was propelled by the actuator, via a gearbox.&lt;/li&gt;
+  &lt;li&gt;The &lt;em&gt;Feedback Sensor&lt;/em&gt; was a &lt;a href=&quot;https://en.wikipedia.org/wiki/Rotary_encoder&quot;&gt;quadrature encoder&lt;/a&gt;, splined to some rotating member in the motor/gearbox/launch wheel system.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;vocabulary&quot;&gt;Vocabulary&lt;/h3&gt;
+
+&lt;p&gt;In more standard control system terminology, the following nomenclature is used:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The value of the &lt;em&gt;Input Command&lt;/em&gt; is called the &lt;em&gt;Desired&lt;/em&gt; value.&lt;/li&gt;
+  &lt;li&gt;The value of the &lt;em&gt;Feedback Sensor&lt;/em&gt; is called the &lt;em&gt;Actual&lt;/em&gt; value.&lt;/li&gt;
+  &lt;li&gt;The software and computer and actuator electrical components are collectively called the &lt;em&gt;Controller&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;The mechanical portion of the actuator, the end effector, and the linkage between all this and the feedback sensor are collectively called the &lt;em&gt;Plant&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;The output of the controller, into the plant, is called the &lt;em&gt;Control Effort&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The Controller/Plant terminology dates back to when control systems were primarily for Chemical Engineering processes at chemical production plants - Engineers designed controllers to make their plants do what they wanted.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;Actual&lt;/em&gt; and &lt;em&gt;Desired&lt;/em&gt; values must both describe the quantities associated with the end effector you are trying to control - its speed, its position, etc. In the case of the shooter wheel, it’s the rotational velocity of that launch wheel end effector.&lt;/p&gt;
+
+&lt;p&gt;The Controller’s job is actually fairly simple: Make the &lt;em&gt;Actual&lt;/em&gt; value match the &lt;em&gt;Desired&lt;/em&gt; value as closely as needed. That’s it! &lt;em&gt;How&lt;/em&gt; this is accomplished is much more less simple, and is heavily dependant on the nature of the plant.&lt;/p&gt;
+
+&lt;p&gt;One additional note: The feedback sensor is technically optional, and is not present in some systems. We will discuss this in more detail later.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-block-diagram&quot;&gt;The Block Diagram&lt;/h2&gt;
+
+&lt;p&gt;The core tool used while describing control systems is the &lt;em&gt;block diagram&lt;/em&gt;. Teams who use Labview will already be well familiar with this concept. However, for the sake of the text-based language teams, let’s delve in a bit.&lt;/p&gt;
+
+&lt;p&gt;A block diagram uses labeled &lt;em&gt;blocks&lt;/em&gt; to show entities, and &lt;em&gt;arrows&lt;/em&gt; to show relationships between the entities.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/basic_block.png&quot; alt=&quot;Basic block diagram&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The blocks can be defined to be anything you like - a controller, a plant, part of a plant, your dog, etc. You choose what to put inside the block, so as to communicate your intent most clearly. The block is an indication of an &lt;em&gt;abstraction&lt;/em&gt; - it shows the functional part you want your reader to be thinking about. No additional, unimportant details.&lt;/p&gt;
+
+&lt;p&gt;As a silly example, let us explain a very critical concept for all FRC teams everywhere:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/silly_block_example.png&quot; alt=&quot;Cookies -&amp;gt; feed -&amp;gt; Mentors&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, we illustrate the concept of some sort of cookies providing sustenance to a group of mentors. It doesn’t matter what type of cookies, or how you made them, or what they cost. It doesn’t matter how the mentors eat the cookies, or how their bodies process the food, or whether you like the mentors or not. All these details are &lt;em&gt;abstracted&lt;/em&gt; behind those nicely named little boxes.&lt;/p&gt;
+
+&lt;p&gt;Arrows indicate a quantitative relationship or flow of data from one block to another. Note we kinda violated that in our silly example. Maybe it’s “Calories”… doesn’t matter I suppose. It’s a silly example.&lt;/p&gt;
+
+&lt;p&gt;For &lt;em&gt;real control system&lt;/em&gt; work, you’ll want your relationships to by quantifiable. That is to say, you can describe their value at any point in time using a number. It could be a command communicated to a motor controller, a force applied from one mechanism to another, a position detected by a sensor, an electrical signal generated by a sensor and sent to a controller… you get the picture. The key is &lt;em&gt;quantitative&lt;/em&gt; - arrows are like assignment in variables, and actually get interpreted as such when you write software or do math based in block diagrams.&lt;/p&gt;
+
+&lt;p&gt;Note that we’ve provided a label over the arrow for clarity. This sometimes is useful, but also may be omitted in two cases:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;The relationship is obvious, such that the label crowds the diagram without adding additional information.&lt;/li&gt;
+  &lt;li&gt;The relationship is purposefully left vague, such that the diagram may apply to many scenarios at once.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Now for a more serious example. In our standard construction of a control system, we usually can draw the following block diagram:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_simple.png&quot; alt=&quot;Standard control system, very simple&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This illustrates the most basic breakdown of a system that control engineers will do. It illustrates the key concepts we’ve already discussed:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Some outside entity provides a Desired value&lt;/li&gt;
+  &lt;li&gt;Something inside the Plant is measured, producing the Actual value&lt;/li&gt;
+  &lt;li&gt;The controller exerts a Control Effort onto the Plant&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Thought not a hard and fast rule, I will generally draw things you &lt;em&gt;can&lt;/em&gt; freely design in the top row, and things you &lt;em&gt;cannot&lt;/em&gt; freely design in the bottom row. Just a convention to help visually organize the parts of the problem.&lt;/p&gt;
+
+&lt;p&gt;Finally, if you ever hear about “Feedback” in a control system, you can take the words quite literally. As you can see in the bottom row, data is literally &lt;em&gt;fed back&lt;/em&gt; from the controller, through the plant, and back into the controller. The data in the bottom row literally flows backward, visually, in the diagram.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Often useful is a more detailed diagram, where we break up the &lt;em&gt;Controller&lt;/em&gt; and &lt;em&gt;Plant&lt;/em&gt; blocks into components that can be more easily mapped to real components on the robot.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system.png&quot; alt=&quot;Standard control system&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, you should see that perform the following “un-abstractions” to give a more detailed and usable view of the world:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We specify that our &lt;em&gt;Controller&lt;/em&gt; shall be made up of software, plus some electronics to bring the software outputs to the physical world&lt;/li&gt;
+  &lt;li&gt;We specify that our &lt;em&gt;Plant&lt;/em&gt; is made up of an electrically-powered actuator, some physical mechanism attached to that actuator, and a sensor measuring that mechanism.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This is probably the most common permutation seen in FRC robotics, but note it doesn’t have to always be this way. For example, your controller might &lt;a href=&quot;https://www.briggsandstratton.com/eu/en_gb/support/faqs/browse/governor-system.html&quot;&gt;contain zero electronics&lt;/a&gt;. Or, your plant might &lt;a href=&quot;https://www.amazon.com/dp/3642100449/&quot;&gt;actually be the stock market&lt;/a&gt;. I say this more as an aside, just to show how broadly this Control Theory topic can be applied. However, for FRC purposes, we’ll focus on the software-electronics-hardware-sensor model.&lt;/p&gt;
+
+&lt;p&gt;To further drive home this process, let’s put some specific component labels down in this diagram for our example shooter system described earlier:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/shooter_wheel_control_system.png&quot; alt=&quot;Shooter Wheel Control System&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here we see the mechanism further broken down into a gearbox and shooter wheel, and some specific component choices made to simplify explanation later on. Play along with us, and by the end you’ll be able to fill in the boxes for your own bespoke robot systems!&lt;/p&gt;
+
+&lt;h2 id=&quot;but-why-feedback&quot;&gt;But, Why Feedback?&lt;/h2&gt;
+
+&lt;p&gt;Earlier on, I mentioned that the sensor (and therefor, the whole Feedback system) was not technically required. Such a system is called “Open Loop”, as there is no information about the results of the control effort passed back into the controller. The loop of signal flow is left “open”.&lt;/p&gt;
+
+&lt;p&gt;This is, admittedly, a much simpler setup. No need to worry about feedback. It’s totally feasible too - as long as you know &lt;em&gt;exactly&lt;/em&gt; how your plant will respond to &lt;em&gt;each and every&lt;/em&gt; sequence of control effort inputs, you can 100% predict where your actuator will end up. If you just work this prediction math backward, you arrive at a solution for a control effort that puts your actuator exactly where you want it.&lt;/p&gt;
+
+&lt;p&gt;The key - plant models are usually &lt;em&gt;unpredictable&lt;/em&gt;. Carpet has bumps. Battery voltage fluctuates. Parts expand and contract with temperature changes. Competition fields have slightly different dimensions than your practice field. Joe Freshman forgets to grease gears properly between matches. No matter how good at math you are, you can’t predict exactly how and when these will impact your system.&lt;/p&gt;
+
+&lt;p&gt;Whenever these &lt;em&gt;disturbances&lt;/em&gt; are big enough to impact system function in a meaningful way, you need &lt;em&gt;feedback&lt;/em&gt; and &lt;em&gt;controller design&lt;/em&gt; that can deal for this variation, correcting for it.&lt;/p&gt;
+
+&lt;h2 id=&quot;next-steps---control-system-design&quot;&gt;Next Steps - Control System Design&lt;/h2&gt;
+
+&lt;p&gt;Ok, we’re at a good point to take a quick step back, and look at where we are at.&lt;/p&gt;
+
+&lt;p&gt;The most general sequence of steps I can provide when it comes to problem solving are as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Describe the problem&lt;/li&gt;
+  &lt;li&gt;Design a solution&lt;/li&gt;
+  &lt;li&gt;Implement the solution&lt;/li&gt;
+  &lt;li&gt;Validate the solution works&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;So far, we’re partway through step 1. We’re building up a language and technique for describing the problem.&lt;/p&gt;
+
+&lt;p&gt;We’ve described how control systems are broken down into components, represented with nice little connected boxes. The next major task is to start to fill out the contents of each box.&lt;/p&gt;
+
+&lt;p&gt;For standard control theory design, each one will require a mathematical description - a &lt;em&gt;model&lt;/em&gt; - of behavior. Fundamentally, each model will be description of how the input impacts the output.&lt;/p&gt;
+
+&lt;p&gt;Finally, we can apply control theory principles to &lt;em&gt;design&lt;/em&gt; the mathematics of what we want the controller to look like, such that our &lt;em&gt;actual&lt;/em&gt; value converges to the &lt;em&gt;desired&lt;/em&gt; value in the most appropriate way.&lt;/p&gt;
+
+&lt;p&gt;So, next up, we’ll look at some examples of how to build up these mathematical models, and what important takeaways from the models we should expect.&lt;/p&gt;
+
+&lt;p&gt;After that, we’ll be able to move on to step 2, in which we &lt;em&gt;design&lt;/em&gt; the contents of the &lt;em&gt;Control Software&lt;/em&gt; box to make the whole system do what we want.&lt;/p&gt;
+
+&lt;p&gt;We’ll finish off with some thoughts on techniques for validating behavior on real hardware, and troubleshooting when it doesn’t work. Stay tuned!&lt;/p&gt;
+
+&lt;h2 id=&quot;closing-note---on-other-resources&quot;&gt;Closing Note - On Other Resources&lt;/h2&gt;
+
+&lt;p&gt;With any luck, I’ve at least peaked your interest in this topic. I do hope you will carry on in this sequence of posts. However, note, this will be an overview, with a focus on getting a ground up explanation of why certain FRC-relevant concepts work the way they do.&lt;/p&gt;
+
+&lt;p&gt;For a &lt;em&gt;much&lt;/em&gt; more thorough and mathematically rigorous explanation of the topic, I &lt;strong&gt;HIGHLY&lt;/strong&gt; recommend reading the textbook &lt;a href=&quot;https://file.tavsys.net/control/controls-engineering-in-frc.pdf&quot;&gt;Controls Engineering in FRC&lt;/a&gt; - by far the best resource I’ve found on this topic. I’ll be making references to sections in this book throughout this series of posts. So far, we’ve discussed content from Chapter 1, Control System Basics.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;Backward, assuming you read from left to right. Just the established convention. A convention which was clearly made by someone who didn’t read Hebrew. Sorry, Hebrew-reading friends. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T09:30:40-05:00</published><updated>2019-09-05T09:30:40-05:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This post is largely inspired by &lt;a href=&quot;https://hbr.org/2017/08/high-performing-teams-need-psychological-safety-heres-how-to-create-it&quot;&gt;Laura Delizonna’s excellent article in the Harvard Business Review&lt;/a&gt;.&lt;/p&gt;
 
@@ -2026,174 +2229,4 @@
       &lt;p&gt;Again, lots of students &lt;a href=&quot;https://www.google.com/search?q=uiuc+ece+391+github&amp;amp;rlz=1C1CHBF_enUS840US840&amp;amp;oq=uiuc+ece+391+github&amp;amp;aqs=chrome..69i57.5400j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;decided to post their solutions online&lt;/a&gt;. Tisk tisk. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth</summary></entry><entry><title type="html">Processor Architecture Primer</title><link href="/blog_posts/2019/07/22/processor_arch_primer.html" rel="alternate" type="text/html" title="Processor Architecture Primer" /><published>2019-07-22T09:30:00-05:00</published><updated>2019-07-22T09:30:00-05:00</updated><id>/blog_posts/2019/07/22/processor_arch_primer</id><content type="html" xml:base="/blog_posts/2019/07/22/processor_arch_primer.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;We’re on the verge of being able to describe all the main components of real processors! Huzzah, we are well on our way to getting real software up and running! Get excited!&lt;/p&gt;
-
-&lt;p&gt;As one final preparation step, we want to do two things - set the historical scene for &lt;em&gt;what problem&lt;/em&gt; the design of the first processors was solving. We also want to explore a less-common but very-useful digital device called a “tri-state” buffer that will be key to our processor design function.&lt;/p&gt;
-
-&lt;h2 id=&quot;some-history&quot;&gt;Some History&lt;/h2&gt;
-
-&lt;p&gt;Way back in the day, if you had a lot of math to do, you would hire a &lt;a href=&quot;https://en.wikipedia.org/wiki/Human_computer&quot;&gt;human computer&lt;/a&gt; - literally, a person whose job it was to do computations. You gave them a set of instructions as to what math to do, and they came back with a set of numbers. Not a glamorous job, but it did pay the bills. If you had big calculations to do, you’d hire lots of them and find ways to divide the work. If you wanted to ensure accuracy, you’d hire twice as many as needed and have them both independently solve the same problem (and check the results).&lt;/p&gt;
-
-&lt;p&gt;Obviously, there are some big limitations to this system. Humans make mistakes, grueling hours of arithmetic isn’t exactly the most fun way to spend your work day, and there’s only so fast that a human can do math. You can’t take a big problem and subdivide it efficiently between a million people, as the complexity of re-combining the results starts to outweigh the benefits of doing work in parallel. Due to these limitations, and the ever-increasing scope of work, there was a need to expand the computing capability of the scientific community in general.&lt;/p&gt;
-
-&lt;p&gt;Toward the end of World War I and into World War II, there was an expanding notion of using machines to do rapid computation. The proximity to war-time meant a lot of the computation applications were, well, war-driven. &lt;a href=&quot;https://en.wikipedia.org/wiki/Enigma_machine&quot;&gt;Cryptography&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Bomba_(cryptography)&quot;&gt;attempting to break cryptography&lt;/a&gt;, calculating artillery trajectories, analyzing the feasibility of an atomic bomb…. Some simply calculated differential equations, but again the majority of the funding was pushed toward war-time effort.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/wwII.png&quot; alt=&quot;My mother is proud of my artwork.&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;These machines were quite large. Remember that the transistor had not yet been invented. The logic gates we have studied were conceptually still in use, but to implement them engineers had to use vacuum tubes or electro-mechanical switches. Additionally, the first machines were effectively hard-coded to do one single job. The government would come in and say “Johnson! We need a machine to help shoot shells at the enemy better! Here’s the equations, figure it out!” And then Johnson would go wire up one machine to do the job, and come back with an answer, and then the machine would be useless. Well, not entirely useless. But still, to do a different job (or even just tweak the equations), you had to spend lots of time re-designing parts of the circuitry, have technicians come in and physically re-wire the thing, test it all out, and hope you didn’t make any mistakes in the process.&lt;/p&gt;
-
-&lt;p&gt;Given the need for speed in reprogramming, a group of engineers set out to design a machine which was much more easily reprogrammable. The quest was for a “general purpose” computer, which could do arbitrary computations as needed, and did not take a team of technicians to re-wire every time computational problem changed.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/8/8c/Two_women_operating_ENIAC_%28full_resolution%29.jpg&quot; alt=&quot;Eniac programming&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Alan_Turing&quot;&gt;Alan Turing&lt;/a&gt; provided a key portion of the theoretical background for the general purpose computer. The &lt;a href=&quot;https://en.wikipedia.org/wiki/Turing_machine&quot;&gt;“Turing Machine”&lt;/a&gt; is a formal mathematical description of what sorts of devices can perform general computation. His papers show both what sorts of problems are “computable” (ie solved with an algorithm, acting only with numbers, math, and logic), and what criteria a machine must have to solve an arbitrary problem. This ability to solve an arbitrary problem is what makes a computer “general-purpose”.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/turing_machine.png&quot; alt=&quot;Turing Machine&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The classic demonstration of a simple Turing Machine involves a very large piece of magnetic tape, and a &lt;em&gt;Head&lt;/em&gt; - a device capable of moving along the tape, with the ability to read and write information from defined locations on the tape. The simple implementation is still problem specific - the instructions for how it reads, writes, and moves are hard-coded into the specific Turing Machine. Turing himself showed the possibility of a &lt;a href=&quot;https://en.wikipedia.org/wiki/Universal_Turing_machine&quot;&gt;“Universal Turing Machine”&lt;/a&gt;, which has a single programmed behavior to read the actual instructions from the tape itself. Therefor, the machine did not have to be changed, only the instructions stored in the tape. This is the basis of the “stored program” concept.&lt;/p&gt;
-
-&lt;p&gt;As-described, the actual Turing Machine is &lt;a href=&quot;https://www.youtube.com/watch?v=FTSAiF9AHN4&quot;&gt;not particularly practical to build&lt;/a&gt;. It presumes a mechanical analogy, which fundamentally limits speed and size. Still, the theoretical background was required to provide the constraints on &lt;em&gt;how&lt;/em&gt; to hook up an electronic circuit such that the end result would ultimately solve the problem. Turing effectively provided the input constraints, and pass-fail criteria for the stored-program, general-purpose computer.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/John_von_Neumann&quot;&gt;John Von Neumann&lt;/a&gt; was another other major player in the early development of these stored-program computers. He is usually credited for leading the charge of transforming Turing’s theoretical work into a practical implementation of a general-purpose computer. He was highly involved in the design and development of &lt;a href=&quot;https://en.wikipedia.org/wiki/EDVAC&quot;&gt;EDVAC&lt;/a&gt; and later &lt;a href=&quot;https://en.wikipedia.org/wiki/ENIAC&quot;&gt;ENIAC&lt;/a&gt;, two of the first useful stored-program machines. The design we are about to study is the design he is largely credited for inventing.&lt;/p&gt;
-
-&lt;p&gt;As a side note, both Turing and Von Neumann were crazy smart people, with scientific contributions well beyond the processor architecture we are studying.. Given all they did, its almost a disservice to think of them as the founders of the modern computer, as their influence in the scientific community was much broader.&lt;/p&gt;
-
-&lt;h3 id=&quot;stored-program&quot;&gt;Stored Program&lt;/h3&gt;
-
-&lt;p&gt;The “stored program” is really the key to unlocking programming efficiency and making computers general-purpose. A stored program is exactly what it sounds like. The program, or set of instructions for operation, is stored in a memory bank somewhere.&lt;/p&gt;
-
-&lt;p&gt;This memory bank has to be purpose-designed to be easily manipulated. Data must be stored and retrieved at will, usually without direct human intervention (ie, no technician coming by to move wires).&lt;/p&gt;
-
-&lt;p&gt;A stored program machine has to have the ability to know where these instructions are at, read them, determine their meaning, and carry out that meaning. This adds a bit of complexity to the machine, but it’s a one-time effort to add the complexity. It’s also a bit slower - any stored program machine has to spend at least some of its time just determining what the next instruction is, rather than carrying out “useful” computations. Finally, stored-program will always be less optimized. Since it’s not always possible to know exactly what the next set of instructions will be, it takes away some opportunities to optimize the speed &amp;amp; resource utilization of the algorithm.&lt;/p&gt;
-
-&lt;p&gt;For this reason, there are still many special-purpose computers out there - high speed network interfaces and graphics cards are two common examples. The need for speed outstrips the need for flexibility.&lt;/p&gt;
-
-&lt;p&gt;Still though, the stored-program, general purpose machine is the de-facto standard. Despite the potential limitations, it’s still much better than the alternatives. Just remember how much effort it takes to wire your whole robot up. Now imagine software team had a bug, so the only way to fix it is to re-wire the whole thing. That wouldn’t be fun. Stored program is the way to go.&lt;/p&gt;
-
-&lt;h2 id=&quot;tri-state-buffer&quot;&gt;Tri-State Buffer&lt;/h2&gt;
-
-&lt;p&gt;Before we start digging into how Von Neumann specified digital components should interact with each other, we will want to cover one more digital device. Actually, it’s not &lt;em&gt;technically&lt;/em&gt; digital because sit has three states, but let’s not get too technical.&lt;/p&gt;
-
-&lt;p&gt;The Tri-State buffer introduces a third state to our binary system &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;: “Z”. Z stands for &lt;a href=&quot;https://en.wikipedia.org/wiki/High_impedance&quot;&gt;“High Impedance”&lt;/a&gt;, which (in this context) is an excessively formal way of saying “not plugged in”.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/triState.png&quot; alt=&quot;Tri state buffer symbol&quot; /&gt;&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;CTRL&lt;/th&gt;
-      &lt;th&gt;In&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Out&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;Z&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;Z&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;The device has two inputs - one for data (In) and one for controlling the state of the output (CTRL). When CTRL is 1, the input is passed straight to the output without alteration - basically, a &lt;em&gt;wire&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;When CTRL is 0, the output is forced to the Z “High impedance” state, effectively “unplugging” input from output. Basically, a &lt;em&gt;broken wire&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The usefulness of such a device is that it enables us to physically connect multiple digital device outputs to the same physical wire, and select which one of them is &lt;em&gt;electrically connected&lt;/em&gt; to the wire. This selection ability means we can control which device dictates the binary 1/0 state of the bus.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/triStateUsageSimple.png&quot; alt=&quot;Tri state buffer Usage - C on the bus&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here we see three digital devices with outputs linked. Since the buffer at the output of C has a control signal of 1, we know the final output will be the same as C. It can be said then that Digital Device C is controlling Output.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/triStateUsageSimple2.png&quot; alt=&quot;Tri state buffer Usage - A on the bus&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Similarly, we can setup A to control Output by turning off CTRL for C, and then turning on CTRL for A.&lt;/p&gt;
-
-&lt;p&gt;When you have a setup like this:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;The wire downstream of all of the tri-state buffers is referred to as the “Bus”.&lt;/li&gt;
-  &lt;li&gt;When the tri-state buffer is active, the device is said to &lt;em&gt;assert&lt;/em&gt; its output onto the bus.&lt;/li&gt;
-  &lt;li&gt;When the tri-state buffer is active, the device is &lt;em&gt;active&lt;/em&gt; on the bus.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Obviously this is a 1-bit demonstration, but you can easily put 8, 32, or 64 of these together to make a bus that is one &lt;em&gt;word&lt;/em&gt; wide. The number of bits in a bus is its &lt;em&gt;width&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;As readers may have already noticed - only one device can assert its output onto the bus at the same time. If two devices attempt to assert onto the bus at the same time, and they assert different boolean values, you’ll find yourself with a short circuit and magic smoke in no time. For this reason, the devices have to be coordinated somehow to ensure only one is active on the bus at a time.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-system-data-bus&quot;&gt;The System Data Bus&lt;/h3&gt;
-
-&lt;p&gt;System Data bus is a common set of wires that transfers data from one device to another. A quick taste of what’s to come: at the core of the Von Neumann architecture is a data bus that is used by all components to transfer data back and forth. Each device has a set of tri-state buffers on its output so it can selectively take control of the bus, or allow some other device to assert its data. Additionally, each device has some ability to read the value from the bus, and pull it internally (to do something useful with it, presumably?).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/systemBusBasic.png&quot; alt=&quot;Basic system bus concept&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In this case we’ve chosen to draw a 32-bit wide bus (like most processors up till a few years ago had).&lt;/p&gt;
-
-&lt;h2 id=&quot;register-load-and-store&quot;&gt;Register Load and Store&lt;/h2&gt;
-
-&lt;p&gt;From previous, we know how to “gang” multiple D flip flops together to make what we call a “register”, which can store one &lt;em&gt;word&lt;/em&gt;’s worth of bits.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/register.png&quot; alt=&quot;4 bit register&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Since we started with a 32-bit bus, let’s also keep 32 bits here.&lt;/p&gt;
-
-&lt;p&gt;Along with the system bus, imagine if each device is a slightly modified register. We’ll go ahead and use the little circuit created as part of an alarm clock to put a mux on the input to the register. We’ll also add our tri-state buffer output.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/registerWithWriteEnable.png&quot; alt=&quot;useful Von Neumann architecture register&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We have the addition of the “Write Enable” enable input to choose whether the register is to load a new value from the data input or preserve its previous value. The “Output Enable” signal allows us to choose whether the output is active or not, allowing this register to be placed as a device on a system data bus with other registers.&lt;/p&gt;
-
-&lt;p&gt;We can draw the following symbol for an abstraction of this device:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/32bitRegister.png&quot; alt=&quot;32 bit register&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;These registers will make up the core of data storage on the processor, and will be a key component going forward.&lt;/p&gt;
-
-&lt;p&gt;To demonstrate how they are used, take as an example 3 registers sharing a 32-bit data bus:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/registersOnABus.png&quot; alt=&quot;registers on a bus&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;We now have a system where we can systematically transfer data from one register to another. We have to have something coordinating the write &amp;amp; output enables for all of the registers together - however, assuming you do, it’s actually quite easy to move data around now.&lt;/p&gt;
-
-&lt;p&gt;Say you have a number in register A that you want to move to register C. Before the clock has a rising edge, you simply set register A’s &lt;em&gt;Output Enable&lt;/em&gt; to 1, and register C’s &lt;em&gt;Write Enable&lt;/em&gt; to 1 (and everything else to 0). Then, on the rising edge of the clock, the value from A will end up in register C, while B remains unchanged.&lt;/p&gt;
-
-&lt;p&gt;We will notate this sort of transfer with a shorthand description:&lt;/p&gt;
-
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;A \rightarrow C&lt;/script&gt;
-
-&lt;p&gt;This simply indicates that on this particular clock cycle, we transfer the value from A into C.&lt;/p&gt;
-
-&lt;p&gt;This is often called “Register Transfer Language”, and is the basis of the way we’ll describe how data gets transferred around in a processor. The key to remember is that behind every description of &lt;script type=&quot;math/tex&quot;&gt;A \rightarrow C&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;B \rightarrow A&lt;/script&gt;, it’s just a set of enable bits getting set correctly, such that data flows from from the source to the destination.&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;That’s enough history and context-less introduction. Please promptly check out &lt;a href=&quot;/blog_posts/2019/07/22/vonneumann.html&quot;&gt;Von Neumann Processor Architecture&lt;/a&gt;!&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;For the curious, formal systems of modeling the state of analog electronics in a “digital-useful” way can &lt;a href=&quot;https://en.wikipedia.org/wiki/Logic_level&quot;&gt;go up to having 9 states&lt;/a&gt;. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth</summary></entry></feed>
