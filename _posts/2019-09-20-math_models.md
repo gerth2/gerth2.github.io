@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Control Theory - Mathematical Models of the World "
-date:   2019-09-06 9:30:00 -0500
+date:   2019-09-20 9:30:00 -0500
 categories: blog_posts
 ---
 
@@ -24,15 +24,15 @@ Mathematical models can be built for anything which has properties you are willi
 
 If you've ever spent any time around a robot, you definitely have a _qualitative_ model built up in your head of how lots of parts on the robot work. For example, you probably know that when you apply 12V to a motor, it starts to spin faster. Or if you reverse the wires, it will go the opposite direction. You might also know that if you put two different size gears together and turn one of them, the smaller one will be spinning faster and in the opposite direction of the big one.
 
-These qualitative models are super useful - these are what we engineers use on a day to day basis to help understand the systems they work on, without the need for calculation. If you've ever seen an "old-timer" with a grey beard seemingly just magically come up with an answer to a robot design question, blurting out "That will never work!" or similar, there's a good chance that person was using a mental, qualitative model. Most people refer to these simply as "intuition" - with time working on devices, you start to get a _feel_ for how they react and interact.
+These qualitative models are super useful - these are what we engineers use on a day to day basis to help understand the systems they work on, without the need for calculation. If you've ever seen an "old-timer" with a grey beard just magically come up with an answer to a robot design question, blurting out "That will never work!", there's a good chance that person was using a mental, qualitative model. Most people refer to these simply as "intuition" - with time working on devices, you start to get a _feel_ for how they react and interact.
 
 However, these models have limits. Often, a design may require you to describe _how fast_ a shaft will turn. "Kinda fast" is a good starting point, but isn't sufficient. You've hit the limit of the mental model, and have to go to the next level.
 
 Here's where the mathematical models come in. By doing some analysis, determining some equations, plugging in your operating conditions, and calculating an answer, you get the exact _quantity_ you need for your design.
 
-Here's the key to keep in mind (as our friend George Box reminds us) - _Mathematical Models_ are _more_ accurate than qualatative notions of how things work, but still do not _fully describe_ the physical things we care about. And that's ok, we don't need a full description. Like any good abstraction, a mathematical model will _hide_ the details we don't care about, allowing us to focus on what we _do_. 
+There is a key fact to keep in mind (as our friend George Box reminds us). _Mathematical Models_ are _more_ accurate than qualitative notions of how things work, but still do not _fully describe_ the physical things we care about. And that's ok, we don't need a full description. Like any good abstraction, a mathematical model will _hide_ the details we don't care about, allowing us to focus on what we _do_ care about. 
 
-For a concrete example, you will never see me construct a model for a motor that accounts for the magnetic fields of motors nearby. The "background" field strength is never large enough to make a difference in calculations used for FRC. _Qualitatively_, I can tell you that if the background magnetic field was ever was big enough to matter, we have much more pressing issues on our hands than the couple percent error in our motor torque.
+For a concrete example, you will never see me construct a model for a motor that accounts for the magnetic fields of motors nearby. The "background" field strength is never large enough to make a difference in calculations of any quantity used for FRC. _Qualitatively_, I can tell you that if the background magnetic field was ever was big enough to matter, we have much more pressing issues on our hands than the couple percent error in our motor torque.
 
 More detail is not always what you want. _The right_ amount of detail is always what you want.
 
@@ -49,23 +49,25 @@ The most "academic" approach involves analyzing the system from base physics pri
 
 Whether it's ever explicitly shown, every mathematical model built up from base principles can be boiled back down into a set of axiomatic equations, based in how fundamental particles of the universe are assumed to interact. I'll admit, I've never actually taken the time to take any of my models _all_ the way back to these axioms. But I learned them once in college, and know (based on the techniques involved) I always _could_, if I ever needed to.
 
-Soapbox: This is why, even if you think its stupid, all the foundational math and physics courses you take early on in your engineering education. They lay the important parts of the groundwork that allow you to _prove_ that your work is correct later on. Study them hard, and trust they will be useful. Soapbox over.
+Soapbox: This is why, even if you find them pointless, all the foundational math and physics courses you take early on in your engineering education are very important. They lay the groundwork allowing you to _prove_ that your calculations are correct later on. Study them hard, and trust they will be useful. Soapbox over.
 
 ### Experimental Data
 
-When base principles are hard or time consuming, and you have the ability to run experiments on the device in question, there is another approach available. You can gather data from your device under carefully controlled conditions to inform your model of how the device works through pure observation. You have to run these experiments many times to ensure your results are consistent, and not being influenced by a factor beyond your control. 
+When base principles are hard or time consuming, and you have the ability to run experiments on the device in question, there is another approach available. You can gather data from your device under carefully controlled conditions to inform your model of how the device works. You make your model through pure observation. You have to run these experiments many times to ensure your results are consistent, and not being influenced by a factor beyond your control. 
 
 For complex devices, it is often faster to go the experimental route. However, these experimental models lack the detail about the "internals" of the system. There are few (if any) equations to re-arrange and re-solve for a particular quantity of interest - you're kinda stuck with whatever you measured in the lab. Additionally, lacking details about the internals to the system, it's harder to know how to redesign a particular device if it's not working as you need. Though you've captured the "externally visible" behavior, you're lacking insight about the inside.
 
-Then again, you don't always need that insight. It always depends.
+Then again, you don't always need that level of insight. It always depends.
 
 ### Google & Datasheets
 
-This isn't exactly a "technique", as much as something someone should keep in mind. Engineers are lazy. Engineers don't like doing things twice. If you as an engineer build a new device, you should probably take the time to take some measurements on it, maybe even build up a detailed model of how it should work. 
+This isn't exactly a "technique", as much as something someone should keep in mind. Engineers are lazy. Engineers don't like doing things twice. 
 
-Two bits of good news: Most engineers who are worth their salt will do this. And most of them make it available, in some form. Google is a great way to find out background info on whether someone has already done what you need to do - as long as you know what to search for. [For example, look at the plethora of information available on describing motors!](https://www.google.com/search?q=mathematical+model+of+brushed+DC+motor)
+However, if you as an engineer build a brand new device, you should probably take the time to take some measurements on it, maybe even build up a detailed model of how it should work. 
 
-The _datasheet_ of a device is another standardized (ish) way of describing their quantitative properties. Sometimes a datasheet provides the exact mathematical model for the device. Other times, it provides the key pieces of information required for the model, and lets you build up the model as you need. Again, Google is my number-one tool for finding datasheets for parts we use.
+Two bits of good news: Most engineers who are worth their salt will do experimentation. And, most of them make these experimental results available, in some form. Google is a great way to find out background info on whether someone has already done what you need to do - as long as you know what to search for. [For example, look at the plethora of information available on describing motors!](https://www.google.com/search?q=mathematical+model+of+brushed+DC+motor)
+
+The _datasheet_ of a device is another standardized (ish) way of describing their quantitative properties. Sometimes a datasheet provides the exact mathematical model for the device. Other times, it provides the key pieces of information required for the model, and lets you build up the model as you need. Again, Google is my number-one tool for finding datasheets for parts we use. Manufacturers and suppliers frequently keep them on their websites as well.
 
 ### The Need for Validation
 
@@ -73,7 +75,7 @@ No matter how you build up your model, you will always want to spend some time _
 
 ## Practical Example - Gearbox
 
-Let's start out with a model we can, at least in part, derive ourselves.
+Let's start out with a model we can, for the most part, derive from the ground up.
 
 A set of gears is probably one of the simplest models to create. It aligns well with your intuition, has a beautifully simple formula, and can be easily verified.
 
@@ -98,11 +100,13 @@ _source: etc.usf.edu_
 
 The key thing to keep in mind: [_gears_ are just _spinning levers_](https://www.youtube.com/watch?v=JOLtS4VUcvQ). When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that meshpoint closer to the center of either wheel changes the ratio of motion between the two sides.
 
-This relationship could be derived intuitively. If you assume the teeth are always in mesh, and never slip relative to each other, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate _3 times_ to get a single rotation on the output. 
+This relationship could be derived intuitively. Make the assumption that the teeth are always in mesh, and never slip relative to each other. Given this, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate _3 times_ to get a single rotation on the output. 
 
-One tooth of motion on the input means one tooth of motion on the output. If you don't have this 1 to 1 relationship, it means gears are slipping. Which means that metal is shredding off in your gearboxes. Which is bad news bears. You should fix that before doing any more math.
+The logic flow for this: One tooth of motion on the input means one tooth of motion on the output. If you don't have this 1 to 1 relationship, it means gears are slipping. Which means that metal is shredding off in your gearboxes. Which is bad news bears. You should fix that before attempting any more math.
 
-Another way to describe this relationship is to assume that your teeth are "Ideal" - incredibly small, and super strong. In this case, just model your gears as two differently-sized pancakes.
+A more rigorous way to describe this relationship is to do it from base principles and mathematical manipulations. Let's give that a shot.
+
+To start, assume that your teeth are "Ideal" - incredibly small, and super strong. They never slip relative to each other. We outright ignore any tooth geometry, and just model the gears as two differently-sized pancakes.
 
 ![gears_basic](/assets/gears_basic.png)
 
@@ -110,7 +114,7 @@ The assumption of ideal teeth allows us to say that the _tangential velocity_ (t
 
 $$v(t) = 2 \pi R \omega(t)$$ 
 
-We can write two equations, one for each gear:
+We actually can write that equation twice, once for each gear:
 
 $$v_{in}(t) = 2 \pi R_{in} \omega_{in}(t)$$
 
@@ -136,7 +140,7 @@ Sweet! Almost the same as the equation we started with.
 
 But wait! Our initial equation used number of teeth, not radius. Not to worry! 
 
-Each tooth and gap cycle contributes a certain, constant amount of radius to the circle. Additionally, the per-tooth contributed has to be the same on both gears. This is due to [some of the constraints required by good tooth design](https://www.geartechnology.com/issues/1084x/back-to-basics.pdf). Additionally, we aren't actually free to choose _any_ radius we want. If we resulted in a fractional tooth, well, that wouldn't work (Think about it for a second...).
+Each tooth and gap cycle contributes a certain, constant amount of radius to the circle. Additionally, the per-tooth radius length has to be the same on both gears. This is due to [some of the constraints required by good tooth design](https://www.geartechnology.com/issues/1084x/back-to-basics.pdf). Additionally, we aren't actually free to choose _any_ radius we want. If we resulted in a fractional tooth, well, that wouldn't work (Think about it for a second...).
 
 Therefor, the equation gets quoted not in terms of actual radius, but in terms of tooth count.
 
@@ -146,7 +150,9 @@ Boom Shackalacka.
 
 ### On Torque
 
-Torque is "turney force" - force that acts in a circle. Like when you turn a wrench, and tighten a bolt.
+Torque is a concept that comes up a lot, isn't something that most freshman start off knowing about, and frankly isn't often explained well in physics classes.
+
+I always think of torque is "turney force" - force that acts in a circle. Like when you turn a wrench, and tighten a bolt.
 
 ![Torque from wrench](/assets/torque_on_wrench.png)
 
@@ -174,7 +180,7 @@ The key background info to know: Newton's second law $$F=ma$$ has a _rotational_
 
 ### Background - Newton's Second Law
 
-So, hopefully, you've at least heard the basics of Newton's laws in school. They form the basis of "classical mechanics" - the study of how bodies of mass move around (as long as they aren't too small, or move too fast). The second law is the one most commonly quoted in its equation form, but can be understood qualitatively. Whenever a _force_ $$F$$ is applied to some object with mass $$m$$, it will begin to _change velocity_ at a rate $$a$$. Forces are how we _change_ the velocity of an object.
+So, hopefully, you've at least heard the basics of Newton's laws in school. They form the basis of "classical mechanics" - the study of how bodies of mass move around (as long as they aren't too small, and don't move too fast). The second law is the one most commonly quoted in its equation form, but can be understood qualitatively. Whenever a _force_ $$F$$ is applied to some object with mass $$m$$, it will begin to _change velocity_ at a rate $$a$$. Forces are how we _change_ the velocity of an object.
 
 It should be noted that $$F$$ and $$a$$ are usually _vector_ quantities. That is to say they have both magnitude _and_ a direction. You can push with 5 lbs of force upward or downward, to the left or to the right. The magnitude is always 5 lbs, but the direction changes. To denote this vector quantity, you will often see the equation written as
 
@@ -188,7 +194,9 @@ The key takeaway is that the acceleration happens _in the same direction_ as the
 
 To me, the rotational form of $$F=ma$$ almost feels like cheating. The good news is that it makes it pretty simple, but perhaps not profound. The reason for this is that all three quantities in $$F=ma$$ have [a rotational equivalent we can use](http://hyperphysics.phy-astr.gsu.edu/hbase/mi.html).
 
-If you hadn't noticed yet, $$F$$ and $$a$$ are both quantities that involve _linear_ measurement. This is the nature of vectors - they define _lines_ from one point to another. Acceleration is described _along a certain line_, as is force. Mass tends to just kinda "sit there" - it's a property of the object, with a value, but no real direction or information about location required. As far as Newton's Second law is concerned, all the mass is _modeled_ to be at a single point, where force is applied.[^3] 
+If you hadn't noticed yet, $$F$$ and $$a$$ are both quantities that involve _linear_ measurement. This is the nature of vectors - they define _lines_ from one point to another. Acceleration is described _along a certain line_, as is force. 
+
+On the other hand, mass tends to just kinda "sit there" - it's a property of the object, with a value, but no real direction or information about location required. As far as Newton's Second law is concerned, all the mass is _modeled_ to be at a single point, where force is applied.[^3] 
 
 Newton's Second Law for rotation is exactly the same as the linear version, just swapping out the linear quantities for their rotational equivalent. 
 
@@ -204,11 +212,13 @@ Mass, turns out, is where things get a bit interesting. No longer can we simply 
 
 Just as mass can be thought of as "tendency of an object to resist changes in velocity", the moment of inertia is an object's tendency to resist changes in rotational velocity.
 
-The way I personally like to think about it - think about the energy of tiny subsections of our spinning object. At any given rotational velocity, all will have the same rotational velocity. However, the bits near the center will have less _linear_ velocity. They'll be traveling _slower_, at least in a linear sense. This means they have less energy, and would hurt less if they hit you. If you want to change the speed of a rotating bit of mass, it's easier if the rotating bit is very close to center of rotation, rather than really far away.
+The way I personally like to think about it - consider the energy of tiny subsections of our spinning object. At any given rotational velocity, all will have the same rotational velocity. However, the bits near the center will have less _linear_ velocity. They'll be traveling _slower_, at least in a linear sense. This means they have less energy, and would hurt less if they hit you. If you want to change the speed of a rotating bit of mass, it's easier if the rotating bit is very close to center of rotation, rather than really far away.
+
+![outside goes faster than inside](/assets/outsideFasterThanInside.png)
 
 These moments of inertia still boil down to a single number, and are usually calculated with integrals. Deriving them from scratch is a classic calc-II homework problem. You should definitely try it at some point in your life.
 
-I've already done my time in calc, [so I just look them up online.](https://en.wikipedia.org/wiki/List_of_moments_of_inertia).
+However, I've already passed all my calculus courses, [so I just look them up online.](https://en.wikipedia.org/wiki/List_of_moments_of_inertia).
 
 Since $$M$$ can mean things like "mass" or "mega" or "million", Moment of Inertia is indicated with the letter $$I$$. Even though $$I$$ is also used for electric current. I'm sorry, I didn't make any of this up. There aren't many letters available. Usually it's clear from the context of the equation which is meant...
 
@@ -306,11 +316,11 @@ Though the equivalency expressed above is largely true, I prefer a slightly diff
 
 You've probably also noticed that when you plug in a motor straight to 12V [^4], it will zoom up to some top speed, stop accelerating, and maintain that top speed. Datasheets call this the "unloaded" or "runout" speed. 
 
-But wait! If there's current flowing, that means there should be torque, right? which means there should be acceleration?
+But wait! If there's current flowing, that means there should be torque, right? Which means there should be acceleration?
 
-Torque is the "Motor" part of the "simultaneous motor and generator". The generator half explains the capped speed.
+In a sense, torque is the "Motor" part of the "simultaneous motor and generator". The generator half explains the capped speed.
 
-Whenever you have coils of wire rotating within a magnetic field, a _voltage_ is formed across the coil. Voltages, when present in well-behaved circuits, will increase or decrease current flow. This is how generators work - spin a coil of wire near permanent magnets, and current will flow out.
+Whenever you have coils of wire rotating within a magnetic field, a _voltage_ is formed across the coil. Voltages, when present in well-behaved circuits, will increase or decrease current flow. This is how generators work - spin a coil of wire near permanent magnets,a voltage is created, which enables current to flow out.
 
 Hey wait. Motors have coils of wires spinning in a magnetic field. Yup. There's no trick here - the fact that the wires are spinning within the magnets inside motors causes a new voltage to be _induced_ within the wires, which actually _opposes_ the flow of current. This induced voltage is called "Back EMF", or "Back ElectroMotive Force". 
 
@@ -359,6 +369,8 @@ Alright. It's time to combine our equations together. Here's what we're looking 
 
 The basic process - the applied voltage in the motor produce a torque. This torque is transferred through a set of gears with a particular ratio. This torque acts on the spinning mass, causing an acceleration. Integrating that acceleration over time produces the speed.
 
+### Building the Full Equation
+
 Starting from our most recent equation, we can calculate the output torque of the motor:
 
 $$ \tau_{motor}(t) = \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right) $$
@@ -391,12 +403,13 @@ $$ C_2 = \frac{2K_VK_T}{mr^{2}R} $$
 
 Both of which are just constant values (ie, numbers) related to the physical parameters of the system. Calculate them once, never think about it again. Nothing scary - just numbers.
 
-The scary part to me - we've got a _differential equation_. That's right - remember how acceleration is the derivative of velocity? Our equation really is:
+The scary part to me - we've got a _differential equation_. That's right - remember how acceleration is the derivative of velocity? $$\alpha(t)$$ and $$\omega(t)$$ aren't just two random, independent values. Our equation really is:
 
 $$ \frac{d\omega_{wheel}}{dt} = C_1 V_{in}(t) - C_2 \omega_{wheel}(t) $$
 
 Which, indeed, is an equation which involves a function $$\omega(t)$$ _and its derivative_  $$ \frac{d\omega}{dt} $$. This makes it a differential equation.
 
+### Tackling the Differential Equation 
 The good news - this is a _very special_ type of differential equation - It's called a "First Order, Ordinary Differential Equation" which, as it turns out, [has a well defined analytical solution](https://en.wikipedia.org/wiki/Ordinary_differential_equation). Any college engineering program worth its salt will spend at least one semester teaching you about this.
 
 There's a different way I prefer to introduce high schoolers to how to solve this, though. Let's cheat a bit, and pretend we're software. Software isn't looking at the speed at _every_ time $$t$$, in some continuous fashion. Instead, it is _sampling_ values at regular intervals. The length of the interval is called the "sample time", indicated by $$T_s$$. It is usually around 20ms on the roboRIO, or 1ms on a talon SRX.
@@ -460,7 +473,7 @@ I feel as though we've come a very long way, but we also still have quite a ways
 
 
 
-[^1]: For the incorrigibly questioning reader, this equation can be derived from the definition of a [radian](https://en.wikipedia.org/wiki/Radian), and the fact that, under the right conditions, you can take a [derivative of each side of an equation without changing its truthfulness](https://math.stackexchange.com/questions/407822/differentiating-both-sides-of-an-equation).
+[^1]: For the incorrigibly questioning reader, this equation can be derived from the definition of a [radian](https://en.wikipedia.org/wiki/Radian), and the fact that, under the right conditions, you can take a [derivative of each side of an equality without changing its truthfulness](https://math.stackexchange.com/questions/407822/differentiating-both-sides-of-an-equation).
 
 [^2]: If we were to define a proper reference frame, assign coordinates to the centers of each gear, calculate the coordinate of the meshpoint, and actually make some free body diagrams, the negative sign would result as well. Trust me. But even without the formality, it should just make sense.
 

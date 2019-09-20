@@ -167,6 +167,8 @@ After that, we'll be able to move on to step 2, in which we _design_ the content
 
 We'll finish off with some thoughts on techniques for validating behavior on real hardware, and troubleshooting when it doesn't work. Stay tuned!
 
+Ready to keep going? Check out [Mathematical Models!](/blog_posts/2019/09/20/math_models.html)
+
 ## Closing Note - On Other Resources
 
 With any luck, I've at least peaked your interest in this topic. I do hope you will carry on in this sequence of posts. However, note, this will be an overview, with a focus on getting a ground up explanation of why certain FRC-relevant concepts work the way they do.
