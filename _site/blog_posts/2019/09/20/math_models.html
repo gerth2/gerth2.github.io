@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Control Theory - Mathematical Models of the World | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Control Theory - Mathematical Models of the World" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="All models are wrong, but some are useful. - George Box" />
+<meta property="og:description" content="All models are wrong, but some are useful. - George Box" />
+<link rel="canonical" href="/blog_posts/2019/09/20/math_models.html" />
+<meta property="og:url" content="/blog_posts/2019/09/20/math_models.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-09-20T09:30:00-05:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/09/20/math_models.html"},"url":"/blog_posts/2019/09/20/math_models.html","description":"All models are wrong, but some are useful. - George Box","headline":"Control Theory - Mathematical Models of the World","@type":"BlogPosting","dateModified":"2019-09-20T09:30:00-05:00","datePublished":"2019-09-20T09:30:00-05:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
+<body>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Control Theory - Mathematical Models of the World </h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-09-20T09:30:00-05:00" itemprop="datePublished">Sep 20, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><em>All models are wrong, but some are useful. - <a href="https://en.wikipedia.org/wiki/George_E._P._Box">George Box</a></em></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This is Part 2 in our series on Control Theory. In this installation, we’ll look at how we describe the interior of the blocks in our block diagram, using math equations. By doing this, we will have a representation of functionality we can analyze, manipulate, and write software with.</p>
+
+<h2 id="what-is-a-model">What is a Model?</h2>
+
+<p>We briefly alluded to the concept of a <em>model</em> in <a href="/blog_posts/2019/06/01/math_primer2.html">Math Primer, part 2</a>. A <em>mathematical model</em> is one particular form of an <a href="/blog_posts/2019/05/26/abstraction.html">Abstraction</a>, where we create <em>math equations</em> to describe the behavior of a particular thing in the “real world”.</p>
+
+<p><img src="/assets/modeling.png" alt="models_and_argos" /></p>
+
+<p>Mathematical models can be built for anything which has properties you are willing to describe using numbers. This includes more conceptual things like a country’s economy or a stock market, but also physical devices (like motors or gearboxes or robots). We’ll be focusing on the latter.</p>
+
+<p>If you’ve ever spent any time around a robot, you definitely have a <em>qualitative</em> model built up in your head of how lots of parts on the robot work. For example, you probably know that when you apply 12V to a motor, it starts to spin faster. Or if you reverse the wires, it will go the opposite direction. You might also know that if you put two different size gears together and turn one of them, the smaller one will be spinning faster and in the opposite direction of the big one.</p>
+
+<p>These qualitative models are super useful - these are what we engineers use on a day to day basis to help understand the systems they work on, without the need for calculation. If you’ve ever seen an “old-timer” with a grey beard just magically come up with an answer to a robot design question, blurting out “That will never work!”, there’s a good chance that person was using a mental, qualitative model. Most people refer to these simply as “intuition” - with time working on devices, you start to get a <em>feel</em> for how they react and interact.</p>
+
+<p>However, these models have limits. Often, a design may require you to describe <em>how fast</em> a shaft will turn. “Kinda fast” is a good starting point, but isn’t sufficient. You’ve hit the limit of the mental model, and have to go to the next level.</p>
+
+<p>Here’s where the mathematical models come in. By doing some analysis, determining some equations, plugging in your operating conditions, and calculating an answer, you get the exact <em>quantity</em> you need for your design.</p>
+
+<p>There is a key fact to keep in mind (as our friend George Box reminds us). <em>Mathematical Models</em> are <em>more</em> accurate than qualitative notions of how things work, but still do not <em>fully describe</em> the physical things we care about. And that’s ok, we don’t need a full description. Like any good abstraction, a mathematical model will <em>hide</em> the details we don’t care about, allowing us to focus on what we <em>do</em> care about.</p>
+
+<p>For a concrete example, you will never see me construct a model for a motor that accounts for the magnetic fields of motors nearby. The “background” field strength is never large enough to make a difference in calculations of any quantity used for FRC. <em>Qualitatively</em>, I can tell you that if the background magnetic field was ever was big enough to matter, we have much more pressing issues on our hands than the couple percent error in our motor torque.</p>
+
+<p>More detail is not always what you want. <em>The right</em> amount of detail is always what you want.</p>
+
+<p>In this post, we’re going to briefly discuss how some models are built up, and quickly dive into a number of examples that will be useful for FRC.</p>
+
+<h2 id="techniques-for-building-up-a-model">Techniques for Building up a Model</h2>
+
+<h3 id="first-principles">First Principles</h3>
+
+<p>When we set out to create a model of a physical system, there are a couple different approaches.</p>
+
+<p>The most “academic” approach involves analyzing the system from base physics principles. For FRC, <a href="https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion"><script type="math/tex">F=ma</script></a>, <a href="https://en.wikipedia.org/wiki/Maxwell%27s_equations">Maxwell’s equations</a>, the <a href="https://en.wikipedia.org/wiki/Ideal_gas_law">Ideal Gas Law</a> and friends come together with techniques like <a href="https://en.wikipedia.org/wiki/Free_body_diagram">Free Body Diagrams</a>, <a href="https://en.wikipedia.org/wiki/Differential_equation">Differential Equations</a>, and <a href="https://en.wikipedia.org/wiki/Linear_algebra">Linear Algebra</a> to create a cohesive set of equations, accurately describing the quantities of interest. Or, at least, what they <em>in theory</em> should be.</p>
+
+<p>Whether it’s ever explicitly shown, every mathematical model built up from base principles can be boiled back down into a set of axiomatic equations, based in how fundamental particles of the universe are assumed to interact. I’ll admit, I’ve never actually taken the time to take any of my models <em>all</em> the way back to these axioms. But I learned them once in college, and know (based on the techniques involved) I always <em>could</em>, if I ever needed to.</p>
+
+<p>Soapbox: This is why, even if you find them pointless, all the foundational math and physics courses you take early on in your engineering education are very important. They lay the groundwork allowing you to <em>prove</em> that your calculations are correct later on. Study them hard, and trust they will be useful. Soapbox over.</p>
+
+<h3 id="experimental-data">Experimental Data</h3>
+
+<p>When base principles are hard or time consuming, and you have the ability to run experiments on the device in question, there is another approach available. You can gather data from your device under carefully controlled conditions to inform your model of how the device works. You make your model through pure observation. You have to run these experiments many times to ensure your results are consistent, and not being influenced by a factor beyond your control.</p>
+
+<p>For complex devices, it is often faster to go the experimental route. However, these experimental models lack the detail about the “internals” of the system. There are few (if any) equations to re-arrange and re-solve for a particular quantity of interest - you’re kinda stuck with whatever you measured in the lab. Additionally, lacking details about the internals to the system, it’s harder to know how to redesign a particular device if it’s not working as you need. Though you’ve captured the “externally visible” behavior, you’re lacking insight about the inside.</p>
+
+<p>Then again, you don’t always need that level of insight. It always depends.</p>
+
+<h3 id="google--datasheets">Google &amp; Datasheets</h3>
+
+<p>This isn’t exactly a “technique”, as much as something someone should keep in mind. Engineers are lazy. Engineers don’t like doing things twice.</p>
+
+<p>However, if you as an engineer build a brand new device, you should probably take the time to take some measurements on it, maybe even build up a detailed model of how it should work.</p>
+
+<p>Two bits of good news: Most engineers who are worth their salt will do experimentation. And, most of them make these experimental results available, in some form. Google is a great way to find out background info on whether someone has already done what you need to do - as long as you know what to search for. <a href="https://www.google.com/search?q=mathematical+model+of+brushed+DC+motor">For example, look at the plethora of information available on describing motors!</a></p>
+
+<p>The <em>datasheet</em> of a device is another standardized (ish) way of describing their quantitative properties. Sometimes a datasheet provides the exact mathematical model for the device. Other times, it provides the key pieces of information required for the model, and lets you build up the model as you need. Again, Google is my number-one tool for finding datasheets for parts we use. Manufacturers and suppliers frequently keep them on their websites as well.</p>
+
+<h3 id="the-need-for-validation">The Need for Validation</h3>
+
+<p>No matter how you build up your model, you will always want to spend some time <em>validating</em> that it is producing meaningful results. Sometimes this means running experiments on the actual device. Other times, it means running your new model in some form of <em>simulation</em> - getting it into specific operating criteria, and checking results match some expected value.</p>
+
+<h2 id="practical-example---gearbox">Practical Example - Gearbox</h2>
+
+<p>Let’s start out with a model we can, for the most part, derive from the ground up.</p>
+
+<p>A set of gears is probably one of the simplest models to create. It aligns well with your intuition, has a beautifully simple formula, and can be easily verified.</p>
+
+<p>When designing gearboxes, you usually want to know about speed. Given an input speed (which you can control), you want to know what the output speed will be. Since many of you probably already know the answer, let’s just get that over with:</p>
+
+<script type="math/tex; mode=display">\omega_{out}(t) = -\frac{N_{in}}{N_{out}} \omega_{in}(t)</script>
+
+<p>Where:</p>
+
+<ul>
+  <li><script type="math/tex">\omega_{in}(t)</script> is the rotational speed of the input shaft at time <script type="math/tex">t</script></li>
+  <li><script type="math/tex">N_{out}</script> is the number of teeth on the output gear</li>
+  <li><script type="math/tex">N_{in}</script> is the number of teeth on the input gear</li>
+  <li><script type="math/tex">\omega_{out}(t)</script> is the rotational speed of the input shaft at time <script type="math/tex">t</script></li>
+</ul>
+
+<p>That’s it - it’s just the ratio of the teeth!</p>
+
+<h3 id="spinning-levers">Spinning Levers</h3>
+
+<p><img src="/assets/gears_art.png" alt="Gear Artwork" /></p>
+
+<p><em>source: etc.usf.edu</em></p>
+
+<p>The key thing to keep in mind: <a href="https://www.youtube.com/watch?v=JOLtS4VUcvQ"><em>gears</em> are just <em>spinning levers</em></a>. When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that meshpoint closer to the center of either wheel changes the ratio of motion between the two sides.</p>
+
+<p>This relationship could be derived intuitively. Make the assumption that the teeth are always in mesh, and never slip relative to each other. Given this, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate <em>3 times</em> to get a single rotation on the output.</p>
+
+<p>The logic flow for this: One tooth of motion on the input means one tooth of motion on the output. If you don’t have this 1 to 1 relationship, it means gears are slipping. Which means that metal is shredding off in your gearboxes. Which is bad news bears. You should fix that before attempting any more math.</p>
+
+<p>A more rigorous way to describe this relationship is to do it from base principles and mathematical manipulations. Let’s give that a shot.</p>
+
+<p>To start, assume that your teeth are “Ideal” - incredibly small, and super strong. They never slip relative to each other. We outright ignore any tooth geometry, and just model the gears as two differently-sized pancakes.</p>
+
+<p><img src="/assets/gears_basic.png" alt="gears_basic" /></p>
+
+<p>The assumption of ideal teeth allows us to say that the <em>tangential velocity</em> (the linear speed of the outside edge of the pancake) must be the same at their mesh point. From geometry, I’ll give the equation that relates the <em>rotational velocity</em> <script type="math/tex">\omega(t)</script> to the <em>tangential velocity</em> <script type="math/tex">v(t)</script>. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup></p>
+
+<script type="math/tex; mode=display">v(t) = 2 \pi R \omega(t)</script>
+
+<p>We actually can write that equation twice, once for each gear:</p>
+
+<script type="math/tex; mode=display">v_{in}(t) = 2 \pi R_{in} \omega_{in}(t)</script>
+
+<script type="math/tex; mode=display">v_{out}(t) = 2 \pi R_{out} \omega_{out}(t)</script>
+
+<p>Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one centerpoint, but the right of the other, we need to introduce a negative sign as well. <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+
+<script type="math/tex; mode=display">v_{in}(t) = -v_{out}(t)</script>
+
+<script type="math/tex; mode=display">2 \pi R_{in} \omega_{in}(t) = -2 \pi R_{out} \omega_{out}(t)</script>
+
+<p>Canceling terms, we find ourselves at:</p>
+
+<script type="math/tex; mode=display">R_{in} \omega_{in}(t) = -R_{out} \omega_{out}(t)</script>
+
+<p>And solving for the output speed, finally,</p>
+
+<script type="math/tex; mode=display">\omega_{out}(t) = -\frac{R_{in}}{R_{out}} \omega_{in}(t)</script>
+
+<p>Sweet! Almost the same as the equation we started with.</p>
+
+<h3 id="radius-to-teeth">Radius to Teeth</h3>
+
+<p>But wait! Our initial equation used number of teeth, not radius. Not to worry!</p>
+
+<p>Each tooth and gap cycle contributes a certain, constant amount of radius to the circle. Additionally, the per-tooth radius length has to be the same on both gears. This is due to <a href="https://www.geartechnology.com/issues/1084x/back-to-basics.pdf">some of the constraints required by good tooth design</a>. Additionally, we aren’t actually free to choose <em>any</em> radius we want. If we resulted in a fractional tooth, well, that wouldn’t work (Think about it for a second…).</p>
+
+<p>Therefor, the equation gets quoted not in terms of actual radius, but in terms of tooth count.</p>
+
+<script type="math/tex; mode=display">\omega_{out}(t) = -\frac{N_{in}}{N_{out}} \omega_{in}(t)</script>
+
+<p>Boom Shackalacka.</p>
+
+<h3 id="on-torque">On Torque</h3>
+
+<p>Torque is a concept that comes up a lot, isn’t something that most freshman start off knowing about, and frankly isn’t often explained well in physics classes.</p>
+
+<p>I always think of torque is “turney force” - force that acts in a circle. Like when you turn a wrench, and tighten a bolt.</p>
+
+<p><img src="/assets/torque_on_wrench.png" alt="Torque from wrench" /></p>
+
+<p><em>source: scienceres-edcp-educ.sites.olt.ubc.ca</em></p>
+
+<p>Gears transmit torque from one to the other. We won’t get too much into the math, but it’s not hard to derive using the same lever-like models we eluded to before.</p>
+
+<p>Torque in a gearbox is just a ratio, like speed, except inverted:</p>
+
+<script type="math/tex; mode=display">\tau_out(t) = -\frac{N_{out}}{N_{in}} \tau_in(t)</script>
+
+<p>No need to worry about this too much now, but we’ll come back to it later on.</p>
+
+<h2 id="practical-example---wheel-with-mass">Practical Example - Wheel with Mass</h2>
+
+<p>Here, we’ll start to introduce the glory of using Google to find answers. The key is knowing what to look for.</p>
+
+<p>We will attempt to create a model of a rotating wheel, such as the ones used to launch gamepieces through holes or into hoppers.</p>
+
+<p><img src="/assets/shooter_wheel_1640.png" alt="shooter wheel" /></p>
+
+<p><em>source: Team 1640</em></p>
+
+<p>The key background info to know: Newton’s second law <script type="math/tex">F=ma</script> has a <em>rotational</em> form.</p>
+
+<h3 id="background---newtons-second-law">Background - Newton’s Second Law</h3>
+
+<p>So, hopefully, you’ve at least heard the basics of Newton’s laws in school. They form the basis of “classical mechanics” - the study of how bodies of mass move around (as long as they aren’t too small, and don’t move too fast). The second law is the one most commonly quoted in its equation form, but can be understood qualitatively. Whenever a <em>force</em> <script type="math/tex">F</script> is applied to some object with mass <script type="math/tex">m</script>, it will begin to <em>change velocity</em> at a rate <script type="math/tex">a</script>. Forces are how we <em>change</em> the velocity of an object.</p>
+
+<p>It should be noted that <script type="math/tex">F</script> and <script type="math/tex">a</script> are usually <em>vector</em> quantities. That is to say they have both magnitude <em>and</em> a direction. You can push with 5 lbs of force upward or downward, to the left or to the right. The magnitude is always 5 lbs, but the direction changes. To denote this vector quantity, you will often see the equation written as</p>
+
+<script type="math/tex; mode=display">\vec{F} = m\vec{a}</script>
+
+<p>The cute little arrows over <script type="math/tex">\vec{F}</script> and <script type="math/tex">\vec{a}</script> indicate they have a direction.</p>
+
+<p>The key takeaway is that the acceleration happens <em>in the same direction</em> as the force. If an object is still, and you push on it in a certain direction, it begins to accelerate (ie, go faster) <em>in that direction</em>. If an object is already moving, and you push against its motion, it <em>slows down</em>, since the force opposes the direction of motion - effectively a <em>negative</em> acceleration.</p>
+
+<h3 id="newtons-second-in-rotational">Newton’s Second in Rotational</h3>
+
+<p>To me, the rotational form of <script type="math/tex">F=ma</script> almost feels like cheating. The good news is that it makes it pretty simple, but perhaps not profound. The reason for this is that all three quantities in <script type="math/tex">F=ma</script> have <a href="http://hyperphysics.phy-astr.gsu.edu/hbase/mi.html">a rotational equivalent we can use</a>.</p>
+
+<p>If you hadn’t noticed yet, <script type="math/tex">F</script> and <script type="math/tex">a</script> are both quantities that involve <em>linear</em> measurement. This is the nature of vectors - they define <em>lines</em> from one point to another. Acceleration is described <em>along a certain line</em>, as is force.</p>
+
+<p>On the other hand, mass tends to just kinda “sit there” - it’s a property of the object, with a value, but no real direction or information about location required. As far as Newton’s Second law is concerned, all the mass is <em>modeled</em> to be at a single point, where force is applied.<sup id="fnref:3"><a href="#fn:3" class="footnote">3</a></sup></p>
+
+<p>Newton’s Second Law for rotation is exactly the same as the linear version, just swapping out the linear quantities for their rotational equivalent.</p>
+
+<p>Acceleration is easy to re-define - it’s just called <em>rotational acceleration</em>. Rather than measuring the rate of change of linear velocity (in m/s, per sec, for example), it measures the rate of change of rotational velocity (in deg/sec, per sec, for example). Think of it as the rate at which a rotating wheel speeds up or slows down. If you want your wheel to rotate faster, that means you want its <em>rotational acceleration</em> to be positive.</p>
+
+<p>Rotational Acceleration is denoted with the Greek letter alpha - <script type="math/tex">\alpha</script></p>
+
+<p>Force also has a rotational analog. <em>Torque</em> is simply rotational force. Torque is defined as a force applied at a distance to some center of rotation, tending to cause rotational motion. Whenever you turn a wrench or a screwdriver, you are applying a <em>torque</em> to the bolt or screw, which causes it to turn. Whenever your car’s engine revs up while you’re in gear, a <em>torque</em> is applied to the back wheels (often erroneously referred to as “torque to the ground”). This in turn causes the wheels to turn, and (hopefully) the car to move.</p>
+
+<p>Torque is denoted with the Greek letter tau - <script type="math/tex">\tau</script>.</p>
+
+<p>Mass, turns out, is where things get a bit interesting. No longer can we simply account for the total <em>amount</em> of stuff in the moving object, we have to account for <em>where it is at</em> relative to the center of rotation. This combined notion of quantity and position can still be calculated down to a single number, called the <em>moment of inertia</em>.</p>
+
+<p>Just as mass can be thought of as “tendency of an object to resist changes in velocity”, the moment of inertia is an object’s tendency to resist changes in rotational velocity.</p>
+
+<p>The way I personally like to think about it - consider the energy of tiny subsections of our spinning object. At any given rotational velocity, all will have the same rotational velocity. However, the bits near the center will have less <em>linear</em> velocity. They’ll be traveling <em>slower</em>, at least in a linear sense. This means they have less energy, and would hurt less if they hit you. If you want to change the speed of a rotating bit of mass, it’s easier if the rotating bit is very close to center of rotation, rather than really far away.</p>
+
+<p><img src="/assets/outsideFasterThanInside.png" alt="outside goes faster than inside" /></p>
+
+<p>These moments of inertia still boil down to a single number, and are usually calculated with integrals. Deriving them from scratch is a classic calc-II homework problem. You should definitely try it at some point in your life.</p>
+
+<p>However, I’ve already passed all my calculus courses, <a href="https://en.wikipedia.org/wiki/List_of_moments_of_inertia">so I just look them up online.</a>.</p>
+
+<p>Since <script type="math/tex">M</script> can mean things like “mass” or “mega” or “million”, Moment of Inertia is indicated with the letter <script type="math/tex">I</script>. Even though <script type="math/tex">I</script> is also used for electric current. I’m sorry, I didn’t make any of this up. There aren’t many letters available. Usually it’s clear from the context of the equation which is meant…</p>
+
+<h3 id="assembling-the-equations">Assembling the Equations</h3>
+
+<p>Ok, starting with Moment of Inertia…</p>
+
+<p>Partway down the table, you’ll see an equation for “Solid cylinder of radius r”.</p>
+
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Moment_of_inertia_solid_cylinder.svg/1920px-Moment_of_inertia_solid_cylinder.svg.png" alt="Solid Cylinder" />
+<em>source: wikipedia.org</em></p>
+
+<p>Recalling that we’re attempting to create a model of a shooter wheel, this should look pretty familiar. Think wheel on a stick, rotated around the axis of the cylinder-shape (Z axis in the wikipedia picture). Wikipedia tells us the equation to use is:</p>
+
+<script type="math/tex; mode=display">I = \frac{1}{2}mr^{2}</script>
+
+<p>To quickly break this down:</p>
+
+<p><script type="math/tex">m</script> is the mass of the whole shooter wheel
+<script type="math/tex">r</script> is its radius</p>
+
+<p>We assume that the mass is reasonably evenly distributed throughout the whole radius. For <a href="http://www.wcproducts.net/colson-wheels">something like a colson wheel</a>, this is likely true. If you have <a href="https://www.andymark.com/products/8-in-plaction-wheel-with-blue-nitrile-tread?via=Z2lkOi8vYW5keW1hcmsvV29ya2FyZWE6OkNhdGFsb2c6OkNhdGVnb3J5LzVhZjhlMjQ4YmM2ZjZkNWUzNmYyMzkzMQ">something more like a Plaction Wheel</a>, you might want to pick a different equation.</p>
+
+<p>Now, we can substitute all the variables into Newton’s Second Law for Rotational Motion:</p>
+
+<script type="math/tex; mode=display">\tau(t) = I \alpha(t)</script>
+
+<script type="math/tex; mode=display">\tau(t) = \left( \frac{1}{2}mr^{2} \right) \alpha(t)</script>
+
+<script type="math/tex; mode=display">\alpha(t) =  \frac{2}{mr^{2}} \tau(t)</script>
+
+<p>And there we have it! A simple description of the motion of our shooter wheel, given a certain <em>torque</em> (or “turney force”) at its input shaft! This is the equation we’ll need later on.</p>
+
+<p>As a quick detour, let’s throw in a bit of calculus. We can describe the wheel’s velocity over time as an integral.</p>
+
+<p>In general, we know that velocity <script type="math/tex">\omega(t)</script> is the <em>integral</em> of acceleration <script type="math/tex">\alpha(t)</script>:</p>
+
+<script type="math/tex; mode=display">\omega(t) = \int \alpha(t)</script>
+
+<p>Applying more proper calculus and our previous equation:</p>
+
+<script type="math/tex; mode=display">\omega(t) = \int_{0}^{t} \frac{2}{mr^{2}} \tau(x) dx + \omega(0)</script>
+
+<p>In general, we can assume <script type="math/tex">\omega(0)</script> is in fact 0, since our robot starts the match from a disabled state.</p>
+
+<script type="math/tex; mode=display">\omega(t) = \int_{0}^{t} \frac{2}{mr^{2}} \tau(x) dx</script>
+
+<p>What this equation shows is is that to know the velocity of our shooter wheel, all we have to do is <em>add up</em> all the previous torque inputs we ever gave to it, multiply each measurement by the moment of inertia (just a constant number, tied to the wheel’s construction), and Bob’s your uncle! We’ve come up with an equation that calculates the shooter speed over time, as a function of how much torque you apply to it.</p>
+
+<p>Ok, detour over. Hope you enjoyed Calculusland!</p>
+
+<h2 id="practical-example---brushed-dc-motor">Practical Example - Brushed DC Motor</h2>
+
+<h3 id="basic-description">Basic Description</h3>
+
+<p>A motor, fundamentally, is a device which converts <em>electrical power</em> into <em>mechanical power</em>. Specifically for our analysis, we’ll look at it as a device which <em>takes an input voltage and current</em> and produces a <em>mechanical torque</em> on its output shaft. Presumably this is attached to something which maybe fights against the rotation, but ultimately rotates. This speed of the input shaft “feeds bacK” to the motor as another input.</p>
+
+<p>The key thing to realize - the motor doesn’t directly output rotation. It outputs a torque - a force on something attached to it. Rotation only occurs if the thing attached to it starts to rotate in response to that torque.</p>
+
+<p>We’ll be analyzing <a href="https://en.wikipedia.org/wiki/Brushed_DC_electric_motor"><em>brushed DC Motors</em></a>. This covers CIM motors, 775 pro, and pretty much every FRC motor used up till NEO’s in 2019 (sorry Rev). Though they come in different sizes, shapes, weights, and powers, they all fundamentally act the same way:</p>
+
+<p>Electric current flows through <em>coils of wire</em>, <a href="https://physics.stackexchange.com/questions/187512/how-does-electricity-produce-magnetisim">generating a magnetic field</a>. Trust me, it happens. The coils are mounted on a rotating shaft, aligned within a set of <a href="https://en.wikipedia.org/wiki/Magnet"><em>permanent magnets</em></a>, so that the generated magnetic field from the coils opposes that of the permanent magnets. This opposing field causes a force on the rotating shaft, which is transferred to the motor’s output shaft. A special electromechanical device called a <em>commutator</em> ensures that the coil’s magnetic field always opposes the magnet’s fields, throughout the whole range of rotation.</p>
+
+<p><img src="https://www.mouser.com/images/microsites/BrushedMotors-Fig1.jpg" alt="motor schematic" /></p>
+
+<p><em>source: mouser.com</em></p>
+
+<h3 id="torque">Torque</h3>
+
+<p>The first key takeaway from our description: a flowing electric current is the <em>cause</em> of the force on the output shaft. This leads to the first part of the equation for motors:</p>
+
+<script type="math/tex; mode=display">\tau(t) = K_T I(t)</script>
+
+<p>Where:</p>
+
+<p><script type="math/tex">I(t)</script> is the current flowing through the motor at time <script type="math/tex">t</script></p>
+
+<p><script type="math/tex">K_T</script> is a constant value, called the “Torque Constant”.</p>
+
+<p><script type="math/tex">\tau(t)</script> is the torque at the output shaft of the motor at time <script type="math/tex">t</script></p>
+
+<p>The Torque Constant <script type="math/tex">K_T</script> is something you could try to calculate from the geometry of the motor, the properties of the coils of wire, the strength and shape of the magnets, and a whole slew of other properties. If you were to do all the physics and math you’d be able to generate the relationship seen above, with a very complex and inaccurate version of <script type="math/tex">K_T</script>. For most motors, it is determined experimentally.</p>
+
+<p>Most motors should list it in their datasheet, at least indirectly. If you don’t see anything labeled <script type="math/tex">K_T</script> or “Torque constant”, you can also just quickly calculate it from the <em>stall conditions</em> of the motor. Stall conditions provide one particular <script type="math/tex">\tau(t)</script> and <script type="math/tex">I(t)</script> pair to use:</p>
+
+<script type="math/tex; mode=display">K_T = \frac{\tau(t)}{I(t)} = \frac{\tau_{stall}}{I_{stall}}</script>
+
+<h3 id="speed">Speed</h3>
+
+<p>The shaft speed impact is a bit harder to think through, but not too bad.</p>
+
+<p>You may have heard at some point in your life that all motors can act as generators, and all generators can act as motors. Even if you haven’t heard this, maybe you’ve seen your robot electronics power on when you push your robot along the ground, even without a battery in it? You’re not going crazy, your motors are acting as generators and powering the system!</p>
+
+<p>Though the equivalency expressed above is largely true, I prefer a slightly different twist: <em>every motor is simultaneously a motor and generator</em>. This simultaneous existence should make sense - there’s nothing that physically changes about a motor when you rotate its shaft, versus when you power it electrically. It doesn’t magically know when it needs to switch modes. Both modes must be present at all times.</p>
+
+<p>You’ve probably also noticed that when you plug in a motor straight to 12V <sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>, it will zoom up to some top speed, stop accelerating, and maintain that top speed. Datasheets call this the “unloaded” or “runout” speed.</p>
+
+<p>But wait! If there’s current flowing, that means there should be torque, right? Which means there should be acceleration?</p>
+
+<p>In a sense, torque is the “Motor” part of the “simultaneous motor and generator”. The generator half explains the capped speed.</p>
+
+<p>Whenever you have coils of wire rotating within a magnetic field, a <em>voltage</em> is formed across the coil. Voltages, when present in well-behaved circuits, will increase or decrease current flow. This is how generators work - spin a coil of wire near permanent magnets,a voltage is created, which enables current to flow out.</p>
+
+<p>Hey wait. Motors have coils of wires spinning in a magnetic field. Yup. There’s no trick here - the fact that the wires are spinning within the magnets inside motors causes a new voltage to be <em>induced</em> within the wires, which actually <em>opposes</em> the flow of current. This induced voltage is called “Back EMF”, or “Back ElectroMotive Force”.</p>
+
+<p>Very similarly to torque (as you would hopefully expect from all the symmetry we’ve seen so far), this back EMF is linearly related to speed:</p>
+
+<script type="math/tex; mode=display">v_{emf}(t) = K_V \omega(t)</script>
+
+<p>This back-force happens in the electrical space, so it’s good for us to look at an electrical model of the motor:</p>
+
+<p><img src="/assets/motorModel.png" alt="Motor Model" /></p>
+
+<p>On the left side, we see the input wires to the motor, along with two measurements you may already be familiar with. One is the <em>applied voltage</em> <script type="math/tex">V_{in}(t)</script> - this is the command you give to a motor controller, and the average voltage it outputs to the motor. Usually this will be about +12V for full forward, -12V for full reverse, and 0V at rest (though the numbers usually change with battery charge level). The other quantity is the <em>current</em> flowing through the motor, <script type="math/tex">I(t)</script>. This might be measured by a motor controller (if you have a nice Talon SRX or similar), or measured by the PDB itself. Either way, you usually don’t directly control it, it’s just a property of the current state of the whole system.</p>
+
+<p>You’ll notice two things to the right, on the “inside” of the motor. One is a resistor - this electrical component <em>models</em> the resistance of the long coils of wire inside the motor. It’s not literally a resistor component inside the motor, just the inherent resistance from having lots of wire. Some models also include an <em>inductor</em> to model the “cross-talk” between the coils, but I’ve avoided it to make the calculations simpler. Often, it’s small enough you can forget about it.</p>
+
+<p>Finally, the voltage source to the far right indicates the <em>back EMF</em>, which we denote with <script type="math/tex">V_{emf}(t)</script>. Even though the physical mechanism looks very different, the electrical effect is the same as the voltage provided by your motor controller.</p>
+
+<p>When analyzing a circuit diagram like the one above, we use <a href="https://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws">Kirchhoff’s Circuit Laws</a> to construct equations. The laws give us a few facts:</p>
+
+<ul>
+  <li>The current through every device must be <em>the same</em>.</li>
+  <li>The sum of voltages around the (one and only) loop must equal zero.</li>
+</ul>
+
+<p>Since <script type="math/tex">V_{in}</script> is oriented backward relative to the +/- direction defined for the other components, it gets a minus sign.</p>
+
+<script type="math/tex; mode=display">0 = -V_{in}(t) + V_R(t) + V_{emf}(t)</script>
+
+<script type="math/tex; mode=display">V_{in}(t) = V_R(t) + V_{emf}(t)</script>
+
+<p>If you recall <em>Ohm’s Law</em> from the <a href="/blog_posts/2019/06/05/electronics_basics.html">electronics introduction</a>, you’ll see we can re-write the voltage across the resistor (<script type="math/tex">V_R</script>) in terms of the motor current and the resistance. Additionally, as shown before, the back EMF voltage can be calculated from the speed of the motor.</p>
+
+<script type="math/tex; mode=display">V_{in}(t) = R I(t) + K_V \omega(t)</script>
+
+<p>Solving for current:</p>
+
+<script type="math/tex; mode=display">I(t) = \frac{1}{R} \left( V_{in}(t)  - K_V \omega(t) \right)</script>
+
+<p>Finally, we can use our current/torque relationship to solve for torque:</p>
+
+<script type="math/tex; mode=display">\frac{1}{K_T} \tau(t)  = \frac{1}{R} \left( V_{in}(t)  - K_V \omega(t) \right)</script>
+
+<script type="math/tex; mode=display">\tau(t) = \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega(t) \right)</script>
+
+<h2 id="practical-example---wheeled-shooter-system">Practical Example - Wheeled Shooter System</h2>
+
+<p>Alright. It’s time to combine our equations together. Here’s what we’re looking to describe: We want create an equation for speed of our shooter wheel, given the <em>applied voltage</em>.</p>
+
+<p>The basic process - the applied voltage in the motor produce a torque. This torque is transferred through a set of gears with a particular ratio. This torque acts on the spinning mass, causing an acceleration. Integrating that acceleration over time produces the speed.</p>
+
+<h3 id="building-the-full-equation">Building the Full Equation</h3>
+
+<p>Starting from our most recent equation, we can calculate the output torque of the motor:</p>
+
+<script type="math/tex; mode=display">\tau_{motor}(t) = \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right)</script>
+
+<p>The motor torque is the <em>input</em> to the gearbox. We know we can also calculate the output torque of the gearbox:</p>
+
+<script type="math/tex; mode=display">\tau_{wheel}(t) = \frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right)</script>
+
+<p>And, given the torque at the output of the gearbox (which is the same as is applied to the shooter wheel), we can calculate the acceleration of the shooter wheel:</p>
+
+<script type="math/tex; mode=display">\alpha_{wheel}(t)= \frac{2}{mr^{2}} \left( \frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right) \right)</script>
+
+<p>And, we can use the gearbox ratio to get the <script type="math/tex">\omega(t)</script>’s are in terms of the shooter wheel speed:</p>
+
+<script type="math/tex; mode=display">\alpha_{wheel}(t) = \frac{2}{mr^{2}} \left( \frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t)  - K_V \frac{N_{in}}{N_{out}} \omega_{wheel}(t) \right) \right)</script>
+
+<p>And finally, we combine constants to make stuff a bit easier to read (hopefully):</p>
+
+<script type="math/tex; mode=display">\alpha_{wheel}(t) = \frac{2N_{out}K_T}{mr^{2}N_{in}R} V_{in}(t)  -   \frac{2K_VK_T}{mr^{2}R} \omega_{wheel}(t)</script>
+
+<p>Actually, this isn’t all that bad. Really, we have something like this:</p>
+
+<script type="math/tex; mode=display">\alpha_{wheel}(t) = C_1 V_{in}(t) - C_2 \omega_{wheel}(t)</script>
+
+<p>With</p>
+
+<script type="math/tex; mode=display">C_1 = \frac{2N_{out}K_T}{mr^{2}N_{in}R}</script>
+
+<script type="math/tex; mode=display">C_2 = \frac{2K_VK_T}{mr^{2}R}</script>
+
+<p>Both of which are just constant values (ie, numbers) related to the physical parameters of the system. Calculate them once, never think about it again. Nothing scary - just numbers.</p>
+
+<p>The scary part to me - we’ve got a <em>differential equation</em>. That’s right - remember how acceleration is the derivative of velocity? <script type="math/tex">\alpha(t)</script> and <script type="math/tex">\omega(t)</script> aren’t just two random, independent values. Our equation really is:</p>
+
+<script type="math/tex; mode=display">\frac{d\omega_{wheel}}{dt} = C_1 V_{in}(t) - C_2 \omega_{wheel}(t)</script>
+
+<p>Which, indeed, is an equation which involves a function <script type="math/tex">\omega(t)</script> <em>and its derivative</em>  <script type="math/tex">\frac{d\omega}{dt}</script>. This makes it a differential equation.</p>
+
+<h3 id="tackling-the-differential-equation">Tackling the Differential Equation</h3>
+<p>The good news - this is a <em>very special</em> type of differential equation - It’s called a “First Order, Ordinary Differential Equation” which, as it turns out, <a href="https://en.wikipedia.org/wiki/Ordinary_differential_equation">has a well defined analytical solution</a>. Any college engineering program worth its salt will spend at least one semester teaching you about this.</p>
+
+<p>There’s a different way I prefer to introduce high schoolers to how to solve this, though. Let’s cheat a bit, and pretend we’re software. Software isn’t looking at the speed at <em>every</em> time <script type="math/tex">t</script>, in some continuous fashion. Instead, it is <em>sampling</em> values at regular intervals. The length of the interval is called the “sample time”, indicated by <script type="math/tex">T_s</script>. It is usually around 20ms on the roboRIO, or 1ms on a talon SRX.</p>
+
+<p>Let us quickly define some new nomenclature - when we describe some function that changes over time, we usually write it as <script type="math/tex">\omega(t)</script>, where the <script type="math/tex">(t)</script> indicates that <script type="math/tex">\omega</script> is in fact a function defined for <em>every</em> floating-point value time <script type="math/tex">t</script>. There’s another way of representing functions that indicates they are only really defined at regularly-sampled intervals, with the intervals counted by some integer <script type="math/tex">n</script>. The parenthesis are replaced with square brackets to indicate the sampled nature of the function, rather than a continuous definition.</p>
+
+<p>So, if we wanted to represent how <em>software</em> sees this function, we write down <script type="math/tex">\omega[n]</script>, where integer <script type="math/tex">n</script> is in the range <script type="math/tex">0, 1, 2, 3, ...</script>, and indicates the <em>loop iteration</em> of software. For any given sample time <script type="math/tex">T_s</script>, we can always know that <script type="math/tex">t = T_sn</script></p>
+
+<p>The key reason to do this - in discrete time, derivatives become <em>very</em> easy to do - they’re just subtraction:</p>
+
+<script type="math/tex; mode=display">\frac{d\omega}{dt} \Rightarrow \frac{(\omega[n] - \omega[n-1])}{T_s}</script>
+
+<p>This should make a decent amount of sense if you stare at it. Remember that <em>derivatives</em> are like the <em>slope</em> of a graph of the function, and slope is <em>rise</em> over <em>run</em>, or <script type="math/tex">dy</script> over <script type="math/tex">dx</script>. This is exactly what we have here - the change in <script type="math/tex">\omega</script> divided by the change in time.</p>
+
+<p>Switching our equation to be discrete-time (“software view”), and substituting in the derivative:</p>
+
+<script type="math/tex; mode=display">\frac{(\omega_{wheel}[n] - \omega_{wheel}[n-1])}{T_s}= C_1 V_{in}[n] - C_2 \omega_{wheel}[n]</script>
+
+<p>And re-arranging:</p>
+
+<script type="math/tex; mode=display">(\omega_{wheel}[n] + T_s C_2 \omega_{wheel}[n]  )= T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]</script>
+
+<script type="math/tex; mode=display">\omega_{wheel}[n]  ( 1 + T_s C_2 )= T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]</script>
+
+<script type="math/tex; mode=display">\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}</script>
+
+<p>And there we have it! An equation for the present speed of the shooter wheel, in terms of things we know:</p>
+
+<ul>
+  <li>The speed calculated from the previous loop - <script type="math/tex">\omega_{wheel}[n-1]</script></li>
+  <li>The voltage getting applied to the motor this loop - <script type="math/tex">V_{in}[n]</script></li>
+  <li>Constants related to our physical system and software design - <script type="math/tex">C_1</script>, <script type="math/tex">C_2</script>, and <script type="math/tex">T_s</script>.</li>
+</ul>
+
+<p>Whoof. There we go. As my dog would say, that was ruff. But we’ve made it. We’ve arrived. We have our equation.</p>
+
+<h2 id="non-time-domain-analysis-methods">Non-time-domain Analysis Methods</h2>
+
+<p>Ok. So to levelset - so far, we’ve been using what controls engineers would call “Time Domain” analysis. This all means that our equations have <em>time</em> as the independent variable. Whether we represent it as a continuously changing quantity <script type="math/tex">(t)</script> or a discretely sampled value <script type="math/tex">[n]</script>, we use time as our variable that marches along, and that we analyze behavior <em>across</em>.</p>
+
+<p>Time domain is intuitive. You can very easily think about how how physical quantities (like speed or voltage) change over time.</p>
+
+<p>However, this is not usually how controlls engineers work. The reason is the same one we ran into right at the end - <em>differential equations</em>. These are notoriously difficult to solve and work with in the time domain.</p>
+
+<p>As it turns out, or friends from pure mathemtical fields have devised a whole slew of other tools to use. You don’t have to use <em>time</em> as your independent variable - you can in fact use something else. <em>Frequency</em>, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.</p>
+
+<p>These transforms are not trivial concepts to cover, so I am calling them out of scope for now. If you’re interested in digging into these topics, the terminology to look up is <a href="https://en.wikipedia.org/wiki/Fourier_transform">Fourier Transform</a>, <a href="https://en.wikipedia.org/wiki/S_transform">S transform</a>, and <a href="https://en.wikipedia.org/wiki/Z-transform">Z transform</a>. These topics are also covered in the <a href="https://file.tavsys.net/control/controls-engineering-in-frc.pdf">Control Systems in FRC</a> textbook.</p>
+
+<h2 id="on-units">On Units</h2>
+
+<p>One piece of advice I would offer while working on these models - <em>units will kill you</em>. You will want to be super careful and rigorous in ensuring all your math and your constants are using the same units, and when you write your code, the units assumptions come in as well. We’ve kinda skirted the whole topic so far, as to not clutter the explanation. Still though, you have to be careful.</p>
+
+<p>Honestly, I’ve only ever had success making these models using <em>metric</em> units, and being super-consistant on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many “gotchas” for me on the conversions.</p>
+
+<p>However, I’m from the US. I grew up using feet and lbs, and I still have a far more intuitive understanding of what “10 feet per second” or “15 foot pounds of torque” looks and feels like - much more so that “15 meters per second” or “20 Newtons”. For this reason, any time we report values to a dashboard or log them to file, we convert back to imperial. It’s totally computational overhead, but I’d prefer to let the processor do that heavy lifting, and have a <em>feeling</em> for what the numbers mean, rather than waste my time doing mental math to do the conversion.</p>
+
+<p>At the end of the day though, what matters most is that you produce a functional robot, and can tune and change things on it quickly. However you can best accomplish this is the right path for <em>your</em> team.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>I feel as though we’ve come a very long way, but we also still have quite a ways to go yet! Hopefully you’ve enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we’re going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. Stay tuned!</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>For the incorrigibly questioning reader, this equation can be derived from the definition of a <a href="https://en.wikipedia.org/wiki/Radian">radian</a>, and the fact that, under the right conditions, you can take a <a href="https://math.stackexchange.com/questions/407822/differentiating-both-sides-of-an-equation">derivative of each side of an equality without changing its truthfulness</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:2">
+      <p>If we were to define a proper reference frame, assign coordinates to the centers of each gear, calculate the coordinate of the meshpoint, and actually make some free body diagrams, the negative sign would result as well. Trust me. But even without the formality, it should just make sense. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:3">
+      <p>There are ways to undo this assumption as needed, but it’s beyond our present discussion scope to look into them. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+    </li>
+    <li id="fn:4">
+      <p>Through a circuit breaker, of course. Let’s be safe now. <a href="#fnref:4" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div><a class="u-url" href="/blog_posts/2019/09/20/math_models.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

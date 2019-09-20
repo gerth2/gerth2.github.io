@@ -1,4 +1,486 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-09-07T13:47:32-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T09:30:40-05:00</published><updated>2019-09-07T09:30:40-05:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-09-20T17:28:56-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T09:30:00-05:00</published><updated>2019-09-20T09:30:00-05:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This is Part 2 in our series on Control Theory. In this installation, we’ll look at how we describe the interior of the blocks in our block diagram, using math equations. By doing this, we will have a representation of functionality we can analyze, manipulate, and write software with.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-is-a-model&quot;&gt;What is a Model?&lt;/h2&gt;
+
+&lt;p&gt;We briefly alluded to the concept of a &lt;em&gt;model&lt;/em&gt; in &lt;a href=&quot;/blog_posts/2019/06/01/math_primer2.html&quot;&gt;Math Primer, part 2&lt;/a&gt;. A &lt;em&gt;mathematical model&lt;/em&gt; is one particular form of an &lt;a href=&quot;/blog_posts/2019/05/26/abstraction.html&quot;&gt;Abstraction&lt;/a&gt;, where we create &lt;em&gt;math equations&lt;/em&gt; to describe the behavior of a particular thing in the “real world”.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/modeling.png&quot; alt=&quot;models_and_argos&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mathematical models can be built for anything which has properties you are willing to describe using numbers. This includes more conceptual things like a country’s economy or a stock market, but also physical devices (like motors or gearboxes or robots). We’ll be focusing on the latter.&lt;/p&gt;
+
+&lt;p&gt;If you’ve ever spent any time around a robot, you definitely have a &lt;em&gt;qualitative&lt;/em&gt; model built up in your head of how lots of parts on the robot work. For example, you probably know that when you apply 12V to a motor, it starts to spin faster. Or if you reverse the wires, it will go the opposite direction. You might also know that if you put two different size gears together and turn one of them, the smaller one will be spinning faster and in the opposite direction of the big one.&lt;/p&gt;
+
+&lt;p&gt;These qualitative models are super useful - these are what we engineers use on a day to day basis to help understand the systems they work on, without the need for calculation. If you’ve ever seen an “old-timer” with a grey beard just magically come up with an answer to a robot design question, blurting out “That will never work!”, there’s a good chance that person was using a mental, qualitative model. Most people refer to these simply as “intuition” - with time working on devices, you start to get a &lt;em&gt;feel&lt;/em&gt; for how they react and interact.&lt;/p&gt;
+
+&lt;p&gt;However, these models have limits. Often, a design may require you to describe &lt;em&gt;how fast&lt;/em&gt; a shaft will turn. “Kinda fast” is a good starting point, but isn’t sufficient. You’ve hit the limit of the mental model, and have to go to the next level.&lt;/p&gt;
+
+&lt;p&gt;Here’s where the mathematical models come in. By doing some analysis, determining some equations, plugging in your operating conditions, and calculating an answer, you get the exact &lt;em&gt;quantity&lt;/em&gt; you need for your design.&lt;/p&gt;
+
+&lt;p&gt;There is a key fact to keep in mind (as our friend George Box reminds us). &lt;em&gt;Mathematical Models&lt;/em&gt; are &lt;em&gt;more&lt;/em&gt; accurate than qualitative notions of how things work, but still do not &lt;em&gt;fully describe&lt;/em&gt; the physical things we care about. And that’s ok, we don’t need a full description. Like any good abstraction, a mathematical model will &lt;em&gt;hide&lt;/em&gt; the details we don’t care about, allowing us to focus on what we &lt;em&gt;do&lt;/em&gt; care about.&lt;/p&gt;
+
+&lt;p&gt;For a concrete example, you will never see me construct a model for a motor that accounts for the magnetic fields of motors nearby. The “background” field strength is never large enough to make a difference in calculations of any quantity used for FRC. &lt;em&gt;Qualitatively&lt;/em&gt;, I can tell you that if the background magnetic field was ever was big enough to matter, we have much more pressing issues on our hands than the couple percent error in our motor torque.&lt;/p&gt;
+
+&lt;p&gt;More detail is not always what you want. &lt;em&gt;The right&lt;/em&gt; amount of detail is always what you want.&lt;/p&gt;
+
+&lt;p&gt;In this post, we’re going to briefly discuss how some models are built up, and quickly dive into a number of examples that will be useful for FRC.&lt;/p&gt;
+
+&lt;h2 id=&quot;techniques-for-building-up-a-model&quot;&gt;Techniques for Building up a Model&lt;/h2&gt;
+
+&lt;h3 id=&quot;first-principles&quot;&gt;First Principles&lt;/h3&gt;
+
+&lt;p&gt;When we set out to create a model of a physical system, there are a couple different approaches.&lt;/p&gt;
+
+&lt;p&gt;The most “academic” approach involves analyzing the system from base physics principles. For FRC, &lt;a href=&quot;https://en.wikipedia.org/wiki/Newton%27s_laws_of_motion&quot;&gt;&lt;script type=&quot;math/tex&quot;&gt;F=ma&lt;/script&gt;&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Maxwell%27s_equations&quot;&gt;Maxwell’s equations&lt;/a&gt;, the &lt;a href=&quot;https://en.wikipedia.org/wiki/Ideal_gas_law&quot;&gt;Ideal Gas Law&lt;/a&gt; and friends come together with techniques like &lt;a href=&quot;https://en.wikipedia.org/wiki/Free_body_diagram&quot;&gt;Free Body Diagrams&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/Differential_equation&quot;&gt;Differential Equations&lt;/a&gt;, and &lt;a href=&quot;https://en.wikipedia.org/wiki/Linear_algebra&quot;&gt;Linear Algebra&lt;/a&gt; to create a cohesive set of equations, accurately describing the quantities of interest. Or, at least, what they &lt;em&gt;in theory&lt;/em&gt; should be.&lt;/p&gt;
+
+&lt;p&gt;Whether it’s ever explicitly shown, every mathematical model built up from base principles can be boiled back down into a set of axiomatic equations, based in how fundamental particles of the universe are assumed to interact. I’ll admit, I’ve never actually taken the time to take any of my models &lt;em&gt;all&lt;/em&gt; the way back to these axioms. But I learned them once in college, and know (based on the techniques involved) I always &lt;em&gt;could&lt;/em&gt;, if I ever needed to.&lt;/p&gt;
+
+&lt;p&gt;Soapbox: This is why, even if you find them pointless, all the foundational math and physics courses you take early on in your engineering education are very important. They lay the groundwork allowing you to &lt;em&gt;prove&lt;/em&gt; that your calculations are correct later on. Study them hard, and trust they will be useful. Soapbox over.&lt;/p&gt;
+
+&lt;h3 id=&quot;experimental-data&quot;&gt;Experimental Data&lt;/h3&gt;
+
+&lt;p&gt;When base principles are hard or time consuming, and you have the ability to run experiments on the device in question, there is another approach available. You can gather data from your device under carefully controlled conditions to inform your model of how the device works. You make your model through pure observation. You have to run these experiments many times to ensure your results are consistent, and not being influenced by a factor beyond your control.&lt;/p&gt;
+
+&lt;p&gt;For complex devices, it is often faster to go the experimental route. However, these experimental models lack the detail about the “internals” of the system. There are few (if any) equations to re-arrange and re-solve for a particular quantity of interest - you’re kinda stuck with whatever you measured in the lab. Additionally, lacking details about the internals to the system, it’s harder to know how to redesign a particular device if it’s not working as you need. Though you’ve captured the “externally visible” behavior, you’re lacking insight about the inside.&lt;/p&gt;
+
+&lt;p&gt;Then again, you don’t always need that level of insight. It always depends.&lt;/p&gt;
+
+&lt;h3 id=&quot;google--datasheets&quot;&gt;Google &amp;amp; Datasheets&lt;/h3&gt;
+
+&lt;p&gt;This isn’t exactly a “technique”, as much as something someone should keep in mind. Engineers are lazy. Engineers don’t like doing things twice.&lt;/p&gt;
+
+&lt;p&gt;However, if you as an engineer build a brand new device, you should probably take the time to take some measurements on it, maybe even build up a detailed model of how it should work.&lt;/p&gt;
+
+&lt;p&gt;Two bits of good news: Most engineers who are worth their salt will do experimentation. And, most of them make these experimental results available, in some form. Google is a great way to find out background info on whether someone has already done what you need to do - as long as you know what to search for. &lt;a href=&quot;https://www.google.com/search?q=mathematical+model+of+brushed+DC+motor&quot;&gt;For example, look at the plethora of information available on describing motors!&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;datasheet&lt;/em&gt; of a device is another standardized (ish) way of describing their quantitative properties. Sometimes a datasheet provides the exact mathematical model for the device. Other times, it provides the key pieces of information required for the model, and lets you build up the model as you need. Again, Google is my number-one tool for finding datasheets for parts we use. Manufacturers and suppliers frequently keep them on their websites as well.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-need-for-validation&quot;&gt;The Need for Validation&lt;/h3&gt;
+
+&lt;p&gt;No matter how you build up your model, you will always want to spend some time &lt;em&gt;validating&lt;/em&gt; that it is producing meaningful results. Sometimes this means running experiments on the actual device. Other times, it means running your new model in some form of &lt;em&gt;simulation&lt;/em&gt; - getting it into specific operating criteria, and checking results match some expected value.&lt;/p&gt;
+
+&lt;h2 id=&quot;practical-example---gearbox&quot;&gt;Practical Example - Gearbox&lt;/h2&gt;
+
+&lt;p&gt;Let’s start out with a model we can, for the most part, derive from the ground up.&lt;/p&gt;
+
+&lt;p&gt;A set of gears is probably one of the simplest models to create. It aligns well with your intuition, has a beautifully simple formula, and can be easily verified.&lt;/p&gt;
+
+&lt;p&gt;When designing gearboxes, you usually want to know about speed. Given an input speed (which you can control), you want to know what the output speed will be. Since many of you probably already know the answer, let’s just get that over with:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{out}(t) = -\frac{N_{in}}{N_{out}} \omega_{in}(t)&lt;/script&gt;
+
+&lt;p&gt;Where:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\omega_{in}(t)&lt;/script&gt; is the rotational speed of the input shaft at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;N_{out}&lt;/script&gt; is the number of teeth on the output gear&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;N_{in}&lt;/script&gt; is the number of teeth on the input gear&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\omega_{out}(t)&lt;/script&gt; is the rotational speed of the input shaft at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That’s it - it’s just the ratio of the teeth!&lt;/p&gt;
+
+&lt;h3 id=&quot;spinning-levers&quot;&gt;Spinning Levers&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/gears_art.png&quot; alt=&quot;Gear Artwork&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: etc.usf.edu&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The key thing to keep in mind: &lt;a href=&quot;https://www.youtube.com/watch?v=JOLtS4VUcvQ&quot;&gt;&lt;em&gt;gears&lt;/em&gt; are just &lt;em&gt;spinning levers&lt;/em&gt;&lt;/a&gt;. When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that meshpoint closer to the center of either wheel changes the ratio of motion between the two sides.&lt;/p&gt;
+
+&lt;p&gt;This relationship could be derived intuitively. Make the assumption that the teeth are always in mesh, and never slip relative to each other. Given this, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate &lt;em&gt;3 times&lt;/em&gt; to get a single rotation on the output.&lt;/p&gt;
+
+&lt;p&gt;The logic flow for this: One tooth of motion on the input means one tooth of motion on the output. If you don’t have this 1 to 1 relationship, it means gears are slipping. Which means that metal is shredding off in your gearboxes. Which is bad news bears. You should fix that before attempting any more math.&lt;/p&gt;
+
+&lt;p&gt;A more rigorous way to describe this relationship is to do it from base principles and mathematical manipulations. Let’s give that a shot.&lt;/p&gt;
+
+&lt;p&gt;To start, assume that your teeth are “Ideal” - incredibly small, and super strong. They never slip relative to each other. We outright ignore any tooth geometry, and just model the gears as two differently-sized pancakes.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/gears_basic.png&quot; alt=&quot;gears_basic&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The assumption of ideal teeth allows us to say that the &lt;em&gt;tangential velocity&lt;/em&gt; (the linear speed of the outside edge of the pancake) must be the same at their mesh point. From geometry, I’ll give the equation that relates the &lt;em&gt;rotational velocity&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt; to the &lt;em&gt;tangential velocity&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;v(t)&lt;/script&gt;. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v(t) = 2 \pi R \omega(t)&lt;/script&gt;
+
+&lt;p&gt;We actually can write that equation twice, once for each gear:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{in}(t) = 2 \pi R_{in} \omega_{in}(t)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{out}(t) = 2 \pi R_{out} \omega_{out}(t)&lt;/script&gt;
+
+&lt;p&gt;Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one centerpoint, but the right of the other, we need to introduce a negative sign as well. &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{in}(t) = -v_{out}(t)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;2 \pi R_{in} \omega_{in}(t) = -2 \pi R_{out} \omega_{out}(t)&lt;/script&gt;
+
+&lt;p&gt;Canceling terms, we find ourselves at:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;R_{in} \omega_{in}(t) = -R_{out} \omega_{out}(t)&lt;/script&gt;
+
+&lt;p&gt;And solving for the output speed, finally,&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{out}(t) = -\frac{R_{in}}{R_{out}} \omega_{in}(t)&lt;/script&gt;
+
+&lt;p&gt;Sweet! Almost the same as the equation we started with.&lt;/p&gt;
+
+&lt;h3 id=&quot;radius-to-teeth&quot;&gt;Radius to Teeth&lt;/h3&gt;
+
+&lt;p&gt;But wait! Our initial equation used number of teeth, not radius. Not to worry!&lt;/p&gt;
+
+&lt;p&gt;Each tooth and gap cycle contributes a certain, constant amount of radius to the circle. Additionally, the per-tooth radius length has to be the same on both gears. This is due to &lt;a href=&quot;https://www.geartechnology.com/issues/1084x/back-to-basics.pdf&quot;&gt;some of the constraints required by good tooth design&lt;/a&gt;. Additionally, we aren’t actually free to choose &lt;em&gt;any&lt;/em&gt; radius we want. If we resulted in a fractional tooth, well, that wouldn’t work (Think about it for a second…).&lt;/p&gt;
+
+&lt;p&gt;Therefor, the equation gets quoted not in terms of actual radius, but in terms of tooth count.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{out}(t) = -\frac{N_{in}}{N_{out}} \omega_{in}(t)&lt;/script&gt;
+
+&lt;p&gt;Boom Shackalacka.&lt;/p&gt;
+
+&lt;h3 id=&quot;on-torque&quot;&gt;On Torque&lt;/h3&gt;
+
+&lt;p&gt;Torque is a concept that comes up a lot, isn’t something that most freshman start off knowing about, and frankly isn’t often explained well in physics classes.&lt;/p&gt;
+
+&lt;p&gt;I always think of torque is “turney force” - force that acts in a circle. Like when you turn a wrench, and tighten a bolt.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/torque_on_wrench.png&quot; alt=&quot;Torque from wrench&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: scienceres-edcp-educ.sites.olt.ubc.ca&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Gears transmit torque from one to the other. We won’t get too much into the math, but it’s not hard to derive using the same lever-like models we eluded to before.&lt;/p&gt;
+
+&lt;p&gt;Torque in a gearbox is just a ratio, like speed, except inverted:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau_out(t) = -\frac{N_{out}}{N_{in}} \tau_in(t)&lt;/script&gt;
+
+&lt;p&gt;No need to worry about this too much now, but we’ll come back to it later on.&lt;/p&gt;
+
+&lt;h2 id=&quot;practical-example---wheel-with-mass&quot;&gt;Practical Example - Wheel with Mass&lt;/h2&gt;
+
+&lt;p&gt;Here, we’ll start to introduce the glory of using Google to find answers. The key is knowing what to look for.&lt;/p&gt;
+
+&lt;p&gt;We will attempt to create a model of a rotating wheel, such as the ones used to launch gamepieces through holes or into hoppers.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/shooter_wheel_1640.png&quot; alt=&quot;shooter wheel&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: Team 1640&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;The key background info to know: Newton’s second law &lt;script type=&quot;math/tex&quot;&gt;F=ma&lt;/script&gt; has a &lt;em&gt;rotational&lt;/em&gt; form.&lt;/p&gt;
+
+&lt;h3 id=&quot;background---newtons-second-law&quot;&gt;Background - Newton’s Second Law&lt;/h3&gt;
+
+&lt;p&gt;So, hopefully, you’ve at least heard the basics of Newton’s laws in school. They form the basis of “classical mechanics” - the study of how bodies of mass move around (as long as they aren’t too small, and don’t move too fast). The second law is the one most commonly quoted in its equation form, but can be understood qualitatively. Whenever a &lt;em&gt;force&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; is applied to some object with mass &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt;, it will begin to &lt;em&gt;change velocity&lt;/em&gt; at a rate &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt;. Forces are how we &lt;em&gt;change&lt;/em&gt; the velocity of an object.&lt;/p&gt;
+
+&lt;p&gt;It should be noted that &lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; are usually &lt;em&gt;vector&lt;/em&gt; quantities. That is to say they have both magnitude &lt;em&gt;and&lt;/em&gt; a direction. You can push with 5 lbs of force upward or downward, to the left or to the right. The magnitude is always 5 lbs, but the direction changes. To denote this vector quantity, you will often see the equation written as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\vec{F} = m\vec{a}&lt;/script&gt;
+
+&lt;p&gt;The cute little arrows over &lt;script type=&quot;math/tex&quot;&gt;\vec{F}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\vec{a}&lt;/script&gt; indicate they have a direction.&lt;/p&gt;
+
+&lt;p&gt;The key takeaway is that the acceleration happens &lt;em&gt;in the same direction&lt;/em&gt; as the force. If an object is still, and you push on it in a certain direction, it begins to accelerate (ie, go faster) &lt;em&gt;in that direction&lt;/em&gt;. If an object is already moving, and you push against its motion, it &lt;em&gt;slows down&lt;/em&gt;, since the force opposes the direction of motion - effectively a &lt;em&gt;negative&lt;/em&gt; acceleration.&lt;/p&gt;
+
+&lt;h3 id=&quot;newtons-second-in-rotational&quot;&gt;Newton’s Second in Rotational&lt;/h3&gt;
+
+&lt;p&gt;To me, the rotational form of &lt;script type=&quot;math/tex&quot;&gt;F=ma&lt;/script&gt; almost feels like cheating. The good news is that it makes it pretty simple, but perhaps not profound. The reason for this is that all three quantities in &lt;script type=&quot;math/tex&quot;&gt;F=ma&lt;/script&gt; have &lt;a href=&quot;http://hyperphysics.phy-astr.gsu.edu/hbase/mi.html&quot;&gt;a rotational equivalent we can use&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you hadn’t noticed yet, &lt;script type=&quot;math/tex&quot;&gt;F&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;a&lt;/script&gt; are both quantities that involve &lt;em&gt;linear&lt;/em&gt; measurement. This is the nature of vectors - they define &lt;em&gt;lines&lt;/em&gt; from one point to another. Acceleration is described &lt;em&gt;along a certain line&lt;/em&gt;, as is force.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, mass tends to just kinda “sit there” - it’s a property of the object, with a value, but no real direction or information about location required. As far as Newton’s Second law is concerned, all the mass is &lt;em&gt;modeled&lt;/em&gt; to be at a single point, where force is applied.&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;p&gt;Newton’s Second Law for rotation is exactly the same as the linear version, just swapping out the linear quantities for their rotational equivalent.&lt;/p&gt;
+
+&lt;p&gt;Acceleration is easy to re-define - it’s just called &lt;em&gt;rotational acceleration&lt;/em&gt;. Rather than measuring the rate of change of linear velocity (in m/s, per sec, for example), it measures the rate of change of rotational velocity (in deg/sec, per sec, for example). Think of it as the rate at which a rotating wheel speeds up or slows down. If you want your wheel to rotate faster, that means you want its &lt;em&gt;rotational acceleration&lt;/em&gt; to be positive.&lt;/p&gt;
+
+&lt;p&gt;Rotational Acceleration is denoted with the Greek letter alpha - &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Force also has a rotational analog. &lt;em&gt;Torque&lt;/em&gt; is simply rotational force. Torque is defined as a force applied at a distance to some center of rotation, tending to cause rotational motion. Whenever you turn a wrench or a screwdriver, you are applying a &lt;em&gt;torque&lt;/em&gt; to the bolt or screw, which causes it to turn. Whenever your car’s engine revs up while you’re in gear, a &lt;em&gt;torque&lt;/em&gt; is applied to the back wheels (often erroneously referred to as “torque to the ground”). This in turn causes the wheels to turn, and (hopefully) the car to move.&lt;/p&gt;
+
+&lt;p&gt;Torque is denoted with the Greek letter tau - &lt;script type=&quot;math/tex&quot;&gt;\tau&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;Mass, turns out, is where things get a bit interesting. No longer can we simply account for the total &lt;em&gt;amount&lt;/em&gt; of stuff in the moving object, we have to account for &lt;em&gt;where it is at&lt;/em&gt; relative to the center of rotation. This combined notion of quantity and position can still be calculated down to a single number, called the &lt;em&gt;moment of inertia&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Just as mass can be thought of as “tendency of an object to resist changes in velocity”, the moment of inertia is an object’s tendency to resist changes in rotational velocity.&lt;/p&gt;
+
+&lt;p&gt;The way I personally like to think about it - consider the energy of tiny subsections of our spinning object. At any given rotational velocity, all will have the same rotational velocity. However, the bits near the center will have less &lt;em&gt;linear&lt;/em&gt; velocity. They’ll be traveling &lt;em&gt;slower&lt;/em&gt;, at least in a linear sense. This means they have less energy, and would hurt less if they hit you. If you want to change the speed of a rotating bit of mass, it’s easier if the rotating bit is very close to center of rotation, rather than really far away.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/outsideFasterThanInside.png&quot; alt=&quot;outside goes faster than inside&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;These moments of inertia still boil down to a single number, and are usually calculated with integrals. Deriving them from scratch is a classic calc-II homework problem. You should definitely try it at some point in your life.&lt;/p&gt;
+
+&lt;p&gt;However, I’ve already passed all my calculus courses, &lt;a href=&quot;https://en.wikipedia.org/wiki/List_of_moments_of_inertia&quot;&gt;so I just look them up online.&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;M&lt;/script&gt; can mean things like “mass” or “mega” or “million”, Moment of Inertia is indicated with the letter &lt;script type=&quot;math/tex&quot;&gt;I&lt;/script&gt;. Even though &lt;script type=&quot;math/tex&quot;&gt;I&lt;/script&gt; is also used for electric current. I’m sorry, I didn’t make any of this up. There aren’t many letters available. Usually it’s clear from the context of the equation which is meant…&lt;/p&gt;
+
+&lt;h3 id=&quot;assembling-the-equations&quot;&gt;Assembling the Equations&lt;/h3&gt;
+
+&lt;p&gt;Ok, starting with Moment of Inertia…&lt;/p&gt;
+
+&lt;p&gt;Partway down the table, you’ll see an equation for “Solid cylinder of radius r”.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Moment_of_inertia_solid_cylinder.svg/1920px-Moment_of_inertia_solid_cylinder.svg.png&quot; alt=&quot;Solid Cylinder&quot; /&gt;
+&lt;em&gt;source: wikipedia.org&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Recalling that we’re attempting to create a model of a shooter wheel, this should look pretty familiar. Think wheel on a stick, rotated around the axis of the cylinder-shape (Z axis in the wikipedia picture). Wikipedia tells us the equation to use is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;I = \frac{1}{2}mr^{2}&lt;/script&gt;
+
+&lt;p&gt;To quickly break this down:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is the mass of the whole shooter wheel
+&lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; is its radius&lt;/p&gt;
+
+&lt;p&gt;We assume that the mass is reasonably evenly distributed throughout the whole radius. For &lt;a href=&quot;http://www.wcproducts.net/colson-wheels&quot;&gt;something like a colson wheel&lt;/a&gt;, this is likely true. If you have &lt;a href=&quot;https://www.andymark.com/products/8-in-plaction-wheel-with-blue-nitrile-tread?via=Z2lkOi8vYW5keW1hcmsvV29ya2FyZWE6OkNhdGFsb2c6OkNhdGVnb3J5LzVhZjhlMjQ4YmM2ZjZkNWUzNmYyMzkzMQ&quot;&gt;something more like a Plaction Wheel&lt;/a&gt;, you might want to pick a different equation.&lt;/p&gt;
+
+&lt;p&gt;Now, we can substitute all the variables into Newton’s Second Law for Rotational Motion:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau(t) = I \alpha(t)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau(t) = \left( \frac{1}{2}mr^{2} \right) \alpha(t)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha(t) =  \frac{2}{mr^{2}} \tau(t)&lt;/script&gt;
+
+&lt;p&gt;And there we have it! A simple description of the motion of our shooter wheel, given a certain &lt;em&gt;torque&lt;/em&gt; (or “turney force”) at its input shaft! This is the equation we’ll need later on.&lt;/p&gt;
+
+&lt;p&gt;As a quick detour, let’s throw in a bit of calculus. We can describe the wheel’s velocity over time as an integral.&lt;/p&gt;
+
+&lt;p&gt;In general, we know that velocity &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt; is the &lt;em&gt;integral&lt;/em&gt; of acceleration &lt;script type=&quot;math/tex&quot;&gt;\alpha(t)&lt;/script&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega(t) = \int \alpha(t)&lt;/script&gt;
+
+&lt;p&gt;Applying more proper calculus and our previous equation:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega(t) = \int_{0}^{t} \frac{2}{mr^{2}} \tau(x) dx + \omega(0)&lt;/script&gt;
+
+&lt;p&gt;In general, we can assume &lt;script type=&quot;math/tex&quot;&gt;\omega(0)&lt;/script&gt; is in fact 0, since our robot starts the match from a disabled state.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega(t) = \int_{0}^{t} \frac{2}{mr^{2}} \tau(x) dx&lt;/script&gt;
+
+&lt;p&gt;What this equation shows is is that to know the velocity of our shooter wheel, all we have to do is &lt;em&gt;add up&lt;/em&gt; all the previous torque inputs we ever gave to it, multiply each measurement by the moment of inertia (just a constant number, tied to the wheel’s construction), and Bob’s your uncle! We’ve come up with an equation that calculates the shooter speed over time, as a function of how much torque you apply to it.&lt;/p&gt;
+
+&lt;p&gt;Ok, detour over. Hope you enjoyed Calculusland!&lt;/p&gt;
+
+&lt;h2 id=&quot;practical-example---brushed-dc-motor&quot;&gt;Practical Example - Brushed DC Motor&lt;/h2&gt;
+
+&lt;h3 id=&quot;basic-description&quot;&gt;Basic Description&lt;/h3&gt;
+
+&lt;p&gt;A motor, fundamentally, is a device which converts &lt;em&gt;electrical power&lt;/em&gt; into &lt;em&gt;mechanical power&lt;/em&gt;. Specifically for our analysis, we’ll look at it as a device which &lt;em&gt;takes an input voltage and current&lt;/em&gt; and produces a &lt;em&gt;mechanical torque&lt;/em&gt; on its output shaft. Presumably this is attached to something which maybe fights against the rotation, but ultimately rotates. This speed of the input shaft “feeds bacK” to the motor as another input.&lt;/p&gt;
+
+&lt;p&gt;The key thing to realize - the motor doesn’t directly output rotation. It outputs a torque - a force on something attached to it. Rotation only occurs if the thing attached to it starts to rotate in response to that torque.&lt;/p&gt;
+
+&lt;p&gt;We’ll be analyzing &lt;a href=&quot;https://en.wikipedia.org/wiki/Brushed_DC_electric_motor&quot;&gt;&lt;em&gt;brushed DC Motors&lt;/em&gt;&lt;/a&gt;. This covers CIM motors, 775 pro, and pretty much every FRC motor used up till NEO’s in 2019 (sorry Rev). Though they come in different sizes, shapes, weights, and powers, they all fundamentally act the same way:&lt;/p&gt;
+
+&lt;p&gt;Electric current flows through &lt;em&gt;coils of wire&lt;/em&gt;, &lt;a href=&quot;https://physics.stackexchange.com/questions/187512/how-does-electricity-produce-magnetisim&quot;&gt;generating a magnetic field&lt;/a&gt;. Trust me, it happens. The coils are mounted on a rotating shaft, aligned within a set of &lt;a href=&quot;https://en.wikipedia.org/wiki/Magnet&quot;&gt;&lt;em&gt;permanent magnets&lt;/em&gt;&lt;/a&gt;, so that the generated magnetic field from the coils opposes that of the permanent magnets. This opposing field causes a force on the rotating shaft, which is transferred to the motor’s output shaft. A special electromechanical device called a &lt;em&gt;commutator&lt;/em&gt; ensures that the coil’s magnetic field always opposes the magnet’s fields, throughout the whole range of rotation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://www.mouser.com/images/microsites/BrushedMotors-Fig1.jpg&quot; alt=&quot;motor schematic&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;source: mouser.com&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;torque&quot;&gt;Torque&lt;/h3&gt;
+
+&lt;p&gt;The first key takeaway from our description: a flowing electric current is the &lt;em&gt;cause&lt;/em&gt; of the force on the output shaft. This leads to the first part of the equation for motors:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau(t) = K_T I(t)&lt;/script&gt;
+
+&lt;p&gt;Where:&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;I(t)&lt;/script&gt; is the current flowing through the motor at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;K_T&lt;/script&gt; is a constant value, called the “Torque Constant”.&lt;/p&gt;
+
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;\tau(t)&lt;/script&gt; is the torque at the output shaft of the motor at time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The Torque Constant &lt;script type=&quot;math/tex&quot;&gt;K_T&lt;/script&gt; is something you could try to calculate from the geometry of the motor, the properties of the coils of wire, the strength and shape of the magnets, and a whole slew of other properties. If you were to do all the physics and math you’d be able to generate the relationship seen above, with a very complex and inaccurate version of &lt;script type=&quot;math/tex&quot;&gt;K_T&lt;/script&gt;. For most motors, it is determined experimentally.&lt;/p&gt;
+
+&lt;p&gt;Most motors should list it in their datasheet, at least indirectly. If you don’t see anything labeled &lt;script type=&quot;math/tex&quot;&gt;K_T&lt;/script&gt; or “Torque constant”, you can also just quickly calculate it from the &lt;em&gt;stall conditions&lt;/em&gt; of the motor. Stall conditions provide one particular &lt;script type=&quot;math/tex&quot;&gt;\tau(t)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;I(t)&lt;/script&gt; pair to use:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;K_T = \frac{\tau(t)}{I(t)} = \frac{\tau_{stall}}{I_{stall}}&lt;/script&gt;
+
+&lt;h3 id=&quot;speed&quot;&gt;Speed&lt;/h3&gt;
+
+&lt;p&gt;The shaft speed impact is a bit harder to think through, but not too bad.&lt;/p&gt;
+
+&lt;p&gt;You may have heard at some point in your life that all motors can act as generators, and all generators can act as motors. Even if you haven’t heard this, maybe you’ve seen your robot electronics power on when you push your robot along the ground, even without a battery in it? You’re not going crazy, your motors are acting as generators and powering the system!&lt;/p&gt;
+
+&lt;p&gt;Though the equivalency expressed above is largely true, I prefer a slightly different twist: &lt;em&gt;every motor is simultaneously a motor and generator&lt;/em&gt;. This simultaneous existence should make sense - there’s nothing that physically changes about a motor when you rotate its shaft, versus when you power it electrically. It doesn’t magically know when it needs to switch modes. Both modes must be present at all times.&lt;/p&gt;
+
+&lt;p&gt;You’ve probably also noticed that when you plug in a motor straight to 12V &lt;sup id=&quot;fnref:4&quot;&gt;&lt;a href=&quot;#fn:4&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;, it will zoom up to some top speed, stop accelerating, and maintain that top speed. Datasheets call this the “unloaded” or “runout” speed.&lt;/p&gt;
+
+&lt;p&gt;But wait! If there’s current flowing, that means there should be torque, right? Which means there should be acceleration?&lt;/p&gt;
+
+&lt;p&gt;In a sense, torque is the “Motor” part of the “simultaneous motor and generator”. The generator half explains the capped speed.&lt;/p&gt;
+
+&lt;p&gt;Whenever you have coils of wire rotating within a magnetic field, a &lt;em&gt;voltage&lt;/em&gt; is formed across the coil. Voltages, when present in well-behaved circuits, will increase or decrease current flow. This is how generators work - spin a coil of wire near permanent magnets,a voltage is created, which enables current to flow out.&lt;/p&gt;
+
+&lt;p&gt;Hey wait. Motors have coils of wires spinning in a magnetic field. Yup. There’s no trick here - the fact that the wires are spinning within the magnets inside motors causes a new voltage to be &lt;em&gt;induced&lt;/em&gt; within the wires, which actually &lt;em&gt;opposes&lt;/em&gt; the flow of current. This induced voltage is called “Back EMF”, or “Back ElectroMotive Force”.&lt;/p&gt;
+
+&lt;p&gt;Very similarly to torque (as you would hopefully expect from all the symmetry we’ve seen so far), this back EMF is linearly related to speed:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{emf}(t) = K_V \omega(t)&lt;/script&gt;
+
+&lt;p&gt;This back-force happens in the electrical space, so it’s good for us to look at an electrical model of the motor:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/motorModel.png&quot; alt=&quot;Motor Model&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On the left side, we see the input wires to the motor, along with two measurements you may already be familiar with. One is the &lt;em&gt;applied voltage&lt;/em&gt; &lt;script type=&quot;math/tex&quot;&gt;V_{in}(t)&lt;/script&gt; - this is the command you give to a motor controller, and the average voltage it outputs to the motor. Usually this will be about +12V for full forward, -12V for full reverse, and 0V at rest (though the numbers usually change with battery charge level). The other quantity is the &lt;em&gt;current&lt;/em&gt; flowing through the motor, &lt;script type=&quot;math/tex&quot;&gt;I(t)&lt;/script&gt;. This might be measured by a motor controller (if you have a nice Talon SRX or similar), or measured by the PDB itself. Either way, you usually don’t directly control it, it’s just a property of the current state of the whole system.&lt;/p&gt;
+
+&lt;p&gt;You’ll notice two things to the right, on the “inside” of the motor. One is a resistor - this electrical component &lt;em&gt;models&lt;/em&gt; the resistance of the long coils of wire inside the motor. It’s not literally a resistor component inside the motor, just the inherent resistance from having lots of wire. Some models also include an &lt;em&gt;inductor&lt;/em&gt; to model the “cross-talk” between the coils, but I’ve avoided it to make the calculations simpler. Often, it’s small enough you can forget about it.&lt;/p&gt;
+
+&lt;p&gt;Finally, the voltage source to the far right indicates the &lt;em&gt;back EMF&lt;/em&gt;, which we denote with &lt;script type=&quot;math/tex&quot;&gt;V_{emf}(t)&lt;/script&gt;. Even though the physical mechanism looks very different, the electrical effect is the same as the voltage provided by your motor controller.&lt;/p&gt;
+
+&lt;p&gt;When analyzing a circuit diagram like the one above, we use &lt;a href=&quot;https://en.wikipedia.org/wiki/Kirchhoff%27s_circuit_laws&quot;&gt;Kirchhoff’s Circuit Laws&lt;/a&gt; to construct equations. The laws give us a few facts:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The current through every device must be &lt;em&gt;the same&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;The sum of voltages around the (one and only) loop must equal zero.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Since &lt;script type=&quot;math/tex&quot;&gt;V_{in}&lt;/script&gt; is oriented backward relative to the +/- direction defined for the other components, it gets a minus sign.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;0 = -V_{in}(t) + V_R(t) + V_{emf}(t)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_{in}(t) = V_R(t) + V_{emf}(t)&lt;/script&gt;
+
+&lt;p&gt;If you recall &lt;em&gt;Ohm’s Law&lt;/em&gt; from the &lt;a href=&quot;/blog_posts/2019/06/05/electronics_basics.html&quot;&gt;electronics introduction&lt;/a&gt;, you’ll see we can re-write the voltage across the resistor (&lt;script type=&quot;math/tex&quot;&gt;V_R&lt;/script&gt;) in terms of the motor current and the resistance. Additionally, as shown before, the back EMF voltage can be calculated from the speed of the motor.&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;V_{in}(t) = R I(t) + K_V \omega(t)&lt;/script&gt;
+
+&lt;p&gt;Solving for current:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;I(t) = \frac{1}{R} \left( V_{in}(t)  - K_V \omega(t) \right)&lt;/script&gt;
+
+&lt;p&gt;Finally, we can use our current/torque relationship to solve for torque:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{1}{K_T} \tau(t)  = \frac{1}{R} \left( V_{in}(t)  - K_V \omega(t) \right)&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau(t) = \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega(t) \right)&lt;/script&gt;
+
+&lt;h2 id=&quot;practical-example---wheeled-shooter-system&quot;&gt;Practical Example - Wheeled Shooter System&lt;/h2&gt;
+
+&lt;p&gt;Alright. It’s time to combine our equations together. Here’s what we’re looking to describe: We want create an equation for speed of our shooter wheel, given the &lt;em&gt;applied voltage&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The basic process - the applied voltage in the motor produce a torque. This torque is transferred through a set of gears with a particular ratio. This torque acts on the spinning mass, causing an acceleration. Integrating that acceleration over time produces the speed.&lt;/p&gt;
+
+&lt;h3 id=&quot;building-the-full-equation&quot;&gt;Building the Full Equation&lt;/h3&gt;
+
+&lt;p&gt;Starting from our most recent equation, we can calculate the output torque of the motor:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau_{motor}(t) = \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right)&lt;/script&gt;
+
+&lt;p&gt;The motor torque is the &lt;em&gt;input&lt;/em&gt; to the gearbox. We know we can also calculate the output torque of the gearbox:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\tau_{wheel}(t) = \frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right)&lt;/script&gt;
+
+&lt;p&gt;And, given the torque at the output of the gearbox (which is the same as is applied to the shooter wheel), we can calculate the acceleration of the shooter wheel:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_{wheel}(t)= \frac{2}{mr^{2}} \left( \frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t)  - K_V \omega_{motor}(t) \right) \right)&lt;/script&gt;
+
+&lt;p&gt;And, we can use the gearbox ratio to get the &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt;’s are in terms of the shooter wheel speed:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_{wheel}(t) = \frac{2}{mr^{2}} \left( \frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t)  - K_V \frac{N_{in}}{N_{out}} \omega_{wheel}(t) \right) \right)&lt;/script&gt;
+
+&lt;p&gt;And finally, we combine constants to make stuff a bit easier to read (hopefully):&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_{wheel}(t) = \frac{2N_{out}K_T}{mr^{2}N_{in}R} V_{in}(t)  -   \frac{2K_VK_T}{mr^{2}R} \omega_{wheel}(t)&lt;/script&gt;
+
+&lt;p&gt;Actually, this isn’t all that bad. Really, we have something like this:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha_{wheel}(t) = C_1 V_{in}(t) - C_2 \omega_{wheel}(t)&lt;/script&gt;
+
+&lt;p&gt;With&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_1 = \frac{2N_{out}K_T}{mr^{2}N_{in}R}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_2 = \frac{2K_VK_T}{mr^{2}R}&lt;/script&gt;
+
+&lt;p&gt;Both of which are just constant values (ie, numbers) related to the physical parameters of the system. Calculate them once, never think about it again. Nothing scary - just numbers.&lt;/p&gt;
+
+&lt;p&gt;The scary part to me - we’ve got a &lt;em&gt;differential equation&lt;/em&gt;. That’s right - remember how acceleration is the derivative of velocity? &lt;script type=&quot;math/tex&quot;&gt;\alpha(t)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt; aren’t just two random, independent values. Our equation really is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{d\omega_{wheel}}{dt} = C_1 V_{in}(t) - C_2 \omega_{wheel}(t)&lt;/script&gt;
+
+&lt;p&gt;Which, indeed, is an equation which involves a function &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt; &lt;em&gt;and its derivative&lt;/em&gt;  &lt;script type=&quot;math/tex&quot;&gt;\frac{d\omega}{dt}&lt;/script&gt;. This makes it a differential equation.&lt;/p&gt;
+
+&lt;h3 id=&quot;tackling-the-differential-equation&quot;&gt;Tackling the Differential Equation&lt;/h3&gt;
+&lt;p&gt;The good news - this is a &lt;em&gt;very special&lt;/em&gt; type of differential equation - It’s called a “First Order, Ordinary Differential Equation” which, as it turns out, &lt;a href=&quot;https://en.wikipedia.org/wiki/Ordinary_differential_equation&quot;&gt;has a well defined analytical solution&lt;/a&gt;. Any college engineering program worth its salt will spend at least one semester teaching you about this.&lt;/p&gt;
+
+&lt;p&gt;There’s a different way I prefer to introduce high schoolers to how to solve this, though. Let’s cheat a bit, and pretend we’re software. Software isn’t looking at the speed at &lt;em&gt;every&lt;/em&gt; time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;, in some continuous fashion. Instead, it is &lt;em&gt;sampling&lt;/em&gt; values at regular intervals. The length of the interval is called the “sample time”, indicated by &lt;script type=&quot;math/tex&quot;&gt;T_s&lt;/script&gt;. It is usually around 20ms on the roboRIO, or 1ms on a talon SRX.&lt;/p&gt;
+
+&lt;p&gt;Let us quickly define some new nomenclature - when we describe some function that changes over time, we usually write it as &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt;, where the &lt;script type=&quot;math/tex&quot;&gt;(t)&lt;/script&gt; indicates that &lt;script type=&quot;math/tex&quot;&gt;\omega&lt;/script&gt; is in fact a function defined for &lt;em&gt;every&lt;/em&gt; floating-point value time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;. There’s another way of representing functions that indicates they are only really defined at regularly-sampled intervals, with the intervals counted by some integer &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. The parenthesis are replaced with square brackets to indicate the sampled nature of the function, rather than a continuous definition.&lt;/p&gt;
+
+&lt;p&gt;So, if we wanted to represent how &lt;em&gt;software&lt;/em&gt; sees this function, we write down &lt;script type=&quot;math/tex&quot;&gt;\omega[n]&lt;/script&gt;, where integer &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is in the range &lt;script type=&quot;math/tex&quot;&gt;0, 1, 2, 3, ...&lt;/script&gt;, and indicates the &lt;em&gt;loop iteration&lt;/em&gt; of software. For any given sample time &lt;script type=&quot;math/tex&quot;&gt;T_s&lt;/script&gt;, we can always know that &lt;script type=&quot;math/tex&quot;&gt;t = T_sn&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The key reason to do this - in discrete time, derivatives become &lt;em&gt;very&lt;/em&gt; easy to do - they’re just subtraction:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{d\omega}{dt} \Rightarrow \frac{(\omega[n] - \omega[n-1])}{T_s}&lt;/script&gt;
+
+&lt;p&gt;This should make a decent amount of sense if you stare at it. Remember that &lt;em&gt;derivatives&lt;/em&gt; are like the &lt;em&gt;slope&lt;/em&gt; of a graph of the function, and slope is &lt;em&gt;rise&lt;/em&gt; over &lt;em&gt;run&lt;/em&gt;, or &lt;script type=&quot;math/tex&quot;&gt;dy&lt;/script&gt; over &lt;script type=&quot;math/tex&quot;&gt;dx&lt;/script&gt;. This is exactly what we have here - the change in &lt;script type=&quot;math/tex&quot;&gt;\omega&lt;/script&gt; divided by the change in time.&lt;/p&gt;
+
+&lt;p&gt;Switching our equation to be discrete-time (“software view”), and substituting in the derivative:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{(\omega_{wheel}[n] - \omega_{wheel}[n-1])}{T_s}= C_1 V_{in}[n] - C_2 \omega_{wheel}[n]&lt;/script&gt;
+
+&lt;p&gt;And re-arranging:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;(\omega_{wheel}[n] + T_s C_2 \omega_{wheel}[n]  )= T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n]  ( 1 + T_s C_2 )= T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}&lt;/script&gt;
+
+&lt;p&gt;And there we have it! An equation for the present speed of the shooter wheel, in terms of things we know:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The speed calculated from the previous loop - &lt;script type=&quot;math/tex&quot;&gt;\omega_{wheel}[n-1]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;The voltage getting applied to the motor this loop - &lt;script type=&quot;math/tex&quot;&gt;V_{in}[n]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Constants related to our physical system and software design - &lt;script type=&quot;math/tex&quot;&gt;C_1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;C_2&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;T_s&lt;/script&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Whoof. There we go. As my dog would say, that was ruff. But we’ve made it. We’ve arrived. We have our equation.&lt;/p&gt;
+
+&lt;h2 id=&quot;non-time-domain-analysis-methods&quot;&gt;Non-time-domain Analysis Methods&lt;/h2&gt;
+
+&lt;p&gt;Ok. So to levelset - so far, we’ve been using what controls engineers would call “Time Domain” analysis. This all means that our equations have &lt;em&gt;time&lt;/em&gt; as the independent variable. Whether we represent it as a continuously changing quantity &lt;script type=&quot;math/tex&quot;&gt;(t)&lt;/script&gt; or a discretely sampled value &lt;script type=&quot;math/tex&quot;&gt;[n]&lt;/script&gt;, we use time as our variable that marches along, and that we analyze behavior &lt;em&gt;across&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Time domain is intuitive. You can very easily think about how how physical quantities (like speed or voltage) change over time.&lt;/p&gt;
+
+&lt;p&gt;However, this is not usually how controlls engineers work. The reason is the same one we ran into right at the end - &lt;em&gt;differential equations&lt;/em&gt;. These are notoriously difficult to solve and work with in the time domain.&lt;/p&gt;
+
+&lt;p&gt;As it turns out, or friends from pure mathemtical fields have devised a whole slew of other tools to use. You don’t have to use &lt;em&gt;time&lt;/em&gt; as your independent variable - you can in fact use something else. &lt;em&gt;Frequency&lt;/em&gt;, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.&lt;/p&gt;
+
+&lt;p&gt;These transforms are not trivial concepts to cover, so I am calling them out of scope for now. If you’re interested in digging into these topics, the terminology to look up is &lt;a href=&quot;https://en.wikipedia.org/wiki/Fourier_transform&quot;&gt;Fourier Transform&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/S_transform&quot;&gt;S transform&lt;/a&gt;, and &lt;a href=&quot;https://en.wikipedia.org/wiki/Z-transform&quot;&gt;Z transform&lt;/a&gt;. These topics are also covered in the &lt;a href=&quot;https://file.tavsys.net/control/controls-engineering-in-frc.pdf&quot;&gt;Control Systems in FRC&lt;/a&gt; textbook.&lt;/p&gt;
+
+&lt;h2 id=&quot;on-units&quot;&gt;On Units&lt;/h2&gt;
+
+&lt;p&gt;One piece of advice I would offer while working on these models - &lt;em&gt;units will kill you&lt;/em&gt;. You will want to be super careful and rigorous in ensuring all your math and your constants are using the same units, and when you write your code, the units assumptions come in as well. We’ve kinda skirted the whole topic so far, as to not clutter the explanation. Still though, you have to be careful.&lt;/p&gt;
+
+&lt;p&gt;Honestly, I’ve only ever had success making these models using &lt;em&gt;metric&lt;/em&gt; units, and being super-consistant on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many “gotchas” for me on the conversions.&lt;/p&gt;
+
+&lt;p&gt;However, I’m from the US. I grew up using feet and lbs, and I still have a far more intuitive understanding of what “10 feet per second” or “15 foot pounds of torque” looks and feels like - much more so that “15 meters per second” or “20 Newtons”. For this reason, any time we report values to a dashboard or log them to file, we convert back to imperial. It’s totally computational overhead, but I’d prefer to let the processor do that heavy lifting, and have a &lt;em&gt;feeling&lt;/em&gt; for what the numbers mean, rather than waste my time doing mental math to do the conversion.&lt;/p&gt;
+
+&lt;p&gt;At the end of the day though, what matters most is that you produce a functional robot, and can tune and change things on it quickly. However you can best accomplish this is the right path for &lt;em&gt;your&lt;/em&gt; team.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I feel as though we’ve come a very long way, but we also still have quite a ways to go yet! Hopefully you’ve enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we’re going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. Stay tuned!&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:1&quot;&gt;
+      &lt;p&gt;For the incorrigibly questioning reader, this equation can be derived from the definition of a &lt;a href=&quot;https://en.wikipedia.org/wiki/Radian&quot;&gt;radian&lt;/a&gt;, and the fact that, under the right conditions, you can take a &lt;a href=&quot;https://math.stackexchange.com/questions/407822/differentiating-both-sides-of-an-equation&quot;&gt;derivative of each side of an equality without changing its truthfulness&lt;/a&gt;. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:2&quot;&gt;
+      &lt;p&gt;If we were to define a proper reference frame, assign coordinates to the centers of each gear, calculate the coordinate of the meshpoint, and actually make some free body diagrams, the negative sign would result as well. Trust me. But even without the formality, it should just make sense. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:3&quot;&gt;
+      &lt;p&gt;There are ways to undo this assumption as needed, but it’s beyond our present discussion scope to look into them. &lt;a href=&quot;#fnref:3&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:4&quot;&gt;
+      &lt;p&gt;Through a circuit breaker, of course. Let’s be safe now. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T09:30:40-05:00</published><updated>2019-09-07T09:30:40-05:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;One of the most eye-opening courses I took in college was an &lt;a href=&quot;https://courses.grainger.illinois.edu/ece486&quot;&gt;introduction to control theory course&lt;/a&gt;. The topic was brand new to me. Prior to taking the course, I had never even heard of this concept of “control theory”.&lt;/p&gt;
 
@@ -188,6 +670,8 @@
 &lt;p&gt;After that, we’ll be able to move on to step 2, in which we &lt;em&gt;design&lt;/em&gt; the contents of the &lt;em&gt;Control Software&lt;/em&gt; box to make the whole system do what we want.&lt;/p&gt;
 
 &lt;p&gt;We’ll finish off with some thoughts on techniques for validating behavior on real hardware, and troubleshooting when it doesn’t work. Stay tuned!&lt;/p&gt;
+
+&lt;p&gt;Ready to keep going? Check out &lt;a href=&quot;/blog_posts/2019/09/20/math_models.html&quot;&gt;Mathematical Models!&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;closing-note---on-other-resources&quot;&gt;Closing Note - On Other Resources&lt;/h2&gt;
 
@@ -1890,343 +2374,4 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;In our next post, we will look into the details of the syntax of the C programming language, to see how it implements these components to accomplish the goals of a high-level programming language. See &lt;a href=&quot;/blog_posts/2019/07/28/programming_language_c_syntax.html&quot;&gt;C Syntax here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do. - Donald Knuth</summary></entry><entry><title type="html">Processor Architecture</title><link href="/blog_posts/2019/07/22/vonneumann.html" rel="alternate" type="text/html" title="Processor Architecture" /><published>2019-07-22T09:31:00-05:00</published><updated>2019-07-22T09:31:00-05:00</updated><id>/blog_posts/2019/07/22/vonneumann</id><content type="html" xml:base="/blog_posts/2019/07/22/vonneumann.html">&lt;p&gt;&lt;em&gt;People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;Oooh boy, I am getting excited! More excited than a &lt;a href=&quot;https://en.wikipedia.org/wiki/File_Explorer#Search_companion&quot;&gt;search companion who can do tricks!&lt;/a&gt; Things are starting to get very real now!&lt;/p&gt;
-
-&lt;p&gt;We’ve introduced a ton of topics in boolean logic - how to manipulate bits, store them, and use them to represent numbers. It’s time to start digging into how all this comes together to build a real device which can do computation!&lt;/p&gt;
-
-&lt;h2 id=&quot;the-von-neumann-architecture&quot;&gt;The Von Neumann Architecture&lt;/h2&gt;
-
-&lt;h3 id=&quot;overall&quot;&gt;Overall&lt;/h3&gt;
-
-&lt;p&gt;Through his work, Von Neumann described a generic &lt;em&gt;architecture&lt;/em&gt; for how to construct and lay-out electronic components to fulfill Turing’s requirements. This description has been coined the “Von Neumann Architecture”. It should be noted that since almost all modern processors follow the architecture to some extent, the phrase “Von Neumann Architecture” actually refers more to the set of ideas, rather than one particular design.&lt;/p&gt;
-
-&lt;p&gt;Von Neumann divided his world up into four very-high-level components:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Memory&lt;/strong&gt; - A device capable of saving and recalling pieces of information.
-    &lt;ul&gt;
-      &lt;li&gt;Might be broken into multiple parts
-        &lt;ul&gt;
-          &lt;li&gt;Read-only vs. Read/Write&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Roughly analogous to the “Tape” in the Turing Machine&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Processor Unit&lt;/strong&gt; - A device capable of performing a calculation on pieces of information.
-    &lt;ul&gt;
-      &lt;li&gt;Possible calculations:
-        &lt;ul&gt;
-          &lt;li&gt;Math (add subtract multiply divide etc.)&lt;/li&gt;
-          &lt;li&gt;Logic (and or not)&lt;/li&gt;
-          &lt;li&gt;Comparison (greater than, less than, equal to)&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Roughly equivalent to the “Head” in the Turing Machine&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Control Unit&lt;/strong&gt; - A device to provide coordination between all other units
-    &lt;ul&gt;
-      &lt;li&gt;Produces the control signals that configure all other units&lt;/li&gt;
-      &lt;li&gt;Produces the &lt;em&gt;correct&lt;/em&gt; signals to implement the Universal Turing Machine&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;IO&lt;/strong&gt; - A set of devices capable of transforming information between representations useful to computers, and representations useful to humans.
-    &lt;ul&gt;
-      &lt;li&gt;Screens, mice, keyboards, etc.&lt;/li&gt;
-      &lt;li&gt;Implementation is device specific, but the key is that on one end is an interface that works well with the computer (bits and bytes), and on the other end is a physical thing a human can manipulate or sense.&lt;/li&gt;
-      &lt;li&gt;In our Turing Machine association, this is just the way a human can manipulate or interact with the device or the tape.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;processing-unit&quot;&gt;Processing Unit&lt;/h3&gt;
-
-&lt;p&gt;Storing data is cool, but to do useful processing we have to, well, process the data. Back when we learned about boolean logic, we saw all sorts of ways to mash bits together. The goal now is to build a circuit which can do all the useful things for us.&lt;/p&gt;
-
-&lt;p&gt;The collection of circuitry which does the calculations is generally referred to as the &lt;em&gt;Arithmetic Logic Unit&lt;/em&gt;, or ALU. It gets its own fancy-pants symbol that looks like a sideways pair of pants:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/ALU.png&quot; alt=&quot;ALU&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Implementations on various processors will vary slightly, but conceptually they all have to have at least 3 inputs:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A and B - the operands. A and B are the binary numbers we’re going to mash together&lt;/li&gt;
-  &lt;li&gt;CTRL - the signals that say &lt;em&gt;how&lt;/em&gt; to mash A and B together.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;And of course, the set of these three inputs produces the result of the requested calculation.&lt;/p&gt;
-
-&lt;p&gt;Keeping with our 32-bit theme, we assume that the ALU is set up to do calculations on 32-bit inputs, and produces a 32-bit result. Other processors may assume otherwise, but this is just our example for now.&lt;/p&gt;
-
-&lt;p&gt;CTRL can be any number of bits - it just depends on how many different ways you want to be able to combine the inputs A and B together. For example, if you have 12 combination strategies implemented, you’ll need &lt;script type=&quot;math/tex&quot;&gt;\lceil log_{2}(12) \rceil = 4&lt;/script&gt; bits.&lt;/p&gt;
-
-&lt;p&gt;The simplest practical architecture I’ve seen has a very small ALU with only three operations supported:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Bitwise AND&lt;/li&gt;
-  &lt;li&gt;Bitwise NOT&lt;/li&gt;
-  &lt;li&gt;Addition&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;It’s pretty bare-bones. FOr example, to do &lt;script type=&quot;math/tex&quot;&gt;A - B&lt;/script&gt;, , you have to first negate the B operand (which requires a bitwise NOT, then adding 1), then adding A and (-B). Subtraction is a 3 step process, which kinda stinks.&lt;/p&gt;
-
-&lt;p&gt;Larger ALU’s will support more operations, including:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Bitwise OR/NOR/NAND, Subtraction
-    &lt;ul&gt;
-      &lt;li&gt;Keeps common operations down to a single step&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Multiplication, Integer Division, Remainder after division
-    &lt;ul&gt;
-      &lt;li&gt;Expanded math abilities on integers&lt;/li&gt;
-      &lt;li&gt;Note that floating point (decimal) numbers are frequently handled by a different unit&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Bitwise XOR
-    &lt;ul&gt;
-      &lt;li&gt;Super useful for cryptographic and computer security operations&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Shift bits left and right by one
-    &lt;ul&gt;
-      &lt;li&gt;super fast way to multiply or divide by 2&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Increment, decrement
-    &lt;ul&gt;
-      &lt;li&gt;Super-optimized versions of common math operations&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;What set of operations are supported really just depends on processor design. Increasing the number of supported operations increases speed to a point, but always at increased cost and increased potential for things to break.&lt;/p&gt;
-
-&lt;p&gt;Conceptually, putting together an ALU is remarkably straightforward. Just package all the circuits which do the operations you want individually, feed them each off of the provided inputs, and use a MUX driven by the CTRL input to select which calculation makes it to the output.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/aluInternals.png&quot; alt=&quot;inside ALU&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In addition to these combination operations, the ALU will often have additional outputs to indicate if the operation resulted in overflow or underflow (ie, result was outside the min or max range of the numbers that can be represented by the 32 bits of the ALU).&lt;/p&gt;
-
-&lt;h3 id=&quot;control-unit&quot;&gt;Control Unit&lt;/h3&gt;
-
-&lt;p&gt;The control unit is the heart of this whole system, coordinating the action of registers and the ALU together to do actual calculation. The design of the unit is special tailored to implement the stored-program concept. Again, the exact design of the control unit can vary, but all have to have at least a few basic components and abilities.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnit.png&quot; alt=&quot;Control Unit Top Level&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;registers&quot;&gt;Registers&lt;/h4&gt;
-
-&lt;p&gt;Fundamentally, every control unit will have a set of registers to store information. These will be faster than the bulk RAM chips you’re familiar with, and serve special uses within the processor. But, fundamentally, they just store a specific set of bits representing some specific, meaningful quantity.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Memory Address Register&lt;/em&gt; (MAR) and &lt;em&gt;Memory Data Register&lt;/em&gt; (MDR) are two of the key registers. They are connected directly to the RAM circuitry, and allow the control unit to command unit to read or write from a specific memory address. Along with a couple control signals, the basic process is that the memory address register is first loaded with the desired address. Then, control signals are sent to memory to read or write that address. For read, the data is pulled off the RAM chip and placed into the MDR. Write does similarly, but propagates whatever value was in the MDR (from the control unit’s other parts) and puts it into the address in RAM specified by the MAR. Using this, the control unit can &lt;em&gt;read and write RAM data&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Two more registers form the core of the stored program concept. The processor fundamentally assumes that the instructions it is supposed to execute exist in memory at a certain set of memory instructions. The &lt;em&gt;Program Counter&lt;/em&gt; (PC) register stores the memory address of the current instruction being worked on. The &lt;em&gt;Instruction Register&lt;/em&gt; (IR) holds the actual instruction while its being worked on.&lt;/p&gt;
-
-&lt;p&gt;There are also a set of registers called &lt;em&gt;General Purpose Registers&lt;/em&gt; (GPR*). These don’t have a very specific purpose, they are left open for the programmer to use as they see fit while writing programs.&lt;/p&gt;
-
-&lt;p&gt;Depending on how the IO devices are designed, there may be some dedicated registers attached to physical, user-interaction input or output devices.&lt;/p&gt;
-
-&lt;h4 id=&quot;system-bus&quot;&gt;System Bus&lt;/h4&gt;
-
-&lt;p&gt;As introduced with the tri-state buffer, we know that we can connect multiple digital outputs “together” forming a Bus topology. Von Neumann introduced the idea of a System Bus, where registers (and other components) read and wrote data to a central set of wires. This made interconnects easier, and made checking system functionality more straightforward. Modern processors may use more than one system bus to allow for faster data transfer, but for our purposes we will only consider one.&lt;/p&gt;
-
-&lt;h4 id=&quot;the-execution-cycle&quot;&gt;The Execution Cycle&lt;/h4&gt;
-
-&lt;p&gt;Most control units follow a repeating three-step process while running:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Fetch&lt;/li&gt;
-  &lt;li&gt;Decode&lt;/li&gt;
-  &lt;li&gt;Execute.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitFetch.png&quot; alt=&quot;Control Unit Fetch&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;During the &lt;em&gt;Fetch&lt;/em&gt; phase, the control unit fetches the next instruction. The Program Counter register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitDecode.png&quot; alt=&quot;Control Unit Decode&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;During the &lt;em&gt;Decode&lt;/em&gt; phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitMath.png&quot; alt=&quot;Control Unit Execute - Math&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;During the &lt;em&gt;Execute&lt;/em&gt; phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence). The drawing above shows an example where the ALU is used to do math.&lt;/p&gt;
-
-&lt;h4 id=&quot;decoding--executing-an-instruction&quot;&gt;Decoding &amp;amp; Executing an Instruction&lt;/h4&gt;
-
-&lt;p&gt;Generally, instructions will command manipulations to registers. Some examples of these:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Math - Add two general purpose registers, and store the result in a 3rd general purpose register&lt;/li&gt;
-  &lt;li&gt;Memory - Load a general purpose register from RAM, or store its contents to RAM&lt;/li&gt;
-  &lt;li&gt;“Branching” - Manually adjust the Program Counter if the previous instruction’s result was positive&lt;/li&gt;
-  &lt;li&gt;IO - reading/writing from some input or output device.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Instructions will always have two main components: the &lt;em&gt;opcode&lt;/em&gt; and the &lt;em&gt;arguments&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Remember that each instruction is just a set of bits. Usually, the first couple bits is the &lt;em&gt;opcode&lt;/em&gt;, which identify what the instruction is requesting.&lt;/p&gt;
-
-&lt;p&gt;The exact mapping of &lt;em&gt;which&lt;/em&gt; bits equate to &lt;em&gt;which&lt;/em&gt; operations is dependant on the details of the processor construction. &lt;a href=&quot;http://ref.x86asm.net/coder32.html&quot;&gt;Here’s an example from x86&lt;/a&gt;, which is by far one of the more complex versions.&lt;/p&gt;
-
-&lt;p&gt;Simpler machines might have a mapping more like:&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;opcode&lt;/th&gt;
-      &lt;th&gt; &lt;/th&gt;
-      &lt;th&gt;Abrev.&lt;/th&gt;
-      &lt;th&gt;Meaning&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0001&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;Add&lt;/td&gt;
-      &lt;td&gt;Add two numbers&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0010&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;Sub&lt;/td&gt;
-      &lt;td&gt;Subtract two numbers&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0011&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;OR&lt;/td&gt;
-      &lt;td&gt;Bitwise OR of two numbers&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0100&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;AND&lt;/td&gt;
-      &lt;td&gt;Bitwise AND of two numbers&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0101&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;NOT&lt;/td&gt;
-      &lt;td&gt;Bitwise NOT of a numbers&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;0111&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;STR&lt;/td&gt;
-      &lt;td&gt;Store a value to memory&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1000&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;LD&lt;/td&gt;
-      &lt;td&gt;Load a value from memory&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1001&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;BRN&lt;/td&gt;
-      &lt;td&gt;Branch to a different instruction if the previous result was negative&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1010&lt;/td&gt;
-      &lt;td&gt; &lt;/td&gt;
-      &lt;td&gt;BRZ&lt;/td&gt;
-      &lt;td&gt;Branch to a different instruction if the previous result was zero&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;And so on. Note that when you see assembly instructions, you’ll almost always see it referred to by its abbreviation, not by the 1’s and 0’s of the opcode. It’s hard to stare at the 1’s a 0’s, your eyes start to go crossed after a while.&lt;/p&gt;
-
-&lt;p&gt;The remaining bits are dedicated to the arguments to the opcode. They indicate the specifics of how the processor is to carry out the instruction.&lt;/p&gt;
-
-&lt;p&gt;For instructions like Add, Subtract, AND, OR, etc. - the simplest set of arguments indicates a trio of general purpose registers to work with. Usually the arguments will be specified to say “source 1 register”, “source 2 register”, and “result register”. NOT would only need two registers, but is conceptually the same. When the Instruction Register has AND for an opcode, the control unit will use the arguments to configure the signal routing in the processor to pipe the two source register outputs into the ALU, and then the ALU’s output into the result register. One tick of the system clock goes by, the result register is updated, and the instruction is completed!&lt;/p&gt;
-
-&lt;p&gt;Opcodes that work with memory addresses (BRN/BRZ,LD/STR) will often make one of the arguments the memory address to work with. More complex “addressing modes” allow the address to be specified relative to the program counter, or some general purpose register.&lt;/p&gt;
-
-&lt;h4 id=&quot;choosing-the-next-instruction&quot;&gt;Choosing the Next Instruction&lt;/h4&gt;
-
-&lt;p&gt;Generally, after all decoding and execution has been completed, the Program Counter has to be updated with the next address. Frequently, this just means “add one” to the current program counter. However, the instruction might have some more complex instruction. “Branch” instructions generally alter the add-one behavior conditionally, based on the previous result being positive, zero, or negative (PZN register stores this information every instruction cycle).&lt;/p&gt;
-
-&lt;p&gt;The manner in which they alter it can vary far and wide. Usually it involves some offset from the current PC - rather than going to the next instruction, you skip forward by some larger number of addresses, or maybe backward by five addresses… something like that. The size of the jump may be encoded into the instruction word itself, or pulled from a general purpose register, or lots of other options really. At the end of the day, it’s just up to how the instruction is interpreted again to select which calculation is used to update the PC prior to the next execution cycle.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/nextInstructionDecode.png&quot; alt=&quot;next instruction&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The net result is the same though - the PC gets loaded with the address of the next instruction to run, and the cycle may start over!&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitNextInstruction.png&quot; alt=&quot;next instruction calc&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;io-techniques&quot;&gt;IO techniques&lt;/h3&gt;
-
-&lt;p&gt;In general, any input and output device will have to interact with the processor via some set of bits. For example, a mouse might report its X/Y coordinates as two integers. A screen might require representing every pixel color with one byte of data. Regardless of how it’s actually done, just keep in mind that at the end of the day, it’s just a set of bits that are read from, or go to, the device.&lt;/p&gt;
-
-&lt;p&gt;How the processor gets access to these bits happens through two primary methods:&lt;/p&gt;
-
-&lt;h4 id=&quot;port-mapped&quot;&gt;Port Mapped&lt;/h4&gt;
-
-&lt;p&gt;Some processors will have dedicated registers inside the control unit for reading and writing data associated with a user IO device. This also means there will have to be dedicated assembly instructions for manipulating that data as part of a program. THis is a very fast method, but can be a bit inflexible, as the processor has to be designed with assumptions about what its IO devices will be. This is bad if you plug or unplug a device from your computer.&lt;/p&gt;
-
-&lt;h4 id=&quot;memory-mapped&quot;&gt;Memory Mapped&lt;/h4&gt;
-
-&lt;p&gt;Sometimes, a more flexible technique is to use the same interface the RAM circuitry uses. The IO device “poses” as part of the RAM chip, responding to processor read and write requests just as a RAM chip would. But, rather than storing and recalling data as requested by a processor, the “other end” of each byte is hooked up to some IO device.&lt;/p&gt;
-
-&lt;p&gt;This means there are no special assembly instructions required to do IO interaction. As a software writer, you just have to know things like “Memory addresses 0x0000154A and 0x0000154B are mouse X/Y” and “Memory addresses 0x00002000 through 0x00002FFF control the pixels on the screen”. Don’t use these special memory addresses like normal memory (ie, writing to the mouse addresses will probably not end well). But, it’s much more flexible than forcing a Port Mapped architecture.&lt;/p&gt;
-
-&lt;p&gt;But, there are plenty of tradeoffs on both sides. You’ll probably see both as you adventure into this wonderful world of processors!&lt;/p&gt;
-
-&lt;h2 id=&quot;concrete-examples-of-architecture&quot;&gt;Concrete Examples of Architecture&lt;/h2&gt;
-
-&lt;p&gt;So far, we’ve stuck to generic descriptions of the common things you find inside a processor. Lots of descriptions have just been these hand-wavey “well the actual implementation depends on the processor type”. For the curious, we now present three concrete examples of computer architecure.&lt;/p&gt;
-
-&lt;h3 id=&quot;lc-3&quot;&gt;LC-3&lt;/h3&gt;
-
-&lt;p&gt;The “LC-3”, or “Little Computer 3”, is a “fake” architecture. You’ll not find an off-the-shelf chip that implements the “LC-3” architecture. But, it’s a dirt simple architecture - fixed opcode and word widths, simple operations, conveniently sized RAM… the list goes on.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://lumetta.web.engr.illinois.edu/120-F16/slide-copies/100-the-lc-3-isa.pdf&quot;&gt;There are a good number&lt;/a&gt; &lt;a href=&quot;https://www.cs.utexas.edu/users/fussell/courses/cs310h/lectures/Lecture_10-310h.pdf&quot;&gt;of online resources&lt;/a&gt; &lt;a href=&quot;http://www.ncsa.illinois.edu/People/kindr/teaching/ece190_sp11/lectures/lecture_11.pdf&quot;&gt;that explain the architecture&lt;/a&gt; - some even down to the gate level. It’s simple enough that the blog author implemented the processor, gate level up, as part of a sophomore year elective class.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;It’s a great place to start, but unfortunately doesn’t directly map to any real architecture. However, the concepts you learn while studying it definitely do apply!&lt;/p&gt;
-
-&lt;h3 id=&quot;x86&quot;&gt;x86&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/X86&quot;&gt;x86 Processor Architecture&lt;/a&gt; comes from Intel, and dates back to the late 1970’s. Over the years they have added lots and lots of new instructions to it, expanded the data width size, and a whole slew of other alterations, all while keeping the base thing backward compatible. This makes for a &lt;em&gt;very&lt;/em&gt; versatile and &lt;em&gt;very&lt;/em&gt; powerful processor. The biggest downsides are all rooted in the complexity of the devices - infinite backward compatibility makes for a lot of “legacy” portions of the architecture that aren’t relevant for modern programming. Additionally, you need a &lt;em&gt;lot&lt;/em&gt; of gates to make an x86 processor, which generally means they are power hungry (though this has been mitigated in recent years).&lt;/p&gt;
-
-&lt;p&gt;Still, the sheer flexibility and power of the architecture means almost every desktop PC (running Windows, Mac, or Linux) has some form of an x86 processor in it, and tons of manufacturers produce a flavor of the architecture.&lt;/p&gt;
-
-&lt;p&gt;This was the second assembly language the author learned. Along with three other students, he wrote an operating system from scratch using C and x86 assembly. &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;arm&quot;&gt;ARM&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ARM_architecture&quot;&gt;Advanced RISC Machine&lt;/a&gt; architecture is the new “big kid” on the block. Specifically designed to address some of the x86 shortcomings, it quickly made a name for itself for its simplicity of implementation (therefor requiring fewer transistors, and drawing less power). It came along at just the right time to be adopted by the smartphone revolution, and nearly all smartphones on the market today run some form of this processor. It’s strongly suited toward running mobile, power-sensitive applications. The roboRIO uses an ARM Cortex-A9 processor manufactured by Xilinx.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-place-of-the-special-purpose-computing-device&quot;&gt;The Place of the Special-Purpose Computing Device&lt;/h3&gt;
-
-&lt;p&gt;This whole blog post, we’ve been discussing how to made a digital device which can perform general purpose computation. This isn’t to say that general purpose computers are the be-all, end-all of computation. Indeed, the ability to be programmed brings overhead with it. In the fetch/decode/execute cycle, fetch and decode are both only present because the processor has to figure out &lt;em&gt;what&lt;/em&gt; it is supposed to be doing at runtime, in addition to actually doing it.&lt;/p&gt;
-
-&lt;p&gt;For this reason, when bleeding edge speed or absolutely minimal power consumption is required, it &lt;em&gt;sometimes&lt;/em&gt; still makes sense to give up the ability to be programmed to gain that speed or efficiency. Digital Devices can still be custom designed to fit a very specific purpose. These are often called &lt;em&gt;Application Specific Integrated Circuits&lt;/em&gt; (ASIC’s).&lt;/p&gt;
-
-&lt;p&gt;Common applications include video/audio processing, computer networking devices, and scientific research equipment.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Phew, that was a lot, and way more hand-wavey than I had initially intended. None the less, we still have built up an understanding of what the main components of a processor are, how those things come to be from smaller digital circuits, and how they can execute individual stored instructions.&lt;/p&gt;
-
-&lt;p&gt;Next up, we’ll take a survey of common programming language constructs, and later dig into how those constructs might be implemented in assembly code. Keep reading at &lt;a href=&quot;/blog_posts/2019/07/28/programming_language_intro.html&quot;&gt;Programming Languages Introduction!&lt;/a&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Lots of students &lt;a href=&quot;https://www.google.com/search?safe=active&amp;amp;rlz=1C1CHBF_enUS840US840&amp;amp;ei=JIUuXcOzF8m4tAbC4bv4Cw&amp;amp;q=uiuc+ece+385+github&amp;amp;oq=uiuc+ece+385+github&amp;amp;gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8&quot;&gt;post their solutions on github&lt;/a&gt;, which seems like a violation of academic integrity, if you ask me. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li id=&quot;fn:2&quot;&gt;
-      &lt;p&gt;Again, lots of students &lt;a href=&quot;https://www.google.com/search?q=uiuc+ece+391+github&amp;amp;rlz=1C1CHBF_enUS840US840&amp;amp;oq=uiuc+ece+391+github&amp;amp;aqs=chrome..69i57.5400j0j7&amp;amp;sourceid=chrome&amp;amp;ie=UTF-8&quot;&gt;decided to post their solutions online&lt;/a&gt;. Tisk tisk. &lt;a href=&quot;#fnref:2&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth</summary></entry></feed>
+&lt;p&gt;In our next post, we will look into the details of the syntax of the C programming language, to see how it implements these components to accomplish the goals of a high-level programming language. See &lt;a href=&quot;/blog_posts/2019/07/28/programming_language_c_syntax.html&quot;&gt;C Syntax here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do. - Donald Knuth</summary></entry></feed>
