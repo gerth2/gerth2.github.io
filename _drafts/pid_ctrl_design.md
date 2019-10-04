@@ -98,6 +98,7 @@ Before we hit the math, let's think through what we expect to happen.
 * Before the voltage turns on ($$t < 0$$), the wheel should not be turning. 
 * As soon as the voltage turns on, the wheel should start spinning.
 * The higher the voltage that is passed in, the faster it should be going.
+* The wheel should hit some maximum "steady state" speed, and stay there.
 
 Of course, most folks would thing this is pretty obvious. However, it's important to keep it in mind. We can use the math equations to show our intuition to be true, or use the intuition to validate we didn't get something wrong in the math.
 
@@ -112,59 +113,18 @@ Let's see if we can get an idea for how this thing reacts when we apply an input
 1. We will apply 12 volts at the time 0 seconds ($$ t = 0 $$). This can be represented using our unit step function: $$ v[n] = 12*u[n] $$
 2. We will assume the wheel was stationary prior to start. This means that $$ \omega_{wheel}[-1] = 0 $$
 
-Based on this, we can draw the following plot:
+Based on this, we can draw the following plot of wheel speed, over time:
 
-<div id="plot2"></div>
-<script>
-function step(t){
-    if(t < 0){
-        return 0;
-    } else {
-        return 1;
-    }
-}
+<div id="plot2a"></div>
+<div id="plot2b"></div>
+<script src="/assets/js/pidSim.js"></script>
 
-function plot1PointsGen(){
-    var retArray = []
+If you stare at the graph, it certanly appears our initial suppositions are confirmed:
 
-    var minTime = -1.0;
-    var maxTime = 10.0;
-    var Ts = 0.01;
-    var speedPrev = 0;
-
-    for(t = minTime; t < maxTime; t += Ts){
-        speed = (Ts*3500*step(t) + speedPrev)/(1+Ts);
-
-        speedPrev = speed;
-        retArray.push([t, speed]);
-    }
-
-    return retArray;
-}
-
-functionPlot({
-  target: '#plot2',
-  title: '',
-  grid: true,
-  yAxis: {
-      label: "Wheel Speed(RPM)",
-      domain: [-100, 4000]
-  },
-  xAxis: {
-      label: "Time (s)",
-      domain: [-1, 10]
-  },
-  data: [
-    {
-        points: plot1PointsGen(),
-        fnType: 'points',
-        graphType: 'polyline'
-    }
-  ]
-})
-</script>
-
-If you stare at this, you can 
+* For times to the left of the Y axis, we see our speed is zero.
+* At $$t = 0$$, on the Y axis, voltage turns on, and our speed starts to increase.
+* To the right of the Y axis, speed starts to increase as time goes on.
+* As time goes on, we see the speed caps out at round 3500 RPM.
 
 #### Extracting the Steady-state behavior.
 
