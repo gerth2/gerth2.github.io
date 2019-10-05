@@ -157,19 +157,32 @@ Here's the key, if you haven't noticed yet - we have the ability to command the 
 
 #### Behavior with Disturbances
 
-Before we get to discussing how to achieve a commanded speed, there's one more thing to discuss. We've so far neglected a key portion of our physical model - the presence of an _external disturbance_. When we say _external disturbance_, we're describing any force acting on the system which is, in some way, abnormal, or unexpected. This disturbance may come in many forms. 
+Before we get to discussing how to achieve a commanded speed, there's one more thing to discuss. We've so far neglected a key portion of our physical model - the presence of an _external disturbance_. When we say _external disturbance_, we're describing any force or torque acting on the system which is, in some way, abnormal, or unexpected. 
+
+I won't bore you too much with the math. But, re-working our derivations from the last time, we can inject this new disturbance term as a time-varying torque $$\tau_{ext}[n] $$ into our motor speed equations:
+
+$$ \omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] - T_s C_3 \tau_{ext}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )} $$
+
+with
+
+$$ C_3 = \frac{2}{mr^2} $$
+
+
+This disturbance may come in many forms. 
 
 Maybe it's a big hit, all at once - like a ball entering the shooter mechanism. This is often called an _impullse_ disturbance.
 
-INSERT PLOT HERE
+Maybe it's something more constant over time, like friction in the bearings and gears of the rotating mechanism.
 
-Maybe it's something more constant over time, like friction in the bearings and gears of the rotating mechanism:
+Maybe it's something electrical, like the battery losing charge over time.
 
-INSERT PLOT HERE
 
-Maybe it's something electrical, like the battery losing charge over time:
+Here's an example of what might happen with some friction in the system, as well as injecting a ball at $$t=5$$ seconds:
 
-INESERT PLOT HERE
+<div id="plot5a"></div>
+<div id="plot5b"></div>
+
+Note that the steady state speed is lower (~1.5k RPM) due to friction, and the impulse of dropping the ball into the shooter wheel takes a big bite out of the speed at the 5 second mark.
 
 In every case, the external disturbance comes at an _unpredictable time_ and with an _unpredictable magnititude_. We've made some mathematical assumptions here about the behavior of the system, but they won't capture the exact behavior of every disturbance.
 
@@ -196,10 +209,17 @@ Here's an example of what such a controller would do:
 
 <div id="plot3a"></div>
 <div id="plot3b"></div>
+<div class="slidecontainer">
+    Sample Rate:
+    <input type="range" min="10" max="500" value="200" class="slider" id="sampleTime_ms">
+    <span id="samplerate_disp"></span>
+</div>
 
-Notice how at the beginning, the system keeps the motor on. As soon as the speed crosses the "desired" threshold of 1000RPM, the motor command drops off. The motor speed begins to decrease, and continues to do so until the speed falls below that 1000RPM bogey. Once it does, the voltage turns on again, full force. THe motor speeds back up till it is turning the shooter wheel faster than 1000RPM. At which point the voltage shuts off, and the cycle starts over.
+Notice how at the beginning, the system keeps the motor on. As soon as the speed crosses the "desired" threshold of 1000RPM, the motor command drops off. The motor speed begins to decrease, and continues to do so until the speed falls below that 1000RPM bogey. Once it does, the voltage turns on again, full force. The motor speeds back up till it is turning the shooter wheel faster than 1000RPM. At which point the voltage shuts off, and the cycle starts over.
 
-This control logic is actually remarkably good, especially given its simplicity (it's an if/else statement). The biggest disadvantage is that it's causing _big_ swings in the electrical signal, and slightly oscillating motor speed around the desired motor speed. If these voltage swings and slight velocity oscillations are acceptable for your application, this is a great system to use for controlling your shooter wheel.
+This control logic is actually remarkably good, especially given its simplicity (it's an if/else statement). The only variable to really play with - how fast to you sample speed and update the output voltage? Usually this is fixed (~20ms on the roboRIO, unless you do something funky). Play with the slider above to see the effect - it should be somewhat intutitive. The faster you perform this update rate, the less "jerky" the motor speed gets. However, faster takes more processing power, and cycles the controller on and off faster.
+
+The biggest disadvantage is that it's causing _big_ swings in the electrical signal, and slightly oscillating motor speed around the desired motor speed. If these voltage swings and slight velocity oscillations are acceptable for your application, this is a great system to use for controlling your shooter wheel.
 
 However, there are more advanced options which can produce... "nicer" behavior.
 
@@ -209,8 +229,25 @@ A common design that _can_ work in lots of cases
 
 <div id="plot4a"></div>
 <div id="plot4b"></div>
+<div class="slidecontainer">
+    F Gain:
+    <input type="range" min="0" max="1000" value="0" class="slider" id="F_gain">
+    <span id="F_gain_disp"></span>
+    <br>
+    P Gain:
+    <input type="range" min="0" max="1000" value="0" class="slider" id="P_gain">
+    <span id="P_gain_disp"></span>
+    <br>
+    I Gain:
+    <input type="range" min="0" max="1000" value="0" class="slider" id="I_gain">
+    <span id="I_gain_disp"></span>
+    <br>
+    D Gain:
+    <input type="range" min="0" max="1000" value="0" class="slider" id="D_gain">
+    <span id="D_gain_disp"></span>
+</div>
 
-## PID Controller - Why it works
+## PID(F) Controller - Why it works
 
 What the components do. Why they're used
 
