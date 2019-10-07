@@ -17,70 +17,73 @@ function step(t){
 
 class DualPlot{
 
-    constructor(plot1Name, plot2Name, rpmData, voltageData){
-        this.speedGraph = NaN;
-        this.voltsGraph = NaN;
+    constructor(plot1Name, plot2Name){
+        this.speedGraph = null;
+        this.voltsGraph = null;
         this.plot1Name = plot1Name;
         this.plot2Name = plot2Name;
-        this.updatePlot(rpmData, voltageData);
     }
 
     updatePlot(rpmData, voltageData){
-        if(self.speedGraph != NaN){
-            delete this.speedGraph;
+        if(this.speedGraph == null){
+            this.speedGraph = functionPlot({
+                target: this.plot1Name,
+                title: '',
+                grid: true,
+                yAxis: {
+                    label: "Wheel Speed (RPM)",
+                    domain: [-100, 4000]
+                },
+                xAxis: {
+                    label: "Time (s)",
+                    domain: [-1, 10]
+                }
+              })
         }
-        if(this.voltsGraph != NaN){
-            delete this.voltsGraph;
+        if(this.voltsGraph == null){
+            this.voltsGraph = functionPlot({
+                target: this.plot2Name,
+                title: '',
+                grid: true,
+                yAxis: {
+                    label: "Input Voltage (V)",
+                    domain: [-1, 14]
+                },
+                xAxis: {
+                    label: "Time (s)",
+                    domain: [-1, 10]
+                }
+              })
         }
 
-        this.speedGraph = functionPlot({
-            target: this.plot1Name,
-            title: '',
-            grid: true,
-            yAxis: {
-                label: "Wheel Speed (RPM)",
-                domain: [-100, 4000]
-            },
-            xAxis: {
-                label: "Time (s)",
-                domain: [-1, 10]
-            },
-            data: [
-              {
-                  points: rpmData,
-                  fnType: 'points',
-                  graphType: 'polyline'
-              },
-              {
-                fn: '1000',
-                title: 'Setpoint'
-              }
-            ]
-          })
-          
-          this.voltsGraph = functionPlot({
-            target: this.plot2Name,
-            title: '',
-            grid: true,
-            yAxis: {
-                label: "Input Voltage (V)",
-                domain: [-1, 14]
-            },
-            xAxis: {
-                label: "Time (s)",
-                domain: [-1, 10]
-            },
-            data: [
-              {
-                  points: voltageData,
-                  fnType: 'points',
-                  graphType: 'polyline'
-              }
-            ]
-          })
+
+        this.speedGraph.options.data =
+        [
+          {
+              points: rpmData,
+              fnType: 'points',
+              graphType: 'polyline'
+          },
+          {
+            fn: '1000',
+            title: 'Setpoint'
+          }
+        ]
+
+        this.voltsGraph.options.data = 
+        [
+            {
+                points: voltageData,
+                fnType: 'points',
+                graphType: 'polyline'
+            }
+          ]
           
           this.speedGraph.addLink(this.voltsGraph);
           this.voltsGraph.addLink(this.speedGraph);
+
+          this.speedGraph.draw()
+          this.voltsGraph.draw()
     }
     
 
@@ -180,8 +183,9 @@ function runSimFullVoltage(){
 }
 
  //TODO - ACTUALLY USE CLASS REPRESNTATION TO STOP MEMORY LELAK
+var fullVoltPlot = new DualPlot('#plot2a', '#plot2b')
 runSimFullVoltage();
-makePlot('#plot2a', '#plot2b')
+fullVoltPlot.updatePlot(motorSpeedArray, inputVoltageArray)
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Steady-state behavior with disturbances
@@ -224,8 +228,9 @@ function runSimFullVoltageDisturbances(){
 
 }
 
+var fullVoltDistPlot = new DualPlot('#plot5a', '#plot5b')
 runSimFullVoltageDisturbances();
-makePlot('#plot5a', '#plot5b')
+fullVoltDistPlot.updatePlot(motorSpeedArray, inputVoltageArray)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -298,15 +303,19 @@ function runSimBangBang(Ts_controller){
 var sampTimeSlider = document.getElementById("sampleTime_ms");
 var sampTimeDisp   = document.getElementById("samplerate_disp");
 
+var bangBangPlot = new DualPlot('#plot3a', '#plot3b')
+
 // Update the current slider value (each time you drag the slider handle)
 sampTimeSlider.oninput = function() {
     sampTimeDisp.innerHTML = this.value + "ms";
-  runSimBangBang(this.value/1000);
-  makePlot('#plot3a', '#plot3b');
+    runSimBangBang(this.value/1000);
+    bangBangPlot.updatePlot(motorSpeedArray, inputVoltageArray)
 } 
 
 //Init
 sampTimeSlider.oninput()
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -400,6 +409,8 @@ var IGainDisplay = document.getElementById("I_gain_disp");
 var DGainSlider  = document.getElementById("D_gain");
 var DGainDisplay = document.getElementById("D_gain_disp");
 
+var pidPlot = new DualPlot('#plot4a', '#plot4b')
+
 // Update the plots (each time you drag any slider handle)
 function rePlot(){
     FGain = parseFloat(FGainSlider.value)/70000;
@@ -413,8 +424,7 @@ function rePlot(){
     DGainDisplay.innerHTML = DGain;
 
     runSimPID(FGain, PGain, IGain, DGain);
-    makePlot('#plot4a', '#plot4b')
-    console.log("Redraw")
+    pidPlot.updatePlot(motorSpeedArray, inputVoltageArray)
 }
 
 
