@@ -258,7 +258,7 @@ This error is then used in different ways in each term.
 
 For the mathematically inclined, the PID control law dictates that the voltage shall be calculated according the the following formula:
 
-$$ v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t) $$
+$$ v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dx + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t) $$
 
 If this appears daunting, Fear not! We'll break this down piece by piece.
 
@@ -304,7 +304,7 @@ The F term can be kind of tricky - if in doubt, leave it out. It works here beca
 
 And that's all there is to it! Bask in the glory of the equation once more:
 
-$$ v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t) $$
+$$ v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dx + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t) $$
 
 The key to doing this is that you, as the engineer, have _free control_ over picking $$K_{F}$$, $$K_{P}$$, $$K_{I}$$, and $$K_{D}$$, and just need to pick them to make your system act nicely.
 
