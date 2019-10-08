@@ -98,7 +98,7 @@ That's it - it's just the ratio of the teeth!
 
 _source: etc.usf.edu_
 
-The key thing to keep in mind: [_gears_ are just _spinning levers_](https://www.youtube.com/watch?v=JOLtS4VUcvQ). When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that meshpoint closer to the center of either wheel changes the ratio of motion between the two sides.
+The key thing to keep in mind: [_gears_ are just _spinning levers_](https://www.youtube.com/watch?v=JOLtS4VUcvQ). When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that mesh-point closer to the center of either wheel changes the ratio of motion between the two sides.
 
 This relationship could be derived intuitively. Make the assumption that the teeth are always in mesh, and never slip relative to each other. Given this, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate _3 times_ to get a single rotation on the output. 
 
@@ -120,7 +120,7 @@ $$v_{in}(t) = 2 \pi R_{in} \omega_{in}(t)$$
 
 $$v_{out}(t) = 2 \pi R_{out} \omega_{out}(t)$$
 
-Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one centerpoint, but the right of the other, we need to introduce a negative sign as well. [^2]
+Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one center-point, but the right of the other, we need to introduce a negative sign as well. [^2]
 
 $$v_{in}(t) = -v_{out}(t)$$
 
@@ -451,9 +451,9 @@ Ok. So to levelset - so far, we've been using what controls engineers would call
 
 Time domain is intuitive. You can very easily think about how how physical quantities (like speed or voltage) change over time. 
 
-However, this is not usually how controlls engineers work. The reason is the same one we ran into right at the end - _differential equations_. These are notoriously difficult to solve and work with in the time domain. 
+However, this is not usually how controls engineers work. The reason is the same one we ran into right at the end - _differential equations_. These are notoriously difficult to solve and work with in the time domain. 
 
-As it turns out, or friends from pure mathemtical fields have devised a whole slew of other tools to use. You don't have to use _time_ as your independent variable - you can in fact use something else. _Frequency_, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.
+As it turns out, or friends from pure mathematical fields have devised a whole slew of other tools to use. You don't have to use _time_ as your independent variable - you can in fact use something else. _Frequency_, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.
 
 These transforms are not trivial concepts to cover, so I am calling them out of scope for now. If you're interested in digging into these topics, the terminology to look up is [Fourier Transform](https://en.wikipedia.org/wiki/Fourier_transform), [S transform](https://en.wikipedia.org/wiki/S_transform), and [Z transform](https://en.wikipedia.org/wiki/Z-transform). These topics are also covered in the [Control Systems in FRC](https://file.tavsys.net/control/controls-engineering-in-frc.pdf) textbook.
 
@@ -461,7 +461,7 @@ These transforms are not trivial concepts to cover, so I am calling them out of 
 
 One piece of advice I would offer while working on these models - _units will kill you_. You will want to be super careful and rigorous in ensuring all your math and your constants are using the same units, and when you write your code, the units assumptions come in as well. We've kinda skirted the whole topic so far, as to not clutter the explanation. Still though, you have to be careful.
 
-Honestly, I've only ever had success making these models using _metric_ units, and being super-consistant on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many "gotchas" for me on the conversions.
+Honestly, I've only ever had success making these models using _metric_ units, and being super-consistent on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many "gotchas" for me on the conversions.
 
 However, I'm from the US. I grew up using feet and lbs, and I still have a far more intuitive understanding of what "10 feet per second" or "15 foot pounds of torque" looks and feels like - much more so that "15 meters per second" or "20 Newtons". For this reason, any time we report values to a dashboard or log them to file, we convert back to imperial. It's totally computational overhead, but I'd prefer to let the processor do that heavy lifting, and have a _feeling_ for what the numbers mean, rather than waste my time doing mental math to do the conversion.
 

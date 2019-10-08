@@ -132,7 +132,7 @@ Based on this, we can draw the following plot of wheel speed, over time:
 
 As a side note, the $$C_1$$ and $$C_2$$ values have been chosen to represent a single 775 pro motor, through a reasonable gearbox, through a typically-sized shooter wheel. See [this javascript file](/assets/js/pidSim.js) for more details on those assumptions.
 
-If you stare at the graph, it certanly appears our initial suppositions are confirmed:
+If you stare at the graph, it certainly appears our initial suppositions are confirmed:
 
 * For times to the left of the Y axis, we see our speed is zero.
 * At $$t = 0$$, on the Y axis, voltage turns on, and our speed starts to increase.
@@ -147,7 +147,7 @@ For example - If we $$ \omega[n] $$ and $$ V_{in}[n] $$ are zero for all $$n$$ l
 
 $$ \omega_{wheel}[-5] = \frac{T_s C_1 * 0 + 0}{( 1 + T_s C_2 )} = 0 $$
 
-Additionally, if when we assume "steady-state", we assume that  $$\omega_{wheel}[n] = \omega_{wheel}[n-1] $$ - the mathematical way of expressisng "$$n$$ is large enough such that $$\omega_{wheel}[n]$$ is no longer changing".
+Additionally, if when we assume "steady-state", we assume that  $$\omega_{wheel}[n] = \omega_{wheel}[n-1] $$ - the mathematical way of expressing "$$n$$ is large enough such that $$\omega_{wheel}[n]$$ is no longer changing".
 
 In this case, we can state:
 
@@ -163,7 +163,7 @@ Huzzah! Isn't math fun?
 
 ## A Brief Step Back - The Goal
 
-One key thing to remember, or learn, going forward: **A consistent shooter wheel must be running at a constant, defined _velocity_, prior to injecting a ball**. That's right - you need to keep your _rotational velocity (RPM)_ steady, if you want to make sure your launched ball always travels through a consistent arc. The reason for this is again based in physics - the _energy_ imparted to the ball controlls its arc, and energy imparted is related to the _velocity_ of the shooter wheel.
+One key thing to remember, or learn, going forward: **A consistent shooter wheel must be running at a constant, defined _velocity_, prior to injecting a ball**. That's right - you need to keep your _rotational velocity (RPM)_ steady, if you want to make sure your launched ball always travels through a consistent arc. The reason for this is again based in physics - the _energy_ imparted to the ball controls its arc, and energy imparted is related to the _velocity_ of the shooter wheel.
 
 Here's the key, if you haven't noticed yet - we have the ability to command the motor's _voltage_, not it's _speed_. The speed is dictated by a whole slew of additional physical parameters. Though we've built up this math model of how things are supposed to work, this isn't a perfect transform we can invert to get an answer of voltage->speed, as we shall soon see.
 
@@ -196,11 +196,11 @@ Here's an example of what might happen with some friction in the system, as well
 
 Note that the steady state speed is lower (~1.75k RPM) due to friction, and the impulse of dropping the ball into the shooter wheel takes a big bite out of the speed at the 5 second mark.
 
-In every case, the external disturbance comes at an _unpredictable time_ and with an _unpredictable magnititude_. We've made some mathematical assumptions here about the behavior of the system, but they won't capture the exact behavior of every disturbance.
+In every case, the external disturbance comes at an _unpredictable time_ and with an _unpredictable magnitude_. We've made some mathematical assumptions here about the behavior of the system, but they won't capture the exact behavior of every disturbance.
 
 ## Disturbances: The Need for Feedback
 
-This really is the key for why we need our software to be able to measure anything at all - we can't 100% predict the forces and influences of the external world on our controlled system. No matter how much planning and math we do, we can't protect ourselves from Joe Freshman who forgets to grease the gearbox just right, and changes the coefficent of friction. Neither can we know the exact timing of when balls will be injected into our shooter system, nor have guarantees our batteries will discharge at some exact rate. _We cannot exactly predict disturbances_.
+This really is the key for why we need our software to be able to measure anything at all - we can't 100% predict the forces and influences of the external world on our controlled system. No matter how much planning and math we do, we can't protect ourselves from Joe Freshman who forgets to grease the gearbox just right, and changes the coefficient of friction. Neither can we know the exact timing of when balls will be injected into our shooter system, nor have guarantees our batteries will discharge at some exact rate. _We cannot exactly predict disturbances_.
 
 What we can do, however, is design our software to account for disturbances. Since we can _measure_ the speed of the wheel, we can determine if it is too high or too low, and adjust our voltage to compensate. _Exactly how_ that voltage gets adjusted is worth detailed consideration, and is what the rest of the blog post will focus on.
 
@@ -214,12 +214,12 @@ Again, for context, we are moving on to describe the contents of the _software_ 
 
 ### Bang-Bang
 
-Let us take a first pass at desigining some software that takes in a speed command, and produces a voltage command, with the intent of getting our shooter wheel toward the commanded speed. Based on the known physical relationship between voltage and speed, we declalre the following very simple _control law_:
+Let us take a first pass at designing some software that takes in a speed command, and produces a voltage command, with the intent of getting our shooter wheel toward the commanded speed. Based on the known physical relationship between voltage and speed, we declare the following very simple _control law_:
 
 1. If the speed is too low, send full power to the motor
 2. If the speed is too high, send zero power to the motor.
 
-In this casea, "too low" implies "actual speed is less than desired speed". "Too High" is just the opposite. Full power means 12V (since we are controlling voltage), and zero power menas 0V. This leads to what is commonly called a "Bang-bang" controller - hopefully a pretty intuitive concept. Per its name, it causes the motor command to "bang" between max and min power, attempting to keep the speed right at the desired value. Hence the name, [Bang-Bang Control](https://en.wikipedia.org/wiki/Bang%E2%80%93bang_control).
+In this case, "too low" implies "actual speed is less than desired speed". "Too High" is just the opposite. Full power means 12V (since we are controlling voltage), and zero power means 0V. This leads to what is commonly called a "Bang-bang" controller - hopefully a pretty intuitive concept. Per its name, it causes the motor command to "bang" between max and min power, attempting to keep the speed right at the desired value. Hence the name, [Bang-Bang Control](https://en.wikipedia.org/wiki/Bang%E2%80%93bang_control).
 
 Here's an example of what such a controller would do:
 
@@ -234,7 +234,7 @@ Here's an example of what such a controller would do:
 
 Notice how at the beginning, the system keeps the motor on. As soon as the speed crosses the "desired" threshold of 1000RPM, the motor command drops off. The motor speed begins to decrease, and continues to do so until the speed falls below that 1000RPM [bogey](https://apps.dtic.mil/dtic/tr/fulltext/u2/a404426.pdf). Once it does, the voltage turns on again, full force. The motor speeds back up till it is turning the shooter wheel faster than 1000RPM. At which point the voltage shuts off, and the cycle starts over.
 
-This control logic is actually remarkably good, especially given its simplicity (it's an if/else statement). The only variable to really play with - how fast to you sample speed and update the output voltage? Usually this is fixed (~20ms on the roboRIO, unless you do something funky). Play with the slider above to see the effect - it should be somewhat intutitive. The faster you perform this update rate, the less "jerky" the motor speed gets. However, faster takes more processing power, and cycles the controller on and off faster.
+This control logic is actually remarkably good, especially given its simplicity (it's an if/else statement). The only variable to really play with - how fast to you sample speed and update the output voltage? Usually this is fixed (~20ms on the roboRIO, unless you do something funky). Play with the slider above to see the effect - it should be somewhat intuitive. The faster you perform this update rate, the less "jerky" the motor speed gets. However, faster takes more processing power, and cycles the controller on and off faster.
 
 The biggest disadvantage is that it's causing _big_ swings in the electrical signal, and slightly oscillating motor speed around the desired motor speed. If these voltage swings and slight velocity oscillations are acceptable for your application, this is a great system to use for controlling your shooter wheel.
 
@@ -242,7 +242,7 @@ However, there are more advanced options which can produce... "nicer" behavior.
 
 ## PID Controller - What It Is
 
-A common design that _can_ work in lots of cases is the [Proportional/Integral/Derivative controller](https://en.wikipedia.org/wiki/PID_controller), or "PID" for short. PID controllers are designed to take our previous "too-low/too-high" intuition, and use some mathematical operations to make it a bit more rigirous.
+A common design that _can_ work in lots of cases is the [Proportional/Integral/Derivative controller](https://en.wikipedia.org/wiki/PID_controller), or "PID" for short. PID controllers are designed to take our previous "too-low/too-high" intuition, and use some mathematical operations to make it a bit more rigorous.
 
 PID controllers output a single speed command which is the _sum_ of a set of _terms_, each term scaled by the associated _gain_.
 
@@ -256,7 +256,7 @@ This error is then used in different ways in each term.
 
 ### The PID Control Law
 
-For the mathematically inclined, the PID control law dictates that the voltage shall be calcualted according the the following formula:
+For the mathematically inclined, the PID control law dictates that the voltage shall be calculated according the the following formula:
 
 $$ v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t) $$
 
@@ -270,7 +270,7 @@ When $$\omega_{des} > \omega_{act}$$, the P term is positive. When the opposite 
 
 When $$\omega_{des} $$ is very different than $$ \omega_{act}$$, you get a large output from the P term. When the two are similar, the P term's value is close to zero.
 
-Assuming the signs in the system and $$K_P$$ are chosen well, our _controll effort_ output to the plant will generally move the plant in the correct direction.
+Assuming the signs in the system and $$K_P$$ are chosen well, our _control effort_ output to the plant will generally move the plant in the correct direction.
 
 This means, in a much smoother way, we emulate the behavior of the bang-bang controller, which _intuitively_ should be moving you in the right direction.
 
@@ -280,7 +280,7 @@ The _derivative_ or D term uses the _derivative_ of the error (with respect to t
 
 Don't get too scared by the usage of calculus here. The way to think about the D term is as a _rate limiter on the P term_. Think about if you were accelerating on the highway, but you see cars stopped way in front of you. You might continue to mash on the gas pedal, then hit the brake at the very last minute. You might also be insane if you do that. Sure, you could technically stop, but it's way better to start slowing down _before_ you get to your target.
 
-That's exactly what the D term is for - it helps make sure the "intertia" of the P term charging full force toward the goal is tempered a bit, and cuts back on our control effort in advance of us getting there.
+That's exactly what the D term is for - it helps make sure the "inertia" of the P term charging full force toward the goal is tempered a bit, and cuts back on our control effort in advance of us getting there.
 
 This is useful for reducing _overshoot_, and slight oscillations of $$\omega_{act}$$ around $$\omega_{des}$$. We'll discuss these in more detail later.
 
@@ -296,7 +296,7 @@ This is where the I term comes in. By _adding up_ previous values of the error, 
 
 For certain systems, it is useful to augment the PID logic with an additional term - the _feed-forward_ or F term. Note that it uses $$ \omega_{des}(t) $$, not $$ \omega_{err}(t) $$. This means it has no dependance on your sensor feedback, only on the operator command.
 
-The way to think about the F term is a "guess" at what $$v(t)$$ should be, prior to getting any sensor feedback or calculating any of the other terms. In general, for this shooter wheel, we know there is a _linear_ relationship between steady-state speed and input voltage. That is to say, for a given input voltage, we know we'll (eventually) settle out at some speed. With a bit of experimentation, we can even find that voltage that gets us to our (in these examples) 1000 RPM setpoint. We take this information and "bake" it into our F term, which reduces the ammount of "work" the other P, I, and D terms have to do to get the system behaving nicely.
+The way to think about the F term is a "guess" at what $$v(t)$$ should be, prior to getting any sensor feedback or calculating any of the other terms. In general, for this shooter wheel, we know there is a _linear_ relationship between steady-state speed and input voltage. That is to say, for a given input voltage, we know we'll (eventually) settle out at some speed. With a bit of experimentation, we can even find that voltage that gets us to our (in these examples) 1000 RPM set-point. We take this information and "bake" it into our F term, which reduces the amount of "work" the other P, I, and D terms have to do to get the system behaving nicely.
 
 The F term can be kind of tricky - if in doubt, leave it out. It works here because of the _linear relationship_ between voltage and speed. If you were doing something like controlling an arm position with a motor, and trying to get the closed-loop system to achieve a certain arm _position_ (not velocity), you'd definitely not want to use F like this. However for _velocity control_, like in shooter wheels, I think it's almost impossible to live without!
 
@@ -310,7 +310,7 @@ The key to doing this is that you, as the engineer, have _free control_ over pic
 
 Note that you may hear some people talk about a "PD" or "PI" controller - this is still a PID controller, just with the "missing" gain in the name set equal to zero.
 
-Below is a sample of some nicely picked values. We'll spend next time describing _how_ to go about picking them. But for now, feel free to fiddle around with it, and referesh the page if you want to reset.
+Below is a sample of some nicely picked values. We'll spend next time describing _how_ to go about picking them. But for now, feel free to fiddle around with it, and refresh the page if you want to reset.
 
 
 <div id="plot4a"></div>
@@ -336,7 +336,7 @@ Below is a sample of some nicely picked values. We'll spend next time describing
 
 ## PID(F) Controller - Why it Works (or Doesn't)
 
-If you're familiar with the math behind the PID controller, it's not too hard to stare at it to convince yourself "Yea, this should probably work". But, it definitely doesn't work in all cases. In particular, it has to be _tuned_ around certain system behavior. If that behavior changes drastically over the course of operation ([mathemtaically a _non-linear system_](https://en.wikipedia.org/wiki/Nonlinear_system)), the PID system will often not perform as well. Things like slack in chains and gearboxes, static friction, squishy game pieces, and many other things will lead to systems becoming non-linear. In these cases, you can either:
+If you're familiar with the math behind the PID controller, it's not too hard to stare at it to convince yourself "Yea, this should probably work". But, it definitely doesn't work in all cases. In particular, it has to be _tuned_ around certain system behavior. If that behavior changes drastically over the course of operation ([mathematically a _non-linear system_](https://en.wikipedia.org/wiki/Nonlinear_system)), the PID system will often not perform as well. Things like slack in chains and gearboxes, static friction, squishy game pieces, and many other things will lead to systems becoming non-linear. In these cases, you can either:
 
 1. Suck it up. Get it good enough, and walk away
 2. Use a more advanced controller that accounts for the system's non-linear behavior. 
