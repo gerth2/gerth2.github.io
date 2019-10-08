@@ -469,7 +469,7 @@ At the end of the day though, what matters most is that you produce a functional
 
 ## Conclusion
 
-I feel as though we've come a very long way, but we also still have quite a ways to go yet! Hopefully you've enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we're going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. Stay tuned!
+I feel as though we've come a very long way, but we also still have quite a ways to go yet! Hopefully you've enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we're going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. [Check out Controller Design for more info!](/blog_posts/2019/10/07/pid_ctrl_design.html)
 
 
 

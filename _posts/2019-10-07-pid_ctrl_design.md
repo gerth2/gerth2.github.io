@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Control Theory - PID & Controller Design"
-date:   2019-09-21 9:30:00 -0500
+date:   2019-10-07 9:30:00 -0500
 categories: blog_posts
 ---
 
