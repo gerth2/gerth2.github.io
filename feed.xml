@@ -1,4 +1,355 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-09-20T17:28:56-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T09:30:00-05:00</published><updated>2019-09-20T09:30:00-05:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-10-07T21:21:05-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T09:30:00-05:00</published><updated>2019-10-07T09:30:00-05:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;Welcome to post 3 in our series on controls engineering. In this post, we’re going to explore the behavior of the motor model we’ve built up, try to create an intuition for how it behaves. We’ll establish a couple criteria for what we want it to do, and lead into the application of a classic PID controller.&lt;/p&gt;
+
+&lt;p&gt;Recall our standard model of how a &lt;em&gt;control system&lt;/em&gt; is laid out:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system.png&quot; alt=&quot;Control system&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For context, in &lt;a href=&quot;/blog_posts/2019/09/20/math_models.html&quot;&gt;part 2&lt;/a&gt;, we covered what sorts of math equations go inside the &lt;em&gt;plant&lt;/em&gt; portion of the control system:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_plant.png&quot; alt=&quot;Plant Models&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;A bit of an aside to the reader: The more I’ve been writing this series, the more I’m realizing what a disservice I’m actually doing to modern control theory. We’re using time domain analysis to build up all our understanding. Professional controls engineers, working on modern systems, don’t work in this domain. They’re using things like Linear Algebra, State-Space representations, LQR, and a whole host of things that, for better or for worse, I don’t have too much exposure to. I feel a bit bad that we’re not getting to the point where we can explain these.&lt;/p&gt;
+
+&lt;p&gt;You have to walk before you can run, and walking still gets you from point A to point B. What I always have to remind myself - This is just a high school robotics competition. Using LQR to design a super optimal control system is a valiant cause, one from which much can be learned. But it’s far from required for success.&lt;/p&gt;
+
+&lt;p&gt;The takeaway I guess I want readers to have: Enjoy our time here in the time domain space. Build up your intuition of how things evolve over time. Know that even if you get to the end of this series of posts, and learn everything they have to offer - &lt;em&gt;there is still more&lt;/em&gt;. The pro’s can teach you much.&lt;/p&gt;
+
+&lt;h2 id=&quot;plant-model-response&quot;&gt;Plant Model Response&lt;/h2&gt;
+
+&lt;p&gt;One of the pieces of terminology thrown around for these systems is &lt;em&gt;response&lt;/em&gt;. It’s a generic term that simply means “Given some input, how does the output act?”.&lt;/p&gt;
+
+&lt;p&gt;You can describe the response to a specific input. For example, if you apply 12V to the motor, you can say the motor’s &lt;em&gt;response&lt;/em&gt; to that 12v input is to &lt;em&gt;increase speed&lt;/em&gt;. Response might also be more generic - if you have an equation, you might be able to describe the &lt;em&gt;response&lt;/em&gt; to &lt;em&gt;any input&lt;/em&gt; concisely.&lt;/p&gt;
+
+&lt;p&gt;When analyzing the response of a system, we generally divide the analysis into two parts: &lt;em&gt;Transient&lt;/em&gt; and &lt;em&gt;Steady-State&lt;/em&gt;. &lt;em&gt;Transient Response&lt;/em&gt; refers to how the system acts &lt;em&gt;immediately following&lt;/em&gt; some disturbance in input. If you suddenly change the input voltage to a motor, its shaft will change speed - the manner in which it ramps up or ramps down is this &lt;em&gt;transient response&lt;/em&gt;. Separately, after the input has been stable for some time, the output usually stabilizes as well. &lt;em&gt;Steady-state&lt;/em&gt; refers to the system behavior after all of the “transient” behavior has died down. In our motor example, if you were to adjust the input voltage from 12V to 8V, you’d see the motor slow down. The speed it settles at could be called the “Steady State” response.&lt;/p&gt;
+
+&lt;p&gt;To analyze system response, we generally need to expose the system to a variety of different inputs.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_plant_inputs.png&quot; alt=&quot;Test Inputs&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are a few types of input that are very good to use, because you can learn a lot about the system from just a few trials (rather than shooting in the dark a lot).&lt;/p&gt;
+
+&lt;p&gt;The simplest is usually called a &lt;a href=&quot;https://en.wikipedia.org/wiki/Heaviside_step_function&quot;&gt;“unit step”&lt;/a&gt;. It’s a fancy math way to describe “flipping on a switch”. If you’re all into formal definitions, I like the piecewise definition:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+u(x) = \begin{cases} 0 &amp; x &lt; 0 \\ 1 &amp; x \geq 0  \end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;The input to the function (here notated as &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt;) is usually some function of time. You stretch and scale the function to indicate the turn-on time, and its size.&lt;/p&gt;
+
+&lt;p&gt;For example, if you wanted to describe “turning on” the motor (apply 12V) at time = 1 sec, you could describe the input voltage &lt;script type=&quot;math/tex&quot;&gt;v(t)&lt;/script&gt; with the equation&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v(t) = 12u(t-1)&lt;/script&gt;
+
+&lt;div id=&quot;plot1&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+function step(t){
+    if(t &lt; 0){
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+function plot1PointsGen(){
+    var retArray = []
+
+    var minTime = -1.0;
+    var maxTime = 5.0;
+    var Ts = 0.01;
+
+    for(t = minTime; t &lt; maxTime; t += Ts){
+        newValue = 12 * step(t - 1);
+
+        retArray.push([t, newValue]);
+    }
+
+    return retArray;
+}
+
+functionPlot({
+  target: '#plot1',
+  title: '',
+  grid: true,
+  disableZoom:true,
+  yAxis: {
+      label: &quot;Motor Voltage (V)&quot;,
+      domain: [-3, 15]
+  },
+  xAxis: {
+      label: &quot;Time (s)&quot;,
+      domain: [-1, 5]
+  },
+  data: [
+    {
+        points: plot1PointsGen(),
+        fnType: 'points',
+        graphType: 'polyline'
+    }
+  ]
+})
+&lt;/script&gt;
+
+&lt;p&gt;It should be noted that the definition of this guy doesn’t change all that much when you go from continuous &lt;script type=&quot;math/tex&quot;&gt;(t)&lt;/script&gt; to discrete &lt;script type=&quot;math/tex&quot;&gt;[n]&lt;/script&gt;. The output is &lt;script type=&quot;math/tex&quot;&gt;0&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+n &lt; 0 %]]&gt;&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;1&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;n \geq 0&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;practical-example---shooter-system-response&quot;&gt;Practical Example - Shooter System Response&lt;/h3&gt;
+
+&lt;p&gt;Let’s try to insert our function into the shooter wheel system we described last time. We’ll choose it as the function to describe how the &lt;em&gt;voltage&lt;/em&gt; input changes over time, and see how the speed changes.&lt;/p&gt;
+
+&lt;h4 id=&quot;intuition&quot;&gt;Intuition&lt;/h4&gt;
+
+&lt;p&gt;Before we hit the math, let’s think through what we expect to happen.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Before the voltage turns on (&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
+  &lt;li&gt;As soon as the voltage turns on, the wheel should start spinning.&lt;/li&gt;
+  &lt;li&gt;The higher the voltage that is passed in, the faster it should be going.&lt;/li&gt;
+  &lt;li&gt;The wheel should hit some maximum “steady state” speed, and stay there.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Of course, most folks would thing this is pretty obvious. However, it’s important to keep it in mind. We can use the math equations to show our intuition to be true, or use the intuition to validate we didn’t get something wrong in the math.&lt;/p&gt;
+
+&lt;h4 id=&quot;nominal-behavior&quot;&gt;Nominal Behavior&lt;/h4&gt;
+
+&lt;p&gt;Recall the equation we derived in part 2:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}&lt;/script&gt;
+
+&lt;p&gt;Let’s see if we can get an idea for how this thing reacts when we apply an input voltage. We do this by making two assumptions:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;We will apply 12 volts at the time 0 seconds (&lt;script type=&quot;math/tex&quot;&gt;t = 0&lt;/script&gt;). This can be represented using our unit step function: &lt;script type=&quot;math/tex&quot;&gt;v[n] = 12*u[n]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;We will assume the wheel was stationary prior to start. This means that &lt;script type=&quot;math/tex&quot;&gt;\omega_{wheel}[-1] = 0&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Based on this, we can draw the following plot of wheel speed, over time:&lt;/p&gt;
+
+&lt;div id=&quot;plot2a&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;plot2b&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;As a side note, the &lt;script type=&quot;math/tex&quot;&gt;C_1&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;C_2&lt;/script&gt; values have been chosen to represent a single 775 pro motor, through a reasonable gearbox, through a typically-sized shooter wheel. See &lt;a href=&quot;/assets/js/pidSim.js&quot;&gt;this javascript file&lt;/a&gt; for more details on those assumptions.&lt;/p&gt;
+
+&lt;p&gt;If you stare at the graph, it certainly appears our initial suppositions are confirmed:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;For times to the left of the Y axis, we see our speed is zero.&lt;/li&gt;
+  &lt;li&gt;At &lt;script type=&quot;math/tex&quot;&gt;t = 0&lt;/script&gt;, on the Y axis, voltage turns on, and our speed starts to increase.&lt;/li&gt;
+  &lt;li&gt;To the right of the Y axis, speed starts to increase as time goes on.&lt;/li&gt;
+  &lt;li&gt;As time goes on, we see the speed caps out at around 3500 RPM.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;extracting-the-steady-state-behavior&quot;&gt;Extracting the Steady-state behavior.&lt;/h4&gt;
+
+&lt;p&gt;As a brief tangent - it should be noted that you can extract these conclusions from the equation itself. Even if you don’t trust your eyes on the chart, you can still prove it logically.&lt;/p&gt;
+
+&lt;p&gt;For example - If we &lt;script type=&quot;math/tex&quot;&gt;\omega[n]&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;V_{in}[n]&lt;/script&gt; are zero for all &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; less than zero, we can see the equation becomes:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[-5] = \frac{T_s C_1 * 0 + 0}{( 1 + T_s C_2 )} = 0&lt;/script&gt;
+
+&lt;p&gt;Additionally, if when we assume “steady-state”, we assume that  &lt;script type=&quot;math/tex&quot;&gt;\omega_{wheel}[n] = \omega_{wheel}[n-1]&lt;/script&gt; - the mathematical way of expressing “&lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; is large enough such that &lt;script type=&quot;math/tex&quot;&gt;\omega_{wheel}[n]&lt;/script&gt; is no longer changing”.&lt;/p&gt;
+
+&lt;p&gt;In this case, we can state:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n]}{( 1 + T_s C_2 )}&lt;/script&gt;
+
+&lt;p&gt;which simplifies to:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n] = \frac{C_1}{C_2}V_{in}[n]&lt;/script&gt;
+
+&lt;p&gt;And, again, assuming &lt;script type=&quot;math/tex&quot;&gt;V_{in}[n]&lt;/script&gt; is just a constant for large &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;, means that our “steady-state” &lt;script type=&quot;math/tex&quot;&gt;\omega_{wheel}[n]&lt;/script&gt; is in fact also a constant.&lt;/p&gt;
+
+&lt;p&gt;Huzzah! Isn’t math fun?&lt;/p&gt;
+
+&lt;h2 id=&quot;a-brief-step-back---the-goal&quot;&gt;A Brief Step Back - The Goal&lt;/h2&gt;
+
+&lt;p&gt;One key thing to remember, or learn, going forward: &lt;strong&gt;A consistent shooter wheel must be running at a constant, defined &lt;em&gt;velocity&lt;/em&gt;, prior to injecting a ball&lt;/strong&gt;. That’s right - you need to keep your &lt;em&gt;rotational velocity (RPM)&lt;/em&gt; steady, if you want to make sure your launched ball always travels through a consistent arc. The reason for this is again based in physics - the &lt;em&gt;energy&lt;/em&gt; imparted to the ball controls its arc, and energy imparted is related to the &lt;em&gt;velocity&lt;/em&gt; of the shooter wheel.&lt;/p&gt;
+
+&lt;p&gt;Here’s the key, if you haven’t noticed yet - we have the ability to command the motor’s &lt;em&gt;voltage&lt;/em&gt;, not it’s &lt;em&gt;speed&lt;/em&gt;. The speed is dictated by a whole slew of additional physical parameters. Though we’ve built up this math model of how things are supposed to work, this isn’t a perfect transform we can invert to get an answer of voltage-&amp;gt;speed, as we shall soon see.&lt;/p&gt;
+
+&lt;h4 id=&quot;behavior-with-disturbances&quot;&gt;Behavior with Disturbances&lt;/h4&gt;
+
+&lt;p&gt;Before we get to discussing how to achieve a commanded speed, there’s one more thing to discuss. We’ve so far neglected a key portion of our physical model - the presence of an &lt;em&gt;external disturbance&lt;/em&gt;. When we say &lt;em&gt;external disturbance&lt;/em&gt;, we’re describing any force or torque acting on the system which is, in some way, abnormal, or unexpected.&lt;/p&gt;
+
+&lt;p&gt;I won’t bore you too much with the math. But, re-working our derivations from the last time, we can inject this new disturbance term as a time-varying torque &lt;script type=&quot;math/tex&quot;&gt;\tau_{ext}[n]&lt;/script&gt; into our motor speed equations:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] - T_s C_3 \tau_{ext}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}&lt;/script&gt;
+
+&lt;p&gt;with&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_3 = \frac{2}{mr^2}&lt;/script&gt;
+
+&lt;p&gt;This disturbance may come in many forms.&lt;/p&gt;
+
+&lt;p&gt;Maybe it’s a big hit, all at once - like a ball entering the shooter mechanism. This is often called an &lt;em&gt;impullse&lt;/em&gt; disturbance.&lt;/p&gt;
+
+&lt;p&gt;Maybe it’s something more constant over time, like friction in the bearings and gears of the rotating mechanism.&lt;/p&gt;
+
+&lt;p&gt;Maybe it’s something electrical, like the battery losing charge over time.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of what might happen with some friction in the system, as well as injecting a ball at &lt;script type=&quot;math/tex&quot;&gt;t=5&lt;/script&gt; seconds:&lt;/p&gt;
+
+&lt;div id=&quot;plot5a&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;plot5b&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that the steady state speed is lower (~1.75k RPM) due to friction, and the impulse of dropping the ball into the shooter wheel takes a big bite out of the speed at the 5 second mark.&lt;/p&gt;
+
+&lt;p&gt;In every case, the external disturbance comes at an &lt;em&gt;unpredictable time&lt;/em&gt; and with an &lt;em&gt;unpredictable magnitude&lt;/em&gt;. We’ve made some mathematical assumptions here about the behavior of the system, but they won’t capture the exact behavior of every disturbance.&lt;/p&gt;
+
+&lt;h2 id=&quot;disturbances-the-need-for-feedback&quot;&gt;Disturbances: The Need for Feedback&lt;/h2&gt;
+
+&lt;p&gt;This really is the key for why we need our software to be able to measure anything at all - we can’t 100% predict the forces and influences of the external world on our controlled system. No matter how much planning and math we do, we can’t protect ourselves from Joe Freshman who forgets to grease the gearbox just right, and changes the coefficient of friction. Neither can we know the exact timing of when balls will be injected into our shooter system, nor have guarantees our batteries will discharge at some exact rate. &lt;em&gt;We cannot exactly predict disturbances&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;What we can do, however, is design our software to account for disturbances. Since we can &lt;em&gt;measure&lt;/em&gt; the speed of the wheel, we can determine if it is too high or too low, and adjust our voltage to compensate. &lt;em&gt;Exactly how&lt;/em&gt; that voltage gets adjusted is worth detailed consideration, and is what the rest of the blog post will focus on.&lt;/p&gt;
+
+&lt;h2 id=&quot;designing-a-controller---intuition&quot;&gt;Designing a Controller - Intuition&lt;/h2&gt;
+
+&lt;p&gt;Given the behavior of the system observed so far, the relationship between voltage and speed should be somewhat obvious - More voltage leads to more speed. We can leverage this fact while we design our software.&lt;/p&gt;
+
+&lt;p&gt;Again, for context, we are moving on to describe the contents of the &lt;em&gt;software&lt;/em&gt; portion of our &lt;em&gt;controller&lt;/em&gt; inside our standard control system:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_controller.png&quot; alt=&quot;Controller&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;bang-bang&quot;&gt;Bang-Bang&lt;/h3&gt;
+
+&lt;p&gt;Let us take a first pass at designing some software that takes in a speed command, and produces a voltage command, with the intent of getting our shooter wheel toward the commanded speed. Based on the known physical relationship between voltage and speed, we declare the following very simple &lt;em&gt;control law&lt;/em&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;If the speed is too low, send full power to the motor&lt;/li&gt;
+  &lt;li&gt;If the speed is too high, send zero power to the motor.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In this case, “too low” implies “actual speed is less than desired speed”. “Too High” is just the opposite. Full power means 12V (since we are controlling voltage), and zero power means 0V. This leads to what is commonly called a “Bang-bang” controller - hopefully a pretty intuitive concept. Per its name, it causes the motor command to “bang” between max and min power, attempting to keep the speed right at the desired value. Hence the name, &lt;a href=&quot;https://en.wikipedia.org/wiki/Bang%E2%80%93bang_control&quot;&gt;Bang-Bang Control&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Here’s an example of what such a controller would do:&lt;/p&gt;
+
+&lt;div id=&quot;plot3a&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;plot3b&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;slidecontainer&quot;&gt;
+    Sample Rate:
+    &lt;input type=&quot;range&quot; min=&quot;1&quot; max=&quot;750&quot; value=&quot;200&quot; class=&quot;slider&quot; id=&quot;sampleTime_ms&quot; /&gt;
+    &lt;span id=&quot;samplerate_disp&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Notice how at the beginning, the system keeps the motor on. As soon as the speed crosses the “desired” threshold of 1000RPM, the motor command drops off. The motor speed begins to decrease, and continues to do so until the speed falls below that 1000RPM &lt;a href=&quot;https://apps.dtic.mil/dtic/tr/fulltext/u2/a404426.pdf&quot;&gt;bogey&lt;/a&gt;. Once it does, the voltage turns on again, full force. The motor speeds back up till it is turning the shooter wheel faster than 1000RPM. At which point the voltage shuts off, and the cycle starts over.&lt;/p&gt;
+
+&lt;p&gt;This control logic is actually remarkably good, especially given its simplicity (it’s an if/else statement). The only variable to really play with - how fast to you sample speed and update the output voltage? Usually this is fixed (~20ms on the roboRIO, unless you do something funky). Play with the slider above to see the effect - it should be somewhat intuitive. The faster you perform this update rate, the less “jerky” the motor speed gets. However, faster takes more processing power, and cycles the controller on and off faster.&lt;/p&gt;
+
+&lt;p&gt;The biggest disadvantage is that it’s causing &lt;em&gt;big&lt;/em&gt; swings in the electrical signal, and slightly oscillating motor speed around the desired motor speed. If these voltage swings and slight velocity oscillations are acceptable for your application, this is a great system to use for controlling your shooter wheel.&lt;/p&gt;
+
+&lt;p&gt;However, there are more advanced options which can produce… “nicer” behavior.&lt;/p&gt;
+
+&lt;h2 id=&quot;pid-controller---what-it-is&quot;&gt;PID Controller - What It Is&lt;/h2&gt;
+
+&lt;p&gt;A common design that &lt;em&gt;can&lt;/em&gt; work in lots of cases is the &lt;a href=&quot;https://en.wikipedia.org/wiki/PID_controller&quot;&gt;Proportional/Integral/Derivative controller&lt;/a&gt;, or “PID” for short. PID controllers are designed to take our previous “too-low/too-high” intuition, and use some mathematical operations to make it a bit more rigorous.&lt;/p&gt;
+
+&lt;p&gt;PID controllers output a single speed command which is the &lt;em&gt;sum&lt;/em&gt; of a set of &lt;em&gt;terms&lt;/em&gt;, each term scaled by the associated &lt;em&gt;gain&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;error&quot;&gt;Error&lt;/h3&gt;
+
+&lt;p&gt;A PID controller first computes the &lt;em&gt;error&lt;/em&gt; between the desired and actual velocities:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{err}(t) = \omega_{des}(t) - \omega_{act}(t)&lt;/script&gt;
+
+&lt;p&gt;This error is then used in different ways in each term.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-pid-control-law&quot;&gt;The PID Control Law&lt;/h3&gt;
+
+&lt;p&gt;For the mathematically inclined, the PID control law dictates that the voltage shall be calculated according the the following formula:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)&lt;/script&gt;
+
+&lt;p&gt;If this appears daunting, Fear not! We’ll break this down piece by piece.&lt;/p&gt;
+
+&lt;h3 id=&quot;proportional-term---k_p-omega_errt&quot;&gt;Proportional Term - &lt;script type=&quot;math/tex&quot;&gt;K_{P} \omega_{err}(t)&lt;/script&gt;&lt;/h3&gt;
+
+&lt;p&gt;The &lt;em&gt;proportional&lt;/em&gt; or P term uses the error &lt;script type=&quot;math/tex&quot;&gt;\omega_{err}(t)&lt;/script&gt;, scaled by its gain &lt;script type=&quot;math/tex&quot;&gt;K_{P}&lt;/script&gt;. This fundamentally accomplishes something very similar to what the bang-bang controller does.&lt;/p&gt;
+
+&lt;p&gt;When &lt;script type=&quot;math/tex&quot;&gt;\omega_{des} &gt; \omega_{act}&lt;/script&gt;, the P term is positive. When the opposite is true, the P term becomes negative.&lt;/p&gt;
+
+&lt;p&gt;When &lt;script type=&quot;math/tex&quot;&gt;\omega_{des}&lt;/script&gt; is very different than &lt;script type=&quot;math/tex&quot;&gt;\omega_{act}&lt;/script&gt;, you get a large output from the P term. When the two are similar, the P term’s value is close to zero.&lt;/p&gt;
+
+&lt;p&gt;Assuming the signs in the system and &lt;script type=&quot;math/tex&quot;&gt;K_P&lt;/script&gt; are chosen well, our &lt;em&gt;control effort&lt;/em&gt; output to the plant will generally move the plant in the correct direction.&lt;/p&gt;
+
+&lt;p&gt;This means, in a much smoother way, we emulate the behavior of the bang-bang controller, which &lt;em&gt;intuitively&lt;/em&gt; should be moving you in the right direction.&lt;/p&gt;
+
+&lt;h3 id=&quot;derivative-term-k_d-fracdomega_errdt&quot;&gt;Derivative Term &lt;script type=&quot;math/tex&quot;&gt;K_{D} \frac{d\omega_{err}}{dt}&lt;/script&gt;&lt;/h3&gt;
+
+&lt;p&gt;The &lt;em&gt;derivative&lt;/em&gt; or D term uses the &lt;em&gt;derivative&lt;/em&gt; of the error (with respect to time), scaled by its gain &lt;script type=&quot;math/tex&quot;&gt;K_{D}&lt;/script&gt;. This adds some new functionality on top of the bang-bang controller.&lt;/p&gt;
+
+&lt;p&gt;Don’t get too scared by the usage of calculus here. The way to think about the D term is as a &lt;em&gt;rate limiter on the P term&lt;/em&gt;. Think about if you were accelerating on the highway, but you see cars stopped way in front of you. You might continue to mash on the gas pedal, then hit the brake at the very last minute. You might also be insane if you do that. Sure, you could technically stop, but it’s way better to start slowing down &lt;em&gt;before&lt;/em&gt; you get to your target.&lt;/p&gt;
+
+&lt;p&gt;That’s exactly what the D term is for - it helps make sure the “inertia” of the P term charging full force toward the goal is tempered a bit, and cuts back on our control effort in advance of us getting there.&lt;/p&gt;
+
+&lt;p&gt;This is useful for reducing &lt;em&gt;overshoot&lt;/em&gt;, and slight oscillations of &lt;script type=&quot;math/tex&quot;&gt;\omega_{act}&lt;/script&gt; around &lt;script type=&quot;math/tex&quot;&gt;\omega_{des}&lt;/script&gt;. We’ll discuss these in more detail later.&lt;/p&gt;
+
+&lt;h3 id=&quot;integral-term--k_i-int_x0xtomega_errxdt&quot;&gt;Integral Term  &lt;script type=&quot;math/tex&quot;&gt;K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt&lt;/script&gt;&lt;/h3&gt;
+
+&lt;p&gt;The &lt;em&gt;integral&lt;/em&gt; or I term again uses some calculus - this time, the &lt;em&gt;integral&lt;/em&gt; of the error over time. Again, we’re adding new functionality beyond what our bang-bang controller could hope to do.&lt;/p&gt;
+
+&lt;p&gt;Again, don’t get too bogged down by the calculus. Think about what happens if you’re &lt;em&gt;almost&lt;/em&gt; operating at the desired value, but &lt;em&gt;not quite&lt;/em&gt;. &lt;script type=&quot;math/tex&quot;&gt;\omega_{act}&lt;/script&gt; will be very similar to &lt;script type=&quot;math/tex&quot;&gt;\omega_{des}&lt;/script&gt;, but not exactly the same. As a result, your P term is very small - possibly small enough to not make much of a difference to the system’s behavior.&lt;/p&gt;
+
+&lt;p&gt;This is where the I term comes in. By &lt;em&gt;adding up&lt;/em&gt; previous values of the error, we cause the I term to &lt;em&gt;accumulate&lt;/em&gt;, and increase in value over time, as long as we’re not &lt;em&gt;exactly&lt;/em&gt; on target (ie, &lt;script type=&quot;math/tex&quot;&gt;\omega_{act} = \omega_{des}&lt;/script&gt; &lt;em&gt;exactly&lt;/em&gt;). This accumulation adds more and more influence to our sum overall, until the control effort is finally large enough to make a difference in the physical system’s state.&lt;/p&gt;
+
+&lt;h3 id=&quot;feed-forward-term-k_f-omega_dest&quot;&gt;Feed-Forward Term &lt;script type=&quot;math/tex&quot;&gt;K_{F} \omega_{des}(t)&lt;/script&gt;&lt;/h3&gt;
+
+&lt;p&gt;For certain systems, it is useful to augment the PID logic with an additional term - the &lt;em&gt;feed-forward&lt;/em&gt; or F term. Note that it uses &lt;script type=&quot;math/tex&quot;&gt;\omega_{des}(t)&lt;/script&gt;, not &lt;script type=&quot;math/tex&quot;&gt;\omega_{err}(t)&lt;/script&gt;. This means it has no dependance on your sensor feedback, only on the operator command.&lt;/p&gt;
+
+&lt;p&gt;The way to think about the F term is a “guess” at what &lt;script type=&quot;math/tex&quot;&gt;v(t)&lt;/script&gt; should be, prior to getting any sensor feedback or calculating any of the other terms. In general, for this shooter wheel, we know there is a &lt;em&gt;linear&lt;/em&gt; relationship between steady-state speed and input voltage. That is to say, for a given input voltage, we know we’ll (eventually) settle out at some speed. With a bit of experimentation, we can even find that voltage that gets us to our (in these examples) 1000 RPM set-point. We take this information and “bake” it into our F term, which reduces the amount of “work” the other P, I, and D terms have to do to get the system behaving nicely.&lt;/p&gt;
+
+&lt;p&gt;The F term can be kind of tricky - if in doubt, leave it out. It works here because of the &lt;em&gt;linear relationship&lt;/em&gt; between voltage and speed. If you were doing something like controlling an arm position with a motor, and trying to get the closed-loop system to achieve a certain arm &lt;em&gt;position&lt;/em&gt; (not velocity), you’d definitely not want to use F like this. However for &lt;em&gt;velocity control&lt;/em&gt;, like in shooter wheels, I think it’s almost impossible to live without!&lt;/p&gt;
+
+&lt;h3 id=&quot;putting-it-all-together&quot;&gt;Putting it All Together&lt;/h3&gt;
+
+&lt;p&gt;And that’s all there is to it! Bask in the glory of the equation once more:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)&lt;/script&gt;
+
+&lt;p&gt;The key to doing this is that you, as the engineer, have &lt;em&gt;free control&lt;/em&gt; over picking &lt;script type=&quot;math/tex&quot;&gt;K_{F}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K_{P}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;K_{I}&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;K_{D}&lt;/script&gt;, and just need to pick them to make your system act nicely.&lt;/p&gt;
+
+&lt;p&gt;Note that you may hear some people talk about a “PD” or “PI” controller - this is still a PID controller, just with the “missing” gain in the name set equal to zero.&lt;/p&gt;
+
+&lt;p&gt;Below is a sample of some nicely picked values. We’ll spend next time describing &lt;em&gt;how&lt;/em&gt; to go about picking them. But for now, feel free to fiddle around with it, and refresh the page if you want to reset.&lt;/p&gt;
+
+&lt;div id=&quot;plot4a&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;plot4b&quot;&gt;&lt;/div&gt;
+&lt;div class=&quot;slidecontainer&quot;&gt;
+    F Gain:
+    &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;450&quot; class=&quot;slider&quot; id=&quot;F_gain&quot; /&gt;
+    &lt;span id=&quot;F_gain_disp&quot;&gt;&lt;/span&gt;
+    &lt;br /&gt;
+    P Gain:
+    &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;650&quot; class=&quot;slider&quot; id=&quot;P_gain&quot; /&gt;
+    &lt;span id=&quot;P_gain_disp&quot;&gt;&lt;/span&gt;
+    &lt;br /&gt;
+    I Gain:
+    &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;0&quot; class=&quot;slider&quot; id=&quot;I_gain&quot; /&gt;
+    &lt;span id=&quot;I_gain_disp&quot;&gt;&lt;/span&gt;
+    &lt;br /&gt;
+    D Gain:
+    &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1000&quot; value=&quot;75&quot; class=&quot;slider&quot; id=&quot;D_gain&quot; /&gt;
+    &lt;span id=&quot;D_gain_disp&quot;&gt;&lt;/span&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;pidf-controller---why-it-works-or-doesnt&quot;&gt;PID(F) Controller - Why it Works (or Doesn’t)&lt;/h2&gt;
+
+&lt;p&gt;If you’re familiar with the math behind the PID controller, it’s not too hard to stare at it to convince yourself “Yea, this should probably work”. But, it definitely doesn’t work in all cases. In particular, it has to be &lt;em&gt;tuned&lt;/em&gt; around certain system behavior. If that behavior changes drastically over the course of operation (&lt;a href=&quot;https://en.wikipedia.org/wiki/Nonlinear_system&quot;&gt;mathematically a &lt;em&gt;non-linear system&lt;/em&gt;&lt;/a&gt;), the PID system will often not perform as well. Things like slack in chains and gearboxes, static friction, squishy game pieces, and many other things will lead to systems becoming non-linear. In these cases, you can either:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Suck it up. Get it good enough, and walk away&lt;/li&gt;
+  &lt;li&gt;Use a more advanced controller that accounts for the system’s non-linear behavior.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Similarly, the PID (especially the D term) are not good at handling noise in the system, and also make implicit assumptions about the amount of &lt;em&gt;delay&lt;/em&gt; in the sensor feedback system. For this reason, make sure your sensors are good (ie - expensive and well-mounted). Also, be prepared to do additional work if using with a fundamentally high-latency system (like most vision processing has been, historically).&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Sweet! We’ve covered the basics of what a controller is. In our 3rd and final installment, we’ll discuss how to tune a PID controller, and where to look for “next steps”.&lt;/p&gt;
+
+&lt;script src=&quot;/assets/js/pidSim.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T09:30:00-05:00</published><updated>2019-09-20T09:30:00-05:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -89,7 +440,7 @@
 
 &lt;p&gt;&lt;em&gt;source: etc.usf.edu&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;The key thing to keep in mind: &lt;a href=&quot;https://www.youtube.com/watch?v=JOLtS4VUcvQ&quot;&gt;&lt;em&gt;gears&lt;/em&gt; are just &lt;em&gt;spinning levers&lt;/em&gt;&lt;/a&gt;. When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that meshpoint closer to the center of either wheel changes the ratio of motion between the two sides.&lt;/p&gt;
+&lt;p&gt;The key thing to keep in mind: &lt;a href=&quot;https://www.youtube.com/watch?v=JOLtS4VUcvQ&quot;&gt;&lt;em&gt;gears&lt;/em&gt; are just &lt;em&gt;spinning levers&lt;/em&gt;&lt;/a&gt;. When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that mesh-point closer to the center of either wheel changes the ratio of motion between the two sides.&lt;/p&gt;
 
 &lt;p&gt;This relationship could be derived intuitively. Make the assumption that the teeth are always in mesh, and never slip relative to each other. Given this, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate &lt;em&gt;3 times&lt;/em&gt; to get a single rotation on the output.&lt;/p&gt;
 
@@ -111,7 +462,7 @@
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{out}(t) = 2 \pi R_{out} \omega_{out}(t)&lt;/script&gt;
 
-&lt;p&gt;Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one centerpoint, but the right of the other, we need to introduce a negative sign as well. &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one center-point, but the right of the other, we need to introduce a negative sign as well. &lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{in}(t) = -v_{out}(t)&lt;/script&gt;
 
@@ -445,9 +796,9 @@
 
 &lt;p&gt;Time domain is intuitive. You can very easily think about how how physical quantities (like speed or voltage) change over time.&lt;/p&gt;
 
-&lt;p&gt;However, this is not usually how controlls engineers work. The reason is the same one we ran into right at the end - &lt;em&gt;differential equations&lt;/em&gt;. These are notoriously difficult to solve and work with in the time domain.&lt;/p&gt;
+&lt;p&gt;However, this is not usually how controls engineers work. The reason is the same one we ran into right at the end - &lt;em&gt;differential equations&lt;/em&gt;. These are notoriously difficult to solve and work with in the time domain.&lt;/p&gt;
 
-&lt;p&gt;As it turns out, or friends from pure mathemtical fields have devised a whole slew of other tools to use. You don’t have to use &lt;em&gt;time&lt;/em&gt; as your independent variable - you can in fact use something else. &lt;em&gt;Frequency&lt;/em&gt;, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.&lt;/p&gt;
+&lt;p&gt;As it turns out, or friends from pure mathematical fields have devised a whole slew of other tools to use. You don’t have to use &lt;em&gt;time&lt;/em&gt; as your independent variable - you can in fact use something else. &lt;em&gt;Frequency&lt;/em&gt;, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.&lt;/p&gt;
 
 &lt;p&gt;These transforms are not trivial concepts to cover, so I am calling them out of scope for now. If you’re interested in digging into these topics, the terminology to look up is &lt;a href=&quot;https://en.wikipedia.org/wiki/Fourier_transform&quot;&gt;Fourier Transform&lt;/a&gt;, &lt;a href=&quot;https://en.wikipedia.org/wiki/S_transform&quot;&gt;S transform&lt;/a&gt;, and &lt;a href=&quot;https://en.wikipedia.org/wiki/Z-transform&quot;&gt;Z transform&lt;/a&gt;. These topics are also covered in the &lt;a href=&quot;https://file.tavsys.net/control/controls-engineering-in-frc.pdf&quot;&gt;Control Systems in FRC&lt;/a&gt; textbook.&lt;/p&gt;
 
@@ -455,7 +806,7 @@
 
 &lt;p&gt;One piece of advice I would offer while working on these models - &lt;em&gt;units will kill you&lt;/em&gt;. You will want to be super careful and rigorous in ensuring all your math and your constants are using the same units, and when you write your code, the units assumptions come in as well. We’ve kinda skirted the whole topic so far, as to not clutter the explanation. Still though, you have to be careful.&lt;/p&gt;
 
-&lt;p&gt;Honestly, I’ve only ever had success making these models using &lt;em&gt;metric&lt;/em&gt; units, and being super-consistant on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many “gotchas” for me on the conversions.&lt;/p&gt;
+&lt;p&gt;Honestly, I’ve only ever had success making these models using &lt;em&gt;metric&lt;/em&gt; units, and being super-consistent on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many “gotchas” for me on the conversions.&lt;/p&gt;
 
 &lt;p&gt;However, I’m from the US. I grew up using feet and lbs, and I still have a far more intuitive understanding of what “10 feet per second” or “15 foot pounds of torque” looks and feels like - much more so that “15 meters per second” or “20 Newtons”. For this reason, any time we report values to a dashboard or log them to file, we convert back to imperial. It’s totally computational overhead, but I’d prefer to let the processor do that heavy lifting, and have a &lt;em&gt;feeling&lt;/em&gt; for what the numbers mean, rather than waste my time doing mental math to do the conversion.&lt;/p&gt;
 
@@ -463,7 +814,7 @@
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;I feel as though we’ve come a very long way, but we also still have quite a ways to go yet! Hopefully you’ve enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we’re going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. Stay tuned!&lt;/p&gt;
+&lt;p&gt;I feel as though we’ve come a very long way, but we also still have quite a ways to go yet! Hopefully you’ve enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we’re going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. &lt;a href=&quot;/blog_posts/2019/10/07/pid_ctrl_design.html&quot;&gt;Check out Controller Design for more info!&lt;/a&gt;&lt;/p&gt;
 
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
@@ -2273,105 +2624,4 @@
 
 &lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
 
-&lt;p&gt;We’re nearing the end of the story-arc for our introductory content! Next up, we’ll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. &lt;a href=&quot;/blog_posts/2019/08/10/x86_intro.html&quot;&gt;To get started, check out our introduction to the x86 assembly language!&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">C is quirky, flawed, and an enormous success. - Dennis Ritchie, co-creator of the C programming language.</summary></entry><entry><title type="html">Programming Languages - Introduction</title><link href="/blog_posts/2019/07/28/programming_language_intro.html" rel="alternate" type="text/html" title="Programming Languages - Introduction" /><published>2019-07-28T09:30:00-05:00</published><updated>2019-07-28T09:30:00-05:00</updated><id>/blog_posts/2019/07/28/programming_language_intro</id><content type="html" xml:base="/blog_posts/2019/07/28/programming_language_intro.html">&lt;p&gt;&lt;em&gt;Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do.  - &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Donald Knuth&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;This post marks our first “pure” venture into the world of software. As a start, we’ll level-set everyone on the programming language syntax we’ll need to all understand to move forward. This is a bit of an “aside” from our normal progression, but required to move forward effectively.&lt;/p&gt;
-
-&lt;h3 id=&quot;on-our-selection-of-introductory-languages&quot;&gt;On our Selection of Introductory Languages&lt;/h3&gt;
-
-&lt;h4 id=&quot;the-options&quot;&gt;The Options&lt;/h4&gt;
-
-&lt;p&gt;In FRC land, there are a handful of different programming languages that are commonly supported. Labview is in its own special class. Aside from this, the big players are Java and C++, followed by Python and Kotlin. These are all powerful, professional, and (relatively) modern programming languages, each rich with its own features and quirks. For &lt;em&gt;FRC&lt;/em&gt; purposes, any of them make a fine choice for writing robot software.&lt;/p&gt;
-
-&lt;p&gt;It should be noted that &lt;a href=&quot;https://www.chiefdelphi.com/t/c-or-java/358070&quot;&gt;people have opinions&lt;/a&gt; on the selection of programming languages.&lt;/p&gt;
-
-&lt;h4 id=&quot;the-choice&quot;&gt;The Choice&lt;/h4&gt;
-
-&lt;p&gt;In order to do the ground-up approach properly, we’re going to not start with any of these languages, but rather with pure C. This will simplify the connection between how bits are manipulated on a processor, and the actual code we write.  Additionally, once you understand the concepts of how C is put together, it becomes easy to see how the additional features provided by C++, Kotlin, Java, or Python could be implemented in C.&lt;/p&gt;
-
-&lt;p&gt;In this way, by focusing on an understanding of how C code works on a processor, we provide a pathway for understanding how &lt;em&gt;any&lt;/em&gt; programming language works on a processor.&lt;/p&gt;
-
-&lt;h3 id=&quot;high-level-vs-low-level&quot;&gt;High Level vs. Low Level&lt;/h3&gt;
-
-&lt;p&gt;When describing programming languages, we’ve already used the description &lt;em&gt;high level&lt;/em&gt;. As you’d probably expect, &lt;em&gt;low level&lt;/em&gt; is also a description. Loosely, these terms describe “how close to the actual silicon of the processor are you?”. Closeness here refers to the number of layers of abstraction formally defined between the thing you are typing out on a keyboard, and the logic gates doing useful things in response to your typing.&lt;/p&gt;
-
-&lt;p&gt;The literal 1’s and 0’s going through your processor is probably the lowest level way to write a program. The people who truly believe this is the best way to write software are either dead, or literally crazy.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/supercoder2000.jpg&quot; alt=&quot;expert keyboard&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;source - reddit.com&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Just barely one step up, we can represent these 1’s and 0’s with much more useful pneumonics, like ADD (addition), SUB (subtract), MOV (move), LD (load), ST (store), etc. Rather than forcing a human to remember that &lt;script type=&quot;math/tex&quot;&gt;0010001010011&lt;/script&gt; means “Add general purpose register 1 to general purpose register 2 and store the result in general purpose register 3”, we simply by writing something like &lt;strong&gt;ADD R1 R2 R3&lt;/strong&gt;. Isn’t that better than staring at &lt;script type=&quot;math/tex&quot;&gt;0010001010011&lt;/script&gt;? I think so. This abstraction to pneumonics is called &lt;em&gt;assembly code&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Depending on the application, it still makes sense to write code at this level. When you need very fast code, very efficient code, or very very precise code for working with specialized hardware, assembly is your go-to solution. And, if you know the hardware well, it’s admittedly not bad. Chris Sawyer wrote multiple video games using it &lt;a href=&quot;https://en.wikipedia.org/wiki/RollerCoaster_Tycoon_(video_game)&quot;&gt;nearly&lt;/a&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/RollerCoaster_Tycoon_2&quot;&gt;exclusively&lt;/a&gt;. People who like writing software here are still a special breed of folks, but not as crazy as the ones who have the ink on their 1 and 0 keys rubbed off from excessive usage.&lt;/p&gt;
-
-&lt;p&gt;For the rest of us folks, we usually use some sort of &lt;em&gt;high level&lt;/em&gt; programming language. The official definition of a &lt;em&gt;High Level&lt;/em&gt; programming language is simply one that attempts to abstract away the details of &lt;em&gt;exactly&lt;/em&gt; which assembly instructions are supported or needed, and hide them behind a more generalized way of describing desired behavior. The key advantage of doing this is that you can write one program, and rely on different compiler tools to take that same source code, and emit assembly instructions which can work on many different types of computers. This interoperability is a key driver in lots of the design of high level languages, but comes at a cost - it is harder to interact with specific details of the hardware you are on, and inherently less efficient to execute code.&lt;/p&gt;
-
-&lt;p&gt;It should be noted that you can always add more layers of abstraction. A language doesn’t have to transform into assembly code - you can transfom between high level languages too. For example, MathWorks’ &lt;em&gt;Simulink&lt;/em&gt; is a graphical programming language, much like Labview, which can &lt;a href=&quot;https://www.mathworks.com/help/dsp/ug/generate-c-code-from-simulink-model.html&quot;&gt;have its block diagrams converted directly to C code&lt;/a&gt;. In this way, you can say Simulink is a higher-level programming language than C.&lt;/p&gt;
-
-&lt;p&gt;For specific use cases, there are other programming languages which can build into Simulink models.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://media.giphy.com/media/pyQV6sy5qOALu/giphy.gif&quot; alt=&quot;ogres are like onions&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The layers just keep going.&lt;/p&gt;
-
-&lt;p&gt;This is why large software projects often have to combine many programming languages together. Your ultimate goal is simply to describe to the computer what you want it to do. You always want your software development to take place at the highest-level that makes sense - this allows you to have to spend the least amount of time thinking about details that, at the end of the day, an automated tool could have done for you. Only get into the nitty-gritty when you have to. But when duty calls, don’t be afraid to dive deep.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-c-programming-language&quot;&gt;The C Programming Language&lt;/h2&gt;
-
-&lt;h3 id=&quot;super-basics---what-does-a-programming-language-have-to-accomplish&quot;&gt;Super Basics - What does a Programming Language have to Accomplish?&lt;/h3&gt;
-
-&lt;p&gt;Any programming language’s job is to bridge the worlds of human-readable description of behavior, to a machine-readable set of 1’s and 0’s that can flow through a processor. The &lt;em&gt;compiler&lt;/em&gt; is the tool that actually does the action, and the language’s &lt;em&gt;syntax&lt;/em&gt; is the set of rules on the compiler input to allow the action to work.&lt;/p&gt;
-
-&lt;p&gt;Remember the compiler itself is a program, and can’t think creatively (or read your mind). The language &lt;em&gt;syntax&lt;/em&gt; is the agreed-upon rules that you will use to communicate information with the compiler.&lt;/p&gt;
-
-&lt;p&gt;The syntax must be flexible enough to be Turing Complete, but constrained enough to not force the human to think about too many details.&lt;/p&gt;
-
-&lt;p&gt;Good syntax design allows the programming language to describe all the calculations and logic required to establish a &lt;em&gt;relationship&lt;/em&gt; between &lt;em&gt;inputs&lt;/em&gt; and &lt;em&gt;outputs&lt;/em&gt;. At the end of the day, that’s really all your software on your robot has to do - map driver inputs, sensor inputs, and field state (teleop/auto) to motor and solenoid commands.&lt;/p&gt;
-
-&lt;h4 id=&quot;abilities-common-to-all-programming-languages&quot;&gt;Abilities Common to all Programming Languages&lt;/h4&gt;
-
-&lt;p&gt;To be useful, all programming languages have to have a few basic components:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Input &amp;amp; Output (IO)
-    &lt;ul&gt;
-      &lt;li&gt;Interacting with the “outside world”&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Assignment
-    &lt;ul&gt;
-      &lt;li&gt;Storing and retrieving data from memory (aka Variables)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Math &amp;amp; Logic
-    &lt;ul&gt;
-      &lt;li&gt;Combining numbers and true/false conditions&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Control flow
-    &lt;ul&gt;
-      &lt;li&gt;Using results of true/false conditions to control execution&lt;/li&gt;
-      &lt;li&gt;Repeating instructions under certain conditions&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Structural Organization
-    &lt;ul&gt;
-      &lt;li&gt;Functions, Classes, objects, source files, interfaces, templates, etc.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;history&quot;&gt;History&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/C_(programming_language)#History&quot;&gt;The C programming language&lt;/a&gt; is the OG of high level languages. It wasn’t the first of its type, but it was by far the most successful. It struck just the right balance between providing nice high-level programming language abstractions, without getting so high level as to become convoluted and bloated with useless features.&lt;/p&gt;
-
-&lt;p&gt;It was introduced in the late 1970’s, tightly tied with the development of the &lt;a href=&quot;https://en.wikipedia.org/wiki/Unix&quot;&gt;Unix operating system&lt;/a&gt; at &lt;a href=&quot;https://en.wikipedia.org/wiki/Bell_Labs&quot;&gt;Bell Labs&lt;/a&gt;. The initial goal was to provide a high-level language for writing utilities for the OS. It evolved quickly to be the language that the operating system itself was written in.&lt;/p&gt;
-
-&lt;p&gt;The amazing thing is that as other languages have come and gone, C has remained the de-facto standard for anyone looking to write software with the highest performance, highest efficiency, or most hardware interaction. C++ and Rust are starting to supplant it in a few places, but C is still by far king for operating system and embedded system development. The fact any programming language has lasted these 40+ years is a true testament to good design.&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;In our next post, we will look into the details of the syntax of the C programming language, to see how it implements these components to accomplish the goals of a high-level programming language. See &lt;a href=&quot;/blog_posts/2019/07/28/programming_language_c_syntax.html&quot;&gt;C Syntax here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><summary type="html">Let us change our traditional attitude to the construction of programs. Instead of imagining that our main task is to instruct a computer what to do, let us concentrate rather on explaining to human beings what we want a computer to do. - Donald Knuth</summary></entry></feed>
+&lt;p&gt;We’re nearing the end of the story-arc for our introductory content! Next up, we’ll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. &lt;a href=&quot;/blog_posts/2019/08/10/x86_intro.html&quot;&gt;To get started, check out our introduction to the x86 assembly language!&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">C is quirky, flawed, and an enormous success. - Dennis Ritchie, co-creator of the C programming language.</summary></entry></feed>
