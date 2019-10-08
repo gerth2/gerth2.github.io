@@ -419,7 +419,7 @@ var pidPlot = new DualPlot('#plot4a', '#plot4b')
 // Update the plots (each time you drag any slider handle)
 function rePlot(){
     FGain = parseFloat(FGainSlider.value)/70000;
-    PGain = parseFloat(PGainSlider.value)/350;
+    PGain = parseFloat(PGainSlider.value)/175;
     IGain = parseFloat(IGainSlider.value)/35;
     DGain = parseFloat(DGainSlider.value)/3500;
 
