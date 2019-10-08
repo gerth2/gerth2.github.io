@@ -28,6 +28,7 @@ class DualPlot{
         if(this.speedGraph == null){
             this.speedGraph = functionPlot({
                 target: this.plot1Name,
+                disableZoom:true,
                 title: '',
                 grid: true,
                 yAxis: {
@@ -43,6 +44,7 @@ class DualPlot{
         if(this.voltsGraph == null){
             this.voltsGraph = functionPlot({
                 target: this.plot2Name,
+                disableZoom:true,
                 title: '',
                 grid: true,
                 yAxis: {
@@ -96,13 +98,13 @@ class DualPlot{
 //Motor & shooter wheel configuration constants
 
 //Gearbox
-var GEARBOX_RATIO = 30.0/10.0; //output over input
+var GEARBOX_RATIO = 50.0/10.0; //output over input - 5:1 gear ratio
 
-//CIM Motor
-var Rc = 0.2; //ohms, for full CIM motor
-var Kt = 2.429/131.227; //Nm/A - for CIM motor. Calculated from Stall Torque/Stall Current
-var Kv = (12-(2.7*Rc))/(5310*2*3.14159/60); //V/(rad/s). Calculated from Vemf@FreeSpeed/(2pi/60*RPM@FreeSpeed). Steady-state Vemf = Vs - I@FreeSpeed*Rc, for Vs = 12
-var mass = 1.0; //shooter wheel mass in Kg
+//775 Pro Motor
+var Rc = 0.08; //Coil & Wiring Resistance in Ohms
+var Kt = 0.71/134; //Nm/A torque constant -  Calculated from Stall Torque/Stall Current
+var Kv = (12-(0.7*Rc))/(18730*2*3.14159/60); //V/(rad/s). Calculated from Vemf@FreeSpeed/(2pi/60*RPM@FreeSpeed). Steady-state Vemf = Vs - I@FreeSpeed*Rc, for Vs = 12
+var mass = 0.75; //shooter wheel mass in Kg
 var radius = 0.0762; //3 inch radius, converted to meters
 
 // Constants from the blog post equations
@@ -346,7 +348,8 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain){
     error=0;
     err_accum=0;
     err_prev=0;
-    
+    ERROR_CAP = 1000;
+
     for(t = minTime; t < maxTime; t += Ts){
 
         //Simulate friction
@@ -363,7 +366,9 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain){
             
             //Calculate error, error derivative, and error integral
             error = (target_speed_rpm - meas_speed)*2*3.14159/60;
+            
             err_accum += (error)*Ts_controller;
+
             err_delta = (error - err_prev)/Ts_controller;
 
             //PIDF control law
@@ -415,7 +420,7 @@ var pidPlot = new DualPlot('#plot4a', '#plot4b')
 function rePlot(){
     FGain = parseFloat(FGainSlider.value)/70000;
     PGain = parseFloat(PGainSlider.value)/350;
-    IGain = parseFloat(IGainSlider.value)/3500;
+    IGain = parseFloat(IGainSlider.value)/35;
     DGain = parseFloat(DGainSlider.value)/3500;
 
     FGainDisplay.innerHTML = FGain;
