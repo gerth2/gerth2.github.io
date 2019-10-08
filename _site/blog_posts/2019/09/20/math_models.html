@@ -28,7 +28,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-09-20T09:30:00-05:00" />
 <script type="application/ld+json">
-{"mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/09/20/math_models.html"},"url":"/blog_posts/2019/09/20/math_models.html","description":"All models are wrong, but some are useful. - George Box","headline":"Control Theory - Mathematical Models of the World","@type":"BlogPosting","dateModified":"2019-09-20T09:30:00-05:00","datePublished":"2019-09-20T09:30:00-05:00","@context":"https://schema.org"}</script>
+{"headline":"Control Theory - Mathematical Models of the World","dateModified":"2019-09-20T09:30:00-05:00","datePublished":"2019-09-20T09:30:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/09/20/math_models.html"},"url":"/blog_posts/2019/09/20/math_models.html","description":"All models are wrong, but some are useful. - George Box","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
 <body>
@@ -151,7 +151,7 @@
 
 <p><em>source: etc.usf.edu</em></p>
 
-<p>The key thing to keep in mind: <a href="https://www.youtube.com/watch?v=JOLtS4VUcvQ"><em>gears</em> are just <em>spinning levers</em></a>. When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that meshpoint closer to the center of either wheel changes the ratio of motion between the two sides.</p>
+<p>The key thing to keep in mind: <a href="https://www.youtube.com/watch?v=JOLtS4VUcvQ"><em>gears</em> are just <em>spinning levers</em></a>. When you push on one, the other moves. The point at which the teeth mesh together is the fulcrum. Moving that mesh-point closer to the center of either wheel changes the ratio of motion between the two sides.</p>
 
 <p>This relationship could be derived intuitively. Make the assumption that the teeth are always in mesh, and never slip relative to each other. Given this, it stands to reason that if there are 3x the number of teeth on the output, the input would have to rotate <em>3 times</em> to get a single rotation on the output.</p>
 
@@ -173,7 +173,7 @@
 
 <script type="math/tex; mode=display">v_{out}(t) = 2 \pi R_{out} \omega_{out}(t)</script>
 
-<p>Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one centerpoint, but the right of the other, we need to introduce a negative sign as well. <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
+<p>Then, based on our ideal mesh assumption, we can set the two equal to each other. Note that since the tangential velocity is measured to the left of one center-point, but the right of the other, we need to introduce a negative sign as well. <sup id="fnref:2"><a href="#fn:2" class="footnote">2</a></sup></p>
 
 <script type="math/tex; mode=display">v_{in}(t) = -v_{out}(t)</script>
 
@@ -507,9 +507,9 @@
 
 <p>Time domain is intuitive. You can very easily think about how how physical quantities (like speed or voltage) change over time.</p>
 
-<p>However, this is not usually how controlls engineers work. The reason is the same one we ran into right at the end - <em>differential equations</em>. These are notoriously difficult to solve and work with in the time domain.</p>
+<p>However, this is not usually how controls engineers work. The reason is the same one we ran into right at the end - <em>differential equations</em>. These are notoriously difficult to solve and work with in the time domain.</p>
 
-<p>As it turns out, or friends from pure mathemtical fields have devised a whole slew of other tools to use. You don’t have to use <em>time</em> as your independent variable - you can in fact use something else. <em>Frequency</em>, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.</p>
+<p>As it turns out, or friends from pure mathematical fields have devised a whole slew of other tools to use. You don’t have to use <em>time</em> as your independent variable - you can in fact use something else. <em>Frequency</em>, or a complex number representing frequency-like information, is the more common choice. Just like our quantization assumption, these frequency-domain analysis techniques convert the difficult task of differentiation and integration into simpler tasks like multiplication and division.</p>
 
 <p>These transforms are not trivial concepts to cover, so I am calling them out of scope for now. If you’re interested in digging into these topics, the terminology to look up is <a href="https://en.wikipedia.org/wiki/Fourier_transform">Fourier Transform</a>, <a href="https://en.wikipedia.org/wiki/S_transform">S transform</a>, and <a href="https://en.wikipedia.org/wiki/Z-transform">Z transform</a>. These topics are also covered in the <a href="https://file.tavsys.net/control/controls-engineering-in-frc.pdf">Control Systems in FRC</a> textbook.</p>
 
@@ -517,7 +517,7 @@
 
 <p>One piece of advice I would offer while working on these models - <em>units will kill you</em>. You will want to be super careful and rigorous in ensuring all your math and your constants are using the same units, and when you write your code, the units assumptions come in as well. We’ve kinda skirted the whole topic so far, as to not clutter the explanation. Still though, you have to be careful.</p>
 
-<p>Honestly, I’ve only ever had success making these models using <em>metric</em> units, and being super-consistant on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many “gotchas” for me on the conversions.</p>
+<p>Honestly, I’ve only ever had success making these models using <em>metric</em> units, and being super-consistent on what prefixes I choose for each value. I do all the internal math and constants calculations in metric. Imperial has too many “gotchas” for me on the conversions.</p>
 
 <p>However, I’m from the US. I grew up using feet and lbs, and I still have a far more intuitive understanding of what “10 feet per second” or “15 foot pounds of torque” looks and feels like - much more so that “15 meters per second” or “20 Newtons”. For this reason, any time we report values to a dashboard or log them to file, we convert back to imperial. It’s totally computational overhead, but I’d prefer to let the processor do that heavy lifting, and have a <em>feeling</em> for what the numbers mean, rather than waste my time doing mental math to do the conversion.</p>
 
@@ -525,7 +525,7 @@
 
 <h2 id="conclusion">Conclusion</h2>
 
-<p>I feel as though we’ve come a very long way, but we also still have quite a ways to go yet! Hopefully you’ve enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we’re going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. Stay tuned!</p>
+<p>I feel as though we’ve come a very long way, but we also still have quite a ways to go yet! Hopefully you’ve enjoyed this worked-example of creating a mathematical model for a shooter wheel. Next up, we’re going to try injecting a few input voltages to our system to see how it reacts, and decide what sort of strategies work well to control the system to a commanded speed. <a href="/blog_posts/2019/10/07/pid_ctrl_design.html">Check out Controller Design for more info!</a></p>
 
 <div class="footnotes">
   <ol>

@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Control Theory - PID &amp; Controller Design | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Control Theory - PID &amp; Controller Design" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Introduction" />
+<meta property="og:description" content="Introduction" />
+<link rel="canonical" href="/blog_posts/2019/10/07/pid_ctrl_design.html" />
+<meta property="og:url" content="/blog_posts/2019/10/07/pid_ctrl_design.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-10-07T09:30:00-05:00" />
+<script type="application/ld+json">
+{"headline":"Control Theory - PID &amp; Controller Design","dateModified":"2019-10-07T09:30:00-05:00","datePublished":"2019-10-07T09:30:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/10/07/pid_ctrl_design.html"},"url":"/blog_posts/2019/10/07/pid_ctrl_design.html","description":"Introduction","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
+<body>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Control Theory - PID &amp; Controller Design</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-10-07T09:30:00-05:00" itemprop="datePublished">Oct 7, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h2 id="introduction">Introduction</h2>
+
+<p>Welcome to post 3 in our series on controls engineering. In this post, we’re going to explore the behavior of the motor model we’ve built up, try to create an intuition for how it behaves. We’ll establish a couple criteria for what we want it to do, and lead into the application of a classic PID controller.</p>
+
+<p>Recall our standard model of how a <em>control system</em> is laid out:</p>
+
+<p><img src="/assets/standard_control_system.png" alt="Control system" /></p>
+
+<p>For context, in <a href="/blog_posts/2019/09/20/math_models.html">part 2</a>, we covered what sorts of math equations go inside the <em>plant</em> portion of the control system:</p>
+
+<p><img src="/assets/standard_control_system_plant.png" alt="Plant Models" /></p>
+
+<p>A bit of an aside to the reader: The more I’ve been writing this series, the more I’m realizing what a disservice I’m actually doing to modern control theory. We’re using time domain analysis to build up all our understanding. Professional controls engineers, working on modern systems, don’t work in this domain. They’re using things like Linear Algebra, State-Space representations, LQR, and a whole host of things that, for better or for worse, I don’t have too much exposure to. I feel a bit bad that we’re not getting to the point where we can explain these.</p>
+
+<p>You have to walk before you can run, and walking still gets you from point A to point B. What I always have to remind myself - This is just a high school robotics competition. Using LQR to design a super optimal control system is a valiant cause, one from which much can be learned. But it’s far from required for success.</p>
+
+<p>The takeaway I guess I want readers to have: Enjoy our time here in the time domain space. Build up your intuition of how things evolve over time. Know that even if you get to the end of this series of posts, and learn everything they have to offer - <em>there is still more</em>. The pro’s can teach you much.</p>
+
+<h2 id="plant-model-response">Plant Model Response</h2>
+
+<p>One of the pieces of terminology thrown around for these systems is <em>response</em>. It’s a generic term that simply means “Given some input, how does the output act?”.</p>
+
+<p>You can describe the response to a specific input. For example, if you apply 12V to the motor, you can say the motor’s <em>response</em> to that 12v input is to <em>increase speed</em>. Response might also be more generic - if you have an equation, you might be able to describe the <em>response</em> to <em>any input</em> concisely.</p>
+
+<p>When analyzing the response of a system, we generally divide the analysis into two parts: <em>Transient</em> and <em>Steady-State</em>. <em>Transient Response</em> refers to how the system acts <em>immediately following</em> some disturbance in input. If you suddenly change the input voltage to a motor, its shaft will change speed - the manner in which it ramps up or ramps down is this <em>transient response</em>. Separately, after the input has been stable for some time, the output usually stabilizes as well. <em>Steady-state</em> refers to the system behavior after all of the “transient” behavior has died down. In our motor example, if you were to adjust the input voltage from 12V to 8V, you’d see the motor slow down. The speed it settles at could be called the “Steady State” response.</p>
+
+<p>To analyze system response, we generally need to expose the system to a variety of different inputs.</p>
+
+<p><img src="/assets/standard_control_system_plant_inputs.png" alt="Test Inputs" /></p>
+
+<p>There are a few types of input that are very good to use, because you can learn a lot about the system from just a few trials (rather than shooting in the dark a lot).</p>
+
+<p>The simplest is usually called a <a href="https://en.wikipedia.org/wiki/Heaviside_step_function">“unit step”</a>. It’s a fancy math way to describe “flipping on a switch”. If you’re all into formal definitions, I like the piecewise definition:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+u(x) = \begin{cases} 0 & x < 0 \\ 1 & x \geq 0  \end{cases} %]]></script>
+
+<p>The input to the function (here notated as <script type="math/tex">x</script>) is usually some function of time. You stretch and scale the function to indicate the turn-on time, and its size.</p>
+
+<p>For example, if you wanted to describe “turning on” the motor (apply 12V) at time = 1 sec, you could describe the input voltage <script type="math/tex">v(t)</script> with the equation</p>
+
+<script type="math/tex; mode=display">v(t) = 12u(t-1)</script>
+
+<div id="plot1"></div>
+<script>
+function step(t){
+    if(t < 0){
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
+function plot1PointsGen(){
+    var retArray = []
+
+    var minTime = -1.0;
+    var maxTime = 5.0;
+    var Ts = 0.01;
+
+    for(t = minTime; t < maxTime; t += Ts){
+        newValue = 12 * step(t - 1);
+
+        retArray.push([t, newValue]);
+    }
+
+    return retArray;
+}
+
+functionPlot({
+  target: '#plot1',
+  title: '',
+  grid: true,
+  disableZoom:true,
+  yAxis: {
+      label: "Motor Voltage (V)",
+      domain: [-3, 15]
+  },
+  xAxis: {
+      label: "Time (s)",
+      domain: [-1, 5]
+  },
+  data: [
+    {
+        points: plot1PointsGen(),
+        fnType: 'points',
+        graphType: 'polyline'
+    }
+  ]
+})
+</script>
+
+<p>It should be noted that the definition of this guy doesn’t change all that much when you go from continuous <script type="math/tex">(t)</script> to discrete <script type="math/tex">[n]</script>. The output is <script type="math/tex">0</script> for all <script type="math/tex">% <![CDATA[
+n < 0 %]]></script> and <script type="math/tex">1</script> for all <script type="math/tex">n \geq 0</script>.</p>
+
+<h3 id="practical-example---shooter-system-response">Practical Example - Shooter System Response</h3>
+
+<p>Let’s try to insert our function into the shooter wheel system we described last time. We’ll choose it as the function to describe how the <em>voltage</em> input changes over time, and see how the speed changes.</p>
+
+<h4 id="intuition">Intuition</h4>
+
+<p>Before we hit the math, let’s think through what we expect to happen.</p>
+
+<ul>
+  <li>Before the voltage turns on (<script type="math/tex">% <![CDATA[
+t < 0 %]]></script>), the wheel should not be turning.</li>
+  <li>As soon as the voltage turns on, the wheel should start spinning.</li>
+  <li>The higher the voltage that is passed in, the faster it should be going.</li>
+  <li>The wheel should hit some maximum “steady state” speed, and stay there.</li>
+</ul>
+
+<p>Of course, most folks would thing this is pretty obvious. However, it’s important to keep it in mind. We can use the math equations to show our intuition to be true, or use the intuition to validate we didn’t get something wrong in the math.</p>
+
+<h4 id="nominal-behavior">Nominal Behavior</h4>
+
+<p>Recall the equation we derived in part 2:</p>
+
+<script type="math/tex; mode=display">\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}</script>
+
+<p>Let’s see if we can get an idea for how this thing reacts when we apply an input voltage. We do this by making two assumptions:</p>
+
+<ol>
+  <li>We will apply 12 volts at the time 0 seconds (<script type="math/tex">t = 0</script>). This can be represented using our unit step function: <script type="math/tex">v[n] = 12*u[n]</script></li>
+  <li>We will assume the wheel was stationary prior to start. This means that <script type="math/tex">\omega_{wheel}[-1] = 0</script></li>
+</ol>
+
+<p>Based on this, we can draw the following plot of wheel speed, over time:</p>
+
+<div id="plot2a"></div>
+<div id="plot2b"></div>
+
+<p>As a side note, the <script type="math/tex">C_1</script> and <script type="math/tex">C_2</script> values have been chosen to represent a single 775 pro motor, through a reasonable gearbox, through a typically-sized shooter wheel. See <a href="/assets/js/pidSim.js">this javascript file</a> for more details on those assumptions.</p>
+
+<p>If you stare at the graph, it certainly appears our initial suppositions are confirmed:</p>
+
+<ul>
+  <li>For times to the left of the Y axis, we see our speed is zero.</li>
+  <li>At <script type="math/tex">t = 0</script>, on the Y axis, voltage turns on, and our speed starts to increase.</li>
+  <li>To the right of the Y axis, speed starts to increase as time goes on.</li>
+  <li>As time goes on, we see the speed caps out at around 3500 RPM.</li>
+</ul>
+
+<h4 id="extracting-the-steady-state-behavior">Extracting the Steady-state behavior.</h4>
+
+<p>As a brief tangent - it should be noted that you can extract these conclusions from the equation itself. Even if you don’t trust your eyes on the chart, you can still prove it logically.</p>
+
+<p>For example - If we <script type="math/tex">\omega[n]</script> and <script type="math/tex">V_{in}[n]</script> are zero for all <script type="math/tex">n</script> less than zero, we can see the equation becomes:</p>
+
+<script type="math/tex; mode=display">\omega_{wheel}[-5] = \frac{T_s C_1 * 0 + 0}{( 1 + T_s C_2 )} = 0</script>
+
+<p>Additionally, if when we assume “steady-state”, we assume that  <script type="math/tex">\omega_{wheel}[n] = \omega_{wheel}[n-1]</script> - the mathematical way of expressing “<script type="math/tex">n</script> is large enough such that <script type="math/tex">\omega_{wheel}[n]</script> is no longer changing”.</p>
+
+<p>In this case, we can state:</p>
+
+<script type="math/tex; mode=display">\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n]}{( 1 + T_s C_2 )}</script>
+
+<p>which simplifies to:</p>
+
+<script type="math/tex; mode=display">\omega_{wheel}[n] = \frac{C_1}{C_2}V_{in}[n]</script>
+
+<p>And, again, assuming <script type="math/tex">V_{in}[n]</script> is just a constant for large <script type="math/tex">n</script>, means that our “steady-state” <script type="math/tex">\omega_{wheel}[n]</script> is in fact also a constant.</p>
+
+<p>Huzzah! Isn’t math fun?</p>
+
+<h2 id="a-brief-step-back---the-goal">A Brief Step Back - The Goal</h2>
+
+<p>One key thing to remember, or learn, going forward: <strong>A consistent shooter wheel must be running at a constant, defined <em>velocity</em>, prior to injecting a ball</strong>. That’s right - you need to keep your <em>rotational velocity (RPM)</em> steady, if you want to make sure your launched ball always travels through a consistent arc. The reason for this is again based in physics - the <em>energy</em> imparted to the ball controls its arc, and energy imparted is related to the <em>velocity</em> of the shooter wheel.</p>
+
+<p>Here’s the key, if you haven’t noticed yet - we have the ability to command the motor’s <em>voltage</em>, not it’s <em>speed</em>. The speed is dictated by a whole slew of additional physical parameters. Though we’ve built up this math model of how things are supposed to work, this isn’t a perfect transform we can invert to get an answer of voltage-&gt;speed, as we shall soon see.</p>
+
+<h4 id="behavior-with-disturbances">Behavior with Disturbances</h4>
+
+<p>Before we get to discussing how to achieve a commanded speed, there’s one more thing to discuss. We’ve so far neglected a key portion of our physical model - the presence of an <em>external disturbance</em>. When we say <em>external disturbance</em>, we’re describing any force or torque acting on the system which is, in some way, abnormal, or unexpected.</p>
+
+<p>I won’t bore you too much with the math. But, re-working our derivations from the last time, we can inject this new disturbance term as a time-varying torque <script type="math/tex">\tau_{ext}[n]</script> into our motor speed equations:</p>
+
+<script type="math/tex; mode=display">\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] - T_s C_3 \tau_{ext}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}</script>
+
+<p>with</p>
+
+<script type="math/tex; mode=display">C_3 = \frac{2}{mr^2}</script>
+
+<p>This disturbance may come in many forms.</p>
+
+<p>Maybe it’s a big hit, all at once - like a ball entering the shooter mechanism. This is often called an <em>impullse</em> disturbance.</p>
+
+<p>Maybe it’s something more constant over time, like friction in the bearings and gears of the rotating mechanism.</p>
+
+<p>Maybe it’s something electrical, like the battery losing charge over time.</p>
+
+<p>Here’s an example of what might happen with some friction in the system, as well as injecting a ball at <script type="math/tex">t=5</script> seconds:</p>
+
+<div id="plot5a"></div>
+<div id="plot5b"></div>
+
+<p>Note that the steady state speed is lower (~1.75k RPM) due to friction, and the impulse of dropping the ball into the shooter wheel takes a big bite out of the speed at the 5 second mark.</p>
+
+<p>In every case, the external disturbance comes at an <em>unpredictable time</em> and with an <em>unpredictable magnitude</em>. We’ve made some mathematical assumptions here about the behavior of the system, but they won’t capture the exact behavior of every disturbance.</p>
+
+<h2 id="disturbances-the-need-for-feedback">Disturbances: The Need for Feedback</h2>
+
+<p>This really is the key for why we need our software to be able to measure anything at all - we can’t 100% predict the forces and influences of the external world on our controlled system. No matter how much planning and math we do, we can’t protect ourselves from Joe Freshman who forgets to grease the gearbox just right, and changes the coefficient of friction. Neither can we know the exact timing of when balls will be injected into our shooter system, nor have guarantees our batteries will discharge at some exact rate. <em>We cannot exactly predict disturbances</em>.</p>
+
+<p>What we can do, however, is design our software to account for disturbances. Since we can <em>measure</em> the speed of the wheel, we can determine if it is too high or too low, and adjust our voltage to compensate. <em>Exactly how</em> that voltage gets adjusted is worth detailed consideration, and is what the rest of the blog post will focus on.</p>
+
+<h2 id="designing-a-controller---intuition">Designing a Controller - Intuition</h2>
+
+<p>Given the behavior of the system observed so far, the relationship between voltage and speed should be somewhat obvious - More voltage leads to more speed. We can leverage this fact while we design our software.</p>
+
+<p>Again, for context, we are moving on to describe the contents of the <em>software</em> portion of our <em>controller</em> inside our standard control system:</p>
+
+<p><img src="/assets/standard_control_system_controller.png" alt="Controller" /></p>
+
+<h3 id="bang-bang">Bang-Bang</h3>
+
+<p>Let us take a first pass at designing some software that takes in a speed command, and produces a voltage command, with the intent of getting our shooter wheel toward the commanded speed. Based on the known physical relationship between voltage and speed, we declare the following very simple <em>control law</em>:</p>
+
+<ol>
+  <li>If the speed is too low, send full power to the motor</li>
+  <li>If the speed is too high, send zero power to the motor.</li>
+</ol>
+
+<p>In this case, “too low” implies “actual speed is less than desired speed”. “Too High” is just the opposite. Full power means 12V (since we are controlling voltage), and zero power means 0V. This leads to what is commonly called a “Bang-bang” controller - hopefully a pretty intuitive concept. Per its name, it causes the motor command to “bang” between max and min power, attempting to keep the speed right at the desired value. Hence the name, <a href="https://en.wikipedia.org/wiki/Bang%E2%80%93bang_control">Bang-Bang Control</a>.</p>
+
+<p>Here’s an example of what such a controller would do:</p>
+
+<div id="plot3a"></div>
+<div id="plot3b"></div>
+<div class="slidecontainer">
+    Sample Rate:
+    <input type="range" min="1" max="750" value="200" class="slider" id="sampleTime_ms" />
+    <span id="samplerate_disp"></span>
+</div>
+<p><br /></p>
+
+<p>Notice how at the beginning, the system keeps the motor on. As soon as the speed crosses the “desired” threshold of 1000RPM, the motor command drops off. The motor speed begins to decrease, and continues to do so until the speed falls below that 1000RPM <a href="https://apps.dtic.mil/dtic/tr/fulltext/u2/a404426.pdf">bogey</a>. Once it does, the voltage turns on again, full force. The motor speeds back up till it is turning the shooter wheel faster than 1000RPM. At which point the voltage shuts off, and the cycle starts over.</p>
+
+<p>This control logic is actually remarkably good, especially given its simplicity (it’s an if/else statement). The only variable to really play with - how fast to you sample speed and update the output voltage? Usually this is fixed (~20ms on the roboRIO, unless you do something funky). Play with the slider above to see the effect - it should be somewhat intuitive. The faster you perform this update rate, the less “jerky” the motor speed gets. However, faster takes more processing power, and cycles the controller on and off faster.</p>
+
+<p>The biggest disadvantage is that it’s causing <em>big</em> swings in the electrical signal, and slightly oscillating motor speed around the desired motor speed. If these voltage swings and slight velocity oscillations are acceptable for your application, this is a great system to use for controlling your shooter wheel.</p>
+
+<p>However, there are more advanced options which can produce… “nicer” behavior.</p>
+
+<h2 id="pid-controller---what-it-is">PID Controller - What It Is</h2>
+
+<p>A common design that <em>can</em> work in lots of cases is the <a href="https://en.wikipedia.org/wiki/PID_controller">Proportional/Integral/Derivative controller</a>, or “PID” for short. PID controllers are designed to take our previous “too-low/too-high” intuition, and use some mathematical operations to make it a bit more rigorous.</p>
+
+<p>PID controllers output a single speed command which is the <em>sum</em> of a set of <em>terms</em>, each term scaled by the associated <em>gain</em>.</p>
+
+<h3 id="error">Error</h3>
+
+<p>A PID controller first computes the <em>error</em> between the desired and actual velocities:</p>
+
+<script type="math/tex; mode=display">\omega_{err}(t) = \omega_{des}(t) - \omega_{act}(t)</script>
+
+<p>This error is then used in different ways in each term.</p>
+
+<h3 id="the-pid-control-law">The PID Control Law</h3>
+
+<p>For the mathematically inclined, the PID control law dictates that the voltage shall be calculated according the the following formula:</p>
+
+<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)</script>
+
+<p>If this appears daunting, Fear not! We’ll break this down piece by piece.</p>
+
+<h3 id="proportional-term---k_p-omega_errt">Proportional Term - <script type="math/tex">K_{P} \omega_{err}(t)</script></h3>
+
+<p>The <em>proportional</em> or P term uses the error <script type="math/tex">\omega_{err}(t)</script>, scaled by its gain <script type="math/tex">K_{P}</script>. This fundamentally accomplishes something very similar to what the bang-bang controller does.</p>
+
+<p>When <script type="math/tex">\omega_{des} > \omega_{act}</script>, the P term is positive. When the opposite is true, the P term becomes negative.</p>
+
+<p>When <script type="math/tex">\omega_{des}</script> is very different than <script type="math/tex">\omega_{act}</script>, you get a large output from the P term. When the two are similar, the P term’s value is close to zero.</p>
+
+<p>Assuming the signs in the system and <script type="math/tex">K_P</script> are chosen well, our <em>control effort</em> output to the plant will generally move the plant in the correct direction.</p>
+
+<p>This means, in a much smoother way, we emulate the behavior of the bang-bang controller, which <em>intuitively</em> should be moving you in the right direction.</p>
+
+<h3 id="derivative-term-k_d-fracdomega_errdt">Derivative Term <script type="math/tex">K_{D} \frac{d\omega_{err}}{dt}</script></h3>
+
+<p>The <em>derivative</em> or D term uses the <em>derivative</em> of the error (with respect to time), scaled by its gain <script type="math/tex">K_{D}</script>. This adds some new functionality on top of the bang-bang controller.</p>
+
+<p>Don’t get too scared by the usage of calculus here. The way to think about the D term is as a <em>rate limiter on the P term</em>. Think about if you were accelerating on the highway, but you see cars stopped way in front of you. You might continue to mash on the gas pedal, then hit the brake at the very last minute. You might also be insane if you do that. Sure, you could technically stop, but it’s way better to start slowing down <em>before</em> you get to your target.</p>
+
+<p>That’s exactly what the D term is for - it helps make sure the “inertia” of the P term charging full force toward the goal is tempered a bit, and cuts back on our control effort in advance of us getting there.</p>
+
+<p>This is useful for reducing <em>overshoot</em>, and slight oscillations of <script type="math/tex">\omega_{act}</script> around <script type="math/tex">\omega_{des}</script>. We’ll discuss these in more detail later.</p>
+
+<h3 id="integral-term--k_i-int_x0xtomega_errxdt">Integral Term  <script type="math/tex">K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt</script></h3>
+
+<p>The <em>integral</em> or I term again uses some calculus - this time, the <em>integral</em> of the error over time. Again, we’re adding new functionality beyond what our bang-bang controller could hope to do.</p>
+
+<p>Again, don’t get too bogged down by the calculus. Think about what happens if you’re <em>almost</em> operating at the desired value, but <em>not quite</em>. <script type="math/tex">\omega_{act}</script> will be very similar to <script type="math/tex">\omega_{des}</script>, but not exactly the same. As a result, your P term is very small - possibly small enough to not make much of a difference to the system’s behavior.</p>
+
+<p>This is where the I term comes in. By <em>adding up</em> previous values of the error, we cause the I term to <em>accumulate</em>, and increase in value over time, as long as we’re not <em>exactly</em> on target (ie, <script type="math/tex">\omega_{act} = \omega_{des}</script> <em>exactly</em>). This accumulation adds more and more influence to our sum overall, until the control effort is finally large enough to make a difference in the physical system’s state.</p>
+
+<h3 id="feed-forward-term-k_f-omega_dest">Feed-Forward Term <script type="math/tex">K_{F} \omega_{des}(t)</script></h3>
+
+<p>For certain systems, it is useful to augment the PID logic with an additional term - the <em>feed-forward</em> or F term. Note that it uses <script type="math/tex">\omega_{des}(t)</script>, not <script type="math/tex">\omega_{err}(t)</script>. This means it has no dependance on your sensor feedback, only on the operator command.</p>
+
+<p>The way to think about the F term is a “guess” at what <script type="math/tex">v(t)</script> should be, prior to getting any sensor feedback or calculating any of the other terms. In general, for this shooter wheel, we know there is a <em>linear</em> relationship between steady-state speed and input voltage. That is to say, for a given input voltage, we know we’ll (eventually) settle out at some speed. With a bit of experimentation, we can even find that voltage that gets us to our (in these examples) 1000 RPM set-point. We take this information and “bake” it into our F term, which reduces the amount of “work” the other P, I, and D terms have to do to get the system behaving nicely.</p>
+
+<p>The F term can be kind of tricky - if in doubt, leave it out. It works here because of the <em>linear relationship</em> between voltage and speed. If you were doing something like controlling an arm position with a motor, and trying to get the closed-loop system to achieve a certain arm <em>position</em> (not velocity), you’d definitely not want to use F like this. However for <em>velocity control</em>, like in shooter wheels, I think it’s almost impossible to live without!</p>
+
+<h3 id="putting-it-all-together">Putting it All Together</h3>
+
+<p>And that’s all there is to it! Bask in the glory of the equation once more:</p>
+
+<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)</script>
+
+<p>The key to doing this is that you, as the engineer, have <em>free control</em> over picking <script type="math/tex">K_{F}</script>, <script type="math/tex">K_{P}</script>, <script type="math/tex">K_{I}</script>, and <script type="math/tex">K_{D}</script>, and just need to pick them to make your system act nicely.</p>
+
+<p>Note that you may hear some people talk about a “PD” or “PI” controller - this is still a PID controller, just with the “missing” gain in the name set equal to zero.</p>
+
+<p>Below is a sample of some nicely picked values. We’ll spend next time describing <em>how</em> to go about picking them. But for now, feel free to fiddle around with it, and refresh the page if you want to reset.</p>
+
+<div id="plot4a"></div>
+<div id="plot4b"></div>
+<div class="slidecontainer">
+    F Gain:
+    <input type="range" min="0" max="1000" value="450" class="slider" id="F_gain" />
+    <span id="F_gain_disp"></span>
+    <br />
+    P Gain:
+    <input type="range" min="0" max="1000" value="650" class="slider" id="P_gain" />
+    <span id="P_gain_disp"></span>
+    <br />
+    I Gain:
+    <input type="range" min="0" max="1000" value="0" class="slider" id="I_gain" />
+    <span id="I_gain_disp"></span>
+    <br />
+    D Gain:
+    <input type="range" min="0" max="1000" value="75" class="slider" id="D_gain" />
+    <span id="D_gain_disp"></span>
+</div>
+<p><br /></p>
+
+<h2 id="pidf-controller---why-it-works-or-doesnt">PID(F) Controller - Why it Works (or Doesn’t)</h2>
+
+<p>If you’re familiar with the math behind the PID controller, it’s not too hard to stare at it to convince yourself “Yea, this should probably work”. But, it definitely doesn’t work in all cases. In particular, it has to be <em>tuned</em> around certain system behavior. If that behavior changes drastically over the course of operation (<a href="https://en.wikipedia.org/wiki/Nonlinear_system">mathematically a <em>non-linear system</em></a>), the PID system will often not perform as well. Things like slack in chains and gearboxes, static friction, squishy game pieces, and many other things will lead to systems becoming non-linear. In these cases, you can either:</p>
+
+<ol>
+  <li>Suck it up. Get it good enough, and walk away</li>
+  <li>Use a more advanced controller that accounts for the system’s non-linear behavior.</li>
+</ol>
+
+<p>Similarly, the PID (especially the D term) are not good at handling noise in the system, and also make implicit assumptions about the amount of <em>delay</em> in the sensor feedback system. For this reason, make sure your sensors are good (ie - expensive and well-mounted). Also, be prepared to do additional work if using with a fundamentally high-latency system (like most vision processing has been, historically).</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Sweet! We’ve covered the basics of what a controller is. In our 3rd and final installment, we’ll discuss how to tune a PID controller, and where to look for “next steps”.</p>
+
+<script src="/assets/js/pidSim.js"></script>
+
+
+  </div><a class="u-url" href="/blog_posts/2019/10/07/pid_ctrl_design.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>
