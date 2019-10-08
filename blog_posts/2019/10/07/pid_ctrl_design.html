@@ -321,7 +321,7 @@ t < 0 %]]></script>), the wheel should not be turning.</li>
 
 <p>For the mathematically inclined, the PID control law dictates that the voltage shall be calculated according the the following formula:</p>
 
-<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)</script>
+<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dx + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)</script>
 
 <p>If this appears daunting, Fear not! We’ll break this down piece by piece.</p>
 
@@ -367,7 +367,7 @@ t < 0 %]]></script>), the wheel should not be turning.</li>
 
 <p>And that’s all there is to it! Bask in the glory of the equation once more:</p>
 
-<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dt + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)</script>
+<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \omega_{err}(t) + K_{I} \int_{x=0}^{x=t}\omega_{err}(x)dx + K_{D} \frac{d\omega_{err}}{dt} + K_{F} \omega_{des}(t)</script>
 
 <p>The key to doing this is that you, as the engineer, have <em>free control</em> over picking <script type="math/tex">K_{F}</script>, <script type="math/tex">K_{P}</script>, <script type="math/tex">K_{I}</script>, and <script type="math/tex">K_{D}</script>, and just need to pick them to make your system act nicely.</p>
 
