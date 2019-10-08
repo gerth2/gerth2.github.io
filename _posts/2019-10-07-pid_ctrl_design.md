@@ -317,11 +317,11 @@ Below is a sample of some nicely picked values. We'll spend next time describing
 <div id="plot4b"></div>
 <div class="slidecontainer">
     F Gain:
-    <input type="range" min="0" max="1000" value="450" class="slider" id="F_gain">
+    <input type="range" min="0" max="1000" value="650" class="slider" id="F_gain">
     <span id="F_gain_disp"></span>
     <br>
     P Gain:
-    <input type="range" min="0" max="1000" value="650" class="slider" id="P_gain">
+    <input type="range" min="0" max="1000" value="400" class="slider" id="P_gain">
     <span id="P_gain_disp"></span>
     <br>
     I Gain:
@@ -329,7 +329,7 @@ Below is a sample of some nicely picked values. We'll spend next time describing
     <span id="I_gain_disp"></span>
     <br>
     D Gain:
-    <input type="range" min="0" max="1000" value="75" class="slider" id="D_gain">
+    <input type="range" min="0" max="1000" value="105" class="slider" id="D_gain">
     <span id="D_gain_disp"></span>
 </div>
 <br>
