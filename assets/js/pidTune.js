@@ -236,91 +236,6 @@ fullVoltDistPlot.updatePlot(motorSpeedArray, inputVoltageArray)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-// Bang-bang controller - interactive sample rate
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function runSimBangBang(Ts_controller){
-
-    var minTime = -1.0;
-    var maxTime = 10.0;
-    var Ts = 0.001;
-    var speedPrev = 0;
-
-    nextControllerRunTime = 0.0;
-
-    on_voltage = 12.0;
-    off_voltage = 0.0;
-
-    inVolts = 0.0;
-
-    target_speed_rpm = 1000;
-    speed_rpm = 0.0;
-
-    speed_delay_line = new DelayLine(49)
-
-    extTorqueArray = [];
-    motorSpeedArray = [];
-    inputVoltageArray = [];
-    
-    for(t = minTime; t < maxTime; t += Ts){
-
-        //Simulate friction
-        extTrq = 0.0005*speedPrev;
-        if(t > 5.0 & t < 5.1){
-            //add a short "impulse" to simulate putting a ball into the shooter
-            extTrq += 2;
-        }
-
-        meas_speed = speed_delay_line.getSample();
-
-        //Simulate Controller
-        if(t >= nextControllerRunTime && t > .0){
-
-            // Bang-bang control law
-            if(meas_speed < target_speed_rpm){
-                inVolts = on_voltage;
-            } else {
-                inVolts = off_voltage;
-            }
-
-            //Maintain separate sample rate for controller
-            nextControllerRunTime += Ts_controller;
-        }
-        
-        
-        //Simulate Plant behavior
-        speed = (Ts*C1*inVolts - Ts*C3*extTrq + speedPrev)/(1+Ts*C2);
-        speedPrev = speed;
-
-        speed_rpm = speed*60/2/3.14159
-        motorSpeedArray.push([t, speed_rpm]);
-        inputVoltageArray.push([t, inVolts]);
-
-        speed_delay_line.addSample(speed_rpm);
-    }
-
-}
-
-//add interactivity
-var sampTimeSlider = document.getElementById("sampleTime_ms");
-var sampTimeDisp   = document.getElementById("samplerate_disp");
-
-var bangBangPlot = new DualPlot('#plot3a', '#plot3b')
-
-// Update the current slider value (each time you drag the slider handle)
-sampTimeSlider.oninput = function() {
-    sampTimeDisp.innerHTML = this.value + "ms";
-    runSimBangBang(this.value/1000);
-    bangBangPlot.updatePlot(motorSpeedArray, inputVoltageArray)
-} 
-
-//Init
-sampTimeSlider.oninput()
-
-
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
 // PID controller - 20 ms
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -405,45 +320,45 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain){
 
 
 //add interactivity
-var FGainSlider  = document.getElementById("F_gain");
-var FGainDisplay = document.getElementById("F_gain_disp");
-var PGainSlider  = document.getElementById("P_gain");
-var PGainDisplay = document.getElementById("P_gain_disp");
-var IGainSlider  = document.getElementById("I_gain");
-var IGainDisplay = document.getElementById("I_gain_disp");
-var DGainSlider  = document.getElementById("D_gain");
-var DGainDisplay = document.getElementById("D_gain_disp");
+FGain = 0.00001;
+PGain = 0.00001;
+DGain = 0.00001;
+IGain = 0.00001;
 
 var pidPlot = new DualPlot('#plot4a', '#plot4b')
 
-// Update the plots (each time you drag any slider handle)
-function rePlot(){
-    FGain = parseFloat(FGainSlider.value)/70000;
-    PGain = parseFloat(PGainSlider.value)/175;
-    IGain = parseFloat(IGainSlider.value)/35;
-    DGain = parseFloat(DGainSlider.value)/3500;
-
-    FGainDisplay.innerHTML = FGain;
-    PGainDisplay.innerHTML = PGain;
-    IGainDisplay.innerHTML = IGain;
-    DGainDisplay.innerHTML = DGain;
-
-    plotPIDControl(FGain, PGain, IGain, DGain);
-}
-
-function plotPIDControl(FGain, PGain, IGain, DGain){
+function plotPIDControl(){
     runSimPID(FGain, PGain, IGain, DGain);
     pidPlot.updatePlot(motorSpeedArray, inputVoltageArray)
+    document.getElementById("gains").innerHTML = "<b>F="+FGain.toString() + " P="+PGain.toString() + " I="+IGain.toString() + " D="+DGain.toString() + "</b>";
 }
 
+function resetPIDF(){
+    FGain = 0.00001;
+    PGain = 0.00001;
+    DGain = 0.00001;
+    IGain = 0.00001;
+}
 
-FGainSlider.oninput = rePlot;
-PGainSlider.oninput = rePlot;
-IGainSlider.oninput = rePlot;
-DGainSlider.oninput = rePlot;
+function adjustF(adj){
+    FGain *= adj;
+    plotPIDControl();
+}
 
+function adjustP(adj){
+    PGain *= adj;
+    plotPIDControl();
+}
+
+function adjustD(adj){
+    DGain *= adj;
+    plotPIDControl();
+}
+
+function adjustI(adj){
+    IGain *= adj;
+    plotPIDControl();
+}
 
 //Init
-rePlot()
-
-
+plotPIDControl();
