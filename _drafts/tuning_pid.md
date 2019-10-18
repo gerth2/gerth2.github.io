@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Tuning PID"
+title:  "Control Theory - Tuning PID"
 date:   2019-10-12 9:30:00 -0500
 categories: blog_posts
 ---
@@ -51,8 +51,9 @@ Ok then. We'll be starting with F. Choose F such that the _steady state_ speed, 
 
 <input value="Double F" type="button" onClick="adjustF(2.0)"/>
 <input value="Half F" type="button" onClick="adjustF(0.5)"/>
-<input value="Bump Up F" type="button" onClick="adjustF(1.10)"/>
-<input value="Bump Down F" type="button" onClick="adjustF(0.90)"/>
+<input value="Bump Up F" type="button" onClick="adjustF(1.05)"/>
+<input value="Bump Down F" type="button" onClick="adjustF(0.95)"/>
+<input value="Zero-out F" type="button" onClick="adjustF(0)"/>
 
 At this point, if you were to fire up your shooter, you'll get kinda close, but you won't be getting there very fast. Nor will you be able to reject a constant disturbance, like changing friction or a sagging battery voltage. We need to start adding some feedback.
 
@@ -64,8 +65,9 @@ P is next. Same thing as F - start near zero, and double the value each iteratio
 
 <input value="Double P" type="button" onClick="adjustP(2.0)"/>
 <input value="Half P" type="button" onClick="adjustP(0.5)"/>
-<input value="Bump Up P" type="button" onClick="adjustP(1.10)"/>
-<input value="Bump Down P" type="button" onClick="adjustP(0.90)"/>
+<input value="Bump Up P" type="button" onClick="adjustP(1.05)"/>
+<input value="Bump Down P" type="button" onClick="adjustP(0.95)"/>
+<input value="Zero-out P" type="button" onClick="adjustP(0)"/>
 
 As you increase P, you should start to see your rate of approaching the setpoint get better and better. When you have a disturbance, even like a ball entering the shooter, you'll see it bounce back pretty fast. As you start to raise P, you'll notice a big improvement at first, as we're _actually_ going toward the setpoint. 
 
@@ -83,8 +85,9 @@ Then we can bring on D. D should start at about 1/100th of where you set P at. S
 
 <input value="Double D" type="button" onClick="adjustD(2.0)"/>
 <input value="Half D" type="button" onClick="adjustD(0.5)"/>
-<input value="Bump Up D" type="button" onClick="adjustD(1.10)"/>
-<input value="Bump Down D" type="button" onClick="adjustD(0.90)"/>
+<input value="Bump Up D" type="button" onClick="adjustD(1.05)"/>
+<input value="Bump Down D" type="button" onClick="adjustD(0.95)"/>
+<input value="Zero-out D" type="button" onClick="adjustD(0)"/>
 
 Similar to P, if you make D too high, you get instability. 
 
@@ -98,10 +101,11 @@ If to do have to tune I, do it similarly to D. Start at 1/10th of P, and double 
 
 <input value="Double I" type="button" onClick="adjustI(2.0)"/>
 <input value="Half I" type="button" onClick="adjustI(0.5)"/>
-<input value="Bump Up I" type="button" onClick="adjustI(1.10)"/>
-<input value="Bump Down I" type="button" onClick="adjustI(0.90)"/>
+<input value="Bump Up I" type="button" onClick="adjustI(1.05)"/>
+<input value="Bump Down I" type="button" onClick="adjustI(0.95)"/>
+<input value="Zero-out I" type="button" onClick="adjustI(0)"/>
 
-Once your'e at this point - the best advice I can give - STOP. Don't keep fiddling at random. Good enough is good enough. PID will never get quite perfect. If you are at a point that looks like this, there's admittedly not much else you can expect.
+Once you're at this point - the best advice I can give - STOP. Don't keep fiddling at random. Good enough is good enough. PID will never get quite perfect. If you are at a point that looks like this, there's admittedly not much else you can expect.
 
 
 
@@ -109,6 +113,11 @@ Once your'e at this point - the best advice I can give - STOP. Don't keep fiddli
 
 Choose different RPM. Still works well. Good!
 
+<div class="slidecontainer">
+    Setpoint:
+    <input type="range" min="0" max="2000" value="1000" class="slider" id="setpointSlider">
+    <br>
+</div>
 
 
 ## Second Example - Arm Position

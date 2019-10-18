@@ -1,3 +1,13 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Global constatns the user will manipulate
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+FGain = 0;
+PGain = 0;
+DGain = 0;
+IGain = 0;
+setpoint = 0;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Standard Math Function impelmentations
@@ -67,7 +77,7 @@ class DualPlot{
               graphType: 'polyline'
           },
           {
-            fn: '1000',
+            fn: setpoint.toString(),
             title: 'Setpoint'
           }
         ]
@@ -239,7 +249,7 @@ fullVoltDistPlot.updatePlot(motorSpeedArray, inputVoltageArray)
 // PID controller - 20 ms
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function runSimPID(F_gain, P_gain, I_gain, D_gain){
+function runSimPID(F_gain, P_gain, I_gain, D_gain, target_speed_rpm){
 
     var minTime = -1.0;
     var maxTime = 10.0;
@@ -251,7 +261,6 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain){
 
     inVolts = 0.0;
 
-    target_speed_rpm = 1000;
     speed_rpm = 0.0;
 
     speed_delay_line = new DelayLine(49)
@@ -309,7 +318,7 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain){
         speed = (Ts*C1*inVolts - Ts*C3*extTrq + speedPrev)/(1+Ts*C2);
         speedPrev = speed;
 
-        speed_rpm = speed*60/2/3.14159
+        speed_rpm = speed*60/2/3.14159;
         motorSpeedArray.push([t, speed_rpm]);
         inputVoltageArray.push([t, inVolts]);
 
@@ -320,45 +329,76 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain){
 
 
 //add interactivity
-FGain = 0.00001;
-PGain = 0.00001;
-DGain = 0.00001;
-IGain = 0.00001;
+var setpointSlider  = document.getElementById("setpointSlider");
+setpointSlider.oninput = adjustSetpoint;
+
 
 var pidPlot = new DualPlot('#plot4a', '#plot4b')
 
 function plotPIDControl(){
-    runSimPID(FGain, PGain, IGain, DGain);
+    runSimPID(FGain, PGain, IGain, DGain, setpoint);
     pidPlot.updatePlot(motorSpeedArray, inputVoltageArray)
-    document.getElementById("gains").innerHTML = "<b>F="+FGain.toString() + " P="+PGain.toString() + " I="+IGain.toString() + " D="+DGain.toString() + "</b>";
+    document.getElementById("gains").innerHTML = "<b>" + 
+                                                 "F="+FGain.toString() + " <br>" +
+                                                 "P="+PGain.toString() + " <br>" +
+                                                 "I="+IGain.toString() + " <br>" +
+                                                 "D="+DGain.toString() + " <br>" +
+                                                 "Setpoint="+setpoint.toString() + " RPM" +
+                                                 "</b>";
 }
 
 function resetPIDF(){
-    FGain = 0.00001;
-    PGain = 0.00001;
-    DGain = 0.00001;
-    IGain = 0.00001;
+    FGain = 0
+    PGain = 0;
+    DGain = 0;
+    IGain = 0;
+    setpoint = 1000;
+    plotPIDControl();
 }
 
 function adjustF(adj){
-    FGain *= adj;
+    if(FGain == 0 & adj != 0){
+        FGain = 0.0001;
+    } else {
+        FGain *= adj;
+    }
     plotPIDControl();
 }
 
 function adjustP(adj){
+    if(PGain == 0 & adj != 0){
+        PGain = 0.0001;
+    } else {
+        PGain *= adj;
+    }
     PGain *= adj;
     plotPIDControl();
 }
 
 function adjustD(adj){
+    if(DGain == 0 & adj != 0){
+        DGain = 0.0001;
+    } else {
+        DGain *= adj;
+    }
     DGain *= adj;
     plotPIDControl();
 }
 
 function adjustI(adj){
-    IGain *= adj;
+    if(DGain == 0 & adj != 0){
+        DGain = 0.0001;
+    } else {
+        DGain *= adj;
+    }
+    DGain *= adj;
+    plotPIDControl();
+}
+
+function adjustSetpoint(){
+    setpoint = parseFloat(setpointSlider.value);
     plotPIDControl();
 }
 
 //Init
-plotPIDControl();
+resetPIDF();
