@@ -5,6 +5,29 @@ date:   2019-10-12 9:30:00 -0500
 categories: blog_posts
 ---
 
+<link rel="stylesheet" href="/assets/sidenav/sidenav.css">
+<script src="/assets/sidenav/sidenav.js"></script>
+<div id="mySidenav" class="sidenav" onclick="openNav()">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div class="row">
+
+    <div class="column">
+        <div id="plot4a"></div>
+        <div id="plot4b"></div>
+    </div>
+
+    <div class="column">
+          <div id="gains"></div>
+          <input value="Reset" type="button" onClick="resetPIDF()"/>
+    </div>
+
+  </div>
+
+
+</div>
+
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; open</span>
+
 ## Introduction
 
 In this final installment of our series on Control Theory, we'll walk through the details of tuning a PID algorithm. We'll cover two of the most common cases in FRC - controlling the _rotational velocity_ of a mechanism with a motor (like our shooter wheel), and controlling the _position_ of a mechanism with a motor (like an arm). 
@@ -40,10 +63,7 @@ One quick note on technique - for all these values, start _small_. If the value 
 
 Here's our graph we'll be manipulating through the tuning process. Not doing too much now, since all the gains are set to zero.
 
-<div id="plot4a"></div>
-<div id="plot4b"></div>
-<div id="gains"></div>
-<input value="Reset" type="button" onClick="resetPIDF()"/>
+
 
 #### F Gain
 
