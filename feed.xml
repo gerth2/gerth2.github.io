@@ -1,4 +1,202 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-10-07T21:34:39-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T09:30:00-05:00</published><updated>2019-10-07T09:30:00-05:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-10-19T19:56:48-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Tuning PID</title><link href="/blog_posts/2019/10/19/tuning_pid.html" rel="alternate" type="text/html" title="Control Theory - Tuning PID" /><published>2019-10-19T09:30:00-05:00</published><updated>2019-10-19T09:30:00-05:00</updated><id>/blog_posts/2019/10/19/tuning_pid</id><content type="html" xml:base="/blog_posts/2019/10/19/tuning_pid.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/sidenav/sidenav.css&quot; /&gt;
+
+&lt;script src=&quot;/assets/sidenav/sidenav.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;mySidenav&quot; class=&quot;sidenav&quot; onclick=&quot;openNav()&quot;&gt;
+    &lt;a href=&quot;javascript:void(0)&quot; class=&quot;closebtn&quot; onclick=&quot;closeNav()&quot;&gt;&amp;times;&lt;/a&gt;
+    &lt;div id=&quot;plots&quot;&gt;
+        &lt;div id=&quot;plot4a&quot;&gt;&lt;/div&gt;
+        &lt;div id=&quot;plot4b&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;user_interaction&quot; class=&quot;gainsDisplay&quot;&gt;
+        &lt;div id=&quot;gains&quot;&gt;&lt;/div&gt;
+        &lt;br /&gt;
+        &lt;input id=&quot;ballInject&quot; type=&quot;checkbox&quot; onclick=&quot;updateBallInject()&quot; /&gt;
+        &lt;label for=&quot;ballinject&quot;&gt;Inject Ball at t=5.0 &lt;/label&gt; 
+        &lt;br /&gt;&lt;br /&gt;
+        &lt;input value=&quot;Reset&quot; type=&quot;button&quot; onclick=&quot;resetPIDF()&quot; /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;In this final installment of our series on Control Theory, we’ll walk through the details of tuning a PID algorithm. We’ll cover the most common case in FRC - controlling the &lt;em&gt;rotational velocity&lt;/em&gt; of a mechanism with a motor (like our shooter wheel, or a drivetrain).&lt;/p&gt;
+
+&lt;h2 id=&quot;shooter-wheel-system-tuning&quot;&gt;Shooter Wheel System Tuning&lt;/h2&gt;
+
+&lt;p&gt;We’ll start by going over how to properly tune our old friend, the shooter wheel.&lt;/p&gt;
+
+&lt;h3 id=&quot;system-review&quot;&gt;System Review&lt;/h3&gt;
+
+&lt;p&gt;If you haven’t gone through the other blog posts, it would definitely be good to check out &lt;a href=&quot;/blog_posts/2019/09/07/systems_and_controls.html&quot;&gt;Part 1&lt;/a&gt;, &lt;a href=&quot;/blog_posts/2019/09/20/math_models.html&quot;&gt;Part 2&lt;/a&gt;, and &lt;a href=&quot;/blog_posts/2019/10/07/pid_ctrl_design.html&quot;&gt;Part 3&lt;/a&gt; to get some basic understanding of the whole control theory thing we’re describing. But in case you didn’t, know that we’re tuning a shooter wheel, powered by a motor, attempting to get it to a certain rotational velocity prior to injecting a ball to launch.&lt;/p&gt;
+
+&lt;p&gt;The mathematical model for how this system works is described by this equation:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]}{( 1 + T_s C_2 )}&lt;/script&gt;
+
+&lt;p&gt;For visualization and intuition, we dump a test input into the system:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_plant_inputs.png&quot; alt=&quot;Test input&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;And when you jam 12 volts into this system (via &lt;script type=&quot;math/tex&quot;&gt;V_{in}&lt;/script&gt;), you get motion that looks like this:&lt;/p&gt;
+
+&lt;div id=&quot;plot2a&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;plot2b&quot;&gt;&lt;/div&gt;
+
+&lt;p&gt;The red line shows the &lt;em&gt;setpoint&lt;/em&gt; - the desired speed command. Our goal will be to get the shooter wheel as close to that speed as we can, as quickly as possible.&lt;/p&gt;
+
+&lt;h3 id=&quot;basic-technique&quot;&gt;Basic Technique&lt;/h3&gt;
+
+&lt;p&gt;As we’ve mentioned, &lt;em&gt;tuning&lt;/em&gt; a PID controller is the process of determining the numeric values of the proportional, integral, derivative, and feed forward gains for the controller. The exact values will be dependant on the physical system and its behavior.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_tune.png&quot; alt=&quot;Tuning the System&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The basic technique we’ll cover is effectively &lt;em&gt;guess and check&lt;/em&gt;. There are some more algorithmic approaches, but I find its best to start with the guess-and-check method, to get the best intuitive understanding of what each gain does.&lt;/p&gt;
+
+&lt;p&gt;Everything we are about to describe here is a &lt;em&gt;rule of thumb&lt;/em&gt;, not a &lt;em&gt;rule&lt;/em&gt;. I’m sure the greybeards reading this will have lots of alternate advice, and it’s probably better than what I have to offer. But you’re here reading my blog, so I’ll tell you what I know for now :D .&lt;/p&gt;
+
+&lt;p&gt;For our shooter wheel, or for any velocity control, there is a prescribed order that you should generally follow: first F, then P, then D, then I. Lets walk through the process.&lt;/p&gt;
+
+&lt;p&gt;One quick note on technique - for all these values, start &lt;em&gt;small&lt;/em&gt;. If the value is too low, double it. If it’s too big, cut it in half. Continue this process till you get close. At that point, you can start to fine-tune the value. But, the fastest and safest way to ge to the ideal value that I’ve found is the doubling/halving technique.&lt;/p&gt;
+
+&lt;p&gt;This blog post has a nifty little sidebar to help us keep track of what our system is doing as we play around with it.&lt;/p&gt;
+
+&lt;p&gt;&lt;input value=&quot;Open that sidebar now!&quot; type=&quot;button&quot; onclick=&quot;openNav()&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hopefully cool! This took far more CSS magic than I cared to learn. Let me know if it borks up on your computer.&lt;/p&gt;
+
+&lt;p&gt;Ok, now on to tuning…&lt;/p&gt;
+
+&lt;h4 id=&quot;f-gain&quot;&gt;F Gain&lt;/h4&gt;
+
+&lt;p&gt;We’ll be starting with F. Choose F such that the &lt;em&gt;steady state&lt;/em&gt; speed, with no disturbances, gets &lt;em&gt;fairly close&lt;/em&gt; to the setpoint. Within about 10% is usually fine. For something like a shooter wheel, err on the side of “slightly too high” if possible.&lt;/p&gt;
+
+&lt;p&gt;Start with big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double F&quot; type=&quot;button&quot; onclick=&quot;adjustF(2.0)&quot; /&gt;
+&lt;input value=&quot;Half F&quot; type=&quot;button&quot; onclick=&quot;adjustF(0.5)&quot; /&gt;
+&lt;br /&gt;
+Then do smaller tweaks when you get closer:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up F&quot; type=&quot;button&quot; onclick=&quot;adjustF(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down F&quot; type=&quot;button&quot; onclick=&quot;adjustF(0.95)&quot; /&gt;
+&lt;br /&gt;
+Or, if you get completely lost, start over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out F&quot; type=&quot;button&quot; onclick=&quot;adjustF(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this point, if you were to fire up your shooter, you’ll get kinda close, but you won’t be getting there very fast. Nor will you be able to reject a constant disturbance, like changing friction or a sagging battery voltage. We need to start adding some feedback.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: On this system, a good value is around 0.01&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;p-gain&quot;&gt;P Gain&lt;/h4&gt;
+
+&lt;p&gt;P is next. Same thing as F - start near zero, and double the value each iteration. When P is zero, it will have no impact on behavior. When P is very very small, it has very very little impact on behavior.&lt;/p&gt;
+
+&lt;p&gt;Again, Start with big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double P&quot; type=&quot;button&quot; onclick=&quot;adjustP(2.0)&quot; /&gt;
+&lt;input value=&quot;Half P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0.5)&quot; /&gt;
+&lt;br /&gt;
+Then do smaller tweaks when you get closer:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up P&quot; type=&quot;button&quot; onclick=&quot;adjustP(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0.95)&quot; /&gt;
+&lt;br /&gt;
+Or, if you get completely lost, start over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you increase P, you should start to see your rate of approaching the setpoint get better and better. When you have a disturbance, even like a ball entering the shooter, you’ll see it bounce back pretty fast. As you start to raise P, you’ll notice a big improvement at first, as we’re &lt;em&gt;actually&lt;/em&gt; going toward the setpoint.&lt;/p&gt;
+
+&lt;p&gt;You’ll be able to increase it quite a bit with much more marginal gains. Finally, at a certain point, the output starts to &lt;em&gt;oscillate&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;You could keep going, but eventually the output becomes very unstable.&lt;/p&gt;
+
+&lt;p&gt;For P, your target is to tune &lt;em&gt;just barely at the point&lt;/em&gt; where the output starts to oscillate.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: On this system, a good value is around 2.28&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;d-gain&quot;&gt;D gain&lt;/h4&gt;
+
+&lt;p&gt;Then we can bring on D. D should start at about 1/100th of where you set P at. Same as before, start doubling the D gain until it &lt;em&gt;takes away&lt;/em&gt; most of the oscillation from the P gain.&lt;/p&gt;
+
+&lt;p&gt;Big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double D&quot; type=&quot;button&quot; onclick=&quot;adjustD(2.0)&quot; /&gt;
+&lt;input value=&quot;Half D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0.5)&quot; /&gt;
+&lt;br /&gt;
+Small Tweaks:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up D&quot; type=&quot;button&quot; onclick=&quot;adjustD(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0.95)&quot; /&gt;
+&lt;br /&gt;
+Start Over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Similar to P, if you make D too high, you get instability.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: On this system, a good value is around 0.047&lt;/em&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;i-gain&quot;&gt;I Gain&lt;/h4&gt;
+
+&lt;p&gt;Once you’ve got F, P, and D, it’s time to tune I. We actually don’t have any real friction modeled in this system, so we have very little steady state error to correct for. Given a response that looks like the above, I’d actually recommend skipping it.&lt;/p&gt;
+
+&lt;p&gt;To simulate your steady state error, you can crank up F higher than it needs to be, or zero it out. Try doing that, then using I to compensate.&lt;/p&gt;
+
+&lt;p&gt;To tune I, do it similarly to D. Start at 1/100th of P, and double until the steady-state error has been eliminated.&lt;/p&gt;
+
+&lt;p&gt;Big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double I&quot; type=&quot;button&quot; onclick=&quot;adjustI(2.0)&quot; /&gt;
+&lt;input value=&quot;Half I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0.5)&quot; /&gt;
+&lt;br /&gt;
+Small Tweaks:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up I&quot; type=&quot;button&quot; onclick=&quot;adjustI(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0.95)&quot; /&gt;
+&lt;br /&gt;
+Start Over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once you’re at this point - the best advice I can give - &lt;a href=&quot;https://www.youtube.com/watch?v=GbKAaSf6e10&amp;amp;feature=youtu.be&amp;amp;t=14&quot;&gt;STOP&lt;/a&gt;. Don’t keep fiddling at random. Good enough is good enough. PID will never get quite perfect. If you are at a point that looks like this, there’s admittedly not much else you can expect.&lt;/p&gt;
+
+&lt;h3 id=&quot;varying-the-setpoint&quot;&gt;Varying the Setpoint&lt;/h3&gt;
+
+&lt;p&gt;Though most shooter wheels tend to be either “on” or “off”, it’s worthwhile to verify that our system can accommodate any setpoint we put into it. That is indeed the point of the controller - ensure that any incoming command is acknowledged to the best of the &lt;em&gt;system’s&lt;/em&gt; ability.&lt;/p&gt;
+
+&lt;div class=&quot;slidecontainer&quot;&gt;
+    Setpoint:
+    &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;2000&quot; value=&quot;1000&quot; class=&quot;slider&quot; id=&quot;setpointSlider&quot; /&gt;
+    &lt;br /&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;With a properly tuned controller, you’ll see that the speed of the shooter wheel goes to the setpoint, as long as the setpoint is &lt;em&gt;low enough&lt;/em&gt; that the wheel can &lt;em&gt;physically go that fast&lt;/em&gt;. In our system speed above ~1.6k RPM aren’t achievable.&lt;/p&gt;
+
+&lt;h2 id=&quot;next-steps---modern-control-theory&quot;&gt;Next Steps - Modern Control Theory&lt;/h2&gt;
+
+&lt;p&gt;It’s really important to mention that PID isn’t exactly… up to date. It’s been around a while. And truth be told, better stuff is out there.&lt;/p&gt;
+
+&lt;p&gt;And sure, math is math, so it definitely still works. But I’d be remiss if I didn’t drop some key vocab like &lt;a href=&quot;https://en.wikipedia.org/wiki/Linear%E2%80%93quadratic_regulator&quot;&gt;LQR&lt;/a&gt; or &lt;a href=&quot;https://pdfs.semanticscholar.org/b96e/01c2d53e9715ffd77eea6e1b1661e9b3977f.pdf&quot;&gt;Plant Model Inversion&lt;/a&gt; or (dare I even say) &lt;a href=&quot;https://en.wikipedia.org/wiki/Machine_learning&quot;&gt;Machine Learning&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To tell you the truth? I don’t yet fully understand these things. I’ve had some cursory exposure to them, but I’ve not yet built a robot that &lt;em&gt;required&lt;/em&gt; using them. Hopefully that will change soon. And when it does, I’ll write a blog post about it. Till then check out some of the presentations and code written by other teams - there are many who have gone much further. &lt;a href=&quot;http://frc971.org/content/2017-software&quot;&gt;971 Spartan Robotics&lt;/a&gt; stands out for me.&lt;/p&gt;
+
+&lt;p&gt;My advice to the beginner? Start with PID, see how far you can get. Once you’ve mastered PID, maybe try something more complex. Keep in mind the goal is functionality and learning. PID might be good enough for both. Up to you.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;That’s all for now! Go tune your controllers!&lt;/p&gt;
+
+&lt;script src=&quot;/assets/js/pidTune.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times; Inject Ball at t=5.0</summary></entry><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T09:30:00-05:00</published><updated>2019-10-07T09:30:00-05:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Welcome to post 3 in our series on controls engineering. In this post, we’re going to explore the behavior of the motor model we’ve built up, try to create an intuition for how it behaves. We’ll establish a couple criteria for what we want it to do, and lead into the application of a classic PID controller.&lt;/p&gt;
 
@@ -2176,452 +2374,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;When I say workhorse, I really do mean it works hard, and can do a lot! Turns out, &lt;a href=&quot;https://youtu.be/R7EEoWg6Ekk?t=39&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; by itself is &lt;em&gt;Turing Complete&lt;/em&gt;&lt;/a&gt;. That’s right, you could build a computer that only know how to do &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt;, or limit yourself to only using &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt;, and still be able to &lt;em&gt;compute anything you want to&lt;/em&gt;. And even more so, &lt;a href=&quot;https://github.com/xoreaxeaxeax/movfuscator&quot;&gt;&lt;em&gt;someone did it&lt;/em&gt;&lt;/a&gt;. Seriously, this is one of my favorite exercises in all of computer science, just for its simultaneous absurdity and technical prowess. The video is long, but actually worthwhile, and totally approachable to someone who has kept pace with this blog thus far! &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan</summary></entry><entry><title type="html">Programming Language - C Syntax</title><link href="/blog_posts/2019/07/28/programming_language_c_syntax.html" rel="alternate" type="text/html" title="Programming Language - C Syntax" /><published>2019-07-28T09:31:00-05:00</published><updated>2019-07-28T09:31:00-05:00</updated><id>/blog_posts/2019/07/28/programming_language_c_syntax</id><content type="html" xml:base="/blog_posts/2019/07/28/programming_language_c_syntax.html">&lt;p&gt;&lt;em&gt;C is quirky, flawed, and an enormous success. - &lt;a href=&quot;https://en.wikipedia.org/wiki/Dennis_Ritchie&quot;&gt;Dennis Ritchie, co-creator of the C programming language&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;In this post, we’ll explain the basics of the C programming language syntax, showing how it accomplishes the major goals of any high-level programming language.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-c-like-syntax&quot;&gt;The “C-like” Syntax&lt;/h2&gt;
-
-&lt;p&gt;Though we’re about to describe software syntax for the C programming language, the implications of these facts and examples are much broader.&lt;/p&gt;
-
-&lt;p&gt;Many of the concepts C introduced in how a high-level language is to specify program behavior were inherited into other programming languages. For this reason, many languages are said to have “C-like syntax”, meaning that the fundamental way you specify behavior follows lots of the same design patterns laid out by C. The lion’s share of commonly used programming languages follow these patterns, so it seems to be a good place to start!&lt;/p&gt;
-
-&lt;p&gt;For most of the readers of this blog, I’m assuming you have some casual familiarity with how to write software. But even if not, don’t worry - we’re going to go through the basics, again using a ground-up format to explain how computer programs are put together.&lt;/p&gt;
-
-&lt;h3 id=&quot;storage-of-source-code&quot;&gt;Storage of Source Code&lt;/h3&gt;
-
-&lt;p&gt;C code source files are just plain-text, ASCII or utf-encoded &lt;a href=&quot;https://en.wikipedia.org/wiki/Text_file&quot;&gt;text files&lt;/a&gt;, which just happen to have extensions like &lt;code class=&quot;highlighter-rouge&quot;&gt;.c&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;.h&lt;/code&gt;. They can be opened and edited by any text editor: &lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;VS Code&lt;/a&gt;, &lt;a href=&quot;https://notepad-plus-plus.org/&quot;&gt;Notepad++&lt;/a&gt;, &lt;a href=&quot;https://www.vim.org/&quot;&gt;VIM&lt;/a&gt;, &lt;a href=&quot;https://www.gnu.org/software/emacs/&quot;&gt;Emacs&lt;/a&gt;, even the built-in Windows Notepad (not recommended).&lt;/p&gt;
-
-&lt;p&gt;A word to the wise - choose a good text editor which knows about C code syntax, so it can properly &lt;a href=&quot;https://en.wikipedia.org/wiki/Syntax_highlighting&quot;&gt;highlight different parts of each line&lt;/a&gt;. These visual cues are invaluable as a software developer to visualize the behavior of your code.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/syntaxHighlighting.png&quot; alt=&quot;Syntax Highlighting&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;c-code-statements--their-components&quot;&gt;C Code Statements &amp;amp; Their Components&lt;/h3&gt;
-
-&lt;p&gt;Programs are fundamentally built up of a series individual statements. Each statement may contain directions to perform one or more of the common abilities of programming languages.&lt;/p&gt;
-
-&lt;p&gt;Every statement has some content, and is terminated by a semicolon (&lt;code class=&quot;highlighter-rouge&quot;&gt;;&lt;/code&gt;). It’s just like putting a period at the end of your sentences. We use semicolons instead of periods because some numbers have periods inside them (ex: &lt;code class=&quot;highlighter-rouge&quot;&gt;3.14159&lt;/code&gt;), and using a unique symbol for unique meaning is easier than having to use the context around the symbol to determine meaning.&lt;/p&gt;
-
-&lt;p&gt;Here is an example of a simple statement:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;result = 3 + 5.7 * input;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;We will use this for reference as we go forward in the next few sections.&lt;/p&gt;
-
-&lt;h4 id=&quot;constants&quot;&gt;Constants&lt;/h4&gt;
-
-&lt;p&gt;C syntax allows software writers to use numbers in statements. THese numbers can be simple integers, like &lt;code class=&quot;highlighter-rouge&quot;&gt;3&lt;/code&gt; in the sample statement. They can also be fractional or &lt;em&gt;floating point&lt;/em&gt; numbers, such &lt;code class=&quot;highlighter-rouge&quot;&gt;5.7&lt;/code&gt; in the sample statement.&lt;/p&gt;
-
-&lt;p&gt;A single negative sign (&lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt;) in front of a number will of course make it negative - &lt;code class=&quot;highlighter-rouge&quot;&gt;-26&lt;/code&gt; is an allowed constant, equal to negative twenty six.&lt;/p&gt;
-
-&lt;h4 id=&quot;variables&quot;&gt;Variables&lt;/h4&gt;
-
-&lt;p&gt;C syntax also allows you to define names for memory locations. By using the name in a statement, the contents of that memory location will be used. Since a memory location can generally hold a range of numbers, these named memory locations act just like the variables in algebra. Therefor, we call them &lt;em&gt;variables&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;In the statement above, &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; are both variables.&lt;/p&gt;
-
-&lt;p&gt;Note that C does not allow variables to simply come into existence and disappear at runtime - each variable that is required must be &lt;em&gt;declared&lt;/em&gt; prior to usage. The precise manner in how you declare the variable will dictate how many bits are used to store values, whether the value is read/write or read-only, which portions of code are allowed to access the variable, and a whole slew of other properties.&lt;/p&gt;
-
-&lt;p&gt;Built into the C programming language are a few basic variable types:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt; is the basic integer storage. It is interpreted as a 2’s compliment signed integer.
-&lt;code class=&quot;highlighter-rouge&quot;&gt;char&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;short&lt;/code&gt; both store integers as well, but take up fewer bits than &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt; (and therefore have a more restricted range).
-&lt;code class=&quot;highlighter-rouge&quot;&gt;long&lt;/code&gt; will also be an integer, but take more bits than &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt; (and therefore have a wider range`).&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;char&lt;/code&gt; is usually treated as unsigned by default. Any type can get the qualifier &lt;code class=&quot;highlighter-rouge&quot;&gt;unsigned&lt;/code&gt; put in front of it to force it to be unsigned.&lt;/p&gt;
-
-&lt;p&gt;The exact number of bits for each of these is not fixed - it depends on what type of processor you are on. This is incredibly horrible when attempting to write code that works the same on multiple machines, so other types like &lt;code class=&quot;highlighter-rouge&quot;&gt;int8_t&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;int16_t&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;int32_t&lt;/code&gt; are actually better to use - these explicitly specify the bit width.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;double&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;float&lt;/code&gt; are both floating point representations, allowing you to store decimal values.&lt;/p&gt;
-
-&lt;p&gt;A number of other types are built in, and the keyword &lt;code class=&quot;highlighter-rouge&quot;&gt;typedef&lt;/code&gt; even allows you to define your own!&lt;/p&gt;
-
-&lt;h4 id=&quot;assignment&quot;&gt;Assignment&lt;/h4&gt;
-
-&lt;p&gt;Once we have variables, we have to have a way to get information into them. In C code statements, the &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt; equals sign character is used to perform an assignment operation. Assignment takes whatever is on the right-hand side of the &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;, and places it into the variable on the left-hand side.&lt;/p&gt;
-
-&lt;p&gt;It’s roughly equivalent to a “store” operation, rather than an expression of equality (more on that later). Think of it as memory movement - you do some calculation to get a number. Then, the equals sign indicates the calculation’s result needs to be stored somewhere. The variable on the left hand side provides the memory address where the value is to be stored at.&lt;/p&gt;
-
-&lt;p&gt;In the sample statement above, the value calculated on the right-hand side of the &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt; is being stored into the variable named &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; - and by this, we really mean the value is being put into the RAM memory bits associated with the variable &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;For example, combining our knowledge of Variables and Assignment:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;128&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;534&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;574029&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;23&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Will do weird stuff.&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;short&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;67&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Will also do weird stuff.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;operators&quot;&gt;Operators&lt;/h4&gt;
-
-&lt;p&gt;On the right-hand side of any &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt; sign is a set of operations which perform the actual calculation of interest. C syntax reserves a set of characters for performing this calculation. There are a few broad categories of Operators.&lt;/p&gt;
-
-&lt;h5 id=&quot;combining-numbers-with-math&quot;&gt;Combining Numbers with Math&lt;/h5&gt;
-
-&lt;p&gt;Some common math functions are implemented:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt; adds the thing on the left and on the right of the symbol together&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt; multiplies the thing on the left and on the right of the symbol together&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-&lt;/code&gt; subtracts the thing on right from the thing on the left of the symbol&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; divides the thing on the left by the thing on the right of the symbol&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In the example above, the statement says to first multiply the value stored in the variable &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;5.7&lt;/code&gt;, then add &lt;code class=&quot;highlighter-rouge&quot;&gt;3&lt;/code&gt; to the value. Finally, as already mentioned, that calculated value gets stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Normal order of operations does apply here (mult/div, then add/subtract). Parenthesis &lt;code class=&quot;highlighter-rouge&quot;&gt;( )&lt;/code&gt; can be used to group operations if a different operation order is required.&lt;/p&gt;
-
-&lt;p&gt;For example, the statement &lt;code class=&quot;highlighter-rouge&quot;&gt;result = (3 + 5.7) * input;&lt;/code&gt; simply multiplies &lt;code class=&quot;highlighter-rouge&quot;&gt;input&lt;/code&gt; by &lt;code class=&quot;highlighter-rouge&quot;&gt;8.7&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;There are some “specialty” math functions that C also defines. These aren’t strictly necessary, but provide useful shortcuts:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;variable++&lt;/code&gt; will &lt;em&gt;change&lt;/em&gt; the value stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;variable&lt;/code&gt; by adding 1 to it. This is called “incrementing” the variable.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;variable--&lt;/code&gt; will &lt;em&gt;change&lt;/em&gt; the value stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;variable&lt;/code&gt; by subtracting 1 from it. This is called “decrementing” the   variable.
-    &lt;ul&gt;
-      &lt;li&gt;Note &lt;code class=&quot;highlighter-rouge&quot;&gt;++&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;--&lt;/code&gt; operators perform an &lt;em&gt;assignment&lt;/em&gt; without an explicit &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;. This is different than other math operators.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;%&lt;/code&gt; symbol is called the &lt;em&gt;modulo&lt;/em&gt; operator - it calculates the remainder after division.
-    &lt;ul&gt;
-      &lt;li&gt;For example, &lt;code class=&quot;highlighter-rouge&quot;&gt;7 % 5&lt;/code&gt; equals to 2 (since 7 divided by 5 is 1, remainder 2).&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h5 id=&quot;combining-bits-with-boolean-logic&quot;&gt;Combining Bits with Boolean Logic&lt;/h5&gt;
-
-&lt;p&gt;C syntax also allows you to perform the basic boolean operations &lt;a href=&quot;/blog_posts/2019/06/14/boolean_logic.html&quot;&gt;we described earlier&lt;/a&gt;. Just like regular math, special symbols are reserved to indicate the operation.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&amp;amp;&lt;/code&gt; performs the AND operation between two values&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;||&lt;/code&gt; performs the OR operation between  two values
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt; is the symbol on the key right below backspace, accessed when you hit shift.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;!&lt;/code&gt; performs the NOT operation on a single value&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;All of these are called the “Logical” operators, since they treat their numbers like a single boolean value. The reason we say “treat” is because C doesn’t have a dedicated “boolean” type - the best we can do is just use one byte (named &lt;code class=&quot;highlighter-rouge&quot;&gt;char&lt;/code&gt;, as we will see later). Given these bite-sized variables, the value of &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt; is treated as FALSE, while any other value is TRUE. As it turns out, these are the more commonly used set of boolean operators.&lt;/p&gt;
-
-&lt;p&gt;Lesser used, but worth a mention, are the &lt;em&gt;bitwise&lt;/em&gt; operators - they do the same boolean operation, but work bit-by-bit on the number. For example, the bitwise-NOT of &lt;code class=&quot;highlighter-rouge&quot;&gt;0b1100&lt;/code&gt; is &lt;code class=&quot;highlighter-rouge&quot;&gt;0b0011&lt;/code&gt; (note how each bit is flipped to the opposite value). Similarly, the bitwise-OR of &lt;code class=&quot;highlighter-rouge&quot;&gt;0b1100&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;0b0101&lt;/code&gt; is &lt;code class=&quot;highlighter-rouge&quot;&gt;0b1101&lt;/code&gt; (each bit in the first number OR’ed with the corresponding bit in the second number).&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;amp;&lt;/code&gt; performs the bitwise AND operation between two numbers&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;|&lt;/code&gt; performs the bitwise OR operation between two numbers&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;~&lt;/code&gt; performs the bitwise NOT on a number.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;See examples of the usage of these things later on. The key for now - these operators provide ways of combining boolean values to create new boolean values.&lt;/p&gt;
-
-&lt;h5 id=&quot;creating-boolean-values-from-numbers-with-comparison&quot;&gt;Creating Boolean values from Numbers with Comparison&lt;/h5&gt;
-
-&lt;p&gt;Just like in math that you’ve probably done in high school, there are a set of operators that will do comparison between two integer numbers to create boolean values. These operators do almost exactly what you would expect:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;=&lt;/code&gt; check if one number is greater than (or equal to) another number.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;=&lt;/code&gt; check if one number is less than (or equal to) another number.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;==&lt;/code&gt; will check if two numbers are exactly equal&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;!=&lt;/code&gt; will check if two numbers are not equal&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Note this distinction between the action of &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;==&lt;/code&gt;, it’s a very common thing that gets lots of new software developers. &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt; performs &lt;em&gt;assignment&lt;/em&gt; - it takes one number and stores it into a memory address. &lt;code class=&quot;highlighter-rouge&quot;&gt;==&lt;/code&gt; performs &lt;em&gt;comparison&lt;/em&gt; - it checks whether two numbers are equal or not, creating a boolean from the result.&lt;/p&gt;
-
-&lt;h4 id=&quot;comments&quot;&gt;Comments&lt;/h4&gt;
-
-&lt;p&gt;Some special statements are called &lt;em&gt;comments&lt;/em&gt;. These are wrapped in special characters that tell the compiler to completely ignore the statement. The statement is only there to help human beings.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;// Some comments begin with two slashes&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;/* Others are between slash and star sequences */&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Put comments wherever you want to remember (or tell the next developer) what your code is doing. Use comments to describe the “why”, and not the “what”.&lt;/p&gt;
-
-&lt;h3 id=&quot;grouping&quot;&gt;Grouping&lt;/h3&gt;
-
-&lt;p&gt;A flat list of instructions is just fine for a computer, but generally humans like to visually organize their code a bit more. Therefor, in most programming languages, &lt;em&gt;statements&lt;/em&gt; are grouped together into clumps called &lt;em&gt;blocks&lt;/em&gt; based on the functionality that is desired.&lt;/p&gt;
-
-&lt;h4 id=&quot;blocks&quot;&gt;Blocks&lt;/h4&gt;
-
-&lt;p&gt;A &lt;em&gt;block&lt;/em&gt; of code is simply a logical subset of statements which form one cohesive action, and are meant to be run together. &lt;em&gt;Which&lt;/em&gt; statements belong together and &lt;em&gt;why&lt;/em&gt; will be discussed in due time, but for now consider just that statements will be grouped into units called &lt;em&gt;blocks&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;C code uses the symbols &lt;code class=&quot;highlighter-rouge&quot;&gt;{&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;}&lt;/code&gt; to mark the start and end of each block. By convention, the contents of the block are indented with whitespace by some amount (the author is a &lt;a href=&quot;https://stackoverflow.blog/2017/06/15/developers-use-spaces-make-money-use-tabs/&quot;&gt;strong advocate for 4 spaces&lt;/a&gt;).&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This is the start of a block&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// Here is some code&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b00001111&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// This is the end of a block of code.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Note that multiple blocks can be nested together:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// start of outer block&lt;/span&gt;
-  
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// Inner block 1&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  
-    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// Inner block 2&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-  
-    &lt;span class=&quot;c1&quot;&gt;// end of outer block&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Blocks are used to group pieces of code together to defining when certain parts of logic should be executed or skipped based on conditions (&lt;em&gt;conditional flow&lt;/em&gt;), or for doing a chunk of code multiple times (&lt;em&gt;Releating Flow&lt;/em&gt;).&lt;/p&gt;
-
-&lt;h4 id=&quot;grouping-for-conditional-flow&quot;&gt;Grouping for Conditional Flow&lt;/h4&gt;
-
-&lt;p&gt;In C, you can use a set of statement as a prefix to a block, to define conditions on which the block should be run. The prefix statement must use some value or quantity that resolve to a boolean. Then, when the boolean is True, the block is executed. Otherwise, the block is skipped.&lt;/p&gt;
-
-&lt;p&gt;The basic syntax for the prefix is &lt;code class=&quot;highlighter-rouge&quot;&gt;if(&amp;lt;condition&amp;gt;) { &amp;lt;code to execute&amp;gt; }&lt;/code&gt;. For a more concrete example:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be run.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Now this code will be skipped.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;C also provides a few other tools for making more complex combinations of these if- blocks. The &lt;code class=&quot;highlighter-rouge&quot;&gt;else&lt;/code&gt; statement is the alternative to &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt; - when &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt;’s condition is false, then the code for &lt;code class=&quot;highlighter-rouge&quot;&gt;else&lt;/code&gt; is run instead. Concretely:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be run.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be skipped.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Now this code will be skipped.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// and this code will be run.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;There is one more construct, which allows you to stack many if statements together, if the conditions should be mutually exclusive (zero or one are true), or a priority is needed (if multiple conditions are true, only one is acted on).&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be run.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be skipped, since we &quot;hit&quot; the condition1 statement first.  &lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be skipped.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be skipped&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be run&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code will be skipped.&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;As we go forward we will see more and more practical examples of this usage, so don’t worry too much about understanding the nuance and memorizing it now. Just keep in mind that there is a construct that uses &lt;code class=&quot;highlighter-rouge&quot;&gt;if&lt;/code&gt; to control if certain pieces of code get executed or not!&lt;/p&gt;
-
-&lt;h4 id=&quot;grouping-for-repeating-flow&quot;&gt;Grouping for Repeating Flow&lt;/h4&gt;
-
-&lt;p&gt;The other common usage for grouping blocks of statements is for when you want to have a chunk of code repeat many times over and over. Admittedly this is less common for robots, but still happens. As a simple example, say you had 20 numbers you wanted to print to the screen - using loops, you can use the same print code many times, minimizing the amount of copy/paste or rewrite work you have to do.&lt;/p&gt;
-
-&lt;p&gt;A block of code which is run many times over and over is called a &lt;em&gt;loop&lt;/em&gt;. There are two main types of loops available in C.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;while&lt;/em&gt; loop repeats a chunk of code so long as a condition is TRUE. The syntax used in C is &lt;code class=&quot;highlighter-rouge&quot;&gt;while(&amp;lt;condition&amp;gt;) { &amp;lt;code to repeat&amp;gt; }&lt;/code&gt;. In a more concrete example:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;TRUE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;//Code to repeat&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;condition&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;FALSE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;counter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;If you trace the code execution, you should see that the code on the inside of the while loop runs until our counter is 10 or larger. THe counter starts at 0, and gets incremented every loop until we exit.&lt;/p&gt;
-
-&lt;p&gt;The condition of &lt;code class=&quot;highlighter-rouge&quot;&gt;counter &amp;gt;= 10&lt;/code&gt; is referred to as the &lt;em&gt;terminal condition&lt;/em&gt; of the loop - it’s the condition which triggers the loop to stop running, and allows execution to continue past the final &lt;code class=&quot;highlighter-rouge&quot;&gt;}&lt;/code&gt; of the block.&lt;/p&gt;
-
-&lt;p&gt;Now, of course, &lt;code class=&quot;highlighter-rouge&quot;&gt;condition&lt;/code&gt; doesn’t have to be tied to a fixed number of loops - it could be some event on the robot (like receiving a packet over ethernet) or user interaction (driver pushes a button), for example. But for when you are looking to run for a set number of loops, there is a syntax which allows expressing it more concisely.&lt;/p&gt;
-
-&lt;p&gt;Enter the &lt;em&gt;for&lt;/em&gt; loop in C. It looks way more complex than it actually is. For loops are used when you know the exact number of times you want to iterate, rather than simply &lt;em&gt;wait&lt;/em&gt; for some external event (for an unknown duration).&lt;/p&gt;
-
-&lt;p&gt;Just like &lt;em&gt;while&lt;/em&gt; loops, &lt;em&gt;for&lt;/em&gt; loops cause a block of code to get executed many times. The prefix to that block has extra syntax to provide a concise way of describing how long you will loop for.&lt;/p&gt;
-
-&lt;p&gt;This syntax is &lt;code class=&quot;highlighter-rouge&quot;&gt;for(&amp;lt;init action&amp;gt;; &amp;lt;loop condition&amp;gt;; &amp;lt;loop action&amp;gt;){ &amp;lt;Code to be executed&amp;gt; }&lt;/code&gt;. THe Init action is simply a statement to be done right before starting the loop, and the loop action is a statement to be run at the end of the loop.&lt;/p&gt;
-
-&lt;p&gt;99% of the time, &lt;em&gt;for&lt;/em&gt; loops will be written something like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code runs 10 times&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The sequence of steps that is summarized all in that one line:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Before running anything inside the loop, &lt;code class=&quot;highlighter-rouge&quot;&gt;idx&lt;/code&gt; is set to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;Every loop, before doing the contents of loop, we check if the condition &lt;code class=&quot;highlighter-rouge&quot;&gt;idx &amp;lt; 10&lt;/code&gt; evaluates to TRUE. This happens for the first 10 loops, but not for any subsequent one.&lt;/li&gt;
-  &lt;li&gt;After running the contents of the loop, we perform the action &lt;code class=&quot;highlighter-rouge&quot;&gt;idx++&lt;/code&gt;, which keeps idx up to date with the number of times we have completed the loop action.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;In C, the &lt;em&gt;for&lt;/em&gt; loop is pure syntactical candy. There’s no reason you can’t do the exact same thing with a while loop:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// This code runs 10 times&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;idx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;However, that takes two extra lines. Since this pattern is very common, the C language built in the &lt;em&gt;for&lt;/em&gt; loop shortcut.&lt;/p&gt;
-
-&lt;p&gt;We’ll get into more of the nuances of how to make the choice between &lt;em&gt;for&lt;/em&gt; and &lt;em&gt;while&lt;/em&gt; in future posts.&lt;/p&gt;
-
-&lt;h4 id=&quot;grouping-for-reusability&quot;&gt;Grouping for Reusability&lt;/h4&gt;
-
-&lt;p&gt;Another major usage of blocks of instructions is to create reusable chunks of code which perform a specific subset of functionality. In C code, we refer to such blocks of code as &lt;em&gt;functions&lt;/em&gt;. A function is simply a block of code with a specific prefix to create the name of the function, specify what inputs it has (the &lt;em&gt;arguments&lt;/em&gt;), and define the type of output (the &lt;em&gt;return value&lt;/em&gt;) it has.&lt;/p&gt;
-
-&lt;p&gt;Generally, the syntax for creating a function is:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;return type&amp;gt; &amp;lt;function name&amp;gt;(&amp;lt;arguments&amp;gt;){ &amp;lt;contents of function&amp;gt;}&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;Functions should generally perform one monolithic task, and one task alone.&lt;/p&gt;
-
-&lt;p&gt;For example, let’s create a function with calculates the square of some input number, but preserves the sign of the number. This is a common operation done while conditioning joystick inputs from a driver - it gives them less sensitivity near the center for precise slow motions.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;squareSigned&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In painstaking detail, here’s what the handful of lines of code actually mean:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The function is first declared. &lt;code class=&quot;highlighter-rouge&quot;&gt;double squareSigned&lt;/code&gt; says “There is a function named &lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned&lt;/code&gt; which returns a value of type &lt;code class=&quot;highlighter-rouge&quot;&gt;double&lt;/code&gt;”.&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned(double in){&lt;/code&gt; says “Function &lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned&lt;/code&gt; takes one argument named &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;, which must be of type &lt;code class=&quot;highlighter-rouge&quot;&gt;double&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Whenever &lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned&lt;/code&gt; is run, the first step is to set aside some memory to keep track of the result while we’re performing the operation. We’ll refer to that memory with the name &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt;, treating it as a double floating point value.&lt;/li&gt;
-  &lt;li&gt;The first real step calculation is to multiply &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; by itself, and store that into &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;After we have the value of &lt;code class=&quot;highlighter-rouge&quot;&gt;in * in&lt;/code&gt; stored into &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt;, we now need to re-apply the sign of &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; (since squaring it always produces a positive value).&lt;/li&gt;
-  &lt;li&gt;We calculate whether in was negative or not by comparing it to zero with the statement &lt;code class=&quot;highlighter-rouge&quot;&gt;in &amp;lt; 0&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;If &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; was in fact negative, we also need to make &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; negative. To accomplish this, we use the &lt;em&gt;if&lt;/em&gt; statement to conditionally run our negating logic.&lt;/li&gt;
-  &lt;li&gt;Within the &lt;code class=&quot;highlighter-rouge&quot;&gt;if(){&lt;/code&gt; block, multiply &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; by negative one, and store it back into result. This means that &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; will now have the same sign as &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;Finally, we specify that the value in &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; is to be the return value of the function. With the statement &lt;code class=&quot;highlighter-rouge&quot;&gt;return result;&lt;/code&gt;, we return execution control to whatever chunk of code called this function in the first place, returning the value from &lt;code class=&quot;highlighter-rouge&quot;&gt;result&lt;/code&gt; at the same time.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Finally, keep in mind this is just one basic, contrived example, targeted at the first-time learner. We’ll get more into the “when” and “why” of function usage in later posts, but for now, just remember that such a tool for reusing functionality is available in any programming language worth its salt.&lt;/p&gt;
-
-&lt;h2 id=&quot;miscellaneous-code-examples&quot;&gt;Miscellaneous Code Examples&lt;/h2&gt;
-
-&lt;h3 id=&quot;boolean-values&quot;&gt;Boolean Values&lt;/h3&gt;
-
-&lt;p&gt;A very common use-case of the bitwise operators is forcing a single bit to 1 or to 0 in a number. For example:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//Force the least-significant bit of value to 0, but leave the rest untouched.&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b11111110&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//Force the least-significant bit of value to 1, but leave the rest untouched.&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b00000001&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Another usecase is to check if a particular bit is 1 or 0:&lt;/p&gt;
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// Check if the most-significant bit is set to 1&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;bit_is_set&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b10000000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bit_is_set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// bit was 1&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;// bit was 0&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In this example, the constant &lt;code class=&quot;highlighter-rouge&quot;&gt;0b10000000&lt;/code&gt; is referred to as the “bitmask” since it masks off all bits except the first one (aka forces the to 0). This way, if the top bit is zero, &lt;code class=&quot;highlighter-rouge&quot;&gt;bit_is_set&lt;/code&gt; will be non-zero, and can be used in the &lt;code class=&quot;highlighter-rouge&quot;&gt;if()&lt;/code&gt; statement to change the action of the program.&lt;/p&gt;
-
-&lt;h3 id=&quot;using-functions&quot;&gt;Using Functions&lt;/h3&gt;
-
-&lt;p&gt;Consider the &lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned()&lt;/code&gt; function we looked at earlier. Back in main robot code, this would get used in a fashion something like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;joyValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;motValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;joyValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getDriverXJoystick&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;motValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;squareSigned&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;joyValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;setLeftDriveMotor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;motValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;setRightDriveMotor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;motValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In this highly contrived example, we declare two variables to store the value of the joystick, and the value we want to power the motors at. We’ll assume that functions named &lt;code class=&quot;highlighter-rouge&quot;&gt;getDriverXJoystick()&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;setLeftDriveMotor()&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;setRightDriveMotor()&lt;/code&gt; exist and have been provided to us for interaction with the physical hardware. Our job is just to hook up one piece of hardware to another.&lt;/p&gt;
-
-&lt;p&gt;Since this isn’t the only joystick on the robot, we’ll use our common &lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned()&lt;/code&gt; function to perform the desired mapping from a joystick reading to a motor command.&lt;/p&gt;
-
-&lt;p&gt;In this example, we first populate our &lt;code class=&quot;highlighter-rouge&quot;&gt;joyValue&lt;/code&gt; with some value read in from the joysticks.&lt;/p&gt;
-
-&lt;p&gt;We then pass that value into our function &lt;code class=&quot;highlighter-rouge&quot;&gt;squareSigned()&lt;/code&gt;, which transfers control of the program to that function. When the function is done with its transformation, its &lt;em&gt;return value&lt;/em&gt; is stored into our variable &lt;code class=&quot;highlighter-rouge&quot;&gt;motValue&lt;/code&gt;. We can then use &lt;code class=&quot;highlighter-rouge&quot;&gt;motValue&lt;/code&gt; as the command to send to both motors.&lt;/p&gt;
-
-&lt;p&gt;Note that for these examples, we’ve chosen some very obvious names for our variables. Clearly, to any reasonably astute observer, &lt;code class=&quot;highlighter-rouge&quot;&gt;joyValue&lt;/code&gt; would tend to imply something along the lines of “value from a joystick”, and &lt;code class=&quot;highlighter-rouge&quot;&gt;motValue&lt;/code&gt; would imply “value for a motor”. This is intentional - choose meaningful names so its easier for you to remember exactly what each variable is for, when you come back and look at the code in 5 weeks and have no idea what it was doing.&lt;/p&gt;
-
-&lt;p&gt;Of course, the compiler is not a human, and doesn’t know that the string of characters &lt;code class=&quot;highlighter-rouge&quot;&gt;joyValue&lt;/code&gt; has any real relationship to a joystick. No matter how good of names you choose for your variables, the compiler will still always expect you to populate them with meaningful values yourself - ie, call &lt;code class=&quot;highlighter-rouge&quot;&gt;getDriverXJoystick()&lt;/code&gt; and assign it into &lt;code class=&quot;highlighter-rouge&quot;&gt;joyValue&lt;/code&gt;. The above code could be written as:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;woodieFlowers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;deanKamen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;woodieFlowers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getDriverXJoystick&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;deanKamen&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;squareSigned&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;woodieFlowers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;setLeftDriveMotor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deanKamen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;setRightDriveMotor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;deanKamen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;And it would work the exact same way. The only difference is you’ll be hating yourself in three days when you have no recollection what a &lt;code class=&quot;highlighter-rouge&quot;&gt;woodieFlowers&lt;/code&gt; is for.&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;We’re nearing the end of the story-arc for our introductory content! Next up, we’ll start exploring how these basic C constructs are accomplished on a real processor. This will be the last major building block in understanding, at a high level, how lines of code actually perform their action under the hood. &lt;a href=&quot;/blog_posts/2019/08/10/x86_intro.html&quot;&gt;To get started, check out our introduction to the x86 assembly language!&lt;/a&gt;&lt;/p&gt;</content><author><name></name></author><summary type="html">C is quirky, flawed, and an enormous success. - Dennis Ritchie, co-creator of the C programming language.</summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan</summary></entry></feed>
