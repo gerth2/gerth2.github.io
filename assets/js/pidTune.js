@@ -7,7 +7,7 @@ PGain = 0;
 DGain = 0;
 IGain = 0;
 setpoint = 0;
-
+injectBall = false;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Standard Math Function impelmentations
@@ -114,7 +114,7 @@ var GEARBOX_RATIO = 50.0/10.0; //output over input - 5:1 gear ratio
 var Rc = 0.08; //Coil & Wiring Resistance in Ohms
 var Kt = 0.71/134; //Nm/A torque constant -  Calculated from Stall Torque/Stall Current
 var Kv = (12-(0.7*Rc))/(18730*2*3.14159/60); //V/(rad/s). Calculated from Vemf@FreeSpeed/(2pi/60*RPM@FreeSpeed). Steady-state Vemf = Vs - I@FreeSpeed*Rc, for Vs = 12
-var mass = 0.75; //shooter wheel mass in Kg
+var mass = 0.55; //shooter wheel mass in Kg
 var radius = 0.0762; //3 inch radius, converted to meters
 
 // Constants from the blog post equations
@@ -194,7 +194,7 @@ function runSimFullVoltage(){
 
 }
 
- //TODO - ACTUALLY USE CLASS REPRESNTATION TO STOP MEMORY LELAK
+setpoint = 1000
 var fullVoltPlot = new DualPlot('#plot2a', '#plot2b')
 runSimFullVoltage();
 fullVoltPlot.updatePlot(motorSpeedArray, inputVoltageArray)
@@ -278,9 +278,9 @@ function runSimPID(F_gain, P_gain, I_gain, D_gain, target_speed_rpm){
 
         //Simulate friction
         extTrq = 0.0005*speedPrev;
-        if(t > 5.0 & t < 5.1){
+        if( (t > 5.0 & t < 5.1)  & injectBall){
             //add a short "impulse" to simulate putting a ball into the shooter
-            extTrq += 2;
+            extTrq *= 30.0
         }
 
         meas_speed = speed_delay_line.getSample();
@@ -339,11 +339,11 @@ function plotPIDControl(){
     runSimPID(FGain, PGain, IGain, DGain, setpoint);
     pidPlot.updatePlot(motorSpeedArray, inputVoltageArray)
     document.getElementById("gains").innerHTML = "<b>" + 
-                                                 "F="+FGain.toString() + " <br>" +
-                                                 "P="+PGain.toString() + " <br>" +
-                                                 "I="+IGain.toString() + " <br>" +
-                                                 "D="+DGain.toString() + " <br>" +
-                                                 "Setpoint="+setpoint.toString() + " RPM" +
+                                                 "F="+FGain.toFixed(4) + " <br>" +
+                                                 "P="+PGain.toFixed(4) + " <br>" +
+                                                 "I="+IGain.toFixed(4) + " <br>" +
+                                                 "D="+DGain.toFixed(4) + " <br>" +
+                                                 "Setpoint="+setpoint.toFixed(0) + " RPM" +
                                                  "</b>";
 }
 
@@ -386,18 +386,25 @@ function adjustD(adj){
 }
 
 function adjustI(adj){
-    if(DGain == 0 & adj != 0){
-        DGain = 0.0001;
+    if(IGain == 0 & adj != 0){
+        IGain = 0.0001;
     } else {
-        DGain *= adj;
+        IGain *= adj;
     }
-    DGain *= adj;
+    IGain *= adj;
     plotPIDControl();
 }
 
 function adjustSetpoint(){
     setpoint = parseFloat(setpointSlider.value);
     plotPIDControl();
+}
+
+function updateBallInject(){
+  var checkBox = document.getElementById("ballInject");
+
+  injectBall = checkBox.checked;
+  plotPIDControl();
 }
 
 //Init

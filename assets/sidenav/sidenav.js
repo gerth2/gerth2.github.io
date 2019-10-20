@@ -12,13 +12,24 @@ function stopPropagation(e){
   }
 }
 
+function getSingularTag(name) {
+  results = document.getElementsByTagName(name);
+  if(results.length == 1){
+    return results[0]
+  } else {
+    return null
+  }
+}
+
 function openNav() {
-  document.getElementById("mySidenav").style.height = "750px";
+  document.getElementById("mySidenav").style.width = "550px";
+  getSingularTag("main").style.marginLeft = "550px";
   stopPropagation(null);
 }
 
 function closeNav() {
-  document.getElementById("mySidenav").style.height = "0";
+  document.getElementById("mySidenav").style.width = "0";
+  getSingularTag("main").style.marginLeft= "0";
   stopPropagation(null);
 }
 

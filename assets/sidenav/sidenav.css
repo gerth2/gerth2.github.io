@@ -1,22 +1,24 @@
 .sidenav {
-  height: 0;
-  width:100%;
+  height: 100%;
+  width:0;
   position: fixed;
   z-index: 1;
-  bottom: 0;
+  top: 0;
   left: 0;
-  background-color: rgb(250, 241, 241);
+  background-color: rgb(241, 241, 250);
   opacity:0.90;
   overflow-x: hidden;
   transition: 0.2s;
-  padding-top: 20px;
+  padding-top: 60px;
+  padding-right:10px;
+  border: 4px solid  rgb(180, 180, 255);
 }
 
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
   font-size: 25px;
-  color: #666666;
+  color: #886666;
   display: block;
   transition: 0.2s;
 }
@@ -33,19 +35,26 @@
   margin-left: 50px;
 }
 
+
+/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+* {
+  transition: margin-left 0.2s;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
 
-.column {
-  float: left;
-  width: 50%;
+.gainsDisplay {
+  padding: 30px;
 }
 
-/* Clear floats after the columns */
+/* Clear floats after the columns 
 .row:after {
   content: "";
   display: table;
   clear: both;
 }
+*/
