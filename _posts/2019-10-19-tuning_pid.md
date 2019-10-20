@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Control Theory - Tuning PID"
-date:   2019-10-12 9:30:00 -0500
+date:   2019-10-19 9:30:00 -0500
 categories: blog_posts
 ---
 
