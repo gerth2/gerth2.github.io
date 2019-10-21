@@ -6,7 +6,7 @@ FGain = 0;
 PGain = 0;
 DGain = 0;
 IGain = 0;
-setpoint = 0;
+setpoint = -45.0;
 startpoint = 0;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -180,7 +180,7 @@ function resetPIDF(){
     PGain = 0;
     DGain = 0;
     IGain = 0;
-    setpoint = 0;
+    setpoint = -45;
     startpoint = 0;
 }
 
@@ -333,21 +333,31 @@ function resetAnimationToStart(){
 
 var minTime = -0.5;
 var maxTime = 10.0;
-var Ts = 0.01;
+var Ts = 0.001;
+
+var Ts_controller = 0.02;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Steady-state behavior with disturbances
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-function simConstantVoltage(on_voltage){
+function simControlSystem(on_voltage, closedLoop){
 
     var posPrevPrevRad = degToRad(startpoint);
     var posPrevRad = degToRad(startpoint);
     var posRad = degToRad(startpoint);
     var inVolts = 0;
 
+    var error = 0;
+    var err_prev = 0;
+    var err_accum = 0;
+    var err_delta = 0;
+
     extTorqueArray = [];
     armPosArray = [];
     inputVoltageArray = [];
+
+    var nextControllerRunTime = 0;
+
     
     for(t = minTime; t < maxTime; t += Ts){
 
@@ -356,8 +366,38 @@ function simConstantVoltage(on_voltage){
         } else {
             //Perform normal simulation
 
-            //"Full throttle" open-loop control law
-            inVolts = on_voltage * step(t);
+            
+            //Simulate Controller
+            if(closedLoop){
+                if(t >= nextControllerRunTime){
+                    
+                    //Calculate error, error derivative, and error integral
+                    error = (degToRad(setpoint) - posRad);
+                    
+                    err_accum += (error)*Ts_controller;
+
+                    err_delta = (error - err_prev)/Ts_controller;
+
+                    //PID control law
+                    inVolts = PGain * error  +  
+                              IGain * err_accum  +  
+                              DGain * err_delta;
+
+                    //Cap voltage at max/min of the physically possible command
+                    if(inVolts > 12){
+                        inVolts = 12;
+                    } else if (inVolts < -12){
+                        inVolts = -12;
+                    }
+
+                    err_prev = error;
+                    //Maintain separate sample rate for controller
+                    nextControllerRunTime += Ts_controller;
+                }
+            } else {
+                //"Full throttle" open-loop control law
+                inVolts = on_voltage * step(t);
+            }
 
             //Run plant model simulation
             posRad = 1/(Ts*C2 + 1) * ( Ts*Ts*C1*inVolts - Ts*Ts*C3*Math.cos(posPrevRad) + posPrevRad*(Ts*C2 + 2) - posPrevPrevRad );
@@ -379,9 +419,14 @@ voltageSlider.oninput = runConstantVoltage;
 
 function runConstantVoltage(){
     v_in = parseFloat(voltageSlider.value)/100
-    simConstantVoltage(v_in);
+    simControlSystem(v_in, false);
     updatePlots();
     document.getElementById("voltsDisplay").innerHTML = v_in.toFixed(2) + " V";
+}
+
+function runClosedLoop(){
+    simControlSystem(0, true);
+    updatePlots();
 }
 
 function getAngleAtTime(timeSec){
@@ -393,6 +438,44 @@ function getAngleAtTime(timeSec){
         val = 0;
     }
     return val;
+}
+
+function adjustP(adj){
+    if(PGain == 0 & adj != 0){
+        PGain = 0.0001;
+    } else {
+        PGain *= adj;
+    }
+    PGain *= adj;
+    runClosedLoop();
+}
+
+function adjustD(adj){
+    if(DGain == 0 & adj != 0){
+        DGain = 0.0001;
+    } else {
+        DGain *= adj;
+    }
+    DGain *= adj;
+    runClosedLoop();
+}
+
+function adjustI(adj){
+    if(IGain == 0 & adj != 0){
+        IGain = 0.0001;
+    } else {
+        IGain *= adj;
+    }
+    IGain *= adj;
+    runClosedLoop();
+}
+
+var setpointSlider  = document.getElementById("setpointSlider");
+setpointSlider.oninput = adjustSetpoint;
+
+function adjustSetpoint(){
+    setpoint = parseFloat(setpointSlider.value);
+    runClosedLoop();
 }
 
 

@@ -38,7 +38,7 @@ For context, this post came about when one of our students asked for info on tun
 
 A common example is an arm on the top of a robot. For our arm, we'll assume it's _vertical_ - that is to say, it lifts things from floor height to some higher elevation - Think like the 2018 game robots:
 
-INSERT ARGOS PICTURE HERE.
+![arm robots](/assets/arm_robots.png)
 
 Our _desired_ input (or _setpoint_) will come in terms of _degrees above or below the horizon_, rather than rotational velocity. As we'll see, this leads to a different tuning methodology, but the underlying PID concept still works.
 
@@ -46,9 +46,11 @@ Our _desired_ input (or _setpoint_) will come in terms of _degrees above or belo
 
 #### Basic Description
 
-mass on a stick
+Ya ever heard of [chicken on a stick?](https://www.food.com/recipe/chicken-on-a-stick-177166#activity-feed) Well, we're gonna model the arm as _mass on a stick_. Just some weight (from a claw or intake motors or similar), suspended on the end of a long, thin rod (which weighs relatively little). 
 
-motor powers the center through a gearbox
+The arm is constrained to rotate through just one plane, going up and down powered by a motor at the "shoulder". THe motor is of course run through a (fairly-high reduction) gearbox. When you run the motor in one direction, the arm goes up. In the other direction, it goes down.
+
+Additionally, our arm will be _vertical_ - the plane it travels within is parallel to the direction gravity pulls on the arm. This means that when the arm is stretched "straight out" in front of the robot, gravity will be pulling it down toward the ground.
 
 #### Mathematical Description
 
@@ -137,25 +139,87 @@ This should totally make sense - in this configuration, the arm is like a pendul
 
 Try bumping up the voltage by a volt or two. You should also see something logical - the motor causes the arm to settle out at some position "higher up" than before, as the motor fights gravity.
 
-Eventually if you give enough voltage, your arm can swing all the way around in a circle. Wheeee!
+Eventually if you give enough voltage, your arm can swing all the way around in a circle. Wheeee! This is what, in my business, we call _unstable_.
 
-Clearly, for any position, our controller will have to find that nice happy voltage at which the arm maintains the proper position. It may also have to adjust the voltage a bit higher at first to get it to the setpoint.
+Simply applying a constant voltage doesn't work all that well at getting the arm to a desired position. Clearly, for any position, our controller will have to find that nice happy voltage at which the arm maintains the proper position. It may also have to adjust the voltage a bit higher at first to get it to the setpoint.
 
 ## Controller setup
 
-PID
-
-Is F useful?
+We're gonna cut straight to using PID this time. But no F. F isn't exactly useful, or not as we used it while doing the [shooter wheel exercises](/blog_posts/2019/10/19/tuning_pid.html). The motor command required isn't exactly proportional to the angle (think, for example, 0 degrees - definitely more than zero motor command required to keep the arm there). We'll wrap back to this later, but for now we'll skip F.
 
 ### First pass at tuning
 
-We can get it decent.
+Just as before, use the same doubling/halving technique to get close, then tweak once close. 
+
+Start by tuning P, just to where oscillations start to happen.
+
+First do the big adjustments:
+<br>
+<input value="Double P" type="button" onClick="adjustP(2.0)"/>
+<input value="Half P" type="button" onClick="adjustP(0.5)"/>
+<br>
+Then do smaller tweaks when you get closer:
+<br>
+<input value="Bump Up P" type="button" onClick="adjustP(1.05)"/>
+<input value="Bump Down P" type="button" onClick="adjustP(0.95)"/>
+<br>
+Or, if you get completely lost, start over:
+<br>
+<input value="Zero-out P" type="button" onClick="adjustP(0)"/>
+<br>
+
+_Hint: 70.18 is a good value for P_
+
+Then tune D to get rid of the oscillations:
+
+Big adjustments:
+<br>
+<input value="Double D" type="button" onClick="adjustD(2.0)"/>
+<input value="Half D" type="button" onClick="adjustD(0.5)"/>
+<br>
+Small Tweaks:
+<br>
+<input value="Bump Up D" type="button" onClick="adjustD(1.05)"/>
+<input value="Bump Down D" type="button" onClick="adjustD(0.95)"/>
+<br>
+Start Over:
+<br>
+<input value="Zero-out D" type="button" onClick="adjustD(0)"/>
+<br>
+
+_Hint: 6.87 is a good value for D_
+
+Finally, you'll notice we do have some steady state error. Tune I to get rid of that:
+
+Big adjustments:
+<br>
+<input value="Double I" type="button" onClick="adjustI(2.0)"/>
+<input value="Half I" type="button" onClick="adjustI(0.5)"/>
+<br>
+Small Tweaks:
+<br>
+<input value="Bump Up I" type="button" onClick="adjustI(1.05)"/>
+<input value="Bump Down I" type="button" onClick="adjustI(0.95)"/>
+<br>
+Start Over:
+<br>
+<input value="Zero-out I" type="button" onClick="adjustI(0)"/>
+<br>
+
+_Hint: 13.1 is a good value for I_
 
 ### Varying the Setpoint
 
 System is non-linear, so the tunings don't work great against a wide range of locations
 
 What to do? One option is to pick the point at which you want to hold the arm, and keep it there.
+
+<div class="slidecontainer">
+    Setpoint:
+    <input type="range" min="-180" max="180" value="-45" class="slider" id="setpointSlider">
+    <br>
+</div>
+<br>
 
 
 ### Removing Non-Linearity
