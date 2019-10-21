@@ -17,11 +17,9 @@ categories: blog_posts
     <div id="user_interaction" class="gainsDisplay">
         <div id="gains"></div>
         <br>
-        <input id="ballInject" type="checkbox" onClick="updateBallInject()"/>
-        <label for="ballinject">Inject Ball at t=5.0 </label> 
-        <br><br>
         <input value="Reset" type="button" onClick="resetPIDF()"/>
     </div>
+    <br><br><br><br>
 </div>
 
 ## Introduction
