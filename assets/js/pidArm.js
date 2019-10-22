@@ -175,16 +175,6 @@ function updatePlots(){
 }
 
 
-function resetPIDF(){
-    FGain = 0;
-    PGain = 0;
-    DGain = 0;
-    IGain = 0;
-    setpoint = -45;
-    startpoint = 0;
-}
-
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Animation
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,7 +369,8 @@ function simControlSystem(on_voltage, closedLoop){
                     err_delta = (error - err_prev)/Ts_controller;
 
                     //PID control law
-                    inVolts = PGain * error  +  
+                    inVolts = FGain * Math.cos(posRad) + 
+                              PGain * error  +  
                               IGain * err_accum  +  
                               DGain * err_delta;
 
@@ -440,33 +431,49 @@ function getAngleAtTime(timeSec){
     return val;
 }
 
+function resetPIDF(){
+    FGain = 0;
+    PGain = 0;
+    DGain = 0;
+    IGain = 0;
+    setpoint = -45;
+    startpoint = 0;
+    runClosedLoop();
+}
+
+function adjustF(adj){
+    if(FGain == 0 & adj != 0){
+        FGain = 0.01;
+    } else {
+        FGain *= adj;
+    }
+    runClosedLoop();
+}
+
 function adjustP(adj){
     if(PGain == 0 & adj != 0){
-        PGain = 0.0001;
+        PGain = 0.001;
     } else {
         PGain *= adj;
     }
-    PGain *= adj;
     runClosedLoop();
 }
 
 function adjustD(adj){
     if(DGain == 0 & adj != 0){
-        DGain = 0.0001;
+        DGain = 0.001;
     } else {
         DGain *= adj;
     }
-    DGain *= adj;
     runClosedLoop();
 }
 
 function adjustI(adj){
     if(IGain == 0 & adj != 0){
-        IGain = 0.0001;
+        IGain = 0.001;
     } else {
         IGain *= adj;
     }
-    IGain *= adj;
     runClosedLoop();
 }
 

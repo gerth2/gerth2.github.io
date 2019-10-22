@@ -371,7 +371,6 @@ function adjustP(adj){
     } else {
         PGain *= adj;
     }
-    PGain *= adj;
     plotPIDControl();
 }
 
@@ -381,7 +380,6 @@ function adjustD(adj){
     } else {
         DGain *= adj;
     }
-    DGain *= adj;
     plotPIDControl();
 }
 
@@ -391,7 +389,6 @@ function adjustI(adj){
     } else {
         IGain *= adj;
     }
-    IGain *= adj;
     plotPIDControl();
 }
 

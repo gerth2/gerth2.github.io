@@ -19,18 +19,18 @@ categories: blog_posts
             <canvas id="staticCanvas" width="500" height="500" style="border:1px solid #000000; position:absolute; top:0; left:0"> </canvas>
             <canvas id="animatedCanvas" width="500" height="500" style="background:transparent; position:absolute; top:0; left:0"> </canvas>
         </div>
+        <b>Animation Control:</b>
         <input value="Play" type="button" onClick="playAnimation()"/>
         <input value="Pause" type="button" onClick="pauseAnimation()"/>
-        <input value="Reset" type="button" onClick="resetAnimationToStart()"/>
+        <input value="Restart" type="button" onClick="resetAnimationToStart()"/>
     </div>
     <div id="user_interaction" class="gainsDisplay">
         <div id="gains"></div>
         <br>
-        <input value="Reset" type="button" onClick="resetPIDF()"/>
+        <input value="Reset Gains" type="button" onClick="resetPIDF()"/>
     </div>
     <br><br><br><br>
 </div>
-
 
 ## Introduction
 
@@ -42,7 +42,39 @@ A common example is an arm on the top of a robot. For our arm, we'll assume it's
 
 Our _desired_ input (or _setpoint_) will come in terms of _degrees above or below the horizon_, rather than rotational velocity. As we'll see, this leads to a different tuning methodology, but the underlying PID concept still works.
 
-## System Model
+But. First, we'll take a brief detour.
+
+## A Brief Interruption - Defining "Good"
+
+We've thrown out a bit of terminology already related to how you judge how "good" your PID tune is. 
+
+Like any good exercise in engineering, there's terminology which refers to specific _measurements_ of goodness. Let's take a quick step back to formalize what these actually are.
+
+Keeping with our examples so far, we'll frame all of our discussion in terms of the _time domain step response_ of our system.
+
+### Overdamped vs. Underdamped
+
+### Rise Time & Settling Time
+
+### Overshoot & Steady State Error
+
+### Choosing Criteria
+
+It depends.
+
+In general, you'll want small rise & settling times, minimal overshoot and no steady-state error. However, as you have seen (or will see), it's hard to get all of these at once. Usually, achieving one will be more important than the others.
+
+For example, consider if you were controlling the temperature in your house. The temperature is currently 50 degrees F (brrrrr!!!), and you want it to be 70 degrees F. You want the temperature to get to 70 quickly, but not so quickly that it overshoots the 70 degree mark, and shoots up to 100 degrees before settling back down. That would be a waste of energy, and a longer time of you being uncomfortable. An underdamped controller is generally desired in cases like this, with enough I gain to cancel out steady-state errors.
+
+In contrast, take our shooter wheel example from last time. Generally, you'll want to spin the wheel up to a stable launch speed as quickly as possible (assuming this is a component in your robot's overall cycle time). This means aggressive P - a bit of overshoot isn't horrible, nor is a few RPM of steady state error. 
+
+Finally, the example we're about to see - consider if you are controlling the angular position of an arm - accurate positioning of the end of the arm (within fractions of a degree) is probably desired. Speed is important, but not at the cost of getting the gamepiece at the wrong place. Overshoot may also be a concern, as the arm has physical limits of travel - too much overshoot may be mechanically damaging.
+
+In conclusion, the requirements for what constitutes a "good" PID tune are derived from your requirements for what makes a good robot. Which, of course, depends on your robot, and the year's game. It all just depends.
+
+Ok, now back to our regularly scheduled blog post.
+
+## Arm System Model
 
 #### Basic Description
 
@@ -143,11 +175,11 @@ Eventually if you give enough voltage, your arm can swing all the way around in 
 
 Simply applying a constant voltage doesn't work all that well at getting the arm to a desired position. Clearly, for any position, our controller will have to find that nice happy voltage at which the arm maintains the proper position. It may also have to adjust the voltage a bit higher at first to get it to the setpoint.
 
-## Controller setup
+## Controller Setup
 
 We're gonna cut straight to using PID this time. But no F. F isn't exactly useful, or not as we used it while doing the [shooter wheel exercises](/blog_posts/2019/10/19/tuning_pid.html). The motor command required isn't exactly proportional to the angle (think, for example, 0 degrees - definitely more than zero motor command required to keep the arm there). We'll wrap back to this later, but for now we'll skip F.
 
-### First pass at tuning
+### First Pass at Tuning
 
 Just as before, use the same doubling/halving technique to get close, then tweak once close. 
 
@@ -210,9 +242,7 @@ _Hint: 13.1 is a good value for I_
 
 ### Varying the Setpoint
 
-System is non-linear, so the tunings don't work great against a wide range of locations
-
-What to do? One option is to pick the point at which you want to hold the arm, and keep it there.
+As before, we'll want to vary the setpoint to ensure our controller can achieve a range of outputs equally well.
 
 <div class="slidecontainer">
     Setpoint:
@@ -221,21 +251,141 @@ What to do? One option is to pick the point at which you want to hold the arm, a
 </div>
 <br>
 
+As you move the setpoint around, even with well-chosen PID gains, you'll notice the _overshoot_ and oscillation vary quite a bit, depending on the setpoint. More simply, the gains chosen do not work _equally_ well across all setpoints.
+
+This should be expected. Our system is non-linear (due to the presence of the $$\cos(\theta[n-1])$$ term), but the PID algorithm is fundamentally designed to work around _linear_ systems. It can get close, but it's honestly not the best answer in this case.
+
+What to do? One option is to pick the point at which you want to hold the arm, and keep it there. You pick PID gains that work well for $$\theta_{des}$$, and ignore other values.
+
+Another method is to add a (slightly) complex feed-forward term into our PID controller to _compensate_ for the nonlinearity. This is what we will attempt to do now.
 
 ### Removing Non-Linearity
 
-Linearization = process of making non-linear system linear.
 
-Since we know our system, we can use a _more complex_ F term to remove the nonlinearity. We get clever to eliminate gravity. Gravity is proportional to $$cos(\theta_{act}(t))$$. So make an F term which is also proprtional to $$cos(\theta_{act}(t))$$. Should effectively "cancel out" gravity.
+Since we know our system, we can use a _more complex_ F term to remove the nonlinearity. We get clever to eliminate gravity. 
+
+The key fact: Gravity is proportional to $$cos(\theta_{act}(t))$$. So, we will make an F term which is also proportional to $$cos(\theta_{act}(t))$$. When properly tuned, we will effectively cancel-out the effects of gravity on the system.
+
+We will modify our PID equation to add the extra term:
+
+$$ v_{PID}(t) = K_{P} \theta_{err}(t) + K_{I} \int_{x=0}^{x=t}\theta_{err}(x)dx + K_{D} \frac{d\theta_{err}}{dt} + K_{F} \cos(\theta_{act}(t)) $$
+
+
+As a quick note on software - this technique is usually referred to as "arbitrary feed-forward", and is supported by both the Talon SRX and Spark MAX speed controllers.
 
 ### Re-tuning
 
-Need to start again, because P no longer should be accounting for gravity.
+Need to start again, because all our gains no longer should be accounting for gravity.
 
-F, then P, then D, then I.
+<input value="Reset Gains" type="button" onClick="resetPIDF()"/>
 
-F can be calculated as the voltage required to hold the arm level (easy to empiraclly determine on a robot).
+Now, we'll start tuning with F.
 
-Remainder of tuning is the same.
+F can be calculated as the voltage required to hold the arm level (easy to empirically determine on a robot).
+
+Since our arm starts at 0 degrees anyway (at least in this simulation), you'll want to just keep bumping F up until the arm _stays_ at zero degrees, even with all feedback (P, I, D) gains at zero. Note that on this system, F gets _really_ sensitive around this point - the bump ups and downs will be quite small.
+
+Use the double/half/tweak methodology first.
+<br>
+<input value="Double F" type="button" onClick="adjustF(2.0)"/>
+<input value="Half F" type="button" onClick="adjustF(0.5)"/>
+<br>
+Then do smaller tweaks when you get closer:
+<br>
+<input value="Bump Up F" type="button" onClick="adjustF(1.005)"/>
+<input value="Bump Down F" type="button" onClick="adjustF(0.995)"/>
+<br>
+Or, if you get completely lost, start over:
+<br>
+<input value="Zero-out F" type="button" onClick="adjustF(0)"/>
+<br>
+
+_Hint: 5.91 is a good value for F_
+
+
+Next we'll move back to tuning P, again just to where oscillations start to happen.
+
+First do the big adjustments:
+<br>
+<input value="Double P" type="button" onClick="adjustP(2.0)"/>
+<input value="Half P" type="button" onClick="adjustP(0.5)"/>
+<br>
+Then do smaller tweaks when you get closer:
+<br>
+<input value="Bump Up P" type="button" onClick="adjustP(1.05)"/>
+<input value="Bump Down P" type="button" onClick="adjustP(0.95)"/>
+<br>
+Or, if you get completely lost, start over:
+<br>
+<input value="Zero-out P" type="button" onClick="adjustP(0)"/>
+<br>
+
+_Hint: 32.76 is a good value for P_
+
+Then tune D to get rid of the oscillations:
+
+Big adjustments:
+<br>
+<input value="Double D" type="button" onClick="adjustD(2.0)"/>
+<input value="Half D" type="button" onClick="adjustD(0.5)"/>
+<br>
+Small Tweaks:
+<br>
+<input value="Bump Up D" type="button" onClick="adjustD(1.05)"/>
+<input value="Bump Down D" type="button" onClick="adjustD(0.95)"/>
+<br>
+Start Over:
+<br>
+<input value="Zero-out D" type="button" onClick="adjustD(0)"/>
+<br>
+
+_Hint: 3.27 is a good value for D_
+
+Finally, there may be a bit of steady state error left. If so, tune I to get rid of that:
+
+Big adjustments:
+<br>
+<input value="Double I" type="button" onClick="adjustI(2.0)"/>
+<input value="Half I" type="button" onClick="adjustI(0.5)"/>
+<br>
+Small Tweaks:
+<br>
+<input value="Bump Up I" type="button" onClick="adjustI(1.05)"/>
+<input value="Bump Down I" type="button" onClick="adjustI(0.95)"/>
+<br>
+Start Over:
+<br>
+<input value="Zero-out I" type="button" onClick="adjustI(0)"/>
+<br>
+
+_Hint: 0.0 is a good value for I, at least as I tuned it._
+
+And, again, try varying the setpoint across the range of angles desired:
+
+<div class="slidecontainer">
+    Setpoint:
+    <input type="range" min="-180" max="180" value="-45" class="slider" id="setpointSlider">
+    <br>
+</div>
+<br>
+
+This time, you should observe _much less variance_ in overshoot and convergence time across the range of possible setpoints. In general, your arm should be working much much better now.
+
+## We Just Did Plant Model Inversion
+
+It should be noted that our "arbitrary feed forward" term we used here is a simplified form of [plant model inversion](https://faculty.washington.edu/devasia/Talks/Inversion_Theory.pdf). It's actually the same as the shooter wheel's feed forward as well for steady state. The basic idea behind all of it is that if you can get a mathematical description of how your plant model works, you can inject the _inverse_ of that knowledge into your controller to help account for the system dynamics that a plain old PID controller doesn't need. 
+
+With knowledge of these plant dynamics, the only thing left for the PID closed-loop portion to do is compensate for transient, external loads, or any behavior not accounted for in the inverted plant model. This is nice for two reasons. 
+
+For one, it means that your plant model doesn't have to be perfect. In fact, _anything_ (even a constant value) is better than what you have without it (which is literally an assumption that the plant does nothing). 
+
+For two, it means the PID gains don't have to be as big as before, having less behavior to "fight" against. This implies they can be more aggressive toward getting your manipulator to the setpoint angle.
+
+But - all these advantages can only be achieved if you can build up a reasonable mathematical model of how your _real world_ system works.
+
+## Conclusion
+
+Hopefully this gives a good demonstration of how to tune PID in another common situation! Play around with these things and see what you can see. The advantage of these online simulators is the instantaneous feedback - you can clearly see what each adjustment is doing in nearly-real time. Such a luxury is harder to come by on a physical system. Plus, astable calibrations (like ones that cause the robot arm to start flying in circles) can be damaging. For this reason, doing the learning in a simulated environment is definitely a good idea. Hone your skills of tuning here, and then take them to the real world robot later. 
+
 
 <script src="/assets/js/pidArm.js"></script>
