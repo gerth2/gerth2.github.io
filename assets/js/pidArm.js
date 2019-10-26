@@ -8,6 +8,7 @@ DGain = 0;
 IGain = 0;
 setpoint = -45.0;
 startpoint = 0;
+runningClosedLoop = false;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // Standard Math Function impelmentations
@@ -163,13 +164,20 @@ function degToRad(deg){
 var mainPlots = new DualPlot('#plot5a', '#plot5b')
 function updatePlots(){
     mainPlots.updatePlot(armPosArray, inputVoltageArray)
-    document.getElementById("gains").innerHTML = "<b>" + 
-    "F="+FGain.toFixed(4) + " <br>" +
-    "P="+PGain.toFixed(4) + " <br>" +
-    "I="+IGain.toFixed(4) + " <br>" +
-    "D="+DGain.toFixed(4) + " <br>" +
-    "Setpoint="+setpoint.toFixed(0) + " deg" +
-    "</b>";
+    if(runningClosedLoop){
+        document.getElementById("gains").innerHTML = "<b>" + 
+        "F="+FGain.toFixed(4) + " <br>" +
+        "P="+PGain.toFixed(4) + " <br>" +
+        "I="+IGain.toFixed(4) + " <br>" +
+        "D="+DGain.toFixed(4) + " <br>" +
+        "Setpoint="+setpoint.toFixed(0) + " deg" +
+        "</b>";
+    } else {
+        document.getElementById("gains").innerHTML = "<b>" + 
+        "Open Loop (Constant Voltage) <br>" +
+        "</b>";
+    }
+
     resetAnimationToStart();
     
 }
@@ -348,6 +356,8 @@ function simControlSystem(on_voltage, closedLoop){
 
     var nextControllerRunTime = 0;
 
+    runningClosedLoop = closedLoop;
+
     
     for(t = minTime; t < maxTime; t += Ts){
 
@@ -480,8 +490,18 @@ function adjustI(adj){
 var setpointSlider  = document.getElementById("setpointSlider");
 setpointSlider.oninput = adjustSetpoint;
 
+var setpointSlider2  = document.getElementById("setpointSlider2");
+setpointSlider2.oninput = adjustSetpoint2;
+
 function adjustSetpoint(){
     setpoint = parseFloat(setpointSlider.value);
+    setpointSlider2.value = setpointSlider.value;
+    runClosedLoop();
+}
+
+function adjustSetpoint2(){
+    setpoint = parseFloat(setpointSlider2.value);
+    setpointSlider.value = setpointSlider2.value;
     runClosedLoop();
 }
 

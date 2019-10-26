@@ -42,25 +42,111 @@ A common example is an arm on the top of a robot. For our arm, we'll assume it's
 
 Our _desired_ input (or _setpoint_) will come in terms of _degrees above or below the horizon_, rather than rotational velocity. As we'll see, this leads to a different tuning methodology, but the underlying PID concept still works.
 
-But. First, we'll take a brief detour.
+This post will come in two parts. First we'll discuss the meaning of a "good" PID tune, relevant to any PID system you are tuning. Then, we'll go into the specifics of tuning our vertical arm.
 
-## A Brief Interruption - Defining "Good"
+## Defining "Good" to Get Good
 
 We've thrown out a bit of terminology already related to how you judge how "good" your PID tune is. 
 
 Like any good exercise in engineering, there's terminology which refers to specific _measurements_ of goodness. Let's take a quick step back to formalize what these actually are.
 
-Keeping with our examples so far, we'll frame all of our discussion in terms of the _time domain step response_ of our system.
+Keeping with our examples so far, we'll frame all of our discussion in terms of the _time domain step response_ of our system. 
 
-### Overdamped vs. Underdamped
+All that follows in this section is just _terminology_ - specific words control systems engineers to describe physical behavior in a way that communicates meaning to others.
+
+Then again, keep in mind - terminology is important! On some grand scale of "importance" - understanding the underlying concept is probably more important, but immediately following that is the ability to communicate it to others.
+
+\soapbox. 
+
+### General System Response Classifications
+
+When tuning a system and looking at its step response, there are fundamentally three categories of system response. Systems are said to be _Overdamped_, _Underdamped_, or _Unstable_.
+
+An _overdamped_ system will slowly approach the desired value, hopefully settling out just barely underneath the desired value. It's generally pretty gradual, and has _no oscillation_, and never _crosses_ or _goes above_ the desired value.
+
+![Overdamped](/assets/ctrl_overdamped.png)
+
+The name should make sense - if you think of friction or stiffness in the system as a "damping" force, an _overdamped_ system has _quite a bit of damping_. Sometimes this is desired, sometimes it is not (as we'll discuss later). But for now, just remember the association of the word with the meaning.
+
+Similarly, an _underdamped_ system will have _much less damping_. In these systems, the actual value _overshoots_ the desired value, crossing and turning around multiple times before settling down. An underdamped system will always have some amount of oscillation.
+
+![Underdamped](/assets/ctrl_underdamped.png)
+
+For systems that involve a PID controller, the P gain tends to be the "knob" that pushes a system between overdamped and underdamped. Additionally, the D gain can take a system with underdamped characteristics, and make it look more overdamped.
+
+Both of these system types are _stable_ - this means that as time progresses, the actual value _converges_ toward the desired value. It's also very possible that you might get a system which is _unstable_ - where the actual value doesn't actually go toward the desired value. These often come in one of two flavors.
+
+The first flavor is the "it blows up from getting too big":
+
+![unstable 1](/assets/ctrl_unstable.png)
+
+Here, for whatever reason, the system's value just shoots off in one direction, never really going where we want it. In general, in cases like this, you'll hit some mechanical or electrical limit, break something or let the magic smoke out, and have some other subteams angry at you. Definitely not recommended.
+
+The other flavor of unstable stays somewhat close to the desired value, but never "settles down".
+
+![unstable 2](/assets/ctrl_unstable2.png)
+
+At best, this will be a robot that looks _really_ bad and uncontrollable, which means you don't get picked in elimination rounds. More often, the motion causes parts to wear out prematurely and also break. Again, bad news bears. Also not recommended.
+
+Taking these examples: part of the definition of "good" usually involves:
+
+1. System should be stable
+2. System ought to be slightly overdamped or slightly underdamped (depends on the situation). Having the other is less than desireable.
+
+### Quantitative Goodness Measurements
+
+Aside from the above _qualitative_ system classification, for stable systems, we also commonly define a few measurements of system response.
 
 ### Rise Time & Settling Time
 
+There are two main time-based measurements for talking about your system response.
+
+_Rise time_ refers to the duration between when the desired command changes, and the first time the actual value gets to the desired value. 
+
+_Settling time_ refers to the duration between when the desired command changes, and when the actual values _settles down_ within some acceptable error from the desired value. 
+
+![Rise and Settling time](/assets/ctrl_time.png)
+
+Overdamped systems will have a longer rise time than underdamped systems. Settling times can vary quite a bit, depending on system dynamics. 
+
+In general, more powerful motors, less mass, and more P gain all help you achieve better rise time.
+
+In general, more powerful controllers with faster feedback systems and less delay help you reduce your settling time. More mass can help your system "dampen" itself out mechanically. More D gain can increase damping to a point, but will also eventually cause instability. Less mass can allow your controller's D term to do damping more efficiently.
+
 ### Overshoot & Steady State Error
+
+There are also two value-based metrics for talking about your system response.
+
+_Overshoot_ refers to _how much_ the actual value goes past the desired value before coming back toward it.
+
+![Overshoot](/assets/ctrl_overshoot.png)
+
+_Steady State Error_ refers to _how far off_ the actual value is from the desired value after all transient behavior has died down, and the system is fully stabilized.
+
+![Steady State Error](/assets/ctrl_ss_error.png)
+
+In general, decreasing P and increasing D will lower the amount of overshoot you have. Increasing the physical mass or increasing the friction of the system can also do the same thing.
+
+In general, increasing P and increasing I will decrease the amount of steady state error you have. Decreasing the mass of the system or decreasing the friction will allow I and P to do their jobs more effectively.
+
+### Tune, but Don't Discount Mechanical Changes
+
+Note that if you have multiple "problems" with your tune system, you may have some conflicting requirements. For example, if your overshoot AND your steady state error are both too big, you'll have a hard time adjusting P (as changing it makes one issue better, while making the issue worse.) 
+
+It's important to try to get your PID gains dialed in as much as you can, but also keep in mind that _some systems are really hard to control_. You may hit a point where you can't get it any better by adjusting gains alone, and need to think more creatively. Some of these "more creative" changes include:
+
+1. Adjusting the mass of the system (adding or removing weight from the actuated mechanism)
+2. Adjusting the friction of the system (using grease or dashpots)
+3. Changing gearbox ratios
+4. Adding motors to the system
+5. Adding springs or counterweights at strategic locations to add additional force
+6. Increasing the quality of the PIDF controller system (ie, move from RIO-implemented controller (~100Hz) to onboard Talon SRX or Victor SPX (~1000Hz) controllers.)
+
+The "rule of thumb" I tend to tell my team - _If it's impossible to control manually, with a [thrifty throttle](https://www.andymark.com/products/thrifty-throttle-3) and a human watching it, it will be **very** hard to control with software_. It's definitely not an axiom, but gives mechanical and electrical teams a "stick in the mud" to understand if the thing they've created is anywhere in the realm of controllable. 
 
 ### Choosing Criteria
 
-It depends.
+How does one pick from amongst these criteria for their specific situation? Unfortunately, it just depends. Thankfully, it's often intuitive, or can be derived from robot design discussions. How accurate does manipulator XYZ have to be? How quickly does it need to get into position for us to meet our cycle times (and no, "fast as possible" isn't a detailed enough answer :D ).
 
 In general, you'll want small rise & settling times, minimal overshoot and no steady-state error. However, as you have seen (or will see), it's hard to get all of these at once. Usually, achieving one will be more important than the others.
 
@@ -72,15 +158,31 @@ Finally, the example we're about to see - consider if you are controlling the an
 
 In conclusion, the requirements for what constitutes a "good" PID tune are derived from your requirements for what makes a good robot. Which, of course, depends on your robot, and the year's game. It all just depends.
 
-Ok, now back to our regularly scheduled blog post.
+### What "In General" Means
+
+One final note (I promise). I've used the weasel-word phrase "in general" a lot. Here, I mean it to imply "for most of the FRC-encountered situations". 
+
+Software bugs, weird mechanisms, measurement delay, very-sensitive systems, and a whole host of other things can make the assumptions laid out here invalid. For that reason, it's very hard for me to ever say "Always". 
+
+Keep this in mind while tuning. These things _do_ work. They're out in the world everywhere. If you're struggling to make it work in your situation, there _has to be a reason why_. Maybe it's because you have a software bug. Maybe it's because the physical manipulator is very exotic. 
+
+The best I can tell you - approach the problem systematically. 
+
+Verify the assumptions of your software - have proof it operates as you expect. 
+
+Compare your design to those used successfully by other teams. Where are they the same, and where are they different? Do those differences matter? Do the math to prove it!
+
+Finally, pull in subject-matter experts - mentors, industry professionals, more experienced students, [chiefdelphi](https://www.chiefdelphi.com), or even myself (see the email at the bottom). 
 
 ## Arm System Model
+
+On to the actual arm!
 
 #### Basic Description
 
 Ya ever heard of [chicken on a stick?](https://www.food.com/recipe/chicken-on-a-stick-177166#activity-feed) Well, we're gonna model the arm as _mass on a stick_. Just some weight (from a claw or intake motors or similar), suspended on the end of a long, thin rod (which weighs relatively little). 
 
-The arm is constrained to rotate through just one plane, going up and down powered by a motor at the "shoulder". THe motor is of course run through a (fairly-high reduction) gearbox. When you run the motor in one direction, the arm goes up. In the other direction, it goes down.
+The arm is constrained to rotate through just one plane, going up and down powered by a motor at the "shoulder". The motor is of course run through a (fairly-high reduction) gearbox. When you run the motor in one direction, the arm goes up. In the other direction, it goes down.
 
 Additionally, our arm will be _vertical_ - the plane it travels within is parallel to the direction gravity pulls on the arm. This means that when the arm is stretched "straight out" in front of the robot, gravity will be pulling it down toward the ground.
 
@@ -183,7 +285,7 @@ We're gonna cut straight to using PID this time. But no F. F isn't exactly usefu
 
 Just as before, use the same doubling/halving technique to get close, then tweak once close. 
 
-Start by tuning P, just to where oscillations start to happen.
+Start by tuning P, just to where oscillations _around the setpoint_ start to happen.
 
 First do the big adjustments:
 <br>
@@ -200,7 +302,7 @@ Or, if you get completely lost, start over:
 <input value="Zero-out P" type="button" onClick="adjustP(0)"/>
 <br>
 
-_Hint: 70.18 is a good value for P_
+_Hint: 65.0 is a good value for P_
 
 Then tune D to get rid of the oscillations:
 
@@ -255,7 +357,7 @@ As you move the setpoint around, even with well-chosen PID gains, you'll notice 
 
 This should be expected. Our system is non-linear (due to the presence of the $$\cos(\theta[n-1])$$ term), but the PID algorithm is fundamentally designed to work around _linear_ systems. It can get close, but it's honestly not the best answer in this case.
 
-What to do? One option is to pick the point at which you want to hold the arm, and keep it there. You pick PID gains that work well for $$\theta_{des}$$, and ignore other values.
+What to do? One option is to pick the point at which you want to hold the arm, and keep it there. You pick PID gains that work well for $$\theta_{des}$$, and ignore other values. Especially if your arm has a very limited range of motion, or always goes between the same two points, this isn't a bad option at all.
 
 Another method is to add a (slightly) complex feed-forward term into our PID controller to _compensate_ for the nonlinearity. This is what we will attempt to do now.
 
@@ -285,12 +387,14 @@ F can be calculated as the voltage required to hold the arm level (easy to empir
 
 Since our arm starts at 0 degrees anyway (at least in this simulation), you'll want to just keep bumping F up until the arm _stays_ at zero degrees, even with all feedback (P, I, D) gains at zero. Note that on this system, F gets _really_ sensitive around this point - the bump ups and downs will be quite small.
 
+Again, the goal is to start the arm at 0 degrees, and tweak F until the arm _holds_ its position _at zero degrees_ (not the setpoint).
+
 Use the double/half/tweak methodology first.
 <br>
 <input value="Double F" type="button" onClick="adjustF(2.0)"/>
 <input value="Half F" type="button" onClick="adjustF(0.5)"/>
 <br>
-Then do smaller tweaks when you get closer:
+Then do smaller tweaks when you get closer. This will take a lot of clicking.
 <br>
 <input value="Bump Up F" type="button" onClick="adjustF(1.005)"/>
 <input value="Bump Down F" type="button" onClick="adjustF(0.995)"/>
@@ -303,7 +407,7 @@ Or, if you get completely lost, start over:
 _Hint: 5.91 is a good value for F_
 
 
-Next we'll move back to tuning P, again just to where oscillations start to happen.
+Next we'll move back to tuning P, again just to where oscillations start to happen. As we move P away from zero, the arm will _now_ start to move toward the setpoint.
 
 First do the big adjustments:
 <br>
@@ -364,7 +468,7 @@ And, again, try varying the setpoint across the range of angles desired:
 
 <div class="slidecontainer">
     Setpoint:
-    <input type="range" min="-180" max="180" value="-45" class="slider" id="setpointSlider">
+    <input type="range" min="-180" max="180" value="-45" class="slider" id="setpointSlider2">
     <br>
 </div>
 <br>
