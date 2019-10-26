@@ -1,4 +1,497 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-10-19T19:56:48-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Tuning PID</title><link href="/blog_posts/2019/10/19/tuning_pid.html" rel="alternate" type="text/html" title="Control Theory - Tuning PID" /><published>2019-10-19T09:30:00-05:00</published><updated>2019-10-19T09:30:00-05:00</updated><id>/blog_posts/2019/10/19/tuning_pid</id><content type="html" xml:base="/blog_posts/2019/10/19/tuning_pid.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-10-26T15:56:08-04:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Supplemental - Vertical Arm</title><link href="/blog_posts/2019/10/26/controls_supp_arm.html" rel="alternate" type="text/html" title="Control Theory - Supplemental - Vertical Arm" /><published>2019-10-26T10:30:00-04:00</published><updated>2019-10-26T10:30:00-04:00</updated><id>/blog_posts/2019/10/26/controls_supp_arm</id><content type="html" xml:base="/blog_posts/2019/10/26/controls_supp_arm.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+
+&lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/sidenav/sidenav.css&quot; /&gt;
+
+&lt;script src=&quot;/assets/sidenav/sidenav.js&quot;&gt;&lt;/script&gt;
+
+&lt;div id=&quot;mySidenav&quot; class=&quot;sidenav&quot; onclick=&quot;openNav()&quot;&gt;
+    &lt;a href=&quot;javascript:void(0)&quot; class=&quot;closebtn&quot; onclick=&quot;closeNav()&quot;&gt;&amp;times;&lt;/a&gt;
+    &lt;div id=&quot;plots&quot;&gt;
+        &lt;div id=&quot;plot5a&quot;&gt;&lt;/div&gt;
+        &lt;div id=&quot;plot5b&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;visualization&quot; style=&quot;padding: 20px;&quot;&gt;
+        &lt;div style=&quot;position:relative; width:500px; height:500px&quot;&gt;
+            &lt;canvas id=&quot;staticCanvas&quot; width=&quot;500&quot; height=&quot;500&quot; style=&quot;border:1px solid #000000; position:absolute; top:0; left:0&quot;&gt; &lt;/canvas&gt;
+            &lt;canvas id=&quot;animatedCanvas&quot; width=&quot;500&quot; height=&quot;500&quot; style=&quot;background:transparent; position:absolute; top:0; left:0&quot;&gt; &lt;/canvas&gt;
+        &lt;/div&gt;
+        &lt;b&gt;Animation Control:&lt;/b&gt;
+        &lt;input value=&quot;Play&quot; type=&quot;button&quot; onclick=&quot;playAnimation()&quot; /&gt;
+        &lt;input value=&quot;Pause&quot; type=&quot;button&quot; onclick=&quot;pauseAnimation()&quot; /&gt;
+        &lt;input value=&quot;Restart&quot; type=&quot;button&quot; onclick=&quot;resetAnimationToStart()&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;user_interaction&quot; class=&quot;gainsDisplay&quot;&gt;
+        &lt;div id=&quot;gains&quot;&gt;&lt;/div&gt;
+        &lt;br /&gt;
+        &lt;input value=&quot;Reset Gains&quot; type=&quot;button&quot; onclick=&quot;resetPIDF()&quot; /&gt;
+    &lt;/div&gt;
+    &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;For context, this post came about when one of our students asked for info on tuning the other main type of system in FRC - one where a motor powers a mechanism, and the desired &lt;em&gt;position&lt;/em&gt; is the setpoint.&lt;/p&gt;
+
+&lt;p&gt;A common example is an arm on the top of a robot. For our arm, we’ll assume it’s &lt;em&gt;vertical&lt;/em&gt; - that is to say, it lifts things from floor height to some higher elevation - Think like the 2018 game robots:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/arm_robots.png&quot; alt=&quot;arm robots&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Our &lt;em&gt;desired&lt;/em&gt; input (or &lt;em&gt;setpoint&lt;/em&gt;) will come in terms of &lt;em&gt;degrees above or below the horizon&lt;/em&gt;, rather than rotational velocity. As we’ll see, this leads to a different tuning methodology, but the underlying PID concept still works.&lt;/p&gt;
+
+&lt;p&gt;This post will come in two parts. First we’ll discuss the meaning of a “good” PID tune, relevant to any PID system you are tuning. Then, we’ll go into the specifics of tuning our vertical arm.&lt;/p&gt;
+
+&lt;h2 id=&quot;defining-good-to-get-good&quot;&gt;Defining “Good” to Get Good&lt;/h2&gt;
+
+&lt;p&gt;We’ve thrown out a bit of terminology already related to how you judge how “good” your PID tune is.&lt;/p&gt;
+
+&lt;p&gt;Like any good exercise in engineering, there’s terminology which refers to specific &lt;em&gt;measurements&lt;/em&gt; of goodness. Let’s take a quick step back to formalize what these actually are.&lt;/p&gt;
+
+&lt;p&gt;Keeping with our examples so far, we’ll frame all of our discussion in terms of the &lt;em&gt;time domain step response&lt;/em&gt; of our system.&lt;/p&gt;
+
+&lt;p&gt;All that follows in this section is just &lt;em&gt;terminology&lt;/em&gt; - specific words control systems engineers to describe physical behavior in a way that communicates meaning to others.&lt;/p&gt;
+
+&lt;p&gt;Then again, keep in mind - terminology is important! On some grand scale of “importance” - understanding the underlying concept is probably more important, but immediately following that is the ability to communicate it to others.&lt;/p&gt;
+
+&lt;p&gt;\soapbox.&lt;/p&gt;
+
+&lt;h3 id=&quot;general-system-response-classifications&quot;&gt;General System Response Classifications&lt;/h3&gt;
+
+&lt;p&gt;When tuning a system and looking at its step response, there are fundamentally three categories of system response. Systems are said to be &lt;em&gt;Overdamped&lt;/em&gt;, &lt;em&gt;Underdamped&lt;/em&gt;, or &lt;em&gt;Unstable&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;An &lt;em&gt;overdamped&lt;/em&gt; system will slowly approach the desired value, hopefully settling out just barely underneath the desired value. It’s generally pretty gradual, and has &lt;em&gt;no oscillation&lt;/em&gt;, and never &lt;em&gt;crosses&lt;/em&gt; or &lt;em&gt;goes above&lt;/em&gt; the desired value.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_overdamped.png&quot; alt=&quot;Overdamped&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The name should make sense - if you think of friction or stiffness in the system as a “damping” force, an &lt;em&gt;overdamped&lt;/em&gt; system has &lt;em&gt;quite a bit of damping&lt;/em&gt;. Sometimes this is desired, sometimes it is not (as we’ll discuss later). But for now, just remember the association of the word with the meaning.&lt;/p&gt;
+
+&lt;p&gt;Similarly, an &lt;em&gt;underdamped&lt;/em&gt; system will have &lt;em&gt;much less damping&lt;/em&gt;. In these systems, the actual value &lt;em&gt;overshoots&lt;/em&gt; the desired value, crossing and turning around multiple times before settling down. An underdamped system will always have some amount of oscillation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_underdamped.png&quot; alt=&quot;Underdamped&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;For systems that involve a PID controller, the P gain tends to be the “knob” that pushes a system between overdamped and underdamped. Additionally, the D gain can take a system with underdamped characteristics, and make it look more overdamped.&lt;/p&gt;
+
+&lt;p&gt;Both of these system types are &lt;em&gt;stable&lt;/em&gt; - this means that as time progresses, the actual value &lt;em&gt;converges&lt;/em&gt; toward the desired value. It’s also very possible that you might get a system which is &lt;em&gt;unstable&lt;/em&gt; - where the actual value doesn’t actually go toward the desired value. These often come in one of two flavors.&lt;/p&gt;
+
+&lt;p&gt;The first flavor is the “it blows up from getting too big”:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_unstable.png&quot; alt=&quot;unstable 1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here, for whatever reason, the system’s value just shoots off in one direction, never really going where we want it. In general, in cases like this, you’ll hit some mechanical or electrical limit, break something or let the magic smoke out, and have some other subteams angry at you. Definitely not recommended.&lt;/p&gt;
+
+&lt;p&gt;The other flavor of unstable stays somewhat close to the desired value, but never “settles down”.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_unstable2.png&quot; alt=&quot;unstable 2&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At best, this will be a robot that looks &lt;em&gt;really&lt;/em&gt; bad and uncontrollable, which means you don’t get picked in elimination rounds. More often, the motion causes parts to wear out prematurely and also break. Again, bad news bears. Also not recommended.&lt;/p&gt;
+
+&lt;p&gt;Taking these examples: part of the definition of “good” usually involves:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;System should be stable&lt;/li&gt;
+  &lt;li&gt;System ought to be slightly overdamped or slightly underdamped (depends on the situation). Having the other is less than desireable.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;quantitative-goodness-measurements&quot;&gt;Quantitative Goodness Measurements&lt;/h3&gt;
+
+&lt;p&gt;Aside from the above &lt;em&gt;qualitative&lt;/em&gt; system classification, for stable systems, we also commonly define a few measurements of system response.&lt;/p&gt;
+
+&lt;h3 id=&quot;rise-time--settling-time&quot;&gt;Rise Time &amp;amp; Settling Time&lt;/h3&gt;
+
+&lt;p&gt;There are two main time-based measurements for talking about your system response.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Rise time&lt;/em&gt; refers to the duration between when the desired command changes, and the first time the actual value gets to the desired value.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Settling time&lt;/em&gt; refers to the duration between when the desired command changes, and when the actual values &lt;em&gt;settles down&lt;/em&gt; within some acceptable error from the desired value.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_time.png&quot; alt=&quot;Rise and Settling time&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Overdamped systems will have a longer rise time than underdamped systems. Settling times can vary quite a bit, depending on system dynamics.&lt;/p&gt;
+
+&lt;p&gt;In general, more powerful motors, less mass, and more P gain all help you achieve better rise time.&lt;/p&gt;
+
+&lt;p&gt;In general, more powerful controllers with faster feedback systems and less delay help you reduce your settling time. More mass can help your system “dampen” itself out mechanically. More D gain can increase damping to a point, but will also eventually cause instability. Less mass can allow your controller’s D term to do damping more efficiently.&lt;/p&gt;
+
+&lt;h3 id=&quot;overshoot--steady-state-error&quot;&gt;Overshoot &amp;amp; Steady State Error&lt;/h3&gt;
+
+&lt;p&gt;There are also two value-based metrics for talking about your system response.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Overshoot&lt;/em&gt; refers to &lt;em&gt;how much&lt;/em&gt; the actual value goes past the desired value before coming back toward it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_overshoot.png&quot; alt=&quot;Overshoot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Steady State Error&lt;/em&gt; refers to &lt;em&gt;how far off&lt;/em&gt; the actual value is from the desired value after all transient behavior has died down, and the system is fully stabilized.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ctrl_ss_error.png&quot; alt=&quot;Steady State Error&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In general, decreasing P and increasing D will lower the amount of overshoot you have. Increasing the physical mass or increasing the friction of the system can also do the same thing.&lt;/p&gt;
+
+&lt;p&gt;In general, increasing P and increasing I will decrease the amount of steady state error you have. Decreasing the mass of the system or decreasing the friction will allow I and P to do their jobs more effectively.&lt;/p&gt;
+
+&lt;h3 id=&quot;tune-but-dont-discount-mechanical-changes&quot;&gt;Tune, but Don’t Discount Mechanical Changes&lt;/h3&gt;
+
+&lt;p&gt;Note that if you have multiple “problems” with your tune system, you may have some conflicting requirements. For example, if your overshoot AND your steady state error are both too big, you’ll have a hard time adjusting P (as changing it makes one issue better, while making the issue worse.)&lt;/p&gt;
+
+&lt;p&gt;It’s important to try to get your PID gains dialed in as much as you can, but also keep in mind that &lt;em&gt;some systems are really hard to control&lt;/em&gt;. You may hit a point where you can’t get it any better by adjusting gains alone, and need to think more creatively. Some of these “more creative” changes include:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Adjusting the mass of the system (adding or removing weight from the actuated mechanism)&lt;/li&gt;
+  &lt;li&gt;Adjusting the friction of the system (using grease or dashpots)&lt;/li&gt;
+  &lt;li&gt;Changing gearbox ratios&lt;/li&gt;
+  &lt;li&gt;Adding motors to the system&lt;/li&gt;
+  &lt;li&gt;Adding springs or counterweights at strategic locations to add additional force&lt;/li&gt;
+  &lt;li&gt;Increasing the quality of the PIDF controller system (ie, move from RIO-implemented controller (~100Hz) to onboard Talon SRX or Victor SPX (~1000Hz) controllers.)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The “rule of thumb” I tend to tell my team - &lt;em&gt;If it’s impossible to control manually, with a &lt;a href=&quot;https://www.andymark.com/products/thrifty-throttle-3&quot;&gt;thrifty throttle&lt;/a&gt; and a human watching it, it will be &lt;strong&gt;very&lt;/strong&gt; hard to control with software&lt;/em&gt;. It’s definitely not an axiom, but gives mechanical and electrical teams a “stick in the mud” to understand if the thing they’ve created is anywhere in the realm of controllable.&lt;/p&gt;
+
+&lt;h3 id=&quot;choosing-criteria&quot;&gt;Choosing Criteria&lt;/h3&gt;
+
+&lt;p&gt;How does one pick from amongst these criteria for their specific situation? Unfortunately, it just depends. Thankfully, it’s often intuitive, or can be derived from robot design discussions. How accurate does manipulator XYZ have to be? How quickly does it need to get into position for us to meet our cycle times (and no, “fast as possible” isn’t a detailed enough answer :D ).&lt;/p&gt;
+
+&lt;p&gt;In general, you’ll want small rise &amp;amp; settling times, minimal overshoot and no steady-state error. However, as you have seen (or will see), it’s hard to get all of these at once. Usually, achieving one will be more important than the others.&lt;/p&gt;
+
+&lt;p&gt;For example, consider if you were controlling the temperature in your house. The temperature is currently 50 degrees F (brrrrr!!!), and you want it to be 70 degrees F. You want the temperature to get to 70 quickly, but not so quickly that it overshoots the 70 degree mark, and shoots up to 100 degrees before settling back down. That would be a waste of energy, and a longer time of you being uncomfortable. An underdamped controller is generally desired in cases like this, with enough I gain to cancel out steady-state errors.&lt;/p&gt;
+
+&lt;p&gt;In contrast, take our shooter wheel example from last time. Generally, you’ll want to spin the wheel up to a stable launch speed as quickly as possible (assuming this is a component in your robot’s overall cycle time). This means aggressive P - a bit of overshoot isn’t horrible, nor is a few RPM of steady state error.&lt;/p&gt;
+
+&lt;p&gt;Finally, the example we’re about to see - consider if you are controlling the angular position of an arm - accurate positioning of the end of the arm (within fractions of a degree) is probably desired. Speed is important, but not at the cost of getting the gamepiece at the wrong place. Overshoot may also be a concern, as the arm has physical limits of travel - too much overshoot may be mechanically damaging.&lt;/p&gt;
+
+&lt;p&gt;In conclusion, the requirements for what constitutes a “good” PID tune are derived from your requirements for what makes a good robot. Which, of course, depends on your robot, and the year’s game. It all just depends.&lt;/p&gt;
+
+&lt;h3 id=&quot;what-in-general-means&quot;&gt;What “In General” Means&lt;/h3&gt;
+
+&lt;p&gt;One final note (I promise). I’ve used the weasel-word phrase “in general” a lot. Here, I mean it to imply “for most of the FRC-encountered situations”.&lt;/p&gt;
+
+&lt;p&gt;Software bugs, weird mechanisms, measurement delay, very-sensitive systems, and a whole host of other things can make the assumptions laid out here invalid. For that reason, it’s very hard for me to ever say “Always”.&lt;/p&gt;
+
+&lt;p&gt;Keep this in mind while tuning. These things &lt;em&gt;do&lt;/em&gt; work. They’re out in the world everywhere. If you’re struggling to make it work in your situation, there &lt;em&gt;has to be a reason why&lt;/em&gt;. Maybe it’s because you have a software bug. Maybe it’s because the physical manipulator is very exotic.&lt;/p&gt;
+
+&lt;p&gt;The best I can tell you - approach the problem systematically.&lt;/p&gt;
+
+&lt;p&gt;Verify the assumptions of your software - have proof it operates as you expect.&lt;/p&gt;
+
+&lt;p&gt;Compare your design to those used successfully by other teams. Where are they the same, and where are they different? Do those differences matter? Do the math to prove it!&lt;/p&gt;
+
+&lt;p&gt;Finally, pull in subject-matter experts - mentors, industry professionals, more experienced students, &lt;a href=&quot;https://www.chiefdelphi.com&quot;&gt;chiefdelphi&lt;/a&gt;, or even myself (see the email at the bottom).&lt;/p&gt;
+
+&lt;h2 id=&quot;arm-system-model&quot;&gt;Arm System Model&lt;/h2&gt;
+
+&lt;p&gt;On to the actual arm!&lt;/p&gt;
+
+&lt;h4 id=&quot;basic-description&quot;&gt;Basic Description&lt;/h4&gt;
+
+&lt;p&gt;Ya ever heard of &lt;a href=&quot;https://www.food.com/recipe/chicken-on-a-stick-177166#activity-feed&quot;&gt;chicken on a stick?&lt;/a&gt; Well, we’re gonna model the arm as &lt;em&gt;mass on a stick&lt;/em&gt;. Just some weight (from a claw or intake motors or similar), suspended on the end of a long, thin rod (which weighs relatively little).&lt;/p&gt;
+
+&lt;p&gt;The arm is constrained to rotate through just one plane, going up and down powered by a motor at the “shoulder”. The motor is of course run through a (fairly-high reduction) gearbox. When you run the motor in one direction, the arm goes up. In the other direction, it goes down.&lt;/p&gt;
+
+&lt;p&gt;Additionally, our arm will be &lt;em&gt;vertical&lt;/em&gt; - the plane it travels within is parallel to the direction gravity pulls on the arm. This means that when the arm is stretched “straight out” in front of the robot, gravity will be pulling it down toward the ground.&lt;/p&gt;
+
+&lt;h4 id=&quot;mathematical-description&quot;&gt;Mathematical Description&lt;/h4&gt;
+
+&lt;p&gt;Since this is a bit abbreviated, I won’t go through the full derivation of this system. However, it’s not too bad to build up an equation from the bits and pieces we already have.&lt;/p&gt;
+
+&lt;p&gt;To do so, we’ll use the &lt;em&gt;shoulder joint&lt;/em&gt; of the arm as our origin and reference point. All torques, speeds, accelerations, and angular positions will be measured &lt;em&gt;about&lt;/em&gt; this point. Additionally, we’ll use kinda-standard angle notation, such that &lt;script type=&quot;math/tex&quot;&gt;0^\circ&lt;/script&gt; is pointed “straight out in front” of the robot, &lt;script type=&quot;math/tex&quot;&gt;90^\circ&lt;/script&gt; is straight up in the air, and &lt;script type=&quot;math/tex&quot;&gt;-90^\circ&lt;/script&gt; is pointed at the ground.&lt;/p&gt;
+
+&lt;p&gt;Overall, the acceleration of the arm is determined from the following forces acting on it:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;T_{m}&lt;/script&gt; - The &lt;em&gt;motor&lt;/em&gt; (via a gearbox), which in turn in impacted by an &lt;em&gt;applied voltage&lt;/em&gt; which we can control as we please.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;T_{f}&lt;/script&gt; - Friction (works against rotational motion of the arm)&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;T_{g}&lt;/script&gt; - Gravity (pulls the arm toward the &lt;script type=&quot;math/tex&quot;&gt;-90^\circ&lt;/script&gt; point)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Using Newton’s second law for rotational forces, we can assemble our basic equation:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;T_{m}(t) + T_{f}(t) + T_{g}(t) = I \alpha(t)&lt;/script&gt;
+
+&lt;p&gt;And expanding each term, we arrive at the monster:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t) - \frac{N_{in}}{N_{out}} K_{V} \omega(t) \right) - K_{f} \omega(t) - m g \cos(\theta(t)) = m r^{2} \alpha(t)&lt;/script&gt;
+
+&lt;p&gt;Where:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\frac{N_{out}}{N_{in}}&lt;/script&gt; is the gearbox ratio&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;K_T&lt;/script&gt; is the motor torque constant&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;V_{in}(t)&lt;/script&gt; is the motor input voltage&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;K_V&lt;/script&gt; is the motor voltage constant&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\theta(t)&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;\omega(t)&lt;/script&gt;, and &lt;script type=&quot;math/tex&quot;&gt;\alpha(t)&lt;/script&gt; are the angular position, speed, and acceleration of the shoulder joint shaft.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;K_{f}&lt;/script&gt; is the effective kinetic rotational friction constant of the system&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is the mass of the end-effector on the tip of the arm&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;g&lt;/script&gt; is the gravitational constant (&lt;script type=&quot;math/tex&quot;&gt;9.81 m/s^2&lt;/script&gt;)&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; is the length of the arm&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Notice the minus sign on the frictional term is chosen to ensure the frictional torque &lt;em&gt;opposes&lt;/em&gt; motion, and the gravitational torque always &lt;em&gt;pushes toward &lt;script type=&quot;math/tex&quot;&gt;-90^\circ&lt;/script&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Re-arranging to group terms, pulling constants into nice buckets, substituting continuous time &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt; for discrete samples &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha[n] = C_1 V_{in}[n] - C_2 \omega[n] - C_3 cos(\theta[n])&lt;/script&gt;
+
+&lt;p&gt;With&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_1 = \frac{N_{out} K_T}{mr^2N_{in}R}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_2 = \frac{K_T K_V}{mr^2R} + \frac{K_f}{mr^2}&lt;/script&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;C_3 = \frac{g}{r^2}&lt;/script&gt;
+
+&lt;p&gt;Since acceleration is the derivative of velocity, we can approximate &lt;script type=&quot;math/tex&quot;&gt;\alpha[n]&lt;/script&gt; in terms of &lt;script type=&quot;math/tex&quot;&gt;\omega[n]&lt;/script&gt;:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\alpha[n] = \frac{\omega[n] - \omega[n-1]}{T_s}&lt;/script&gt;
+
+&lt;p&gt;And similarly, since velocity is the derivative of position, we can approximate &lt;script type=&quot;math/tex&quot;&gt;\omega[n]&lt;/script&gt; in terms of &lt;script type=&quot;math/tex&quot;&gt;\theta[n]&lt;/script&gt;&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\omega[n] = \frac{\theta[n] - \theta[n-1]}{T_s}&lt;/script&gt;
+
+&lt;p&gt;Math sticklers, avert your eyes for a paragraph.&lt;/p&gt;
+
+&lt;p&gt;If you were to substitute these into our equation, you’d end up with an equation that &lt;em&gt;stinks&lt;/em&gt; to solve symbolically for &lt;script type=&quot;math/tex&quot;&gt;\theta[n]&lt;/script&gt;, because &lt;script type=&quot;math/tex&quot;&gt;\theta[n]&lt;/script&gt; appears both inside and outside a &lt;script type=&quot;math/tex&quot;&gt;\cos()&lt;/script&gt; function. Maybe there’s a good way to solve it. I don’t know offhand. What I do know is I can cheat a bit and use some one-sample-delayed assumptions that, for sufficiently small &lt;script type=&quot;math/tex&quot;&gt;T_s&lt;/script&gt;, make our equation much more workable. There’s enough sensor delay in our feedback (relative to &lt;script type=&quot;math/tex&quot;&gt;T_s&lt;/script&gt;) that I honestly don’t think it will mess up the solution too much. I think. Let’s just go with it, Wild West style. Shoot math from the hip. That’s how we roll. I guess. Remember, all models are wrong.&lt;/p&gt;
+
+&lt;p&gt;Ok, math people, come back, and don’t try to check my work.&lt;/p&gt;
+
+&lt;p&gt;The final equation for position, in terms of things we know already or can control, is:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta[n] = \frac{T_s^2 C_1 V_{in}[n] - T_s^2 C_3 \cos(\theta[n-1]) + \theta[n-1]\left( T_s C_2 + 2 \right) - \theta[n-2]}{T_s C_2 + 1}&lt;/script&gt;
+
+&lt;p&gt;If that doesn’t make my eyes ooze out of their sockets, I don’t know what will.&lt;/p&gt;
+
+&lt;h2 id=&quot;step-response&quot;&gt;Step Response&lt;/h2&gt;
+
+&lt;p&gt;We’re definitely going to want to play around with this guy to get some intuition for how it works. We’ve got another sidebar with our system behavior in it.&lt;/p&gt;
+
+&lt;p&gt;&lt;input value=&quot;Open that sidebar now!&quot; type=&quot;button&quot; onclick=&quot;openNav()&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Since that equation is ever so intuitive, let’s see what happens when we put our arm at horizontal, then let the system rip with some constant voltage applied.&lt;/p&gt;
+
+&lt;div class=&quot;slidecontainer&quot;&gt;
+    Voltage Applied:
+    &lt;input type=&quot;range&quot; min=&quot;0&quot; max=&quot;1200&quot; value=&quot;100&quot; class=&quot;slider&quot; id=&quot;voltageSlider&quot; /&gt;
+    &lt;div id=&quot;voltsDisplay&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Start by moving this slider to zero volts - no motor command at all. You should notice the arm fall down to the &lt;script type=&quot;math/tex&quot;&gt;-90^\circ&lt;/script&gt; position and stay there. It swings back and forth a bit till friction stops it.&lt;/p&gt;
+
+&lt;p&gt;This should totally make sense - in this configuration, the arm is like a pendulum. Pendulums oscillate due to the pull of gravity.&lt;/p&gt;
+
+&lt;p&gt;Try bumping up the voltage by a volt or two. You should also see something logical - the motor causes the arm to settle out at some position “higher up” than before, as the motor fights gravity.&lt;/p&gt;
+
+&lt;p&gt;Eventually if you give enough voltage, your arm can swing all the way around in a circle. Wheeee! This is what, in my business, we call &lt;em&gt;unstable&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Simply applying a constant voltage doesn’t work all that well at getting the arm to a desired position. Clearly, for any position, our controller will have to find that nice happy voltage at which the arm maintains the proper position. It may also have to adjust the voltage a bit higher at first to get it to the setpoint.&lt;/p&gt;
+
+&lt;h2 id=&quot;controller-setup&quot;&gt;Controller Setup&lt;/h2&gt;
+
+&lt;p&gt;We’re gonna cut straight to using PID this time. But no F. F isn’t exactly useful, or not as we used it while doing the &lt;a href=&quot;/blog_posts/2019/10/19/tuning_pid.html&quot;&gt;shooter wheel exercises&lt;/a&gt;. The motor command required isn’t exactly proportional to the angle (think, for example, 0 degrees - definitely more than zero motor command required to keep the arm there). We’ll wrap back to this later, but for now we’ll skip F.&lt;/p&gt;
+
+&lt;h3 id=&quot;first-pass-at-tuning&quot;&gt;First Pass at Tuning&lt;/h3&gt;
+
+&lt;p&gt;Just as before, use the same doubling/halving technique to get close, then tweak once close.&lt;/p&gt;
+
+&lt;p&gt;Start by tuning P, just to where oscillations &lt;em&gt;around the setpoint&lt;/em&gt; start to happen.&lt;/p&gt;
+
+&lt;p&gt;First do the big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double P&quot; type=&quot;button&quot; onclick=&quot;adjustP(2.0)&quot; /&gt;
+&lt;input value=&quot;Half P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0.5)&quot; /&gt;
+&lt;br /&gt;
+Then do smaller tweaks when you get closer:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up P&quot; type=&quot;button&quot; onclick=&quot;adjustP(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0.95)&quot; /&gt;
+&lt;br /&gt;
+Or, if you get completely lost, start over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 65.0 is a good value for P&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Then tune D to get rid of the oscillations:&lt;/p&gt;
+
+&lt;p&gt;Big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double D&quot; type=&quot;button&quot; onclick=&quot;adjustD(2.0)&quot; /&gt;
+&lt;input value=&quot;Half D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0.5)&quot; /&gt;
+&lt;br /&gt;
+Small Tweaks:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up D&quot; type=&quot;button&quot; onclick=&quot;adjustD(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0.95)&quot; /&gt;
+&lt;br /&gt;
+Start Over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 6.87 is a good value for D&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, you’ll notice we do have some steady state error. Tune I to get rid of that:&lt;/p&gt;
+
+&lt;p&gt;Big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double I&quot; type=&quot;button&quot; onclick=&quot;adjustI(2.0)&quot; /&gt;
+&lt;input value=&quot;Half I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0.5)&quot; /&gt;
+&lt;br /&gt;
+Small Tweaks:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up I&quot; type=&quot;button&quot; onclick=&quot;adjustI(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0.95)&quot; /&gt;
+&lt;br /&gt;
+Start Over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 13.1 is a good value for I&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;varying-the-setpoint&quot;&gt;Varying the Setpoint&lt;/h3&gt;
+
+&lt;p&gt;As before, we’ll want to vary the setpoint to ensure our controller can achieve a range of outputs equally well.&lt;/p&gt;
+
+&lt;div class=&quot;slidecontainer&quot;&gt;
+    Setpoint:
+    &lt;input type=&quot;range&quot; min=&quot;-180&quot; max=&quot;180&quot; value=&quot;-45&quot; class=&quot;slider&quot; id=&quot;setpointSlider&quot; /&gt;
+    &lt;br /&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;As you move the setpoint around, even with well-chosen PID gains, you’ll notice the &lt;em&gt;overshoot&lt;/em&gt; and oscillation vary quite a bit, depending on the setpoint. More simply, the gains chosen do not work &lt;em&gt;equally&lt;/em&gt; well across all setpoints.&lt;/p&gt;
+
+&lt;p&gt;This should be expected. Our system is non-linear (due to the presence of the &lt;script type=&quot;math/tex&quot;&gt;\cos(\theta[n-1])&lt;/script&gt; term), but the PID algorithm is fundamentally designed to work around &lt;em&gt;linear&lt;/em&gt; systems. It can get close, but it’s honestly not the best answer in this case.&lt;/p&gt;
+
+&lt;p&gt;What to do? One option is to pick the point at which you want to hold the arm, and keep it there. You pick PID gains that work well for &lt;script type=&quot;math/tex&quot;&gt;\theta_{des}&lt;/script&gt;, and ignore other values. Especially if your arm has a very limited range of motion, or always goes between the same two points, this isn’t a bad option at all.&lt;/p&gt;
+
+&lt;p&gt;Another method is to add a (slightly) complex feed-forward term into our PID controller to &lt;em&gt;compensate&lt;/em&gt; for the nonlinearity. This is what we will attempt to do now.&lt;/p&gt;
+
+&lt;h3 id=&quot;removing-non-linearity&quot;&gt;Removing Non-Linearity&lt;/h3&gt;
+
+&lt;p&gt;Since we know our system, we can use a &lt;em&gt;more complex&lt;/em&gt; F term to remove the nonlinearity. We get clever to eliminate gravity.&lt;/p&gt;
+
+&lt;p&gt;The key fact: Gravity is proportional to &lt;script type=&quot;math/tex&quot;&gt;cos(\theta_{act}(t))&lt;/script&gt;. So, we will make an F term which is also proportional to &lt;script type=&quot;math/tex&quot;&gt;cos(\theta_{act}(t))&lt;/script&gt;. When properly tuned, we will effectively cancel-out the effects of gravity on the system.&lt;/p&gt;
+
+&lt;p&gt;We will modify our PID equation to add the extra term:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;v_{PID}(t) = K_{P} \theta_{err}(t) + K_{I} \int_{x=0}^{x=t}\theta_{err}(x)dx + K_{D} \frac{d\theta_{err}}{dt} + K_{F} \cos(\theta_{act}(t))&lt;/script&gt;
+
+&lt;p&gt;As a quick note on software - this technique is usually referred to as “arbitrary feed-forward”, and is supported by both the Talon SRX and Spark MAX speed controllers.&lt;/p&gt;
+
+&lt;h3 id=&quot;re-tuning&quot;&gt;Re-tuning&lt;/h3&gt;
+
+&lt;p&gt;Need to start again, because all our gains no longer should be accounting for gravity.&lt;/p&gt;
+
+&lt;p&gt;&lt;input value=&quot;Reset Gains&quot; type=&quot;button&quot; onclick=&quot;resetPIDF()&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Now, we’ll start tuning with F.&lt;/p&gt;
+
+&lt;p&gt;F can be calculated as the voltage required to hold the arm level (easy to empirically determine on a robot).&lt;/p&gt;
+
+&lt;p&gt;Since our arm starts at 0 degrees anyway (at least in this simulation), you’ll want to just keep bumping F up until the arm &lt;em&gt;stays&lt;/em&gt; at zero degrees, even with all feedback (P, I, D) gains at zero. Note that on this system, F gets &lt;em&gt;really&lt;/em&gt; sensitive around this point - the bump ups and downs will be quite small.&lt;/p&gt;
+
+&lt;p&gt;Again, the goal is to start the arm at 0 degrees, and tweak F until the arm &lt;em&gt;holds&lt;/em&gt; its position &lt;em&gt;at zero degrees&lt;/em&gt; (not the setpoint).&lt;/p&gt;
+
+&lt;p&gt;Use the double/half/tweak methodology first.
+&lt;br /&gt;
+&lt;input value=&quot;Double F&quot; type=&quot;button&quot; onclick=&quot;adjustF(2.0)&quot; /&gt;
+&lt;input value=&quot;Half F&quot; type=&quot;button&quot; onclick=&quot;adjustF(0.5)&quot; /&gt;
+&lt;br /&gt;
+Then do smaller tweaks when you get closer. This will take a lot of clicking.
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up F&quot; type=&quot;button&quot; onclick=&quot;adjustF(1.005)&quot; /&gt;
+&lt;input value=&quot;Bump Down F&quot; type=&quot;button&quot; onclick=&quot;adjustF(0.995)&quot; /&gt;
+&lt;br /&gt;
+Or, if you get completely lost, start over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out F&quot; type=&quot;button&quot; onclick=&quot;adjustF(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 5.91 is a good value for F&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Next we’ll move back to tuning P, again just to where oscillations start to happen. As we move P away from zero, the arm will &lt;em&gt;now&lt;/em&gt; start to move toward the setpoint.&lt;/p&gt;
+
+&lt;p&gt;First do the big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double P&quot; type=&quot;button&quot; onclick=&quot;adjustP(2.0)&quot; /&gt;
+&lt;input value=&quot;Half P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0.5)&quot; /&gt;
+&lt;br /&gt;
+Then do smaller tweaks when you get closer:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up P&quot; type=&quot;button&quot; onclick=&quot;adjustP(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0.95)&quot; /&gt;
+&lt;br /&gt;
+Or, if you get completely lost, start over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out P&quot; type=&quot;button&quot; onclick=&quot;adjustP(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 32.76 is a good value for P&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Then tune D to get rid of the oscillations:&lt;/p&gt;
+
+&lt;p&gt;Big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double D&quot; type=&quot;button&quot; onclick=&quot;adjustD(2.0)&quot; /&gt;
+&lt;input value=&quot;Half D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0.5)&quot; /&gt;
+&lt;br /&gt;
+Small Tweaks:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up D&quot; type=&quot;button&quot; onclick=&quot;adjustD(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0.95)&quot; /&gt;
+&lt;br /&gt;
+Start Over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out D&quot; type=&quot;button&quot; onclick=&quot;adjustD(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 3.27 is a good value for D&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, there may be a bit of steady state error left. If so, tune I to get rid of that:&lt;/p&gt;
+
+&lt;p&gt;Big adjustments:
+&lt;br /&gt;
+&lt;input value=&quot;Double I&quot; type=&quot;button&quot; onclick=&quot;adjustI(2.0)&quot; /&gt;
+&lt;input value=&quot;Half I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0.5)&quot; /&gt;
+&lt;br /&gt;
+Small Tweaks:
+&lt;br /&gt;
+&lt;input value=&quot;Bump Up I&quot; type=&quot;button&quot; onclick=&quot;adjustI(1.05)&quot; /&gt;
+&lt;input value=&quot;Bump Down I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0.95)&quot; /&gt;
+&lt;br /&gt;
+Start Over:
+&lt;br /&gt;
+&lt;input value=&quot;Zero-out I&quot; type=&quot;button&quot; onclick=&quot;adjustI(0)&quot; /&gt;
+&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Hint: 0.0 is a good value for I, at least as I tuned it.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;And, again, try varying the setpoint across the range of angles desired:&lt;/p&gt;
+
+&lt;div class=&quot;slidecontainer&quot;&gt;
+    Setpoint:
+    &lt;input type=&quot;range&quot; min=&quot;-180&quot; max=&quot;180&quot; value=&quot;-45&quot; class=&quot;slider&quot; id=&quot;setpointSlider2&quot; /&gt;
+    &lt;br /&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;This time, you should observe &lt;em&gt;much less variance&lt;/em&gt; in overshoot and convergence time across the range of possible setpoints. In general, your arm should be working much much better now.&lt;/p&gt;
+
+&lt;h2 id=&quot;we-just-did-plant-model-inversion&quot;&gt;We Just Did Plant Model Inversion&lt;/h2&gt;
+
+&lt;p&gt;It should be noted that our “arbitrary feed forward” term we used here is a simplified form of &lt;a href=&quot;https://faculty.washington.edu/devasia/Talks/Inversion_Theory.pdf&quot;&gt;plant model inversion&lt;/a&gt;. It’s actually the same as the shooter wheel’s feed forward as well for steady state. The basic idea behind all of it is that if you can get a mathematical description of how your plant model works, you can inject the &lt;em&gt;inverse&lt;/em&gt; of that knowledge into your controller to help account for the system dynamics that a plain old PID controller doesn’t need.&lt;/p&gt;
+
+&lt;p&gt;With knowledge of these plant dynamics, the only thing left for the PID closed-loop portion to do is compensate for transient, external loads, or any behavior not accounted for in the inverted plant model. This is nice for two reasons.&lt;/p&gt;
+
+&lt;p&gt;For one, it means that your plant model doesn’t have to be perfect. In fact, &lt;em&gt;anything&lt;/em&gt; (even a constant value) is better than what you have without it (which is literally an assumption that the plant does nothing).&lt;/p&gt;
+
+&lt;p&gt;For two, it means the PID gains don’t have to be as big as before, having less behavior to “fight” against. This implies they can be more aggressive toward getting your manipulator to the setpoint angle.&lt;/p&gt;
+
+&lt;p&gt;But - all these advantages can only be achieved if you can build up a reasonable mathematical model of how your &lt;em&gt;real world&lt;/em&gt; system works.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Hopefully this gives a good demonstration of how to tune PID in another common situation! Play around with these things and see what you can see. The advantage of these online simulators is the instantaneous feedback - you can clearly see what each adjustment is doing in nearly-real time. Such a luxury is harder to come by on a physical system. Plus, astable calibrations (like ones that cause the robot arm to start flying in circles) can be damaging. For this reason, doing the learning in a simulated environment is definitely a good idea. Hone your skills of tuning here, and then take them to the real world robot later.&lt;/p&gt;
+
+&lt;script src=&quot;/assets/js/pidArm.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times; Animation Control:</summary></entry><entry><title type="html">Control Theory - Tuning PID</title><link href="/blog_posts/2019/10/19/tuning_pid.html" rel="alternate" type="text/html" title="Control Theory - Tuning PID" /><published>2019-10-19T10:30:00-04:00</published><updated>2019-10-19T10:30:00-04:00</updated><id>/blog_posts/2019/10/19/tuning_pid</id><content type="html" xml:base="/blog_posts/2019/10/19/tuning_pid.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
 
 &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/sidenav/sidenav.css&quot; /&gt;
 
@@ -13,11 +506,9 @@
     &lt;div id=&quot;user_interaction&quot; class=&quot;gainsDisplay&quot;&gt;
         &lt;div id=&quot;gains&quot;&gt;&lt;/div&gt;
         &lt;br /&gt;
-        &lt;input id=&quot;ballInject&quot; type=&quot;checkbox&quot; onclick=&quot;updateBallInject()&quot; /&gt;
-        &lt;label for=&quot;ballinject&quot;&gt;Inject Ball at t=5.0 &lt;/label&gt; 
-        &lt;br /&gt;&lt;br /&gt;
         &lt;input value=&quot;Reset&quot; type=&quot;button&quot; onclick=&quot;resetPIDF()&quot; /&gt;
     &lt;/div&gt;
+    &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
 &lt;/div&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
@@ -196,7 +687,9 @@ Start Over:
 
 &lt;p&gt;That’s all for now! Go tune your controllers!&lt;/p&gt;
 
-&lt;script src=&quot;/assets/js/pidTune.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times; Inject Ball at t=5.0</summary></entry><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T09:30:00-05:00</published><updated>2019-10-07T09:30:00-05:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;EDIT: One additional thing - we’ve got another interactive post! &lt;a href=&quot;/blog_posts/2019/10/26/controls_supp_arm.html&quot;&gt;Check out how to tune another common class of system found in FRC&lt;/a&gt;&lt;/p&gt;
+
+&lt;script src=&quot;/assets/js/pidTune.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times;</summary></entry><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T10:30:00-04:00</published><updated>2019-10-07T10:30:00-04:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Welcome to post 3 in our series on controls engineering. In this post, we’re going to explore the behavior of the motor model we’ve built up, try to create an intuition for how it behaves. We’ll establish a couple criteria for what we want it to do, and lead into the application of a classic PID controller.&lt;/p&gt;
 
@@ -545,9 +1038,9 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Sweet! We’ve covered the basics of what a controller is. In our 3rd and final installment, we’ll discuss how to tune a PID controller, and where to look for “next steps”.&lt;/p&gt;
+&lt;p&gt;Sweet! We’ve covered the basics of what a controller is. In our 3rd and final installment, we’ll discuss how to tune a PID controller, and where to look for “next steps”. &lt;a href=&quot;/blog_posts/2019/10/19/tuning_pid.html&quot;&gt;Check out the interactive post here!&lt;/a&gt;&lt;/p&gt;
 
-&lt;script src=&quot;/assets/js/pidSim.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T09:30:00-05:00</published><updated>2019-09-20T09:30:00-05:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;script src=&quot;/assets/js/pidSim.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T10:30:00-04:00</published><updated>2019-09-20T10:30:00-04:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -1029,7 +1522,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Through a circuit breaker, of course. Let’s be safe now. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T09:30:40-05:00</published><updated>2019-09-07T09:30:40-05:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T10:30:40-04:00</published><updated>2019-09-07T10:30:40-04:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;One of the most eye-opening courses I took in college was an &lt;a href=&quot;https://courses.grainger.illinois.edu/ece486&quot;&gt;introduction to control theory course&lt;/a&gt;. The topic was brand new to me. Prior to taking the course, I had never even heard of this concept of “control theory”.&lt;/p&gt;
 
@@ -1234,7 +1727,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Backward, assuming you read from left to right. Just the established convention. A convention which was clearly made by someone who didn’t read Hebrew. Sorry, Hebrew-reading friends. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T09:30:40-05:00</published><updated>2019-09-05T09:30:40-05:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T10:30:40-04:00</published><updated>2019-09-05T10:30:40-04:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This post is largely inspired by &lt;a href=&quot;https://hbr.org/2017/08/high-performing-teams-need-psychological-safety-heres-how-to-create-it&quot;&gt;Laura Delizonna’s excellent article in the Harvard Business Review&lt;/a&gt;.&lt;/p&gt;
 
@@ -1312,7 +1805,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T09:30:40-05:00</published><updated>2019-08-27T09:30:40-05:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T10:30:40-04:00</published><updated>2019-08-27T10:30:40-04:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.sparkfun.com/news/2506&quot;&gt;Open source software is definitely an interesting beast.&lt;/a&gt; I didn’t spend too much time thinking about it until my college years, and the more I consider it the more impressive it gets. CAD programs, programming languages, even whole operating systems are developed by massive teams of people who have never met each other in person, and just enjoy engineering &lt;em&gt;so much&lt;/em&gt; they do it in their &lt;em&gt;personal time for free&lt;/em&gt;. And the software that is produced can be crazy good!&lt;/p&gt;
 
@@ -1370,7 +1863,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T09:30:40-05:00</published><updated>2019-08-23T09:30:40-05:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T10:30:40-04:00</published><updated>2019-08-23T10:30:40-04:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This will be a bit of self promotion, but hopefully educational at the same time. Here’s a confession - I have many computers in my life &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. They have come and gone over the years, and all played a crucial role in my education and learning, leading me toward the engineer I am today.&lt;/p&gt;
 
@@ -1558,7 +2051,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Though, not as many as my friend whose insurance company wanted to classify him as a small business due to his sheer quantity of high-powered hardware. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T09:30:40-05:00</published><updated>2019-08-18T09:30:40-05:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T10:30:40-04:00</published><updated>2019-08-18T10:30:40-04:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;source: reddit.com&lt;/em&gt;&lt;/p&gt;
 
@@ -1725,7 +2218,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you’ve got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">C to Assembly</title><link href="/blog_posts/2019/08/17/c_to_assembly.html" rel="alternate" type="text/html" title="C to Assembly" /><published>2019-08-17T09:30:40-05:00</published><updated>2019-08-17T09:30:40-05:00</updated><id>/blog_posts/2019/08/17/c_to_assembly</id><content type="html" xml:base="/blog_posts/2019/08/17/c_to_assembly.html">&lt;p&gt;&lt;em&gt;“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in &lt;a href=&quot;https://web.mit.edu/alexmv/6.037/sicp.pdf&quot;&gt;“The Structure and Interpretation of Computer Programs”&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you’ve got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">C to Assembly</title><link href="/blog_posts/2019/08/17/c_to_assembly.html" rel="alternate" type="text/html" title="C to Assembly" /><published>2019-08-17T10:30:40-04:00</published><updated>2019-08-17T10:30:40-04:00</updated><id>/blog_posts/2019/08/17/c_to_assembly</id><content type="html" xml:base="/blog_posts/2019/08/17/c_to_assembly.html">&lt;p&gt;&lt;em&gt;“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in &lt;a href=&quot;https://web.mit.edu/alexmv/6.037/sicp.pdf&quot;&gt;“The Structure and Interpretation of Computer Programs”&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -1984,394 +2477,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;p&gt;To be honest, I am no sure yet. Maybe go get yourself some food.&lt;/p&gt;
 
-&lt;p&gt;If you’re not hungry, go back to the home page and find another blog post!&lt;/p&gt;</content><author><name></name></author><summary type="html">“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)</summary></entry><entry><title type="html">x86 Assembly Introduction</title><link href="/blog_posts/2019/08/10/x86_intro.html" rel="alternate" type="text/html" title="x86 Assembly Introduction" /><published>2019-08-10T09:30:40-05:00</published><updated>2019-08-10T09:30:40-05:00</updated><id>/blog_posts/2019/08/10/x86_intro</id><content type="html" xml:base="/blog_posts/2019/08/10/x86_intro.html">&lt;p&gt;&lt;em&gt;“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - &lt;a href=&quot;https://github.com/stedolan&quot;&gt;Stephen Dolan&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;In our grand arc of introductory topics, this sadly is nearing the end.&lt;/p&gt;
-
-&lt;p&gt;We now most of the basic required components to analyze how a high-level C code program can get translated into 1’s and 0’s on a processor. One last piece of the puzzle - we’ll introduce a particular assembly language - x86 - and then show how C code constructs are implemented using the assembly language.&lt;/p&gt;
-
-&lt;h2 id=&quot;x86&quot;&gt;x86&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;x86&lt;/em&gt; (pronounced “ecks - eighty - six”) is the name for one of the most ubiquitous processor architectures in the world today. x86 is very old, dating back to some of the initial processors that Intel manufactured. Intel has been very rigirous about keeping it backward compatible, so the full specification carries most of the legacy functionality of processors manufactured 20 to 30 years ago. This makes the full specification around 2900 pages long - not exactly light reading.&lt;/p&gt;
-
-&lt;p&gt;When learning about x86, it’s better to start not with the actual documentation, but one of &lt;a href=&quot;https://www.cs.virginia.edu/~evans/cs216/guides/x86.html&quot;&gt;the many helpful guides&lt;/a&gt; out there. &lt;a href=&quot;https://en.wikibooks.org/wiki/X86_Assembly/X86_Architecture&quot;&gt;Here is another good one.&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;the-basics&quot;&gt;The Basics&lt;/h3&gt;
-
-&lt;p&gt;In order to introduce how your C code gets executed on a processor, we’re going to start by a basic overview of how programming in x86 assembly works.&lt;/p&gt;
-
-&lt;p&gt;As a basic review, recall that when we write assembly code, there is a &lt;em&gt;one to one&lt;/em&gt; mapping from assembly instructions to bits that go into and out of the processor. Whenever we describe some particular &lt;em&gt;assembly instruction&lt;/em&gt; in this post, just remember that you can go straight from that to bits.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Which bits&lt;/em&gt; is described within the &lt;a href=&quot;https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf&quot;&gt;x86 software developer’s reference manual&lt;/a&gt;. This behemoth of documentation describes, in great detail, the operation of every assembly instruction, and how to encode it into bits. Diagrams like this one explain the mapping:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/intel_inst_format.png&quot; alt=&quot;Intel instruction set bit format&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Which, as you are probably guessing, is not the most straightforward of methodologies. It’s totally feasable to figure out though, but that figuring will be left as an exerices to the user. It’s all there in that manual though, I promise.&lt;/p&gt;
-
-&lt;p&gt;Again though, at least for the sake of this post, keep in mind that given an assembly instruction, you can get bits which go into a processor. All such that we can define what the starting layout of 1’s and 0’s in our RAM looks like:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitMemoryLayout.png&quot; alt=&quot;Control Unit RAM&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When writing assembly code, what you are really doing is defining the bits that will go into memory as the &lt;em&gt;stored program&lt;/em&gt;, eventually executed by a processor. Once you have the right set of bits, you just have to load them into memory at just the right spot, then fire up the processor. It will pick the first address, and start running your program from the beginning.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;How&lt;/em&gt; these instructions are loaded into Memory will have to be a future post, as it’s beyond the scope of this discussion. For now, I promise, there &lt;em&gt;is&lt;/em&gt; a way to make it happen, and it does happen.&lt;/p&gt;
-
-&lt;h4 id=&quot;setting-aside-memory-for-storage&quot;&gt;Setting Aside Memory for Storage&lt;/h4&gt;
-
-&lt;p&gt;In addition to the actual instructions to run, you’ll also generally want to reserve memory locations to store values. Here’s a brief hint of where we’re going - remember variables from C syntax? Any time you have a variable, you’ll need some memory to store it. When writing x86 assembly, you can mark off a sets of bits for usage as variables:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;myVariable&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;DB&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;myOtherVariable&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DW&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;.data&lt;/code&gt; directive tells the assembler that the things which follow are memory locations for variables, not code. The name of the variable comes first, followed by some string like &lt;code class=&quot;highlighter-rouge&quot;&gt;DB&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;DW&lt;/code&gt; to indicate &lt;em&gt;how many&lt;/em&gt; bytes the variable occupies. &lt;code class=&quot;highlighter-rouge&quot;&gt;DB&lt;/code&gt; is one byte, &lt;code class=&quot;highlighter-rouge&quot;&gt;DW&lt;/code&gt; is two, &lt;code class=&quot;highlighter-rouge&quot;&gt;DD&lt;/code&gt; is four… others exist. The final thing can be optional, and dictates what the memory is to be set to prior to any code running. In this case, &lt;code class=&quot;highlighter-rouge&quot;&gt;myVariable&lt;/code&gt; gets set to &lt;a href=&quot;https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#Answer_to_the_Ultimate_Question_of_Life,_the_Universe,_and_Everything_(42)&quot;&gt;The Answer to the Ultimate Question of Life, the Universe, and Everything&lt;/a&gt;, while &lt;code class=&quot;highlighter-rouge&quot;&gt;myOtherVariable&lt;/code&gt; gets set to 25.&lt;/p&gt;
-
-&lt;p&gt;It’s worthwhile to note that when working with these labeled memory locations, the name (eg, &lt;code class=&quot;highlighter-rouge&quot;&gt;myVariable&lt;/code&gt;) refers to the actual memory &lt;em&gt;address&lt;/em&gt;, while putting it in brackets (eg, &lt;code class=&quot;highlighter-rouge&quot;&gt;[myVariable]&lt;/code&gt;) refers to the &lt;em&gt;value at that address&lt;/em&gt;. When working with instructions, sometimes the assembly instruction needs a memory address, and other times it needs a value. Use each form as needed.&lt;/p&gt;
-
-&lt;p&gt;As in all programming languages worth their salt, it is also possible to write comments in your assembly code.&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;;---------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Herp Derp this is where the global variables go!&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Aren't comments the best?&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;;---------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;myVariable&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;DB&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;myOtherVariable&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DW&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;registers&quot;&gt;Registers&lt;/h4&gt;
-
-&lt;p&gt;We’ll now attempt to describe the General Purpose registers of interest to us in x86 processor architecture.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitRegisters.png&quot; alt=&quot;Control Unit GPRs&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Accessing memory addresses can be slow, so for rapid access of heavily-manipulated values, it’s common place to use a &lt;em&gt;general purpose&lt;/em&gt; register to store the quantity. Physically located close to the center of the processor and implemented with high-speed circuitry, these registers are limited in quantity but abundant in speed and capiability. Additionally, some assembly instructions can only work with certain registers, so it’s required to populate the register first before running the restricted assembly instruction.&lt;/p&gt;
-
-&lt;p&gt;There are a lof these on the x86 architecture, but there’s just a handful we’ll focus on for now. Their names are:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;EDX&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;These four in particular can be used to store pretty much whatever values you want. Other registers have more restrictions, but these are the most general-purpose of all the general-purpose registers.&lt;/p&gt;
-
-&lt;h4 id=&quot;memory-and-register-transfer&quot;&gt;Memory and Register Transfer&lt;/h4&gt;
-
-&lt;p&gt;To do anything useful, we’ll first want to know how to assign and move data values around in the processor.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitMemoryOps.png&quot; alt=&quot;Control Unit Memory Operations&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; is the first assembly instruction we will cover. &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; stands for &lt;em&gt;move&lt;/em&gt;. It’s the true workhorse of the x86 assembly language. &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; It’s primary job - move values from one place to another. Fundamentally the syntax is:&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mov &amp;lt;dst&amp;gt; &amp;lt;src&amp;gt;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;It can move constant values into registers or memory, move between registers, or move between registers and memory:&lt;/p&gt;
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; sample.asm&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-
-    &lt;span class=&quot;kr&quot;&gt;global&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Code Starts Here&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[myVariable]&lt;/span&gt;            &lt;span class=&quot;c&quot;&gt;; Move the value at myVariable into EAX &lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;; EAX now contains 42&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1234&lt;/span&gt;                    &lt;span class=&quot;c&quot;&gt;; Move the constant value 1234 into EBX&lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;; EBX now contains 1234&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EDX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;                     &lt;span class=&quot;c&quot;&gt;; Load EDX with the present value of EAX&lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;; EDX is now also 42&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dword&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[myOtherVariable],&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Load the constant value 25 into &lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;;   all 32 of the bits of myOtherVariable&lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;; The memory allocated at label &lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;;   &quot;myOtherVariable&quot; now has value 25&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[myOtherVariable]&lt;/span&gt;       &lt;span class=&quot;c&quot;&gt;; Load ECX with the value from memory &lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;;   labeled &quot;myOtherVariable&quot;&lt;/span&gt;
-                                     &lt;span class=&quot;c&quot;&gt;; ECX is now also 25&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;myVariable&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;myOtherVariable&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xBEEFBEEF&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;myBeefVariable&lt;/span&gt;  &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0BADBEEF&lt;/span&gt;
- 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Note due to hardware restrictions, direct memory-to-memory moves are not allowed. You have to store in a register first.&lt;/p&gt;
-
-&lt;p&gt;Similarly to before, &lt;code class=&quot;highlighter-rouge&quot;&gt;.text&lt;/code&gt; is a marker to indicate the things which come next are code to be executed.&lt;/p&gt;
-
-&lt;p&gt;We’ve also introduced a special label &lt;code class=&quot;highlighter-rouge&quot;&gt;_main&lt;/code&gt; to tell the compiler exactly where our code begins. This is required for running this on Windows, so Windows knows how to place our bits into RAM such that they will be executed.&lt;/p&gt;
-
-&lt;p&gt;Finally, the final &lt;code class=&quot;highlighter-rouge&quot;&gt;retn&lt;/code&gt; instruction is how we say our code is done. It &lt;em&gt;returns&lt;/em&gt; from the main function, which returns control to the operating system to clean up as needed and do something else. If you had no operating system, you might use &lt;code class=&quot;highlighter-rouge&quot;&gt;hlt&lt;/code&gt; to actually halt the processor.&lt;/p&gt;
-
-&lt;p&gt;After all this, we can assemble, link, and run the code. Using a special tool (called a debugger), we inspect the results of the registers after our code is run and see the result:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sample_mov_asm_run_result.png&quot; alt=&quot;Code run result&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;As expected, our variables and registers got updated as promised in the comments! Our new unused variable friend &lt;code class=&quot;highlighter-rouge&quot;&gt;myBeefVariable&lt;/code&gt; remains as it was when we started.&lt;/p&gt;
-
-&lt;h4 id=&quot;math-and-logic&quot;&gt;Math And Logic&lt;/h4&gt;
-
-&lt;p&gt;Moving values from here to there is all well and good, but we generally also want to do math on those values.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitMath.png&quot; alt=&quot;Control Unit Math&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Fortunately, x86 provides a wide array of math operations for us to choose from. These include, but are not limited to:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;add&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;sub&lt;/code&gt; - Adds or Subtracts two values&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;imul&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;idiv&lt;/code&gt; - performs integer multiplication or division on two values&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;and&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;or&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;not&lt;/code&gt; - performs bit-wise boolean operations on one or two values.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;There are many more, some involving floating point numbers. While super useful they’re beyond the scope of this discussion.&lt;/p&gt;
-
-&lt;p&gt;Usually these take two or three operands - &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;operation&amp;gt; &amp;lt;input1&amp;gt; &amp;lt;input2&amp;gt;&lt;/code&gt;. Here, &lt;em&gt;operation&lt;/em&gt; is performed on &lt;em&gt;input1&lt;/em&gt; and &lt;em&gt;input2&lt;/em&gt;, and the result gets stored back into &lt;em&gt;input1&lt;/em&gt;. This is convenient if you are keeping a running total of something, and just requires an extra &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; if your destination is different than the inputs.&lt;/p&gt;
-
-&lt;p&gt;For example, to add &lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt; together, and store the result into &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt;, you would provide the assembly code:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Add the value in ECX (same as EAX) to EBX, storing back into ECX&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;sub&lt;/code&gt; works very similarly. As a worked example:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; sample.asm&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-
-    &lt;span class=&quot;kr&quot;&gt;global&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Code Starts Here&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Init our inputs with some values&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;15&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Add the value in ECX (same as EAX) to EBX, storing back into ECX&lt;/span&gt;
-                  &lt;span class=&quot;c&quot;&gt;; ECX should be 10+15 = 25&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EDX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;sub&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EDX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Subtract the value in EDX (same as EAX) from EBX, storing back into EDX&lt;/span&gt;
-                  &lt;span class=&quot;c&quot;&gt;; EDX should be 10-15 = -5&lt;/span&gt;
-
-
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;True to the comments, add and subtract operations put the results into &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;EDX&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sample_math_asm_run_result.png&quot; alt=&quot;Code run result&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Similarly, we can do bitwise logic operations on values. Instructions like &lt;code class=&quot;highlighter-rouge&quot;&gt;and&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;or&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;not&lt;/code&gt; do exactly what you’d expect, and follow very similar formatting to our math instruction friends. Yet another worked example of their operation:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; sample.asm&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-
-    &lt;span class=&quot;kr&quot;&gt;global&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Code Starts Here&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b10101100110000111010110011000011&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Init our inputs  &lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b00001111000011110000111100001111&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Use random-ish 32-bit values&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; Perform bitwise AND on the two values&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[andResult],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Store into the global variable for later inspection&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;; Perform bitwise OR on the two values&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[orResult],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Store into the global variable for later inspection&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;               &lt;span class=&quot;c&quot;&gt;; Perform bitwise NOT on the first value&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[notResult],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Store into the global variable for later inspection&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; Copy first operand into the output location&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;xor&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; Perform bitwise NOT on the two values&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[xorResult],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Store into the global variable for later inspection&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;andResult&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;orResult&lt;/span&gt;       &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;notResult&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;xorResult&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt;
-
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The bitwise action performs the corresponding logic operation on the two numbers, one bit at a time, never inter-mixing the bits. Despite how painful it is to look at theses 32-bit sequences, the results are what you’d expect:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sample_logic_asm_run_result.png&quot; alt=&quot;Code run result&quot; /&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;conditional-execution&quot;&gt;Conditional Execution&lt;/h4&gt;
-
-&lt;p&gt;So far our code is very linear in execution - we start at the top, execute all instructions in order, and then we are done. However, to actually make decisions and be more than a glorified calculator, we need to be able to tell the processor to skip or repeat instructions. This functionality is accomplished by the paired set of operations - &lt;em&gt;compare&lt;/em&gt; and &lt;em&gt;jump&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cmp&lt;/code&gt;, or &lt;em&gt;compare&lt;/em&gt;, is probably the easiest to understand. It takes two inputs, and compares them! In x86, the result of the comparison is stored in a very special register that is called the &lt;em&gt;EFLAGS&lt;/em&gt; register. On our diagram for processor architecture, we had a “P/N/Z” register that served the same purpose. It is just a set of bits to indicate if the previous operation resulted in overflow or underflow, a positive or negative result, a zero or non-zero result, and a number of other things.&lt;/p&gt;
-
-&lt;p&gt;Since &lt;code class=&quot;highlighter-rouge&quot;&gt;cmp&lt;/code&gt; sets the &lt;em&gt;EFLAGS&lt;/em&gt; register, we can call a &lt;em&gt;jump&lt;/em&gt; right after it to use the result.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Jump&lt;/em&gt; comes in many different flavors, but all do the same thing - they alter the value of the next-address to be decoded as an instruction. By interrupting the normal “add-one-to-instruction-register” behavior of the processor, it enables you (the user) to change the order of execution.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/controlUnitCompareJump.png&quot; alt=&quot;Compare and jum processor data flow&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The instruction &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; itself is called an &lt;em&gt;unconditional jump&lt;/em&gt; - no matter what &lt;em&gt;EFLAGS&lt;/em&gt; is set to, it will always go to the provided memory address. For example, consider the following:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;_countBeverage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[numBottlesBeverageOnWall],&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x01&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; put one additional bottle of beverage on the wall&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_countBeverage&lt;/span&gt;                    &lt;span class=&quot;c&quot;&gt;; do it again.&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;; ??? ummmmm when do we end?&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;numBottlesBeverageOnWall&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;; Zero beverage to start.&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Like that annoying singing brother in the car ride, this code just keeps counting the number of bottles of beverage on the wall. Maybe this is what you wanted to do - doom your machine to an eternity of counting. But, let’s say we want to do something a bit more meaningful….&lt;/p&gt;
-
-&lt;p&gt;The other flavors of &lt;em&gt;jump&lt;/em&gt; use the value in &lt;em&gt;EFLAGS&lt;/em&gt; to &lt;em&gt;conditionally&lt;/em&gt; go to the provided memory address. If the condition is not met, the usual “add-one” behavior is kept. The most common flavors are:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;je&lt;/code&gt; - Jump if Equal&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jne&lt;/code&gt; - Jump if not Equal&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jl&lt;/code&gt; - Jump if less than&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jle&lt;/code&gt; - Jump if less than or equal to&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jg&lt;/code&gt; - Jump if greater than&lt;/li&gt;
-  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;jge&lt;/code&gt; - Jump if greater than or equal to&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Obviously there’s some redundancy here, but it does let your assembly code be more intuitive to look at.&lt;/p&gt;
-
-&lt;p&gt;To show how to use these, let’s do a bit of a contrived, but still useful, example. We’ll load numbers into &lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt; and compare them. Based on the outcome of the result, we’ll set &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; - using (very convinenetly) &lt;code class=&quot;highlighter-rouge&quot;&gt;0x0A&lt;/code&gt; for “&lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; bigger”, &lt;code class=&quot;highlighter-rouge&quot;&gt;0x0B&lt;/code&gt; for “&lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt; bigger”, and &lt;code class=&quot;highlighter-rouge&quot;&gt;0xAB&lt;/code&gt; for “&lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; equals &lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt;”.&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; sample.asm&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-
-    &lt;span class=&quot;kr&quot;&gt;global&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Code Starts Here&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x25&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; Init some values for comparison&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x8F&lt;/span&gt;   
-
-    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Perform the comparison operation of EAX against EBX&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jg&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_a_big&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;; if EAX was greater, go to section _a_big&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;je&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_same&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;; Otherwise, if equal, go to section _same&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_b_big&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;; Otherwise, EBX must have been bigger. &lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_a_big&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0A&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; since A was greater, put &quot;A&quot; into ECX&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_b_big&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0x0B&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; since B was greater, put &quot;B&quot; into ECX&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_same&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xAB&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; since they were equal, put &quot;AB&quot; into ECX&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Running this produces the expected output - since &lt;script type=&quot;math/tex&quot;&gt;5 &gt; 2&lt;/script&gt;, we expect &lt;code class=&quot;highlighter-rouge&quot;&gt;0x0A&lt;/code&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt;, and that’s what we get:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sample_jmp_asm_run_result.png&quot; alt=&quot;Code run result&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Also as you’d expect - if you tweak the initial values of &lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt;, you get different results in &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt;:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sample_jmp_asm_run_result_b_greater.png&quot; alt=&quot;Code run result&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sample_jmp_asm_run_result_eq.png&quot; alt=&quot;Code run result&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;A couple things of interest in this example: Note that &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; or its flavors do &lt;em&gt;not&lt;/em&gt; set &lt;em&gt;EFLAGS&lt;/em&gt;, so you can do a “chain” of jump instructions after one cmp instruction as above. Based off of just that one comparison, we branch off to the most-appropriate of the three subsections for manipulating &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Also note that at the end of each small “chunk” where &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; is set, we have an unconditional &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; down to &lt;code class=&quot;highlighter-rouge&quot;&gt;_done&lt;/code&gt;. Remember that without &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; calls, assembly instructions happen one after another. The assembler doesn’t know (or care) that we divided our code up with different labels like &lt;code class=&quot;highlighter-rouge&quot;&gt;_a_big&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;_b_big&lt;/code&gt; - it just goes through instructions one after another. Without unconditional &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp _done&lt;/code&gt; instructions, we’d potentailyl be setting &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; multiple times, which would be incorrect.&lt;/p&gt;
-
-&lt;p&gt;However, the astute reader may be saying “Hey, one of those isn’t actually needed!” and you’re 100% right. In &lt;code class=&quot;highlighter-rouge&quot;&gt;_same&lt;/code&gt;, the last &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp _done&lt;/code&gt; instruction is totally unnecessary from a functionality point of view.&lt;/p&gt;
-
-&lt;p&gt;This chunk of code:&lt;/p&gt;
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;_same&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xAB&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Is functionally the exact same thing as:&lt;/p&gt;
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;_same&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xAB&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;_done&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Because jumping to the next instruction is, well, exactly what the processor does by default.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;HOWEVER&lt;/strong&gt;. A key component of “good” code usually is &lt;em&gt;consistency&lt;/em&gt;. If you have three chunks of code that are &lt;em&gt;supposed&lt;/em&gt; to do similar things, you should make them &lt;em&gt;look&lt;/em&gt; very similar. Even if it works just fine, removing that &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp _done&lt;/code&gt; line forces the next person looking at your code to stop and think “Wait, why is this one different? Is that OK? Is this actually a bug?” and then a little while later come to the same conclusion as the original author did that, no, this still works fine. But, that was just some time that was wasted. Obviously, in a small case like this, it’s pretty easy to see and prove the equivalency. But, as you write more and more (and bigger and bigger) code, making a similar determination is not nearly as trivial. Best practice is to keep similar things as similar as possible.&lt;/p&gt;
-
-&lt;p&gt;Finally. It should be noted that lots of other instructions set the &lt;em&gt;EFLAGS&lt;/em&gt; register - most math and logic operations, actually. Always check the manual. However, you can use this to skip the &lt;code class=&quot;highlighter-rouge&quot;&gt;cmp&lt;/code&gt; instruction sometimes. Doing so will produce smaller and faster code, though sometimes at the loss of readability…. sometimes. Buyer beware.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-we-skipped&quot;&gt;What We Skipped&lt;/h2&gt;
-
-&lt;p&gt;Ok, so this should be enough for now - we’ll be able to move on to explain the basics of how C code turns into bits. Of course, there is … a lot … more to x86 than what we’ve discussed here. The biggest thing we’ve left out is how you create chunks of code that can be called from anywhere, and return back where they came from when done (&lt;em&gt;functions&lt;/em&gt;, for the folks who know about them already). Suffice to say, x86 has specific built in hardware support for making this happen, and we’ll probably hit it in a later blog post. No matter, it won’t be critical for the immediate discussion.&lt;/p&gt;
-
-&lt;p&gt;Similarly, there’s a whole discussion to be had as to how an x86 processor allows certain code to be “privileged” or “unprivileged”, and keeps various chunks of code isolated from each other. We’ve also completely ignored how and why the code we’re writing shows up in “.exe” files, and how said “.exe” file happens to end up with its contents on the processor. These are all inter-related topics, which hopefully we’ll touch on when we discuss how operating systems work. Again suffice to say, it won’t be required to go through now, but keep in mind that the onion still has more layers&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;With the end of this post, hopefully we’ve presented a decent introduction to the bare-bones components of x86, a real assembly language that works on real processors. We’ll use this knowledge to help deconstruct how our high level language (C code) gets converted to 1’s and 0’s on a processor, with x86 assembly as the intermediate description of the bits. &lt;a href=&quot;/blog_posts/2019/08/17/c_to_assembly.html&quot;&gt;Check out the last chapter here!&lt;/a&gt;&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;When I say workhorse, I really do mean it works hard, and can do a lot! Turns out, &lt;a href=&quot;https://youtu.be/R7EEoWg6Ekk?t=39&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt; by itself is &lt;em&gt;Turing Complete&lt;/em&gt;&lt;/a&gt;. That’s right, you could build a computer that only know how to do &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt;, or limit yourself to only using &lt;code class=&quot;highlighter-rouge&quot;&gt;mov&lt;/code&gt;, and still be able to &lt;em&gt;compute anything you want to&lt;/em&gt;. And even more so, &lt;a href=&quot;https://github.com/xoreaxeaxeax/movfuscator&quot;&gt;&lt;em&gt;someone did it&lt;/em&gt;&lt;/a&gt;. Seriously, this is one of my favorite exercises in all of computer science, just for its simultaneous absurdity and technical prowess. The video is long, but actually worthwhile, and totally approachable to someone who has kept pace with this blog thus far! &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan</summary></entry></feed>
+&lt;p&gt;If you’re not hungry, go back to the home page and find another blog post!&lt;/p&gt;</content><author><name></name></author><summary type="html">“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)</summary></entry></feed>

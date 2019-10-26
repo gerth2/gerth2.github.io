@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Control Theory - Supplemental - Vertical Arm | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Control Theory - Supplemental - Vertical Arm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="&times; Animation Control:" />
+<meta property="og:description" content="&times; Animation Control:" />
+<link rel="canonical" href="/blog_posts/2019/10/26/controls_supp_arm.html" />
+<meta property="og:url" content="/blog_posts/2019/10/26/controls_supp_arm.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-10-26T10:30:00-04:00" />
+<script type="application/ld+json">
+{"mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/10/26/controls_supp_arm.html"},"url":"/blog_posts/2019/10/26/controls_supp_arm.html","description":"&times; Animation Control:","headline":"Control Theory - Supplemental - Vertical Arm","@type":"BlogPosting","dateModified":"2019-10-26T10:30:00-04:00","datePublished":"2019-10-26T10:30:00-04:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
+<body>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Control Theory - Supplemental - Vertical Arm</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-10-26T10:30:00-04:00" itemprop="datePublished">Oct 26, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="stylesheet" href="/assets/sidenav/sidenav.css" />
+
+<script src="/assets/sidenav/sidenav.js"></script>
+
+<div id="mySidenav" class="sidenav" onclick="openNav()">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div id="plots">
+        <div id="plot5a"></div>
+        <div id="plot5b"></div>
+    </div>
+    <div id="visualization" style="padding: 20px;">
+        <div style="position:relative; width:500px; height:500px">
+            <canvas id="staticCanvas" width="500" height="500" style="border:1px solid #000000; position:absolute; top:0; left:0"> </canvas>
+            <canvas id="animatedCanvas" width="500" height="500" style="background:transparent; position:absolute; top:0; left:0"> </canvas>
+        </div>
+        <b>Animation Control:</b>
+        <input value="Play" type="button" onclick="playAnimation()" />
+        <input value="Pause" type="button" onclick="pauseAnimation()" />
+        <input value="Restart" type="button" onclick="resetAnimationToStart()" />
+    </div>
+    <div id="user_interaction" class="gainsDisplay">
+        <div id="gains"></div>
+        <br />
+        <input value="Reset Gains" type="button" onclick="resetPIDF()" />
+    </div>
+    <br /><br /><br /><br />
+</div>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>For context, this post came about when one of our students asked for info on tuning the other main type of system in FRC - one where a motor powers a mechanism, and the desired <em>position</em> is the setpoint.</p>
+
+<p>A common example is an arm on the top of a robot. For our arm, we’ll assume it’s <em>vertical</em> - that is to say, it lifts things from floor height to some higher elevation - Think like the 2018 game robots:</p>
+
+<p><img src="/assets/arm_robots.png" alt="arm robots" /></p>
+
+<p>Our <em>desired</em> input (or <em>setpoint</em>) will come in terms of <em>degrees above or below the horizon</em>, rather than rotational velocity. As we’ll see, this leads to a different tuning methodology, but the underlying PID concept still works.</p>
+
+<p>This post will come in two parts. First we’ll discuss the meaning of a “good” PID tune, relevant to any PID system you are tuning. Then, we’ll go into the specifics of tuning our vertical arm.</p>
+
+<h2 id="defining-good-to-get-good">Defining “Good” to Get Good</h2>
+
+<p>We’ve thrown out a bit of terminology already related to how you judge how “good” your PID tune is.</p>
+
+<p>Like any good exercise in engineering, there’s terminology which refers to specific <em>measurements</em> of goodness. Let’s take a quick step back to formalize what these actually are.</p>
+
+<p>Keeping with our examples so far, we’ll frame all of our discussion in terms of the <em>time domain step response</em> of our system.</p>
+
+<p>All that follows in this section is just <em>terminology</em> - specific words control systems engineers to describe physical behavior in a way that communicates meaning to others.</p>
+
+<p>Then again, keep in mind - terminology is important! On some grand scale of “importance” - understanding the underlying concept is probably more important, but immediately following that is the ability to communicate it to others.</p>
+
+<p>\soapbox.</p>
+
+<h3 id="general-system-response-classifications">General System Response Classifications</h3>
+
+<p>When tuning a system and looking at its step response, there are fundamentally three categories of system response. Systems are said to be <em>Overdamped</em>, <em>Underdamped</em>, or <em>Unstable</em>.</p>
+
+<p>An <em>overdamped</em> system will slowly approach the desired value, hopefully settling out just barely underneath the desired value. It’s generally pretty gradual, and has <em>no oscillation</em>, and never <em>crosses</em> or <em>goes above</em> the desired value.</p>
+
+<p><img src="/assets/ctrl_overdamped.png" alt="Overdamped" /></p>
+
+<p>The name should make sense - if you think of friction or stiffness in the system as a “damping” force, an <em>overdamped</em> system has <em>quite a bit of damping</em>. Sometimes this is desired, sometimes it is not (as we’ll discuss later). But for now, just remember the association of the word with the meaning.</p>
+
+<p>Similarly, an <em>underdamped</em> system will have <em>much less damping</em>. In these systems, the actual value <em>overshoots</em> the desired value, crossing and turning around multiple times before settling down. An underdamped system will always have some amount of oscillation.</p>
+
+<p><img src="/assets/ctrl_underdamped.png" alt="Underdamped" /></p>
+
+<p>For systems that involve a PID controller, the P gain tends to be the “knob” that pushes a system between overdamped and underdamped. Additionally, the D gain can take a system with underdamped characteristics, and make it look more overdamped.</p>
+
+<p>Both of these system types are <em>stable</em> - this means that as time progresses, the actual value <em>converges</em> toward the desired value. It’s also very possible that you might get a system which is <em>unstable</em> - where the actual value doesn’t actually go toward the desired value. These often come in one of two flavors.</p>
+
+<p>The first flavor is the “it blows up from getting too big”:</p>
+
+<p><img src="/assets/ctrl_unstable.png" alt="unstable 1" /></p>
+
+<p>Here, for whatever reason, the system’s value just shoots off in one direction, never really going where we want it. In general, in cases like this, you’ll hit some mechanical or electrical limit, break something or let the magic smoke out, and have some other subteams angry at you. Definitely not recommended.</p>
+
+<p>The other flavor of unstable stays somewhat close to the desired value, but never “settles down”.</p>
+
+<p><img src="/assets/ctrl_unstable2.png" alt="unstable 2" /></p>
+
+<p>At best, this will be a robot that looks <em>really</em> bad and uncontrollable, which means you don’t get picked in elimination rounds. More often, the motion causes parts to wear out prematurely and also break. Again, bad news bears. Also not recommended.</p>
+
+<p>Taking these examples: part of the definition of “good” usually involves:</p>
+
+<ol>
+  <li>System should be stable</li>
+  <li>System ought to be slightly overdamped or slightly underdamped (depends on the situation). Having the other is less than desireable.</li>
+</ol>
+
+<h3 id="quantitative-goodness-measurements">Quantitative Goodness Measurements</h3>
+
+<p>Aside from the above <em>qualitative</em> system classification, for stable systems, we also commonly define a few measurements of system response.</p>
+
+<h3 id="rise-time--settling-time">Rise Time &amp; Settling Time</h3>
+
+<p>There are two main time-based measurements for talking about your system response.</p>
+
+<p><em>Rise time</em> refers to the duration between when the desired command changes, and the first time the actual value gets to the desired value.</p>
+
+<p><em>Settling time</em> refers to the duration between when the desired command changes, and when the actual values <em>settles down</em> within some acceptable error from the desired value.</p>
+
+<p><img src="/assets/ctrl_time.png" alt="Rise and Settling time" /></p>
+
+<p>Overdamped systems will have a longer rise time than underdamped systems. Settling times can vary quite a bit, depending on system dynamics.</p>
+
+<p>In general, more powerful motors, less mass, and more P gain all help you achieve better rise time.</p>
+
+<p>In general, more powerful controllers with faster feedback systems and less delay help you reduce your settling time. More mass can help your system “dampen” itself out mechanically. More D gain can increase damping to a point, but will also eventually cause instability. Less mass can allow your controller’s D term to do damping more efficiently.</p>
+
+<h3 id="overshoot--steady-state-error">Overshoot &amp; Steady State Error</h3>
+
+<p>There are also two value-based metrics for talking about your system response.</p>
+
+<p><em>Overshoot</em> refers to <em>how much</em> the actual value goes past the desired value before coming back toward it.</p>
+
+<p><img src="/assets/ctrl_overshoot.png" alt="Overshoot" /></p>
+
+<p><em>Steady State Error</em> refers to <em>how far off</em> the actual value is from the desired value after all transient behavior has died down, and the system is fully stabilized.</p>
+
+<p><img src="/assets/ctrl_ss_error.png" alt="Steady State Error" /></p>
+
+<p>In general, decreasing P and increasing D will lower the amount of overshoot you have. Increasing the physical mass or increasing the friction of the system can also do the same thing.</p>
+
+<p>In general, increasing P and increasing I will decrease the amount of steady state error you have. Decreasing the mass of the system or decreasing the friction will allow I and P to do their jobs more effectively.</p>
+
+<h3 id="tune-but-dont-discount-mechanical-changes">Tune, but Don’t Discount Mechanical Changes</h3>
+
+<p>Note that if you have multiple “problems” with your tune system, you may have some conflicting requirements. For example, if your overshoot AND your steady state error are both too big, you’ll have a hard time adjusting P (as changing it makes one issue better, while making the issue worse.)</p>
+
+<p>It’s important to try to get your PID gains dialed in as much as you can, but also keep in mind that <em>some systems are really hard to control</em>. You may hit a point where you can’t get it any better by adjusting gains alone, and need to think more creatively. Some of these “more creative” changes include:</p>
+
+<ol>
+  <li>Adjusting the mass of the system (adding or removing weight from the actuated mechanism)</li>
+  <li>Adjusting the friction of the system (using grease or dashpots)</li>
+  <li>Changing gearbox ratios</li>
+  <li>Adding motors to the system</li>
+  <li>Adding springs or counterweights at strategic locations to add additional force</li>
+  <li>Increasing the quality of the PIDF controller system (ie, move from RIO-implemented controller (~100Hz) to onboard Talon SRX or Victor SPX (~1000Hz) controllers.)</li>
+</ol>
+
+<p>The “rule of thumb” I tend to tell my team - <em>If it’s impossible to control manually, with a <a href="https://www.andymark.com/products/thrifty-throttle-3">thrifty throttle</a> and a human watching it, it will be <strong>very</strong> hard to control with software</em>. It’s definitely not an axiom, but gives mechanical and electrical teams a “stick in the mud” to understand if the thing they’ve created is anywhere in the realm of controllable.</p>
+
+<h3 id="choosing-criteria">Choosing Criteria</h3>
+
+<p>How does one pick from amongst these criteria for their specific situation? Unfortunately, it just depends. Thankfully, it’s often intuitive, or can be derived from robot design discussions. How accurate does manipulator XYZ have to be? How quickly does it need to get into position for us to meet our cycle times (and no, “fast as possible” isn’t a detailed enough answer :D ).</p>
+
+<p>In general, you’ll want small rise &amp; settling times, minimal overshoot and no steady-state error. However, as you have seen (or will see), it’s hard to get all of these at once. Usually, achieving one will be more important than the others.</p>
+
+<p>For example, consider if you were controlling the temperature in your house. The temperature is currently 50 degrees F (brrrrr!!!), and you want it to be 70 degrees F. You want the temperature to get to 70 quickly, but not so quickly that it overshoots the 70 degree mark, and shoots up to 100 degrees before settling back down. That would be a waste of energy, and a longer time of you being uncomfortable. An underdamped controller is generally desired in cases like this, with enough I gain to cancel out steady-state errors.</p>
+
+<p>In contrast, take our shooter wheel example from last time. Generally, you’ll want to spin the wheel up to a stable launch speed as quickly as possible (assuming this is a component in your robot’s overall cycle time). This means aggressive P - a bit of overshoot isn’t horrible, nor is a few RPM of steady state error.</p>
+
+<p>Finally, the example we’re about to see - consider if you are controlling the angular position of an arm - accurate positioning of the end of the arm (within fractions of a degree) is probably desired. Speed is important, but not at the cost of getting the gamepiece at the wrong place. Overshoot may also be a concern, as the arm has physical limits of travel - too much overshoot may be mechanically damaging.</p>
+
+<p>In conclusion, the requirements for what constitutes a “good” PID tune are derived from your requirements for what makes a good robot. Which, of course, depends on your robot, and the year’s game. It all just depends.</p>
+
+<h3 id="what-in-general-means">What “In General” Means</h3>
+
+<p>One final note (I promise). I’ve used the weasel-word phrase “in general” a lot. Here, I mean it to imply “for most of the FRC-encountered situations”.</p>
+
+<p>Software bugs, weird mechanisms, measurement delay, very-sensitive systems, and a whole host of other things can make the assumptions laid out here invalid. For that reason, it’s very hard for me to ever say “Always”.</p>
+
+<p>Keep this in mind while tuning. These things <em>do</em> work. They’re out in the world everywhere. If you’re struggling to make it work in your situation, there <em>has to be a reason why</em>. Maybe it’s because you have a software bug. Maybe it’s because the physical manipulator is very exotic.</p>
+
+<p>The best I can tell you - approach the problem systematically.</p>
+
+<p>Verify the assumptions of your software - have proof it operates as you expect.</p>
+
+<p>Compare your design to those used successfully by other teams. Where are they the same, and where are they different? Do those differences matter? Do the math to prove it!</p>
+
+<p>Finally, pull in subject-matter experts - mentors, industry professionals, more experienced students, <a href="https://www.chiefdelphi.com">chiefdelphi</a>, or even myself (see the email at the bottom).</p>
+
+<h2 id="arm-system-model">Arm System Model</h2>
+
+<p>On to the actual arm!</p>
+
+<h4 id="basic-description">Basic Description</h4>
+
+<p>Ya ever heard of <a href="https://www.food.com/recipe/chicken-on-a-stick-177166#activity-feed">chicken on a stick?</a> Well, we’re gonna model the arm as <em>mass on a stick</em>. Just some weight (from a claw or intake motors or similar), suspended on the end of a long, thin rod (which weighs relatively little).</p>
+
+<p>The arm is constrained to rotate through just one plane, going up and down powered by a motor at the “shoulder”. The motor is of course run through a (fairly-high reduction) gearbox. When you run the motor in one direction, the arm goes up. In the other direction, it goes down.</p>
+
+<p>Additionally, our arm will be <em>vertical</em> - the plane it travels within is parallel to the direction gravity pulls on the arm. This means that when the arm is stretched “straight out” in front of the robot, gravity will be pulling it down toward the ground.</p>
+
+<h4 id="mathematical-description">Mathematical Description</h4>
+
+<p>Since this is a bit abbreviated, I won’t go through the full derivation of this system. However, it’s not too bad to build up an equation from the bits and pieces we already have.</p>
+
+<p>To do so, we’ll use the <em>shoulder joint</em> of the arm as our origin and reference point. All torques, speeds, accelerations, and angular positions will be measured <em>about</em> this point. Additionally, we’ll use kinda-standard angle notation, such that <script type="math/tex">0^\circ</script> is pointed “straight out in front” of the robot, <script type="math/tex">90^\circ</script> is straight up in the air, and <script type="math/tex">-90^\circ</script> is pointed at the ground.</p>
+
+<p>Overall, the acceleration of the arm is determined from the following forces acting on it:</p>
+
+<ol>
+  <li><script type="math/tex">T_{m}</script> - The <em>motor</em> (via a gearbox), which in turn in impacted by an <em>applied voltage</em> which we can control as we please.</li>
+  <li><script type="math/tex">T_{f}</script> - Friction (works against rotational motion of the arm)</li>
+  <li><script type="math/tex">T_{g}</script> - Gravity (pulls the arm toward the <script type="math/tex">-90^\circ</script> point)</li>
+</ol>
+
+<p>Using Newton’s second law for rotational forces, we can assemble our basic equation:</p>
+
+<script type="math/tex; mode=display">T_{m}(t) + T_{f}(t) + T_{g}(t) = I \alpha(t)</script>
+
+<p>And expanding each term, we arrive at the monster:</p>
+
+<script type="math/tex; mode=display">\frac{N_{out}}{N_{in}} \frac{K_T}{R} \left( V_{in}(t) - \frac{N_{in}}{N_{out}} K_{V} \omega(t) \right) - K_{f} \omega(t) - m g \cos(\theta(t)) = m r^{2} \alpha(t)</script>
+
+<p>Where:</p>
+<ul>
+  <li><script type="math/tex">\frac{N_{out}}{N_{in}}</script> is the gearbox ratio</li>
+  <li><script type="math/tex">K_T</script> is the motor torque constant</li>
+  <li><script type="math/tex">V_{in}(t)</script> is the motor input voltage</li>
+  <li><script type="math/tex">K_V</script> is the motor voltage constant</li>
+  <li><script type="math/tex">\theta(t)</script>, <script type="math/tex">\omega(t)</script>, and <script type="math/tex">\alpha(t)</script> are the angular position, speed, and acceleration of the shoulder joint shaft.</li>
+  <li><script type="math/tex">K_{f}</script> is the effective kinetic rotational friction constant of the system</li>
+  <li><script type="math/tex">m</script> is the mass of the end-effector on the tip of the arm</li>
+  <li><script type="math/tex">g</script> is the gravitational constant (<script type="math/tex">9.81 m/s^2</script>)</li>
+  <li><script type="math/tex">r</script> is the length of the arm</li>
+</ul>
+
+<p>Notice the minus sign on the frictional term is chosen to ensure the frictional torque <em>opposes</em> motion, and the gravitational torque always <em>pushes toward <script type="math/tex">-90^\circ</script></em>.</p>
+
+<p>Re-arranging to group terms, pulling constants into nice buckets, substituting continuous time <script type="math/tex">t</script> for discrete samples <script type="math/tex">n</script>:</p>
+
+<script type="math/tex; mode=display">\alpha[n] = C_1 V_{in}[n] - C_2 \omega[n] - C_3 cos(\theta[n])</script>
+
+<p>With</p>
+
+<script type="math/tex; mode=display">C_1 = \frac{N_{out} K_T}{mr^2N_{in}R}</script>
+
+<script type="math/tex; mode=display">C_2 = \frac{K_T K_V}{mr^2R} + \frac{K_f}{mr^2}</script>
+
+<script type="math/tex; mode=display">C_3 = \frac{g}{r^2}</script>
+
+<p>Since acceleration is the derivative of velocity, we can approximate <script type="math/tex">\alpha[n]</script> in terms of <script type="math/tex">\omega[n]</script>:</p>
+
+<script type="math/tex; mode=display">\alpha[n] = \frac{\omega[n] - \omega[n-1]}{T_s}</script>
+
+<p>And similarly, since velocity is the derivative of position, we can approximate <script type="math/tex">\omega[n]</script> in terms of <script type="math/tex">\theta[n]</script></p>
+
+<script type="math/tex; mode=display">\omega[n] = \frac{\theta[n] - \theta[n-1]}{T_s}</script>
+
+<p>Math sticklers, avert your eyes for a paragraph.</p>
+
+<p>If you were to substitute these into our equation, you’d end up with an equation that <em>stinks</em> to solve symbolically for <script type="math/tex">\theta[n]</script>, because <script type="math/tex">\theta[n]</script> appears both inside and outside a <script type="math/tex">\cos()</script> function. Maybe there’s a good way to solve it. I don’t know offhand. What I do know is I can cheat a bit and use some one-sample-delayed assumptions that, for sufficiently small <script type="math/tex">T_s</script>, make our equation much more workable. There’s enough sensor delay in our feedback (relative to <script type="math/tex">T_s</script>) that I honestly don’t think it will mess up the solution too much. I think. Let’s just go with it, Wild West style. Shoot math from the hip. That’s how we roll. I guess. Remember, all models are wrong.</p>
+
+<p>Ok, math people, come back, and don’t try to check my work.</p>
+
+<p>The final equation for position, in terms of things we know already or can control, is:</p>
+
+<script type="math/tex; mode=display">\theta[n] = \frac{T_s^2 C_1 V_{in}[n] - T_s^2 C_3 \cos(\theta[n-1]) + \theta[n-1]\left( T_s C_2 + 2 \right) - \theta[n-2]}{T_s C_2 + 1}</script>
+
+<p>If that doesn’t make my eyes ooze out of their sockets, I don’t know what will.</p>
+
+<h2 id="step-response">Step Response</h2>
+
+<p>We’re definitely going to want to play around with this guy to get some intuition for how it works. We’ve got another sidebar with our system behavior in it.</p>
+
+<p><input value="Open that sidebar now!" type="button" onclick="openNav()" /></p>
+
+<p>Since that equation is ever so intuitive, let’s see what happens when we put our arm at horizontal, then let the system rip with some constant voltage applied.</p>
+
+<div class="slidecontainer">
+    Voltage Applied:
+    <input type="range" min="0" max="1200" value="100" class="slider" id="voltageSlider" />
+    <div id="voltsDisplay"></div>
+</div>
+<p><br /></p>
+
+<p>Start by moving this slider to zero volts - no motor command at all. You should notice the arm fall down to the <script type="math/tex">-90^\circ</script> position and stay there. It swings back and forth a bit till friction stops it.</p>
+
+<p>This should totally make sense - in this configuration, the arm is like a pendulum. Pendulums oscillate due to the pull of gravity.</p>
+
+<p>Try bumping up the voltage by a volt or two. You should also see something logical - the motor causes the arm to settle out at some position “higher up” than before, as the motor fights gravity.</p>
+
+<p>Eventually if you give enough voltage, your arm can swing all the way around in a circle. Wheeee! This is what, in my business, we call <em>unstable</em>.</p>
+
+<p>Simply applying a constant voltage doesn’t work all that well at getting the arm to a desired position. Clearly, for any position, our controller will have to find that nice happy voltage at which the arm maintains the proper position. It may also have to adjust the voltage a bit higher at first to get it to the setpoint.</p>
+
+<h2 id="controller-setup">Controller Setup</h2>
+
+<p>We’re gonna cut straight to using PID this time. But no F. F isn’t exactly useful, or not as we used it while doing the <a href="/blog_posts/2019/10/19/tuning_pid.html">shooter wheel exercises</a>. The motor command required isn’t exactly proportional to the angle (think, for example, 0 degrees - definitely more than zero motor command required to keep the arm there). We’ll wrap back to this later, but for now we’ll skip F.</p>
+
+<h3 id="first-pass-at-tuning">First Pass at Tuning</h3>
+
+<p>Just as before, use the same doubling/halving technique to get close, then tweak once close.</p>
+
+<p>Start by tuning P, just to where oscillations <em>around the setpoint</em> start to happen.</p>
+
+<p>First do the big adjustments:
+<br />
+<input value="Double P" type="button" onclick="adjustP(2.0)" />
+<input value="Half P" type="button" onclick="adjustP(0.5)" />
+<br />
+Then do smaller tweaks when you get closer:
+<br />
+<input value="Bump Up P" type="button" onclick="adjustP(1.05)" />
+<input value="Bump Down P" type="button" onclick="adjustP(0.95)" />
+<br />
+Or, if you get completely lost, start over:
+<br />
+<input value="Zero-out P" type="button" onclick="adjustP(0)" />
+<br /></p>
+
+<p><em>Hint: 65.0 is a good value for P</em></p>
+
+<p>Then tune D to get rid of the oscillations:</p>
+
+<p>Big adjustments:
+<br />
+<input value="Double D" type="button" onclick="adjustD(2.0)" />
+<input value="Half D" type="button" onclick="adjustD(0.5)" />
+<br />
+Small Tweaks:
+<br />
+<input value="Bump Up D" type="button" onclick="adjustD(1.05)" />
+<input value="Bump Down D" type="button" onclick="adjustD(0.95)" />
+<br />
+Start Over:
+<br />
+<input value="Zero-out D" type="button" onclick="adjustD(0)" />
+<br /></p>
+
+<p><em>Hint: 6.87 is a good value for D</em></p>
+
+<p>Finally, you’ll notice we do have some steady state error. Tune I to get rid of that:</p>
+
+<p>Big adjustments:
+<br />
+<input value="Double I" type="button" onclick="adjustI(2.0)" />
+<input value="Half I" type="button" onclick="adjustI(0.5)" />
+<br />
+Small Tweaks:
+<br />
+<input value="Bump Up I" type="button" onclick="adjustI(1.05)" />
+<input value="Bump Down I" type="button" onclick="adjustI(0.95)" />
+<br />
+Start Over:
+<br />
+<input value="Zero-out I" type="button" onclick="adjustI(0)" />
+<br /></p>
+
+<p><em>Hint: 13.1 is a good value for I</em></p>
+
+<h3 id="varying-the-setpoint">Varying the Setpoint</h3>
+
+<p>As before, we’ll want to vary the setpoint to ensure our controller can achieve a range of outputs equally well.</p>
+
+<div class="slidecontainer">
+    Setpoint:
+    <input type="range" min="-180" max="180" value="-45" class="slider" id="setpointSlider" />
+    <br />
+</div>
+<p><br /></p>
+
+<p>As you move the setpoint around, even with well-chosen PID gains, you’ll notice the <em>overshoot</em> and oscillation vary quite a bit, depending on the setpoint. More simply, the gains chosen do not work <em>equally</em> well across all setpoints.</p>
+
+<p>This should be expected. Our system is non-linear (due to the presence of the <script type="math/tex">\cos(\theta[n-1])</script> term), but the PID algorithm is fundamentally designed to work around <em>linear</em> systems. It can get close, but it’s honestly not the best answer in this case.</p>
+
+<p>What to do? One option is to pick the point at which you want to hold the arm, and keep it there. You pick PID gains that work well for <script type="math/tex">\theta_{des}</script>, and ignore other values. Especially if your arm has a very limited range of motion, or always goes between the same two points, this isn’t a bad option at all.</p>
+
+<p>Another method is to add a (slightly) complex feed-forward term into our PID controller to <em>compensate</em> for the nonlinearity. This is what we will attempt to do now.</p>
+
+<h3 id="removing-non-linearity">Removing Non-Linearity</h3>
+
+<p>Since we know our system, we can use a <em>more complex</em> F term to remove the nonlinearity. We get clever to eliminate gravity.</p>
+
+<p>The key fact: Gravity is proportional to <script type="math/tex">cos(\theta_{act}(t))</script>. So, we will make an F term which is also proportional to <script type="math/tex">cos(\theta_{act}(t))</script>. When properly tuned, we will effectively cancel-out the effects of gravity on the system.</p>
+
+<p>We will modify our PID equation to add the extra term:</p>
+
+<script type="math/tex; mode=display">v_{PID}(t) = K_{P} \theta_{err}(t) + K_{I} \int_{x=0}^{x=t}\theta_{err}(x)dx + K_{D} \frac{d\theta_{err}}{dt} + K_{F} \cos(\theta_{act}(t))</script>
+
+<p>As a quick note on software - this technique is usually referred to as “arbitrary feed-forward”, and is supported by both the Talon SRX and Spark MAX speed controllers.</p>
+
+<h3 id="re-tuning">Re-tuning</h3>
+
+<p>Need to start again, because all our gains no longer should be accounting for gravity.</p>
+
+<p><input value="Reset Gains" type="button" onclick="resetPIDF()" /></p>
+
+<p>Now, we’ll start tuning with F.</p>
+
+<p>F can be calculated as the voltage required to hold the arm level (easy to empirically determine on a robot).</p>
+
+<p>Since our arm starts at 0 degrees anyway (at least in this simulation), you’ll want to just keep bumping F up until the arm <em>stays</em> at zero degrees, even with all feedback (P, I, D) gains at zero. Note that on this system, F gets <em>really</em> sensitive around this point - the bump ups and downs will be quite small.</p>
+
+<p>Again, the goal is to start the arm at 0 degrees, and tweak F until the arm <em>holds</em> its position <em>at zero degrees</em> (not the setpoint).</p>
+
+<p>Use the double/half/tweak methodology first.
+<br />
+<input value="Double F" type="button" onclick="adjustF(2.0)" />
+<input value="Half F" type="button" onclick="adjustF(0.5)" />
+<br />
+Then do smaller tweaks when you get closer. This will take a lot of clicking.
+<br />
+<input value="Bump Up F" type="button" onclick="adjustF(1.005)" />
+<input value="Bump Down F" type="button" onclick="adjustF(0.995)" />
+<br />
+Or, if you get completely lost, start over:
+<br />
+<input value="Zero-out F" type="button" onclick="adjustF(0)" />
+<br /></p>
+
+<p><em>Hint: 5.91 is a good value for F</em></p>
+
+<p>Next we’ll move back to tuning P, again just to where oscillations start to happen. As we move P away from zero, the arm will <em>now</em> start to move toward the setpoint.</p>
+
+<p>First do the big adjustments:
+<br />
+<input value="Double P" type="button" onclick="adjustP(2.0)" />
+<input value="Half P" type="button" onclick="adjustP(0.5)" />
+<br />
+Then do smaller tweaks when you get closer:
+<br />
+<input value="Bump Up P" type="button" onclick="adjustP(1.05)" />
+<input value="Bump Down P" type="button" onclick="adjustP(0.95)" />
+<br />
+Or, if you get completely lost, start over:
+<br />
+<input value="Zero-out P" type="button" onclick="adjustP(0)" />
+<br /></p>
+
+<p><em>Hint: 32.76 is a good value for P</em></p>
+
+<p>Then tune D to get rid of the oscillations:</p>
+
+<p>Big adjustments:
+<br />
+<input value="Double D" type="button" onclick="adjustD(2.0)" />
+<input value="Half D" type="button" onclick="adjustD(0.5)" />
+<br />
+Small Tweaks:
+<br />
+<input value="Bump Up D" type="button" onclick="adjustD(1.05)" />
+<input value="Bump Down D" type="button" onclick="adjustD(0.95)" />
+<br />
+Start Over:
+<br />
+<input value="Zero-out D" type="button" onclick="adjustD(0)" />
+<br /></p>
+
+<p><em>Hint: 3.27 is a good value for D</em></p>
+
+<p>Finally, there may be a bit of steady state error left. If so, tune I to get rid of that:</p>
+
+<p>Big adjustments:
+<br />
+<input value="Double I" type="button" onclick="adjustI(2.0)" />
+<input value="Half I" type="button" onclick="adjustI(0.5)" />
+<br />
+Small Tweaks:
+<br />
+<input value="Bump Up I" type="button" onclick="adjustI(1.05)" />
+<input value="Bump Down I" type="button" onclick="adjustI(0.95)" />
+<br />
+Start Over:
+<br />
+<input value="Zero-out I" type="button" onclick="adjustI(0)" />
+<br /></p>
+
+<p><em>Hint: 0.0 is a good value for I, at least as I tuned it.</em></p>
+
+<p>And, again, try varying the setpoint across the range of angles desired:</p>
+
+<div class="slidecontainer">
+    Setpoint:
+    <input type="range" min="-180" max="180" value="-45" class="slider" id="setpointSlider2" />
+    <br />
+</div>
+<p><br /></p>
+
+<p>This time, you should observe <em>much less variance</em> in overshoot and convergence time across the range of possible setpoints. In general, your arm should be working much much better now.</p>
+
+<h2 id="we-just-did-plant-model-inversion">We Just Did Plant Model Inversion</h2>
+
+<p>It should be noted that our “arbitrary feed forward” term we used here is a simplified form of <a href="https://faculty.washington.edu/devasia/Talks/Inversion_Theory.pdf">plant model inversion</a>. It’s actually the same as the shooter wheel’s feed forward as well for steady state. The basic idea behind all of it is that if you can get a mathematical description of how your plant model works, you can inject the <em>inverse</em> of that knowledge into your controller to help account for the system dynamics that a plain old PID controller doesn’t need.</p>
+
+<p>With knowledge of these plant dynamics, the only thing left for the PID closed-loop portion to do is compensate for transient, external loads, or any behavior not accounted for in the inverted plant model. This is nice for two reasons.</p>
+
+<p>For one, it means that your plant model doesn’t have to be perfect. In fact, <em>anything</em> (even a constant value) is better than what you have without it (which is literally an assumption that the plant does nothing).</p>
+
+<p>For two, it means the PID gains don’t have to be as big as before, having less behavior to “fight” against. This implies they can be more aggressive toward getting your manipulator to the setpoint angle.</p>
+
+<p>But - all these advantages can only be achieved if you can build up a reasonable mathematical model of how your <em>real world</em> system works.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully this gives a good demonstration of how to tune PID in another common situation! Play around with these things and see what you can see. The advantage of these online simulators is the instantaneous feedback - you can clearly see what each adjustment is doing in nearly-real time. Such a luxury is harder to come by on a physical system. Plus, astable calibrations (like ones that cause the robot arm to start flying in circles) can be damaging. For this reason, doing the learning in a simulated environment is definitely a good idea. Hone your skills of tuning here, and then take them to the real world robot later.</p>
+
+<script src="/assets/js/pidArm.js"></script>
+
+
+  </div><a class="u-url" href="/blog_posts/2019/10/26/controls_supp_arm.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>
