@@ -198,6 +198,8 @@ My advice to the beginner? Start with PID, see how far you can get. Once you've 
 
 That's all for now! Go tune your controllers!
 
+EDIT: One additional thing - we've got another interactive post! [Check out how to tune another common class of system found in FRC](/blog_posts/2019/10/26/controls_supp_arm.html)
+
 
 <script src="/assets/js/pidTune.js"></script>
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Control Theory - Supplemental - Vertical Arm"
-date:   2019-10-20 9:30:00 -0500
+date:   2019-10-26 9:30:00 -0500
 categories: blog_posts
 ---
 

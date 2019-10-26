@@ -345,7 +345,7 @@ Similarly, the PID (especially the D term) are not good at handling noise in the
 
 ## Conclusion
 
-Sweet! We've covered the basics of what a controller is. In our 3rd and final installment, we'll discuss how to tune a PID controller, and where to look for "next steps".
+Sweet! We've covered the basics of what a controller is. In our 3rd and final installment, we'll discuss how to tune a PID controller, and where to look for "next steps". [Check out the interactive post here!](/blog_posts/2019/10/19/tuning_pid.html)
 
 
 
