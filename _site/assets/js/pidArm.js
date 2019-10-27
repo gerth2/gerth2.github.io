@@ -164,19 +164,21 @@ function degToRad(deg){
 var mainPlots = new DualPlot('#plot5a', '#plot5b')
 function updatePlots(){
     mainPlots.updatePlot(armPosArray, inputVoltageArray)
+
+    document.getElementById("gains").innerHTML = "<b><table><tr>" + 
+    "<td>P="+PGain.toFixed(4) + " <br></td>" +
+    "<td>I="+IGain.toFixed(4) + " <br></td>" +
+    "<td>D="+DGain.toFixed(4) + " <br></td></tr><tr>" +
+    "<td>F="+FGain.toFixed(4) + " <br></td>" +
+    "<td>Setpoint="+setpoint.toFixed(0) + " deg </td>" +
+    "</b></tr></table>";
+
     if(runningClosedLoop){
-        document.getElementById("gains").innerHTML = "<b>" + 
-        "F="+FGain.toFixed(4) + " <br>" +
-        "P="+PGain.toFixed(4) + " <br>" +
-        "I="+IGain.toFixed(4) + " <br>" +
-        "D="+DGain.toFixed(4) + " <br>" +
-        "Setpoint="+setpoint.toFixed(0) + " deg" +
-        "</b>";
+        document.getElementById("ctrlModeSelect_open").checked = false;
+        document.getElementById("ctrlModeSelect_closed").checked = true;
     } else {
-        document.getElementById("gains").innerHTML = "<b>" + 
-        "Open Loop (Constant Voltage) <br>" +
-        "</b>";
-    }
+        document.getElementById("ctrlModeSelect_open").checked = true;
+        document.getElementById("ctrlModeSelect_closed").checked = false;    }
 
     resetAnimationToStart();
     
@@ -504,6 +506,12 @@ function adjustSetpoint2(){
     setpointSlider.value = setpointSlider2.value;
     runClosedLoop();
 }
+
+var ctrlModeSelOpen  = document.getElementById("ctrlModeSelect_open");
+ctrlModeSelOpen.oninput = runConstantVoltage;
+
+var ctrlModeSelClosed  = document.getElementById("ctrlModeSelect_closed");
+ctrlModeSelClosed.oninput = runClosedLoop;
 
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
