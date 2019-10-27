@@ -10,9 +10,15 @@ categories: blog_posts
 <script src="/assets/sidenav/sidenav.js"></script>
 <div id="mySidenav" class="sidenav" onclick="openNav()">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <b>Mode: </b>
+    <input type="radio" name="ctrlModeSelect" id="ctrlModeSelect_open" value="open">Open Loop (Constant Voltage) 
+    <input type="radio" name="ctrlModeSelect" id="ctrlModeSelect_closed" value="closed"> Closed Loop (PID) <br>
     <div id="plots">
         <div id="plot5a"></div>
         <div id="plot5b"></div>
+    </div>
+    <div id="user_interaction" class="gainsDisplay">
+        <div id="gains"></div>
     </div>
     <div id="visualization" style="padding: 20px;">
         <div style="position:relative; width:500px; height:500px">
@@ -24,9 +30,7 @@ categories: blog_posts
         <input value="Pause" type="button" onClick="pauseAnimation()"/>
         <input value="Restart" type="button" onClick="resetAnimationToStart()"/>
     </div>
-    <div id="user_interaction" class="gainsDisplay">
-        <div id="gains"></div>
-        <br>
+    <div id="user_interaction2" class="gainsDisplay">
         <input value="Reset Gains" type="button" onClick="resetPIDF()"/>
     </div>
     <br><br><br><br>
