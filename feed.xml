@@ -1,4 +1,116 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-10-26T15:56:08-04:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Control Theory - Supplemental - Vertical Arm</title><link href="/blog_posts/2019/10/26/controls_supp_arm.html" rel="alternate" type="text/html" title="Control Theory - Supplemental - Vertical Arm" /><published>2019-10-26T10:30:00-04:00</published><updated>2019-10-26T10:30:00-04:00</updated><id>/blog_posts/2019/10/26/controls_supp_arm</id><content type="html" xml:base="/blog_posts/2019/10/26/controls_supp_arm.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-11-01T11:59:41-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">The Asymmetric Loss Function</title><link href="/blog_posts/2019/11/01/asym_loss.html" rel="alternate" type="text/html" title="The Asymmetric Loss Function" /><published>2019-11-01T09:30:00-05:00</published><updated>2019-11-01T09:30:00-05:00</updated><id>/blog_posts/2019/11/01/asym_loss</id><content type="html" xml:base="/blog_posts/2019/11/01/asym_loss.html">&lt;p&gt;&lt;img src=&quot;/assets/made_up_numbers.png&quot; alt=&quot;Made Up Numbers&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Source: &lt;a href=&quot;https://dilbert.com/strip/2008-05-08&quot;&gt;Scott Adams&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;One of my favorite statistics concepts to talk to people about is the &lt;em&gt;asymmetric loss function&lt;/em&gt;. Aside from being a super-fancy sounding term, it provides (what I think) is some remarkably profound guidance on how to think about engineering, and occasionally life in general.&lt;/p&gt;
+
+&lt;p&gt;No formal background in statistics will be required to understand the concepts herein.&lt;/p&gt;
+
+&lt;p&gt;Let’s dive right in.&lt;/p&gt;
+
+&lt;h2 id=&quot;engineering-application&quot;&gt;Engineering Application&lt;/h2&gt;
+
+&lt;h3 id=&quot;the-concept&quot;&gt;The Concept&lt;/h3&gt;
+
+&lt;p&gt;The “asymmetric loss function” refers to a very basic concept:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;If you’re gonna be wrong, choose the best flavor of wrong.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Let’s illustrate this with an example.&lt;/p&gt;
+
+&lt;h3 id=&quot;motivating-example-1&quot;&gt;Motivating Example 1&lt;/h3&gt;
+
+&lt;p&gt;One of the classical ways to illustrate the asymmetric loss function is through an &lt;em&gt;incoming missile detection system&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;problem-statement&quot;&gt;Problem Statement&lt;/h4&gt;
+
+&lt;p&gt;Like it or not, countries can launch missiles at each other. These cause widespread distraction and sadness. Detecting missile launches is a key portion of most national defense strategies, as detection enables countermeasures to be taken to mitigate the impact of a missile attack.&lt;/p&gt;
+
+&lt;p&gt;In general, such a system would have multiple inputs: Air, ground, and space based sensors would monitor the airspace, and provide information about radar &amp;amp; visual observations to a central system. This system would have to &lt;em&gt;interpret&lt;/em&gt; all these inputs and produce a single, boolean output: &lt;em&gt;Missile? or No Missile?&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/missile_detect.png&quot; alt=&quot;missile detection&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The “asymmetric loss function” deals with how we design the contents of the black “?” box. Clearly, it’s not going to be a trivial transformation.&lt;/p&gt;
+
+&lt;p&gt;We’re not going to discuss &lt;em&gt;exactly&lt;/em&gt; how to design the contents of the box, but rather &lt;em&gt;part&lt;/em&gt; of the the &lt;em&gt;philosophy&lt;/em&gt; that the box needs to be designed with.&lt;/p&gt;
+
+&lt;h4 id=&quot;real-world-expectations&quot;&gt;Real-World Expectations&lt;/h4&gt;
+
+&lt;p&gt;As you’ve probably seen from robotics, real-world conditions aren’t exactly ideal.&lt;/p&gt;
+
+&lt;p&gt;Sensors have noise. Sensors can fail. Objects can get in the way of the thing you care about, and screw up your readings. The same reading from a sensor may indicate two completely different things. Sunspots can inject random voltages at random points in your circuitry. Joe Freshman can come around with a hammer and smash your system to smithereens. You have many obstacles to accurate detection. Making a black box which always works will likely be impossible.&lt;/p&gt;
+
+&lt;p&gt;Therefore, you are likely, at some point, to make a wrong guess.&lt;/p&gt;
+
+&lt;p&gt;It’s important to note that there are two &lt;em&gt;flavors&lt;/em&gt; of wrong here.&lt;/p&gt;
+
+&lt;p&gt;On one hand, say there is no missile, but something causes your system to report that there &lt;em&gt;is&lt;/em&gt; in fact a missile. This is called a &lt;em&gt;false positive&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, say there is in fact a missile approaching, but something causes your system not to detect it. This is called a &lt;em&gt;false negative&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;In one handy-dandy chart:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/fp_fn.png&quot; alt=&quot;false negative, false positive&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The point of this (fairly morbid) example: The two flavors of wrong are not equally bad.&lt;/p&gt;
+
+&lt;p&gt;In the case of a false positive, you’ll have to wake someone up to go look at the situation, and maybe launch some countermeasure airplanes or chaff or something. However, within a short time, you’ll likely figure out that there wasn’t any threat to be had, and all will go back to normal. Some money spent, but no one’s permanently harmed.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, if you produce a false negative, you get blown up without ever knowing what hit you. Boom. Dead. Bad.&lt;/p&gt;
+
+&lt;p&gt;Clearly, while designing such a system, you’ll want it to “err on the side of caution” as people usually say. In this case, that means to lean toward “Probably a missile!” whenever your detection is a bit unsure. This will help avoid the very-bad false negatives.&lt;/p&gt;
+
+&lt;h4 id=&quot;boy-who-cried-wolf-effect&quot;&gt;Boy-Who-Cried-Wolf Effect&lt;/h4&gt;
+
+&lt;p&gt;Separately, it’s worthwhile noting that lots of false positives over time will lead people to distrust the system as a whole, and ignore its warnings (even if there &lt;em&gt;actually is&lt;/em&gt; a missile coming in). The same actually applies for false negatives, though for how we’ve constructed our problem statement, you only “get” one false negative before you’re dead.&lt;/p&gt;
+
+&lt;p&gt;When designing systems, it’s important to keep this in mind - the people looking at the output need to be able to trust the output, otherwise the system won’t be useful.&lt;/p&gt;
+
+&lt;h3 id=&quot;motivating-example-2&quot;&gt;Motivating Example 2&lt;/h3&gt;
+
+&lt;p&gt;Let’s look at something a little less morbid: Let’s look at an arm on a robot, which is supposed to deliver a gamepiece to a goal which is on top of a shelf. Something like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/gamepiece_place_good.png&quot; alt=&quot;gamepiece good&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can see that the triangle shovel on the end of the arm is responsible for lifting the heart gamepiece to the goal level. When the gamepiece is just barely high enough, the gamepiece is quickly delivered horizontally to the goal.&lt;/p&gt;
+
+&lt;p&gt;Again though, real world effects come in. Let’s say we end up with an arm that’s slightly too high.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/gamepiece_place_too_high.png&quot; alt=&quot;gamepiece OK&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;In this case, we’re OK still. The arm being too high causes the gamepiece to drop slightly onto the platform. Assuming it can’t roll off and isn’t fragile, we’re still ok. The extra height leads to inaccuracy in placement, and takes longer to move the arm, but overall we still accomplish our goal of delivery.&lt;/p&gt;
+
+&lt;p&gt;However, things get nasty if the arm is too low.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/gamepiece_place_too_low.png&quot; alt=&quot;gamepiece Bad&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It fails to deliver gamepiece to the goal. Additionally, the arm itself crashes into the support structure, causing damage to the robot.&lt;/p&gt;
+
+&lt;p&gt;Obviously, if we’re gonna be wrong, we want to be slightly too high, rather than slightly too low. If we were to create a mathematical function to describe this, and plot it, we might produce a graph that looks like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/loss_function.png&quot; alt=&quot;Loss function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;All we’re doing here is making up some numbers to describe the idea that “too high is bad, but too low is worse”. You could definitely assign some real numbers, in terms of the monetary cost of destroying your robot, or the emotional cost of seeing your team lose a match…. maybe… It’s usually pretty hard to make it really accurate. But accurate isn’t the point here, it’s more-so about massaging your engineering knowledge about “what flavor of wrong is least-evil” into a mathematical function.&lt;/p&gt;
+
+&lt;p&gt;When you construct this function, you have created what is formally known as a &lt;em&gt;loss function&lt;/em&gt; - any mathematical function that describes “badness” as a function of &lt;em&gt;error&lt;/em&gt;. Indeed, the one that we are looking at right now is &lt;em&gt;asymmetrical&lt;/em&gt; because it doesn’t look the same on both sides of the Y (“badness”) axis. This visual asymmetry in the graph is what communicates “some flavor of wrong is better than another flavor of wrong”.&lt;/p&gt;
+
+&lt;p&gt;Why create this function, especially if you’re just making up numbers? Well, maybe you don’t always have to. It is useful to be able to draw the picture to talk about your goals while designing the robot. Knowing and &lt;em&gt;understanding&lt;/em&gt; this picture is what can help inform how you tune your PID algorithm controlling the arm position (In this case, you may want to purposefully overshoot the goal slightly). Or maybe how you do your tolerances in your mechanical design (ie, skew-up is better than skew-down). It helps you know where redundant sensors might be needed, versus where they’re not as critical to have.&lt;/p&gt;
+
+&lt;p&gt;Also noteworthy - many modern control theory topics discuss the idea of an &lt;em&gt;optimal&lt;/em&gt; controller. Here, the definition of &lt;em&gt;optimal&lt;/em&gt; will have to vary use-case to use-case. But mathematically, all will assume that you can describe this “loss” or “cost” function to inform the controller what things are good, versus what things are ok, verses what things are &lt;em&gt;really&lt;/em&gt; bad.&lt;/p&gt;
+
+&lt;h2 id=&quot;life-philosophy&quot;&gt;Life Philosophy&lt;/h2&gt;
+
+&lt;p&gt;I also think these topics apply to life in general. Maybe it’s not super profound, but worthwhile to consider for a bit. Some time, in your life, you will be wrong. That’s ok. However, if you want to mitigate the bad effects of being wrong, choose the cautious path which results in less badness.&lt;/p&gt;
+
+&lt;p&gt;Hedge your bets. Clearly state your assumptions. Ask for others to help verify your work. When you are wrong, doing things like this help you achieve a “better flavor” of wrong.&lt;/p&gt;
+
+&lt;p&gt;It’s almost always better to be able to say “Yes I was wrong, but here was the full thought process I went through, and all the work I did to try to not be wrong”. Far better than “Well, I’m wrong, and I didn’t lift a finger to even attempt to be right”.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Again, analyzing the loss function for various parts of your robot won’t exactly tell you how to design it - it will just give you insights into which designs are better or worse. Just one more tool for your design technique toolbox, hopefully to help discover issues in advance, and design around them.&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Control Theory - Supplemental - Vertical Arm</title><link href="/blog_posts/2019/10/26/controls_supp_arm.html" rel="alternate" type="text/html" title="Control Theory - Supplemental - Vertical Arm" /><published>2019-10-26T09:30:00-05:00</published><updated>2019-10-26T09:30:00-05:00</updated><id>/blog_posts/2019/10/26/controls_supp_arm</id><content type="html" xml:base="/blog_posts/2019/10/26/controls_supp_arm.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
 
 &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/sidenav/sidenav.css&quot; /&gt;
 
@@ -6,9 +118,15 @@
 
 &lt;div id=&quot;mySidenav&quot; class=&quot;sidenav&quot; onclick=&quot;openNav()&quot;&gt;
     &lt;a href=&quot;javascript:void(0)&quot; class=&quot;closebtn&quot; onclick=&quot;closeNav()&quot;&gt;&amp;times;&lt;/a&gt;
+    &lt;b&gt;Mode: &lt;/b&gt;
+    &lt;input type=&quot;radio&quot; name=&quot;ctrlModeSelect&quot; id=&quot;ctrlModeSelect_open&quot; value=&quot;open&quot; /&gt;Open Loop (Constant Voltage) 
+    &lt;input type=&quot;radio&quot; name=&quot;ctrlModeSelect&quot; id=&quot;ctrlModeSelect_closed&quot; value=&quot;closed&quot; /&gt; Closed Loop (PID) &lt;br /&gt;
     &lt;div id=&quot;plots&quot;&gt;
         &lt;div id=&quot;plot5a&quot;&gt;&lt;/div&gt;
         &lt;div id=&quot;plot5b&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div id=&quot;user_interaction&quot; class=&quot;gainsDisplay&quot;&gt;
+        &lt;div id=&quot;gains&quot;&gt;&lt;/div&gt;
     &lt;/div&gt;
     &lt;div id=&quot;visualization&quot; style=&quot;padding: 20px;&quot;&gt;
         &lt;div style=&quot;position:relative; width:500px; height:500px&quot;&gt;
@@ -20,9 +138,7 @@
         &lt;input value=&quot;Pause&quot; type=&quot;button&quot; onclick=&quot;pauseAnimation()&quot; /&gt;
         &lt;input value=&quot;Restart&quot; type=&quot;button&quot; onclick=&quot;resetAnimationToStart()&quot; /&gt;
     &lt;/div&gt;
-    &lt;div id=&quot;user_interaction&quot; class=&quot;gainsDisplay&quot;&gt;
-        &lt;div id=&quot;gains&quot;&gt;&lt;/div&gt;
-        &lt;br /&gt;
+    &lt;div id=&quot;user_interaction2&quot; class=&quot;gainsDisplay&quot;&gt;
         &lt;input value=&quot;Reset Gains&quot; type=&quot;button&quot; onclick=&quot;resetPIDF()&quot; /&gt;
     &lt;/div&gt;
     &lt;br /&gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;
@@ -491,7 +607,7 @@ Start Over:
 
 &lt;p&gt;Hopefully this gives a good demonstration of how to tune PID in another common situation! Play around with these things and see what you can see. The advantage of these online simulators is the instantaneous feedback - you can clearly see what each adjustment is doing in nearly-real time. Such a luxury is harder to come by on a physical system. Plus, astable calibrations (like ones that cause the robot arm to start flying in circles) can be damaging. For this reason, doing the learning in a simulated environment is definitely a good idea. Hone your skills of tuning here, and then take them to the real world robot later.&lt;/p&gt;
 
-&lt;script src=&quot;/assets/js/pidArm.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times; Animation Control:</summary></entry><entry><title type="html">Control Theory - Tuning PID</title><link href="/blog_posts/2019/10/19/tuning_pid.html" rel="alternate" type="text/html" title="Control Theory - Tuning PID" /><published>2019-10-19T10:30:00-04:00</published><updated>2019-10-19T10:30:00-04:00</updated><id>/blog_posts/2019/10/19/tuning_pid</id><content type="html" xml:base="/blog_posts/2019/10/19/tuning_pid.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
+&lt;script src=&quot;/assets/js/pidArm.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times; Mode: Open Loop (Constant Voltage) Closed Loop (PID) Animation Control:</summary></entry><entry><title type="html">Control Theory - Tuning PID</title><link href="/blog_posts/2019/10/19/tuning_pid.html" rel="alternate" type="text/html" title="Control Theory - Tuning PID" /><published>2019-10-19T09:30:00-05:00</published><updated>2019-10-19T09:30:00-05:00</updated><id>/blog_posts/2019/10/19/tuning_pid</id><content type="html" xml:base="/blog_posts/2019/10/19/tuning_pid.html">&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot; /&gt;
 
 &lt;link rel=&quot;stylesheet&quot; href=&quot;/assets/sidenav/sidenav.css&quot; /&gt;
 
@@ -689,7 +805,7 @@ Start Over:
 
 &lt;p&gt;EDIT: One additional thing - we’ve got another interactive post! &lt;a href=&quot;/blog_posts/2019/10/26/controls_supp_arm.html&quot;&gt;Check out how to tune another common class of system found in FRC&lt;/a&gt;&lt;/p&gt;
 
-&lt;script src=&quot;/assets/js/pidTune.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times;</summary></entry><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T10:30:00-04:00</published><updated>2019-10-07T10:30:00-04:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;script src=&quot;/assets/js/pidTune.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">&amp;times;</summary></entry><entry><title type="html">Control Theory - PID &amp;amp; Controller Design</title><link href="/blog_posts/2019/10/07/pid_ctrl_design.html" rel="alternate" type="text/html" title="Control Theory - PID &amp; Controller Design" /><published>2019-10-07T09:30:00-05:00</published><updated>2019-10-07T09:30:00-05:00</updated><id>/blog_posts/2019/10/07/pid_ctrl_design</id><content type="html" xml:base="/blog_posts/2019/10/07/pid_ctrl_design.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;Welcome to post 3 in our series on controls engineering. In this post, we’re going to explore the behavior of the motor model we’ve built up, try to create an intuition for how it behaves. We’ll establish a couple criteria for what we want it to do, and lead into the application of a classic PID controller.&lt;/p&gt;
 
@@ -1040,7 +1156,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;p&gt;Sweet! We’ve covered the basics of what a controller is. In our 3rd and final installment, we’ll discuss how to tune a PID controller, and where to look for “next steps”. &lt;a href=&quot;/blog_posts/2019/10/19/tuning_pid.html&quot;&gt;Check out the interactive post here!&lt;/a&gt;&lt;/p&gt;
 
-&lt;script src=&quot;/assets/js/pidSim.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T10:30:00-04:00</published><updated>2019-09-20T10:30:00-04:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;script src=&quot;/assets/js/pidSim.js&quot;&gt;&lt;/script&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Control Theory - Mathematical Models of the World</title><link href="/blog_posts/2019/09/20/math_models.html" rel="alternate" type="text/html" title="Control Theory - Mathematical Models of the World " /><published>2019-09-20T09:30:00-05:00</published><updated>2019-09-20T09:30:00-05:00</updated><id>/blog_posts/2019/09/20/math_models</id><content type="html" xml:base="/blog_posts/2019/09/20/math_models.html">&lt;p&gt;&lt;em&gt;All models are wrong, but some are useful. - &lt;a href=&quot;https://en.wikipedia.org/wiki/George_E._P._Box&quot;&gt;George Box&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
@@ -1522,7 +1638,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Through a circuit breaker, of course. Let’s be safe now. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T10:30:40-04:00</published><updated>2019-09-07T10:30:40-04:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T09:30:40-05:00</published><updated>2019-09-07T09:30:40-05:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;One of the most eye-opening courses I took in college was an &lt;a href=&quot;https://courses.grainger.illinois.edu/ece486&quot;&gt;introduction to control theory course&lt;/a&gt;. The topic was brand new to me. Prior to taking the course, I had never even heard of this concept of “control theory”.&lt;/p&gt;
 
@@ -1727,7 +1843,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Backward, assuming you read from left to right. Just the established convention. A convention which was clearly made by someone who didn’t read Hebrew. Sorry, Hebrew-reading friends. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T10:30:40-04:00</published><updated>2019-09-05T10:30:40-04:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T09:30:40-05:00</published><updated>2019-09-05T09:30:40-05:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This post is largely inspired by &lt;a href=&quot;https://hbr.org/2017/08/high-performing-teams-need-psychological-safety-heres-how-to-create-it&quot;&gt;Laura Delizonna’s excellent article in the Harvard Business Review&lt;/a&gt;.&lt;/p&gt;
 
@@ -1805,7 +1921,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T10:30:40-04:00</published><updated>2019-08-27T10:30:40-04:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T09:30:40-05:00</published><updated>2019-08-27T09:30:40-05:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://www.sparkfun.com/news/2506&quot;&gt;Open source software is definitely an interesting beast.&lt;/a&gt; I didn’t spend too much time thinking about it until my college years, and the more I consider it the more impressive it gets. CAD programs, programming languages, even whole operating systems are developed by massive teams of people who have never met each other in person, and just enjoy engineering &lt;em&gt;so much&lt;/em&gt; they do it in their &lt;em&gt;personal time for free&lt;/em&gt;. And the software that is produced can be crazy good!&lt;/p&gt;
 
@@ -1863,7 +1979,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T10:30:40-04:00</published><updated>2019-08-23T10:30:40-04:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T09:30:40-05:00</published><updated>2019-08-23T09:30:40-05:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This will be a bit of self promotion, but hopefully educational at the same time. Here’s a confession - I have many computers in my life &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. They have come and gone over the years, and all played a crucial role in my education and learning, leading me toward the engineer I am today.&lt;/p&gt;
 
@@ -2051,7 +2167,7 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Though, not as many as my friend whose insurance company wanted to classify him as a small business due to his sheer quantity of high-powered hardware. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T10:30:40-04:00</published><updated>2019-08-18T10:30:40-04:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T09:30:40-05:00</published><updated>2019-08-18T09:30:40-05:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;source: reddit.com&lt;/em&gt;&lt;/p&gt;
 
@@ -2218,263 +2334,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you’ve got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">C to Assembly</title><link href="/blog_posts/2019/08/17/c_to_assembly.html" rel="alternate" type="text/html" title="C to Assembly" /><published>2019-08-17T10:30:40-04:00</published><updated>2019-08-17T10:30:40-04:00</updated><id>/blog_posts/2019/08/17/c_to_assembly</id><content type="html" xml:base="/blog_posts/2019/08/17/c_to_assembly.html">&lt;p&gt;&lt;em&gt;“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in &lt;a href=&quot;https://web.mit.edu/alexmv/6.037/sicp.pdf&quot;&gt;“The Structure and Interpretation of Computer Programs”&lt;/a&gt;)&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;This post is going to be like the ending of a Hallmark movie. If you’ve been even mildly following so far, you could have predicted it from a mile away. What we’re about to do is show how C code gets transformed into x86 assembly. With this keystone topic in place we now see the full cascade:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;C syntax is built into assembly instructions&lt;/li&gt;
-  &lt;li&gt;Assembly instructions are built into bits&lt;/li&gt;
-  &lt;li&gt;Bits are loaded into RAM&lt;/li&gt;
-  &lt;li&gt;RAM is used to evolve the state of registers in a processor over time&lt;/li&gt;
-  &lt;li&gt;Registers in the processor, and the logic gluing them together, are built up from logic gates&lt;/li&gt;
-  &lt;li&gt;Logic gates are built up from transistors&lt;/li&gt;
-  &lt;li&gt;Transistors are analog electrical components that follow basic laws of physics&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;With this capstone, you’ll have a &lt;em&gt;very&lt;/em&gt; good grasp of the same background knowledge that’s sitting inside my head as I write code. Not all the knowledge, and not all the answers for sure - but you’ll know enough to &lt;em&gt;know how to ask questions&lt;/em&gt;. This is probably the biggest thing I run into while doing technical work. For better or worse, &lt;em&gt;you don’t know what you don’t know&lt;/em&gt;. It’s impossible to get all the knowledge into your head at once. What you do want to get into your head is a framework for how things work - this way, when it matters, you know what to go look up - how to start a search for the info you actually need. We’ll always have textbooks and the Internet for that.&lt;/p&gt;
-
-&lt;p&gt;Finding the answer is easy. Finding the question is hard.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://en.wikiquote.org/wiki/Family_Guy/Season_6&quot;&gt;But I digest.&lt;/a&gt; On to our inevitable conclusion…&lt;/p&gt;
-
-&lt;h2 id=&quot;c-code-to-x86&quot;&gt;C code to x86&lt;/h2&gt;
-
-&lt;p&gt;Even though it’s not directly applicable to FRC robots, let’s do a brief description of how C code turns into bits on a processor. If you’re in C++ the process will be extremely similar. Java a little bit less similar (the tools have different names and act at different times, but ultimately do the same job). Labview will be out of scope for now, &lt;a href=&quot;http://www.ni.com/tutorial/11472/en/&quot;&gt;though NI does have some good documentation on how they do their thing&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;basics-of-the-compilation-process&quot;&gt;Basics of the Compilation Process&lt;/h3&gt;
-
-&lt;h4 id=&quot;toolchain&quot;&gt;Toolchain&lt;/h4&gt;
-
-&lt;p&gt;In C code land, the there are two tools that work together to create bits.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Compiler&lt;/em&gt; is responsible for converting the .c text files into &lt;em&gt;mostly&lt;/em&gt; 1’s and 0’s which can be run on the processor. However, it doesn’t compute the final layout in memory - it’s designed to work on single .c files at a time. In a multi-file project, files frequently access variables defined in other files. To account for this, the compiler will assign placeholders to things it knows about, or is &lt;em&gt;promised&lt;/em&gt; will exist elsewhere. The results of this operation produces &lt;em&gt;object files&lt;/em&gt;, frequently named the same as the source code file, with the file extension &lt;em&gt;.o&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Linker&lt;/em&gt; is responsible pulling together all the various .o files created by the compiler, along with any built-in system libraries (like, where functions like &lt;code class=&quot;highlighter-rouge&quot;&gt;printf()&lt;/code&gt; are implemented for your machine), and creating the final .exe. This means the &lt;em&gt;linker&lt;/em&gt; creates the final memory address layout, and is what actually confirms that all the variable placeholders that were promised actually exist.&lt;/p&gt;
-
-&lt;p&gt;For simple projects, these steps often happen together in the same executable, right after each other, transparent to the user. More complex projects split the steps up and manually coordinate them using a &lt;em&gt;make&lt;/em&gt; utility.&lt;/p&gt;
-
-&lt;p&gt;For our discussion, we’re going to focus on how the &lt;em&gt;Compiler&lt;/em&gt; does its work, carefully avoiding some of the hoops the linker has to jump through. It will be an abbreviated process that works for small files, which will be sufficient to start learning.&lt;/p&gt;
-
-&lt;h4 id=&quot;lexing--parsing--compiling--linking-oh-my&quot;&gt;Lexing &amp;amp; Parsing &amp;amp; Compiling &amp;amp; Linking, oh my!&lt;/h4&gt;
-
-&lt;p&gt;The compiler’s job is generally divided into 3 phases.&lt;/p&gt;
-
-&lt;p&gt;The first step is to walk through the input file line by line, and separate out each part of each statement. For example, given &lt;code class=&quot;highlighter-rouge&quot;&gt;out = in * 6.0 + 5/in2;&lt;/code&gt;, the first step is to identify that the character strings &lt;code class=&quot;highlighter-rouge&quot;&gt;out&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;in2&lt;/code&gt; are variables, &lt;code class=&quot;highlighter-rouge&quot;&gt;6.0&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt; are constants, and &lt;code class=&quot;highlighter-rouge&quot;&gt;=&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;*&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;+&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;/&lt;/code&gt; are all math and assignment operations. Sometimes, when you see &lt;em&gt;syntax errors&lt;/em&gt;, they come from this first step, where the compiler can’t properly separate out a line into known components. Each of these components is called a &lt;em&gt;token&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;The second step is to build up a representation of which variables are related to each other, into something called an &lt;a href=&quot;https://en.wikipedia.org/wiki/Abstract_syntax_tree&quot;&gt;&lt;em&gt;abstract syntax tree&lt;/em&gt;&lt;/a&gt; (or AST). In our previous example, this representation would show the hierarchy of how &lt;code class=&quot;highlighter-rouge&quot;&gt;in&lt;/code&gt; is being multiplied by &lt;code class=&quot;highlighter-rouge&quot;&gt;6&lt;/code&gt;, and how that result must be added with &lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt; divided by another variable named &lt;code class=&quot;highlighter-rouge&quot;&gt;in2&lt;/code&gt;, and how that whole thing gets stored into a variable named &lt;code class=&quot;highlighter-rouge&quot;&gt;out&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;The advantage of generating this intermediate representation is having the ability to further understand how each element of code is related to each other. It is the representation that makes it easy to identify when variables haven’t been declared properly (or were misspelled), when variables are read before they are written to, or when code statements don’t actually have any effect on program execution.&lt;/p&gt;
-
-&lt;p&gt;After generating and analyzing the AST, the compiler can finally start to generate assembly instructions. Memory locations for variables are laid out as needed, appropriate assembly functions are chosen to perform the associations described by the tree.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;exact&lt;/em&gt; specifics, of course, will vary language to language, and compiler to compiler. Digging into the specifics of how a particular version of a particular compiler is academically interesting, but actually violates the intent - the Compiler is a tool to be trusted to take your C code, and turn it into executable files. You can always deconstruction what happened if you need to, but generally you won’t need to do that!&lt;/p&gt;
-
-&lt;h3 id=&quot;examples&quot;&gt;Examples&lt;/h3&gt;
-
-&lt;p&gt;Still though, let’s dig into a few examples concretely of how this would play out. We’ll be doing things simply enough such that we won’t be simmulating the full compiler process, but jumping straight to assembly code.&lt;/p&gt;
-
-&lt;h4 id=&quot;variables-and-math&quot;&gt;Variables and Math&lt;/h4&gt;
-
-&lt;p&gt;Let’s take a super simple example. In C code:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This super trivial program calculates a new value for the variable &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;. It’s good that all the variables we’re using are declared, and the program is free of syntax errors.&lt;/p&gt;
-
-&lt;p&gt;To get something like this in assembly code, we’ll need a few things:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Three memory addresses to hold our three variables&lt;/li&gt;
-  &lt;li&gt;A segment of code to implement the &lt;code class=&quot;highlighter-rouge&quot;&gt;main()&lt;/code&gt; function&lt;/li&gt;
-  &lt;li&gt;Assembly instructions that work from the &lt;em&gt;inside outward&lt;/em&gt; on our one line of code that does real computation.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Since this is pretty straightforward, let’s just jump right in!&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input2]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Load the inner-most input&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;imul&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;          &lt;span class=&quot;c&quot;&gt;; perform input2*5&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input1]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; add input1 to that result&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;[output],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; move the full calculation out to the output variable&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;if-statements&quot;&gt;If Statements&lt;/h4&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;If&lt;/code&gt; statements get a bit more complex. One basic strategy is to compute the condition on the inside of the &lt;code class=&quot;highlighter-rouge&quot;&gt;()&lt;/code&gt;’s, then use &lt;code class=&quot;highlighter-rouge&quot;&gt;cmp&lt;/code&gt;/&lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; to go to different sections of code. Choose a flavor of &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; to match the condition. Finally, use unconditional &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt;’s to “rejoin” code after execution has completed.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Similar to above, we create global variables, and produce some reasonable-looking assembly instructions:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input1]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Load the inputs&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input2]&lt;/span&gt;   
-
-    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run comparison operation&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jle&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;; Jump to else if condition is not satisfied&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_if_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_after_if&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output]&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;imul&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_after_if&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;input2&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;43&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;There are a few interesting things to note here.&lt;/p&gt;
-
-&lt;p&gt;Since we have a limited number of variables, we make the assumption that &lt;code class=&quot;highlighter-rouge&quot;&gt;EAX&lt;/code&gt; will correspond to &lt;code class=&quot;highlighter-rouge&quot;&gt;input1&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;EBX&lt;/code&gt; will correspond to &lt;code class=&quot;highlighter-rouge&quot;&gt;input2&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; will correspond to &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;. Before using the registers we load them from their global variables, and then move back to memory at the very end.&lt;/p&gt;
-
-&lt;p&gt;Note that even though in C code we compare if &lt;code class=&quot;highlighter-rouge&quot;&gt;input1&lt;/code&gt; is &lt;em&gt;greater&lt;/em&gt; than &lt;code class=&quot;highlighter-rouge&quot;&gt;input2&lt;/code&gt;, in assembly we use a &lt;code class=&quot;highlighter-rouge&quot;&gt;jle&lt;/code&gt; - or &lt;em&gt;jump if less than or equal to&lt;/em&gt;. This is because we chose to check the &lt;em&gt;opposite&lt;/em&gt; of the C code condition, and jump to the &lt;em&gt;else&lt;/em&gt; statement. We also could have done the comparison more akin to the C code:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run comparison operation&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jg&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;_if_start&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_if_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_else_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;...&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;However, this requires two assembly instructions, so it’s a slightly larger program. Most compilers are capable of generating code both ways, and allow you to tell it “optimize for speed” or “optimize for program size”, and it will choose between options like these to best fit your needs.&lt;/p&gt;
-
-&lt;p&gt;Note that &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt; actually acts as an input of sorts, in the body of the &lt;code class=&quot;highlighter-rouge&quot;&gt;else&lt;/code&gt; statement. Therefor, in the assembly code, we can &lt;em&gt;delay&lt;/em&gt; loading &lt;code class=&quot;highlighter-rouge&quot;&gt;ECX&lt;/code&gt; from memory until we know for sure we need it - this helps prevent unnecessary operations.&lt;/p&gt;
-
-&lt;p&gt;Note also the lack of a &lt;code class=&quot;highlighter-rouge&quot;&gt;jmp&lt;/code&gt; at the end of section &lt;code class=&quot;highlighter-rouge&quot;&gt;_else_start&lt;/code&gt;. It’s not needed, since the next operation is always the &lt;code class=&quot;highlighter-rouge&quot;&gt;_after_if&lt;/code&gt; statement. We can save a tiny bit of memory by not putting it in, as the processor will do the right thing without it naturally.&lt;/p&gt;
-
-&lt;h4 id=&quot;for-loop&quot;&gt;For Loop&lt;/h4&gt;
-
-&lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;for&lt;/code&gt; loop is more or less a combination of the IF statement, with a bit of creative jumping. Take for example this simple C code:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;In yet another contrived example, we take some input value (25 here), and for that many loops, add the input into some other variable called &lt;code class=&quot;highlighter-rouge&quot;&gt;output&lt;/code&gt;. After &lt;code class=&quot;highlighter-rouge&quot;&gt;input1&lt;/code&gt; loops, we are done. In assembly, the compiler will have to add the logic of checking “if done”, jumping &lt;em&gt;back&lt;/em&gt; in time if needed to repeat the code. The assembly code could produce something like this:&lt;/p&gt;
-
-&lt;div class=&quot;language-nasm highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[input1]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Load the inputs. EAX will hold input1&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[iter]&lt;/span&gt;     &lt;span class=&quot;c&quot;&gt;; EBX will hold our value for iter&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output]&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; ECX will hold our value for output.&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;; Perform Loop startup code, &quot;iter=0&quot;&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_loop_check&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;cmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run comparison operation&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jl&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_loop_body_start&lt;/span&gt;  &lt;span class=&quot;c&quot;&gt;; if iter &amp;lt; input1, run a loop&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_loop_body_end&lt;/span&gt;   &lt;span class=&quot;c&quot;&gt;; Otherwise, we are done. Skip past the loop body to the end&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_loop_body_start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EAX&lt;/span&gt;         &lt;span class=&quot;c&quot;&gt;; Run the loop body code. In our case, this is just &quot;output += input1&quot; &lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;add&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;           &lt;span class=&quot;c&quot;&gt;; Perform the loop iteration code, &quot;iter++&quot;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;jmp&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_loop_check&lt;/span&gt;      &lt;span class=&quot;c&quot;&gt;; Go back up to check the iteration condition&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;_loop_body_end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[output],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ECX&lt;/span&gt;    &lt;span class=&quot;c&quot;&gt;; Return the newly calculated values to their memory locations&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;mov&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[iter],&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EBX&lt;/span&gt;
-
-    &lt;span class=&quot;c&quot;&gt;; We are done executing - return control to the operating system&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;retn&lt;/span&gt; 
-
-&lt;span class=&quot;c&quot;&gt;; ----------------------------------------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;; Global Variables&lt;/span&gt;
-
-&lt;span class=&quot;kr&quot;&gt;section&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;output&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;input1&lt;/span&gt;      &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;iter&lt;/span&gt;        &lt;span class=&quot;kt&quot;&gt;DD&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Note you can see distinct instructions for all the major components of our standard &lt;code class=&quot;highlighter-rouge&quot;&gt;for&lt;/code&gt; loop - the initialization, the loop condition check, the iteration logic, and of course the contents of the &lt;code class=&quot;highlighter-rouge&quot;&gt;for&lt;/code&gt; loop body itself.&lt;/p&gt;
-
-&lt;h2 id=&quot;notes&quot;&gt;Notes&lt;/h2&gt;
-
-&lt;p&gt;It should be strongly noted that the examples here are for demonstration purposes only - they show &lt;em&gt;one&lt;/em&gt; possible way to translate &lt;em&gt;specific examples&lt;/em&gt; of higher-level language (C) into a lower level language (x86 asm). More experienced readers may observe that I’ve casually skirted concepts like local variables, the .bss segment, function calls, debugging symbols, optimization, not-always-storing-variables-in-registers, and a whole host of other compiler-related topics that are relevant if you want to write your own compiler. However, though that may be a post one day, it’s not the purpose of this post.&lt;/p&gt;
-
-&lt;p&gt;All a reader should walk away with is a simple understanding - Higher level languages &lt;em&gt;can&lt;/em&gt; be translated to lower level languages. The syntax of each language defines the constraints on how such a translation will happen, which in turn is what drives the rules on why we write programs the way we do.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;And this, sadly, is the end of our initial training. We’ve walked ourselves all the way from base physics and math principles, up through the way that boolean logic can be used to perform useful computation, and how circuits can implement that logic and store data. We’ve looked at how to assemble the circuitry into a useful architecture, which can store and execute instructions. And finally, we’ve looked at how the high level languages we are familiar with get translated into those instructions. It is indeed a lot of information, and you shoudl be proud that you have made it to this point.&lt;/p&gt;
-
-&lt;p&gt;But, the work is not yet complete! Expect many more blog posts. We have so much more to discuss about software - both the hard technical skills, and the soft skills of working on a software development team.&lt;/p&gt;
-
-&lt;p&gt;Stay tuned for many more. And until next time, happy coding!&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---where-are-we-going&quot;&gt;Next Steps - Where are we going?&lt;/h2&gt;
-
-&lt;p&gt;To be honest, I am no sure yet. Maybe go get yourself some food.&lt;/p&gt;
-
-&lt;p&gt;If you’re not hungry, go back to the home page and find another blog post!&lt;/p&gt;</content><author><name></name></author><summary type="html">“Programs must be written for people to read, and only incidentally for machines to execute.” - H. Abelson and G. Sussman (in “The Structure and Interpretation of Computer Programs”)</summary></entry></feed>
+&lt;p&gt;Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you’ve got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
