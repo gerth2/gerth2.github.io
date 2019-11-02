@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-11-01T11:59:41-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">The Asymmetric Loss Function</title><link href="/blog_posts/2019/11/01/asym_loss.html" rel="alternate" type="text/html" title="The Asymmetric Loss Function" /><published>2019-11-01T09:30:00-05:00</published><updated>2019-11-01T09:30:00-05:00</updated><id>/blog_posts/2019/11/01/asym_loss</id><content type="html" xml:base="/blog_posts/2019/11/01/asym_loss.html">&lt;p&gt;&lt;img src=&quot;/assets/made_up_numbers.png&quot; alt=&quot;Made Up Numbers&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-11-02T09:52:22-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Useful Youtube and Other Websites</title><link href="/blog_posts/2019/11/02/youtube_channels.html" rel="alternate" type="text/html" title="Useful Youtube and Other Websites" /><published>2019-11-02T09:30:00-05:00</published><updated>2019-11-02T09:30:00-05:00</updated><id>/blog_posts/2019/11/02/youtube_channels</id><content type="html" xml:base="/blog_posts/2019/11/02/youtube_channels.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;The internet is truly one of the biggest resources society has at its avail.&lt;/p&gt;
+
+&lt;p&gt;One of my favorite websites is &lt;a href=&quot;https://www.youtube.com/&quot;&gt;youtube.com&lt;/a&gt;. The utterly incredible quantity of &lt;em&gt;super useful&lt;/em&gt; information delivered in &lt;em&gt;entertaining ways&lt;/em&gt; for &lt;em&gt;basically free&lt;/em&gt; still astounds me - both from the fact no one’s tried to monetize it yet, and the fact that content creators keep churning out video after video.&lt;/p&gt;
+
+&lt;p&gt;Google doesn’t have a &lt;em&gt;total&lt;/em&gt; monopoly on this though - lots of other smart folks have created their own websites&lt;/p&gt;
+
+&lt;p&gt;This post is pretty low-effort. I’m just laying out a set of the youtube channels and websites I find personally useful. The hope is maybe to help out your technical skills a bit, or at least give a flavor of what I’m watching when I’ve got a few minutes to kill.&lt;/p&gt;
+
+&lt;p&gt;Note these are accurate as at the time of the post. They’re all dynamic resources, adding more content every day. This post is a snapshot of the now, I’m sure it will be come outdated quite quickly.&lt;/p&gt;
+
+&lt;h2 id=&quot;technical-related&quot;&gt;Technical Related&lt;/h2&gt;
+
+&lt;h3 id=&quot;specifically-first&quot;&gt;Specifically FIRST&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.chiefdelphi.com/&quot;&gt;Chief Delphi&lt;/a&gt; - If you’re doing FRC, you should be on Chief Delphi. The depth of technical knowledge and active help available is the best I’ve ever seen. Nuff said.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCuJUknE5JjilAfNnmbvr22Q&quot;&gt;First Updates Now (FUN)&lt;/a&gt; - Tyler and crew are producing a really awesome set of content related to all things FIRST robotics. If you ever wished there was a TV channel associated with FIRST, this is the closest we’ve got today!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.thecompassalliance.org/&quot;&gt;The Compass Alliance&lt;/a&gt; - Similar to Chief Delphi, a useful repository of FIRST knowledge. Less volume, but much better curation.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.reddit.com/r/FRC/&quot;&gt;/r/frc&lt;/a&gt; - Want 10% Chief Delphi, 90% memes?&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.reddit.com/r/frcmemes/&quot;&gt;r/frcmemes&lt;/a&gt; - Want 0% Chief Delphi, 100% memes?&lt;/p&gt;
+
+&lt;h3 id=&quot;first-related-skills&quot;&gt;FIRST Related Skills&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCYO_jab_esuFRV4b17AJtAw&quot;&gt;3Blue1Brown&lt;/a&gt; - Where formal coursework falls short, 3Blue1Brown is by go-to answer for students to catch up on the calculus and linear algebra topics that occasionally come up while building a robot. The channel has excellent audio description of the concepts, precisely timed to great visual animations of the concept. It’s a great demonstration of how to teach complex topics very simply, to both the visual and auditory learners simultaneously.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/EEVblog&quot;&gt;EEV Blog&lt;/a&gt; - Dave Jones does a completely unscripted review of the internals of electronic devices. He’s got a ton of industry and technical knowledge he dumps into his content. It can be a bit long-winded (ever hear the pot call the kettle black?), but is super entertaining to me!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/featony&quot;&gt;This Old Tony&lt;/a&gt; - An awesome dad in a basement, showing you how to do metalworking projects and use big machine shop tools.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/gradyhillhouse&quot;&gt;Practical Engineering&lt;/a&gt; - Especially if you’ve got an interest in Civil Engineering, Grady’s got some great explanations and tips on how large systems work in the real world.&lt;/p&gt;
+
+&lt;h3 id=&quot;general-technology&quot;&gt;General Technology&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/thisoldhouse&quot;&gt;This Old House&lt;/a&gt; - If you ever own (or meerly live at) a home, you’ll have projects to work on. Ever want to hear a bunch of fun-loving dads talk about the details of their trade, and show others how to improve their living spaces, and learn a bunch of technical stuff at the same time? I thought so. Check them out. For you older folks reading, yup, this is the same crew that does the “This Old House” TV show.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/JayLenosGarage&quot;&gt;Jay Leno’s Garage&lt;/a&gt; - I want to retire like Jay Leno. He’s used his fame and success to purchase and create a car museum. And he actually knows a ton about all his cars. And freely acknowledges when he doesn’t know stuff, and brings in experts. I love hearing him talk about his collection, and the humility with which he brings in others to help him (and the viewer) appreciate it even more. If you ever want to see a very well curated collection of mechanical beasts, check out Jay’s garage.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UC2bkHVIDjXS7sgrgjFtzOXQ&quot;&gt;Bill Hammack, Engineer Guy&lt;/a&gt; is a professor from my alma mater, and has some wonderful presentations on various technology-related topics.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UClsFdM0HzTdF1JYoraQ0aUw&quot;&gt;Brick Experiment Channel&lt;/a&gt; Is great to show the outter limits of what you can construct using (mostly) lego bricks. Definitely useful for FLL, and just interesting in general.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UC726J5A0LLFRxQ0SZqr2mYQ&quot;&gt;Curious Droid&lt;/a&gt; is less about robots, and more about technical documentaries in general. I miss the old history channel, but Curious Droid has totally scratched my itch for high quality documentary content.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCy0tKL1T7wFoYcxCe0xjN6Q&quot;&gt;Technology Connections&lt;/a&gt; is another awesome channel that presents lots of historical technologies, mostly related to AV equipment. Along with &lt;a href=&quot;https://www.youtube.com/user/adric22&quot;&gt;8-bit Guy&lt;/a&gt;, these are some of my favorite references on how engineering of commercial products was done back-in-the-day - a phenomenal reference for the modern engineer to understand the shoulders they stand on top of.&lt;/p&gt;
+
+&lt;h3 id=&quot;dont-try-this-at-home&quot;&gt;Don’t Try This At Home&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCJYJgj7rzsn0vdR7fkgjuIA&quot;&gt;styropyro&lt;/a&gt; is the epitome of “do not try this at home”. So, you can watch someone else try it. If you like big lasers, deadly power supplies, and chemistry that goes boom, this guy should be your friend. But seriously. Don’t try any of this guy’s stuff at home.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/channel/UCcMDMoNu66_1Hwi5-MeiQgw&quot;&gt;Hydraulic Press Channel&lt;/a&gt; was basically a meme two years ago. Still super interesting. Ever wondered what would happen if you put household objects in a very powerful hydraulic press? Your question now answered with a smooth Eastern European flair.&lt;/p&gt;
+
+&lt;h2 id=&quot;non-technical&quot;&gt;Non-Technical&lt;/h2&gt;
+
+&lt;h3 id=&quot;food&quot;&gt;Food&lt;/h3&gt;
+
+&lt;p&gt;I’ve got full post brewing on this topic, but for now I’ll at least introduce it - One of my other big hobbies is cooking. I love making food, and then eating it. I loved it before I started mentoring 1736, and the metaphorical marriage was almost too good to be true.&lt;/p&gt;
+
+&lt;p&gt;Along these lines, lots of my favorite channels involve food. With a strongly technical flavor.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/bgfilms&quot;&gt;Binging With Babish&lt;/a&gt; is probably the most cleanly-filmed, simple, and informative food shows on the internet right now. I’ve tried many of his recipes myself, and every one has been a slam-dunk on ease of prep and flavor.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/BonAppetitDotCom&quot;&gt;Bon Appétit&lt;/a&gt; isn’t just the cooking magazine you may recall - their youtube video series has some of the best presented, casual yet technical explanation of cooking techniques and recipes I’ve ever seen. The people in the videos seem like so much fun to work with, and (assuming the videos represent day-to-day in their test kitchen) their workplace is one of the most positive I’ve ever seen. If engineering ever fails me as a career, my resume is totally showing up in BA’s mailbox.&lt;/p&gt;
+
+&lt;h3 id=&quot;history&quot;&gt;History&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.youtube.com/user/Webzwithaz&quot;&gt;Oversimplified&lt;/a&gt; - Super entertaining and rapid downloads of historical events.&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">The Asymmetric Loss Function</title><link href="/blog_posts/2019/11/01/asym_loss.html" rel="alternate" type="text/html" title="The Asymmetric Loss Function" /><published>2019-11-01T09:30:00-05:00</published><updated>2019-11-01T09:30:00-05:00</updated><id>/blog_posts/2019/11/01/asym_loss</id><content type="html" xml:base="/blog_posts/2019/11/01/asym_loss.html">&lt;p&gt;&lt;img src=&quot;/assets/made_up_numbers.png&quot; alt=&quot;Made Up Numbers&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;Source: &lt;a href=&quot;https://dilbert.com/strip/2008-05-08&quot;&gt;Scott Adams&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -2167,171 +2237,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Though, not as many as my friend whose insurance company wanted to classify him as a small business due to his sheer quantity of high-powered hardware. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Good Comments</title><link href="/blog_posts/2019/08/18/on_code_comments.html" rel="alternate" type="text/html" title="Good Comments" /><published>2019-08-18T09:30:40-05:00</published><updated>2019-08-18T09:30:40-05:00</updated><id>/blog_posts/2019/08/18/on_code_comments</id><content type="html" xml:base="/blog_posts/2019/08/18/on_code_comments.html">&lt;p&gt;&lt;img src=&quot;https://i.redd.it/fqq6ummu09431.png&quot; alt=&quot;the 90 percent&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;source: reddit.com&lt;/em&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;Code comments are one of those things that you have to see lots of wrong examples, before you get good at making them right.&lt;/p&gt;
-
-&lt;p&gt;Full disclosure - by most standards, I am &lt;em&gt;horrible&lt;/em&gt; at writing code comments. However, my problem is the opposite that most newbies have - I write far too much in comments.&lt;/p&gt;
-
-&lt;p&gt;I’m hoping to share a tidbit of the wisdom I’ve gotten so far. Rather than corrupt young minds with my excessively verbose ways, I’m hoping we can sorta meet in the middle - get an idea for what “good” or “too much” might look like, and land somewhere in the vicinity of “optimal”.&lt;/p&gt;
-
-&lt;p&gt;All this ties back to a broader discussion of what “good code” is. It’s one sub-component of making sure your code is easily comprehensible, which allows for faster modification, which allows for faster delivery of functional software, which generally keeps the other subteams happy.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-to-comment-on&quot;&gt;What to Comment On&lt;/h2&gt;
-
-&lt;p&gt;The first thing folks should know is that the text inside a comment needs to be helpful. The golden rule of commenting:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;COMMENTS SAY &lt;em&gt;WHY&lt;/em&gt; THE CODE IS THE WAY IT IS, NEVER &lt;em&gt;WHAT&lt;/em&gt; IT IS DOING&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;The absolute worst form of code commenting, that I truly and utterly abhor:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//Here is the start of the function named &quot;periodic&quot;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//I have declared two local variables named speed and encoderReading&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//set encoderReading to the return value from the thing getSensorValue()&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getSensorValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//Divide encoderReading by ten and then multiply by fifty.&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//Return the value within the variable Speed to the caller function&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;//This function is now done&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Well, ok. Maybe you’ve seen comments like these on the blog. But that’s different- when I explain &lt;em&gt;what&lt;/em&gt; code is doing, it’s to help teach new people.&lt;/p&gt;
-
-&lt;p&gt;Production robot code is not the place to put tutorials on the nuances of Java/C++/Kotlin/insert-obscure-language-here.&lt;/p&gt;
-
-&lt;p&gt;The comments in the above example contain &lt;em&gt;literally&lt;/em&gt; zero additional information. You are literally sucking up bits of storage on your PC’s hard drive with no added benefit. Even worse, you have written code that &lt;em&gt;appears&lt;/em&gt; to have at least some volume of contents, but on closer inspection has &lt;em&gt;lied&lt;/em&gt; about its usefulness.&lt;/p&gt;
-
-&lt;p&gt;Even worse, some of the comments have &lt;em&gt;wrong&lt;/em&gt; information. You may laugh, but this happens all the time - developer A writes the code and the comment, developer B comes along and updates the code but not the comment. Then developer C is confused and frustrated.&lt;/p&gt;
-
-&lt;p&gt;And, believe it or not, often developers A, B, and C are the same person. I’ve been there.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/it_was_me.png&quot; alt=&quot;it was me all the time&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;source: me.me or Stephen Hillenburg, you choose.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Please please please please please never ever ever write comments like this.&lt;/p&gt;
-
-&lt;p&gt;Here’s a much better approach:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-
-    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Stores Speed in RPM&lt;/span&gt;
-    &lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Stores encoder measured speed in pulses per second&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// Read all inputs&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Sample from the encoders&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;getSensorValue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-
-    &lt;span class=&quot;c1&quot;&gt;// Convert to RPM&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// Encoder is measuring a target which produces 10 pulses per revolution&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;//  and speed is supposed to be per-minute, not per-second.&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;encoderReading&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;speed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;The comments are like a good tour guide in the art gallery - they never describe the actual painting itself, but rather give context to the author’s thought process, and how it connects to the broader culture and time in which it was created. Write your comments to be good tour guides to your own thought process, assumptions, and desires.&lt;/p&gt;
-
-&lt;p&gt;A good practice is to &lt;a href=&quot;https://www.youtube.com/watch?v=eNZsWIzEhP4&quot;&gt;always leave a note&lt;/a&gt; when you still need to come back and finish something:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;double&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;periodic&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-        &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Got condition 1!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//TODO&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;This helps you and the next person recall that the code isn’t finished, and there will be more functionality. It also means that if you’re ever wondering “what else should I do?”, one quick answer is search for all occurrences of the string &lt;code class=&quot;highlighter-rouge&quot;&gt;TODO&lt;/code&gt; in your code files. If you find &lt;code class=&quot;highlighter-rouge&quot;&gt;//TODO&lt;/code&gt; comments, well, you’ve got something to do!&lt;/p&gt;
-
-&lt;h2 id=&quot;ascii-aesthetics-for-visual-separation&quot;&gt;ASCII-Aesthetics for Visual Separation&lt;/h2&gt;
-
-&lt;p&gt;I’ve been a fan of using comments, whitespace, and ascii art to visually separate different parts of a source code file, as I wish a user to see them separately. This means I’ll usually add some extra spaces between function definitions, maybe an extra newline here or there within a function to mark off different segments of execution.  It’s all about communication - if you want the reader to see two things together, remove whitespace. If you want them to see two things separately, add more whitespace.&lt;/p&gt;
-
-&lt;p&gt;For example:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;||&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;do_the_thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;While this C code works just fine, I personally like to add a bit more whitespace to separate out the components of the &lt;code class=&quot;highlighter-rouge&quot;&gt;if()&lt;/code&gt; statement condition, into the parts that a human more easily parses:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;condition1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;condition2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;input3&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;do_the_thing&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Not everyone is like me, though, and I’m not even super consistent with my own styles. Still, I feel there’s some value in visually separating things that are (somehow) separate, and visually aligning things which are (somehow) aligned. Communicating intent. That’s all we’re doing here.&lt;/p&gt;
-
-&lt;p&gt;When doing the same thing with comments, I’ve got some favorite ascii-art style ways of doing this visual separation as well:&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//----------------------------------------------&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// This is a block of comment, hard to miss&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//----------------------------------------------&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;// Here is another block, even harder to miss.&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//!! HERE IS A SUPER URGENT WARNING YOU CANNOT MISS !!&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//~~ Here is a new section of code&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yay!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//~~ Now the code is done.&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Feel free to take and tweak these as you prefer.&lt;/p&gt;
-
-&lt;h2 id=&quot;standardization-strategies&quot;&gt;Standardization strategies&lt;/h2&gt;
-
-&lt;p&gt;One of the key to writing good code is consistency - making similar things look similar makes your code way easier to read and comprehend, especially to someone who isn’t familiar with it. It helps them know that once they’ve learned one thing in the code, if they see it again, they don’t have to re-learn it.&lt;/p&gt;
-
-&lt;p&gt;A good chunk of this consistency is keeping the &lt;em&gt;quantity&lt;/em&gt; of your comments level throughout the code. As a team, decide what an appropriate level is, and try to stick to it. Make note of it while reviewing each other’s code, and add or remove as needed to keep the level even.&lt;/p&gt;
-
-&lt;p&gt;Once nice practice is to put a description block above every major public function or method. Include key information, such as a description of the function’s usage, what its inputs are supposed to be, what its return value is, any global variables it modifies, etc.&lt;/p&gt;
-
-&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//***************************************************************&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//** Function Name: myCode&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//** Description: Displays a happy message, and calculates&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//**               the meaning of life.&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//** Inputs: None&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//** Outputs: Returns the meaning to life, in an integer.&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//** Globals: No interaction&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;//***************************************************************&lt;/span&gt;
-&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;myCode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;yay!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;If you are super careful with how you do something like this, you can use specialized programs like &lt;a href=&quot;https://en.wikipedia.org/wiki/Javadoc&quot;&gt;Javadoc&lt;/a&gt; or &lt;a href=&quot;https://en.wikipedia.org/wiki/Doxygen&quot;&gt;Doxygen&lt;/a&gt; to convert these comment blocks into some very nice looking and easy-to-navigate HTML, producing non-code documentation of how your code works. It’s super useful if someone else has to use your code (like if you were writing &lt;em&gt;for&lt;/em&gt; WPI), but is also just nice to have as a reference anyway.&lt;/p&gt;
-
-&lt;p&gt;One closing note - I always recommend using proper grammar, punctuation, capitalization, spelling, etc. when writing comments. Even if your meaning is communicated without these, taking the time on the comments indicates you also took time writing the code, and are competent at your job. Which, presumably, is the message you’d like to communicate outward.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Code comments are a necessity of writing code which is easily comprehended by humans. Since we want our code to be first and foremost understandable to humans, it makes sense to have good comments. Hopefully you’ve got a few new, good ideas on how to do your commenting. Try them out yourself next time you write some software, talk about it with your team, and let this lead you toward better code!&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
