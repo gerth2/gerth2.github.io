@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Creating Casserole Bot"
-date:   2019-11-13 9:30:00 -0500
+date:   2019-11-17 9:30:00 -0500
 categories: blog_posts
 ---
 
@@ -86,13 +86,13 @@ As a side note - _keep the secret key secret_. Legit man. Anyone who has this ke
 
 #### Basic Scripting
 
-As mentioned, we used Discord.py to write the logic of the bot's script. This library uses a fairly new feature in python called `asyncio` to do [concurrent processing with web-requests](https://docs.python.org/3/library/asyncio.html). This is generally a good thing - interacting with web servers tends to be a pretty event-driven, asynchronous activity. Messages come in whenever they do, and you want to process them as soon as they come in. You'll generate packets in the background, and need to send theme whenevere ready. I think it was the right design choice for the library. The only downside is that I had to learn it from scratch. Whoops.
+As mentioned, we used Discord.py to write the logic of the bot's script. This library uses a fairly new feature in python called `asyncio` to do [concurrent processing with web-requests](https://docs.python.org/3/library/asyncio.html). This is generally a good thing - interacting with web servers tends to be a pretty event-driven, asynchronous activity. Messages come in whenever they do, and you want to process them as soon as they come in. You'll generate packets in the background, and need to send them whenever ready. I think it was the right design choice for the library. The only downside is that I had to learn it from scratch. Whoops.
 
 [Good thing there are good tutorials out there](https://realpython.com/async-io-python/).
 
 I ultimately ended up scripting in a way that allowed me to leverage the asyncio features as needed, but write the bulk of the scripting in a format I was more familiar with. Probably not the best answer, but seems to be getting the job done for now.
 
-The main entrypoint for our bot's logic is in [this file - casseroleBot.py](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/master/casseroleBot.py). Like most python, the main code is all the way at the bottom. It doesn't do much - it just instantiates the bot, and starts it running.
+The main entry point for our bot's logic is in [this file - casseroleBot.py](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/master/casseroleBot.py). Like most python, the main code is all the way at the bottom. It doesn't do much - it just instantiates the bot, and starts it running.
 
 #### Basic Bot Functionality
 
@@ -266,7 +266,7 @@ If you put in ChiefDelphi posts, you'll get something that sounds vaguely like p
 
 The implementation was split into three phases:
 
-First, I ripped about 6,000 posts from chiefDelphi.com. This code is in [chiefDelphi.py](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/chiefDelphi.py). I did it in a number of chunks (see constants on line 16), using [PyDiscourse](https://pypi.org/project/pydiscourse/) to simplify interaction with the server. I injected a 0.25 second pause between each post querey to attempt to keep the server load down. Still, appologies to Brandon Martus for making his server very sad on certain evenings in late Ocber 2019. After a bit of in-script cleanup and manual find/replace magic on the resulting text file, I had about [3 MB of sentences to train the bot](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkov.txt).
+First, I ripped about 6,000 posts from chiefDelphi.com. This code is in [chiefDelphi.py](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/chiefDelphi.py). I did it in a number of chunks (see constants on line 16), using [PyDiscourse](https://pypi.org/project/pydiscourse/) to simplify interaction with the server. I injected a 0.25 second pause between each post querey to attempt to keep the server load down. Still, apologies to Brandon Martus for making his server somewhat sad on certain evenings in early November 2019. After a bit of in-script cleanup and manual find/replace magic on the resulting text file, I had about [3 MB of sentences to train the bot](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkov.txt).
 
 Second, in just a [handful of lines of python](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/markovGenerate.py), I converted that 3MB of training material into [24MB of a json probability model of how robotics people talk](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkovModel.json).
 
