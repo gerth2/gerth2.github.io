@@ -1,4 +1,294 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-11-02T09:52:22-05:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Useful Youtube and Other Websites</title><link href="/blog_posts/2019/11/02/youtube_channels.html" rel="alternate" type="text/html" title="Useful Youtube and Other Websites" /><published>2019-11-02T09:30:00-05:00</published><updated>2019-11-02T09:30:00-05:00</updated><id>/blog_posts/2019/11/02/youtube_channels</id><content type="html" xml:base="/blog_posts/2019/11/02/youtube_channels.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-11-17T14:35:38-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Creating Casserole Bot</title><link href="/blog_posts/2019/11/17/casserole_bot.html" rel="alternate" type="text/html" title="Creating Casserole Bot" /><published>2019-11-17T08:30:00-06:00</published><updated>2019-11-17T08:30:00-06:00</updated><id>/blog_posts/2019/11/17/casserole_bot</id><content type="html" xml:base="/blog_posts/2019/11/17/casserole_bot.html">&lt;p&gt;&lt;img src=&quot;/assets/discordLogo.png&quot; alt=&quot;Discord Logo&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://xkcd.com/356/&quot;&gt;Nerd sniping at its finest.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;This is largely a story of discovery on my part. For the 2019 season, we introduced &lt;a href=&quot;https://discordapp.com/&quot;&gt;Discord&lt;/a&gt; as an alternate communication form - primarily because I wanted a way to share web links with the software team without having them re-type the exact address after looking at my computer screen. It kinda snowballed - for whatever reason, unlike Slack, students actually &lt;em&gt;used&lt;/em&gt; it on a day to day basis. This started encouraging out-of-meeting conversations and generally lifting productivity. We started rolling it out to the whole team in prep for the 2020 season, with continued great success.&lt;/p&gt;
+
+&lt;p&gt;One of my absolute favorite things about Discord is the voice channel concept - the seamless, easy, fairly low-latency call-in ability is the best I’ve seen. As we were rolling it out, a fun side project idea came up - to investigate a way to get or make a conference room phone for the voice channel.&lt;/p&gt;
+
+&lt;h2 id=&quot;design-phase&quot;&gt;Design Phase&lt;/h2&gt;
+
+&lt;p&gt;The goal I had in mind: Provide a single-button-push way to do 2-way audio in the warehouse, to whomever else wanted to talk. If the purpose of Discord was to increase communication, and we wanted voice to be a part of that, we needed the &lt;em&gt;most trivial&lt;/em&gt; way to ensure people made the voice connection. No pulling a laptop out, logging in, plugging in…. just something that would sit on a table, always ready, and just needs a single button push to create sweet sweet voice sounds.&lt;/p&gt;
+
+&lt;p&gt;Given we didn’t have something like this yet, we’d either need to purchase or make something.&lt;/p&gt;
+
+&lt;h3 id=&quot;existing-product-survey&quot;&gt;Existing Product Survey&lt;/h3&gt;
+
+&lt;p&gt;The first step when solving a problem, generally, is to investigate if someone else has solved it already.&lt;/p&gt;
+
+&lt;p&gt;A few days of google searching revealed this wasn’t the case, at least not for what we wanted. There’s plenty of conference room phone solutions, but most require either a laptop, or some sort &lt;a href=&quot;https://en.wikipedia.org/wiki/Voice_over_IP&quot;&gt;VOIP infrastructure&lt;/a&gt;. The latter was appealing from the always-present perspective, but was complex to set up. Most of the good-looking systems were somewhat proprietary and costly, and none had built-in Discord voice integration.&lt;/p&gt;
+
+&lt;p&gt;It was quickly apparent that to get what we wanted, we’d have to roll up our sleeves and get to work.&lt;/p&gt;
+
+&lt;h3 id=&quot;technological-options&quot;&gt;Technological Options&lt;/h3&gt;
+
+&lt;p&gt;Once we knew we were going to do a customized solution, and not just purchase a pre-made one, the next step was to break down the problem&lt;/p&gt;
+
+&lt;p&gt;There were two major things to solve:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Hardware to record and play-back audio&lt;/li&gt;
+  &lt;li&gt;Automation to connect to Discord’s servers to that hardware&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The final solution ended up smearing these problems back together. But at least to start, we approached them separately.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/discordBotArch.png&quot; alt=&quot;Bot Architecture&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;the-audio-hardware&quot;&gt;The Audio Hardware&lt;/h3&gt;
+
+&lt;p&gt;A big concern was ensuring we wouldn’t get feedback between whatever loudspeaker and microphone we used. Not wanting to create this echo-cancellation ourselves, we opted right away to choose hardware with it built in. This trimmed down the audio hardware options, and led us toward hardware boxes specifically designed toward corporate conference rooms.&lt;/p&gt;
+
+&lt;p&gt;These audio devices all have the same basic features - a joined microphone and speaker, some echo cancellation logic and design between them, a handful of buttons for controlling volume and call, etc. They fell into two major categories: Ones designed to connect straight to a PC (usually via USB), and ones that connect to a central VOIP server.&lt;/p&gt;
+
+&lt;p&gt;VOIP seemed pretty slick, but it was expensive and came with a decent amount of configuration overhead. It’s usually targeted at large corporate environment where there are &lt;em&gt;many&lt;/em&gt; conference rooms linked. Our design only planned for one audio gathering/broadcasting location, with no expansion ability needed. USB appeared much simpler to deal with.&lt;/p&gt;
+
+&lt;p&gt;Ultimately, ebay browsing revealed a used &lt;a href=&quot;https://uc.yamaha.com/products/conference-phones/flx-uc-sip-voip/&quot;&gt;Revolabs/Yamaha FLX 1500&lt;/a&gt; which was missing some cables, but apparently “tested functional”, for $15. Given that most of the &lt;a href=&quot;https://www.amazon.com/Jabra-Speak-410-Speakerphone-Lync/dp/B004ELA7TA/ref=asc_df_B004ELA7TA/?tag=&amp;amp;linkCode=df0&amp;amp;hvadid=309777534894&amp;amp;hvpos=1o2&amp;amp;hvnetw=g&amp;amp;hvrand=12701059778463327612&amp;amp;hvpone=&amp;amp;hvptwo=&amp;amp;hvqmt=&amp;amp;hvdev=c&amp;amp;hvdvcmdl=&amp;amp;hvlocint=&amp;amp;hvlocphy=9022120&amp;amp;hvtargid=pla-316724737574&amp;amp;ref=&amp;amp;adgrpid=58425267301&amp;amp;th=1&quot;&gt;basic USB conference phone solutions start around $75&lt;/a&gt;, and the FLX 1500 is close to $250 new, it seemed like a good deal.&lt;/p&gt;
+
+&lt;p&gt;For $15, I was willing to risk buying a brick.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/revolabs1500.png&quot; alt=&quot;revolabs 1500 fLX UC&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Good news - it paid off! With proper cables, unit powered up and worked just fine. And just like that, our hardware solution was chosen.&lt;/p&gt;
+
+&lt;h3 id=&quot;the-automation&quot;&gt;The Automation&lt;/h3&gt;
+
+&lt;p&gt;When it comes to connecting with Discord, there’s basically one way to do it. Go through their &lt;a href=&quot;https://discordapp.com/developers/docs/intro&quot;&gt;official API&lt;/a&gt;. To connect without needing someone’s personal login, the “headless” method involves creating a Bot and authorizing it on your server. So, from that perspective, the “Discord Bot” solution was pretty much the only answer.&lt;/p&gt;
+
+&lt;p&gt;However, such a bot still needs control logic behind it to have it make decisions. Discord’s API lets you send and receive data, but it’s on you to decide what to do with the received data, and generate the data to send. Doing so involves, happily, writing some software!&lt;/p&gt;
+
+&lt;p&gt;The usual way this happens: Some kind soul will read through the API documentation, and provide a nice library in a specific programming language to let you interact with it nicely (rather than decoding and constructing the web traffic of the API yourself). &lt;a href=&quot;https://discordapi.com/unofficial/libs.html&quot;&gt;Discord has quite a few of these&lt;/a&gt;, it really just depends on which language you want to use to implement the rest of your app. Given my familarity with Python, the known need to interact with other PC things, and vast amount of other available libraries, &lt;a href=&quot;https://github.com/Rapptz/discord.py&quot;&gt;discord.py&lt;/a&gt; was chosen, and the application would get written in Python.&lt;/p&gt;
+
+&lt;p&gt;Of course, you still need some form of a computer to run your program on. On Casserole, we currently have a mentor who freely donates lightly used Raspberry Pi 3b’s. So, at the moment, if anything can be done on a Raspberry Pi, we usually try to start there. Raspberry Pi with &lt;a href=&quot;https://en.wikipedia.org/wiki/Raspbian&quot;&gt;Raspbian&lt;/a&gt; it is then.&lt;/p&gt;
+
+&lt;h2 id=&quot;implementation-phase&quot;&gt;Implementation Phase&lt;/h2&gt;
+
+&lt;p&gt;Time to get down to work!&lt;/p&gt;
+
+&lt;h3 id=&quot;the-basics---building-a-bot&quot;&gt;The Basics - Building a Bot&lt;/h3&gt;
+
+&lt;h4 id=&quot;account-creation&quot;&gt;Account Creation&lt;/h4&gt;
+
+&lt;p&gt;Building a Discord Bot isn’t actually all that bad. People like to do it a lot, so lots of folks have created some decent tutorials on the topic. A quick google search returned at least three pages of good tutorials by others - so, I’m not looking to cover the general process here. &lt;a href=&quot;https://realpython.com/how-to-make-a-discord-bot-python/&quot;&gt;For those interested, here’s the guide I followed.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The super basics - First you have to create your bot’s account on the Discord side, kinda like a new user.  The “bot” is actually the script you’re running, but the Discord server needs to know the bot exists first.&lt;/p&gt;
+
+&lt;p&gt;This account creation results in two things: One is a secret key the bot script needs to authenticate with the servers. The second is that you can now go to your Discord server, invite the bot, and give it permissions and roles like any other user.&lt;/p&gt;
+
+&lt;p&gt;As a side note - &lt;em&gt;keep the secret key secret&lt;/em&gt;. Legit man. Anyone who has this key can connect to discord &lt;em&gt;as your bot&lt;/em&gt;. It’s like giving out your username and password to someone. Don’t post it to Github, anywhere, any time.&lt;/p&gt;
+
+&lt;h4 id=&quot;basic-scripting&quot;&gt;Basic Scripting&lt;/h4&gt;
+
+&lt;p&gt;As mentioned, we used Discord.py to write the logic of the bot’s script. This library uses a fairly new feature in python called &lt;code class=&quot;highlighter-rouge&quot;&gt;asyncio&lt;/code&gt; to do &lt;a href=&quot;https://docs.python.org/3/library/asyncio.html&quot;&gt;concurrent processing with web-requests&lt;/a&gt;. This is generally a good thing - interacting with web servers tends to be a pretty event-driven, asynchronous activity. Messages come in whenever they do, and you want to process them as soon as they come in. You’ll generate packets in the background, and need to send them whenever ready. I think it was the right design choice for the library. The only downside is that I had to learn it from scratch. Whoops.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://realpython.com/async-io-python/&quot;&gt;Good thing there are good tutorials out there&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I ultimately ended up scripting in a way that allowed me to leverage the asyncio features as needed, but write the bulk of the scripting in a format I was more familiar with. Probably not the best answer, but seems to be getting the job done for now.&lt;/p&gt;
+
+&lt;p&gt;The main entry point for our bot’s logic is in &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/master/casseroleBot.py&quot;&gt;this file - casseroleBot.py&lt;/a&gt;. Like most python, the main code is all the way at the bottom. It doesn’t do much - it just instantiates the bot, and starts it running.&lt;/p&gt;
+
+&lt;h4 id=&quot;basic-bot-functionality&quot;&gt;Basic Bot Functionality&lt;/h4&gt;
+
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;CasseroleDiscordBotClient&lt;/code&gt; class is where most of the main action happens. All the complexity of interacting with the server API is done within the discord.py library. We just provide a few standard hooks.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;on_ready()&lt;/code&gt; is our hook which gets called when the server connection is successful. For us, it just sets a global flag, letting all the other parts of code know they can interact with the server as needed.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;on_message()&lt;/code&gt; is our hook for processing all messages sent on all channels on the server. Usually the bot does nothing. However, if the message begins with &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt;, or the bot’s name is mentioned anywhere in the message, the text is stripped and parsed.&lt;/p&gt;
+
+&lt;p&gt;Based on the stripped text, we’ll do one of a few things. Certain specific strings like &lt;code class=&quot;highlighter-rouge&quot;&gt;callin&lt;/code&gt; or &lt;code class=&quot;highlighter-rouge&quot;&gt;hangup&lt;/code&gt; are interpreted as commands to connect to or disconnect from the voice channel - this enables remote users to turn on the phone, in case someone at the shop forgets to hit the button. &lt;code class=&quot;highlighter-rouge&quot;&gt;help&lt;/code&gt; prints some useful info, and &lt;code class=&quot;highlighter-rouge&quot;&gt;reboot&lt;/code&gt; lets us remotely restart the Raspberry Pi.&lt;/p&gt;
+
+&lt;h4 id=&quot;voice-channel-interaction&quot;&gt;Voice Channel Interaction&lt;/h4&gt;
+
+&lt;p&gt;There was a key gap we missed while picking Python as the implementation language - the default Discord Python library &lt;em&gt;does not expose the ability to receive audio from discord&lt;/em&gt;. Pretty big gap, right?&lt;/p&gt;
+
+&lt;p&gt;The good news - we found that someone had &lt;a href=&quot;https://github.com/imayhaveborkedit/discord.py&quot;&gt;forked the python API to add the feature&lt;/a&gt;. It’s still in development and has been clearly marked as “DO NOT USE IN PRODUCTION”. But, since this is just for a casual volunteer project, with no real money riding on it, I chose not to heed the warning. We pulled the fork into our application, and have been using it without issue.&lt;/p&gt;
+
+&lt;p&gt;The script architecture is broken up into a few parts:&lt;/p&gt;
+
+&lt;h5 id=&quot;discord-server-interaction&quot;&gt;Discord Server Interaction&lt;/h5&gt;
+
+&lt;p&gt;These are all the &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; methods, directly responsible for talking to and from the server. We’ve described most of them above.&lt;/p&gt;
+
+&lt;h5 id=&quot;global-state-variables&quot;&gt;Global State Variables&lt;/h5&gt;
+
+&lt;p&gt;These are a set of class-scoped variables that indicate the desired state of the bot. Things like whether it’s called into a voice channel, on hold, etc. This state can be &lt;em&gt;commanded&lt;/em&gt; from a DIscord message, from physical buttons on the speaker, via a GUI (sometimes)… maybe other places in the future. Therefor, there has to be a way that the &lt;em&gt;async&lt;/em&gt; portions of the server interaction can gather inputs from outside the &lt;em&gt;async&lt;/em&gt; realm.&lt;/p&gt;
+
+&lt;p&gt;To facilitate this, the &lt;code class=&quot;highlighter-rouge&quot;&gt;periodicStateCheck()&lt;/code&gt; method is scheduled within the &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; area to run a few times a second. It checks the global state &lt;em&gt;commands&lt;/em&gt; to see if any have changed since the last time it checked. If any have, it performs the server actions necessary to execute the state change, and then flips the &lt;em&gt;actual&lt;/em&gt; state over to match.&lt;/p&gt;
+
+&lt;p&gt;In this way, &lt;code class=&quot;highlighter-rouge&quot;&gt;periodicStateCheck()&lt;/code&gt; is a bridge between the &lt;code class=&quot;highlighter-rouge&quot;&gt;async&lt;/code&gt; world of the Discord server, and the synchronous &amp;amp; procedural world of the rest of the scripting.&lt;/p&gt;
+
+&lt;h5 id=&quot;audio-handling-classes&quot;&gt;Audio Handling Classes&lt;/h5&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/master/audioHandling.py&quot;&gt;These are sources and sinks for audio.&lt;/a&gt; They’re the building blocks for interacting with a Discord Voice channels.&lt;/p&gt;
+
+&lt;p&gt;When working with a Voice Channel, the Discord.py API requires you provide it an audio source and sink. The source is simply a class which can &lt;em&gt;provide&lt;/em&gt; 20ms chunks of &lt;a href=&quot;https://en.wikipedia.org/wiki/Pulse-code_modulation&quot;&gt;PCM audio data&lt;/a&gt; whenever requested. A sink is the mirror: It’s a class which will be regularly provided with 20ms chunks of PCM audio data.&lt;/p&gt;
+
+&lt;p&gt;When implementing a source, we have to generate that audio data from somewhere. Similarly, when working with a sink, we have to take the given data and do something with it.&lt;/p&gt;
+
+&lt;p&gt;On the source side, we actually implemented two different sources. &lt;code class=&quot;highlighter-rouge&quot;&gt;MicrophoneAudioSource()&lt;/code&gt; is the audio source that reads data from the USB microphone via the &lt;a href=&quot;https://python-sounddevice.readthedocs.io/en/0.3.14/&quot;&gt;python-sounddevice library&lt;/a&gt;, and returns it as the 20ms chunks. &lt;code class=&quot;highlighter-rouge&quot;&gt;WaveFileAudioSource()&lt;/code&gt; does similarly, but instead sources from a .wav file on disk.&lt;/p&gt;
+
+&lt;p&gt;Normally, &lt;code class=&quot;highlighter-rouge&quot;&gt;MicrophoneAudioSource()&lt;/code&gt; is configured to be the audio Source for the voice channel. However, when we want to put the call on “hold”, we switch to using &lt;code class=&quot;highlighter-rouge&quot;&gt;WaveFileAudioSource()&lt;/code&gt;. This prevents microphone data from being broadcast to Discord, and instead plays some nice music.&lt;/p&gt;
+
+&lt;p&gt;There’s only one audio sink currently, &lt;code class=&quot;highlighter-rouge&quot;&gt;SpeakerAudioSink()&lt;/code&gt;. It also uses python-sounddevice to transmit any audio packets to the default audio device on the system, which happens to be the USB conference room speaker we have hooked up.&lt;/p&gt;
+
+&lt;h3 id=&quot;interacting-with-an-audio-device&quot;&gt;Interacting with an Audio Device&lt;/h3&gt;
+
+&lt;p&gt;As mentioned, we’re using python-sounddevice as the library to do audio interaction. It’s actually fairly nice, using Linux’s abstractions to prevent the need to interact &lt;em&gt;directly&lt;/em&gt; with the audio hardware. As long as we configure the device we want to use as the Raspberry Pi’s default audio device, python-sounddevice handles the rest.&lt;/p&gt;
+
+&lt;p&gt;It was also nice that I could configure python-sounddevice to work with PCM audio at 48KHz, 16 bits, to match the Discord API exactly. This meant we didn’t have to do any weird re-sampling of audio while exchanging between the API and the hardware device.&lt;/p&gt;
+
+&lt;h4 id=&quot;nuances-of-the-discord-api&quot;&gt;Nuances of the Discord API&lt;/h4&gt;
+
+&lt;p&gt;The biggest roadblock we hit while implementing the audio interaction was on the Audio Sink. The Discord API returns an &lt;em&gt;independent&lt;/em&gt; audio stream &lt;em&gt;per connected user&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;So, if one other person is on the call with you, that’s ok - you get one stream, and send it to the speaker.&lt;/p&gt;
+
+&lt;p&gt;However, if you have two people, you get two streams. You have to &lt;em&gt;mix&lt;/em&gt; the two together prior to sending to the speaker.&lt;/p&gt;
+
+&lt;p&gt;Mixing becomes non-trivial pretty quickly. Aside from the fact that &lt;a href=&quot;https://dsp.stackexchange.com/questions/3581/algorithms-to-mix-audio-signals-without-clipping&quot;&gt;mixing digital audio is just plain hard&lt;/a&gt; in the first place, you also have to do it in real-time, accounting for missing or incorrectly ordered packets, in python (which isn’t the fastest or best language for bit-level manipulation on the block).&lt;/p&gt;
+
+&lt;p&gt;After a lot of experimentation, I ended up at a not-very-robust but workable answer:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Use &lt;a href=&quot;https://numpy.org/&quot;&gt;Numpy&lt;/a&gt; for speed of integer addition - base python couldn’t get it done fast enough.&lt;/li&gt;
+  &lt;li&gt;Maintain a “buffer” of the current 20ms audio that is soon to be sent to the speaker.&lt;/li&gt;
+  &lt;li&gt;Receive each packet from all streams (all tagged with the sending user).&lt;/li&gt;
+  &lt;li&gt;Check if the buffer already has an audio packet from that user.&lt;/li&gt;
+  &lt;li&gt;If so, send the buffer to the speaker, zero it out, and then add the packet to the buffer&lt;/li&gt;
+  &lt;li&gt;Otherwise, just add the packet to the buffer.&lt;/li&gt;
+  &lt;li&gt;Record that the packet has data from that speaker.&lt;/li&gt;
+  &lt;li&gt;Wait for the next packet and repeat.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;This has a number of limitations - it will clip very easily if everyone screams at the same time. It will also not account for out-of-order or missing packets very well. It assumes users are sending data in a synchronized fashion.&lt;/p&gt;
+
+&lt;p&gt;For general use-cases, I really wouldn’t recommend doing this. However, for our “good enough for a $15 project” use case, it’s been getting us by so far. The implementation can all be seen in &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/audioHandling.py#L132&quot;&gt;the &lt;code class=&quot;highlighter-rouge&quot;&gt;SpeakerAudioSink&lt;/code&gt; class&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;interacting-with-a-human-interface-device&quot;&gt;Interacting with a Human Interface Device&lt;/h3&gt;
+
+&lt;p&gt;Using python-sounddevice provided a good way to access the audio portion of our Revolabs FLX 1500, but didn’t cover how the buttons on the top worked. I’d initially intended to just use a small touchscreen or physical buttons to do the call/hangup operation. However, given that there were already some buttons on the device we were using, I figured, “how hard could it be to get these to work?” Ha.&lt;/p&gt;
+
+&lt;p&gt;I didn’t know the first thing about HID devices, other than that they existed. I had to learn a bunch along the way. What follows is an under-educated conglomeration of research over a fast day of experimentation and debugging.&lt;/p&gt;
+
+&lt;p&gt;Every USB device you plug into your computer has to tell the computer what it’s capable of. Especially if it’s not just a mouse or a keyboard, there are a ton of protocols around how the device tells the computer what it is and what it can do. In the attempt to make things as… universal… as possible, &lt;a href=&quot;https://www.freebsddiary.org/APC/usb_hid_usages.php&quot;&gt;a ton of device capabilities are pre-defined.&lt;/a&gt; This flexibility comes at a cost - implementing software to properly handle any and all of these inputs is difficult, to say the least.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/revolabs1500_usb_info.txt&quot;&gt;Dumping the device’s capabilities&lt;/a&gt; using Linux utilities revealed a handful of interesting things. For one, the volume and mute buttons were mapped to the standard HID device definitions, which was good. Three out of the five buttons were trivial.&lt;/p&gt;
+
+&lt;p&gt;The device reported to also have some ability to control the LED’s, as well as read and set the “hook switch”, which I can only presume maps to the switch on phones which you used to have to physically hang back up on a wall when you were done using them. From what I understand, “flash switch” was also a basic way to tap this switch once, ending the current call and prepping for the next one.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/hookSwitch.png&quot; alt=&quot;Hook switch?&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I was hopeful, because things like this seemed to imply there was some way to get the info out of the device.&lt;/p&gt;
+
+&lt;p&gt;Alas, that was not to be. The device also listed a &lt;em&gt;slew&lt;/em&gt; of the proprietary, manufacturer-only capabilities, which have no formal definition for what the bits received under those descriptors implies. After connecting to the device and playing around a bunch with the buttons, I could only make &lt;em&gt;one&lt;/em&gt; of them generate any bits, and they were all proprietary. Even the mute button didn’t respond on the standard USB api’s, but on some weird proprietary descriptor.&lt;/p&gt;
+
+&lt;p&gt;So, rather than implementing proper USB handling, I fell back on &lt;em&gt;hacking and reverse engineering&lt;/em&gt;. Rather than write a full USB HID driver in python (eeew), I opted to assume that we run on linux, and attempt to interact with the &lt;code class=&quot;highlighter-rouge&quot;&gt;/dev/usb/hiddev0&lt;/code&gt; file, a &lt;a href=&quot;https://www.kernel.org/doc/Documentation/hid/hiddev.txt&quot;&gt;special linux kernel file that abstracts the HID device&lt;/a&gt;. The path is hard-coded, since we don’t have anything else hooked up to the box’s USB ports at the moment.&lt;/p&gt;
+
+&lt;p&gt;It appeared everything was sent in 8 byte chunks - 4 bytes of header to describe the data, and 4 bytes of actual data value. After fiddling about for the headers I care about, I parsed those out of the data stream, and extract the values to represent the meaningful state I care about. &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/revolabsFLXInterface.py&quot;&gt;The implementation can be seen here.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;As mentioned, I don’t have any documentation on what all these proprietary headers are used for, or how I’m supposed to interact with them to configure the device. It doesn’t seem to be anywhere online.&lt;/p&gt;
+
+&lt;p&gt;I do have a &lt;em&gt;guess&lt;/em&gt; as to why this is. All that follows in this section is that guess, but not something I know for sure.&lt;/p&gt;
+
+&lt;p&gt;If you look at the manual for the FLX series, you’ll notice this confusing table:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/revolabsThirdParty.png&quot; alt=&quot;Supported third party applications&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Why in the world does a &lt;em&gt;universal&lt;/em&gt; serial bus device have a list of &lt;em&gt;supported applications&lt;/em&gt;? Shouldn’t it be &lt;em&gt;universal&lt;/em&gt;?&lt;/p&gt;
+
+&lt;p&gt;As mentioned, a piece of software supporting every permutation of USB feature set would be really hard to get right. It would inevitably not work with some pieces of hardware, which frustrates users, and reduces their desire to purchase more products from the company.&lt;/p&gt;
+
+&lt;p&gt;Consider as well your average corporate purchaser of a conference room phone. Time is money. Assume you have five engineers in a conference room, each getting paid $50/hour.&lt;/p&gt;
+
+&lt;p&gt;If they have to spend five minutes at the start of each meeting debugging their phone, even that small amount of time adds up - by my numbers, about $21 per meeting.&lt;/p&gt;
+
+&lt;p&gt;Even if your company only has 10 meetings per week in that room (which is an &lt;em&gt;incredibly low&lt;/em&gt; estimate), you’re still burning about &lt;strong&gt;$10,000/year&lt;/strong&gt; on buggy conference phones.&lt;/p&gt;
+
+&lt;p&gt;It would be trivial to justify buying a $5000 device, as long as you could prove it &lt;em&gt;just works&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;TL;DR - Corporate purchasers will pay through the nose to get “just works” functionality.&lt;/p&gt;
+
+&lt;p&gt;Given this as their primary purchaser base, I think Revolabs made an engineering decision to drive sales in a particular market. Move your more advanced functionalities (beyond basic audio &amp;amp; volume) onto proprietary parts of the USB spec. Work one-on-one with a select set of popular corporate software vendors to ensure seamless integration of the product. Revolabs gets to publish a list of software they are confident they “just work” with. Other software companies get to say Revolabs hardware “just works” with their software.&lt;/p&gt;
+
+&lt;p&gt;Corporate purchasers see both lists and purchase both products. Even at the expense of openness and flexibility and cost, they get their “just works” functionality, which is far more valuable.&lt;/p&gt;
+
+&lt;p&gt;Now, I’m not saying this is good or bad in general. Clearly, the numbers work out for corporate purchasers (who also happen to pay my paycheck and fund our robotics team).&lt;/p&gt;
+
+&lt;p&gt;I suppose it’s more rough on us open-source hackers and tinkerers, but that’s more my own fault for choosing a closed-source piece of hardware. And, to be fair, the audio works super well, and I’ve got most of the buttons I care about working in some fashion. Given I paid $15 total for this project, I really can’t ask for much. You do get what you pay for.&lt;/p&gt;
+
+&lt;h2 id=&quot;scope-creep---expanding-feature-set&quot;&gt;Scope Creep - Expanding Feature Set&lt;/h2&gt;
+
+&lt;p&gt;Of course, stopping at this conference phone idea wasn’t good enough. We had a whole sandbox to play in now! The possibilities!&lt;/p&gt;
+
+&lt;p&gt;Usually I hate scope creep. But, it is fun to tinker. We’re keeping development constrained behind sufficient criteria to ensure we don’t lose the useful features, while exploring some new ones.&lt;/p&gt;
+
+&lt;h3 id=&quot;current&quot;&gt;Current&lt;/h3&gt;
+
+&lt;h4 id=&quot;cheering&quot;&gt;Cheering&lt;/h4&gt;
+
+&lt;p&gt;If you didn’t know &lt;a href=&quot;https://www.thebluealliance.com/team/1736/history&quot;&gt;1736 has a history of award-winning cheering sections&lt;/a&gt;. It is only fitting that our Discord Bot participates as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/cheerHandler.py&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;CheerHandler()&lt;/code&gt;&lt;/a&gt; is where the magic happens for now. An abstracted call/response cheer handler is implemented, along with some regex parsing &amp;amp; stateful “Give me a */What does that spell?” cheer.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/giveMeAB.png&quot; alt=&quot;give me a B!&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Silly as it may be, it’s actually an awesome exercise &lt;a href=&quot;https://en.wikipedia.org/wiki/Regular_expression&quot;&gt;string parsing with regular expressions&lt;/a&gt;, with a fun twist.&lt;/p&gt;
+
+&lt;h4 id=&quot;markov-chain-responses&quot;&gt;Markov Chain Responses&lt;/h4&gt;
+
+&lt;p&gt;I’ve always been amused by Markov Chain Bots - They can get a bit boring, but every now and then they produce some real gems.&lt;/p&gt;
+
+&lt;p&gt;For those who don’t know, a &lt;a href=&quot;https://en.wikipedia.org/wiki/Markov_chain&quot;&gt;Markov Chain&lt;/a&gt; is a statistics model which looks at the sequential probabilities of events. If you consider the “choice of a word in a sentence” as an event, a Markov Chain bot can generate “new” sentences based on most-likely combinations of other sentences.&lt;/p&gt;
+
+&lt;p&gt;An overly-simplified explanation of this:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Get a bunch of sentences&lt;/li&gt;
+  &lt;li&gt;Break every sentence into chunks of words. I choose chunks of 4 words for this example.&lt;/li&gt;
+  &lt;li&gt;Analyze all the sentences to see, given three previous words, how likely is the fourth one?&lt;/li&gt;
+  &lt;li&gt;Assemble a probability data structure to describe this “given three previous words, how likely is this word?”&lt;/li&gt;
+  &lt;li&gt;Use the data structure to generate new sentences.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;In step 5, you can get a bit creative - you want to pick words randomly, but not &lt;em&gt;too&lt;/em&gt; randomly. You use your probability data structure to skew the randomness toward “likely sentences”.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, if you know the language of the sentences (like English), you can incorporate a &lt;a href=&quot;https://en.wikipedia.org/wiki/Part-of-speech_tagging&quot;&gt;“parts of speech” tagger&lt;/a&gt; into the mix. At steps 3 and 5, you use an algorithm from &lt;a href=&quot;https://en.wikipedia.org/wiki/Natural_language_processing&quot;&gt;Natural Language Processing&lt;/a&gt; to identify what words are nouns, verbs, etc. This further increases the accuracy of your probability model, leading to more natural generated sentences.&lt;/p&gt;
+
+&lt;p&gt;I leveraged two python libraries to accomplish these goals. They covered all the major technical work, so I didn’t have to implement the above algorithms myself - simply use them. &lt;a href=&quot;https://github.com/jsvine/markovify&quot;&gt;Markovify&lt;/a&gt; is a python library explicitly designed for this text-based Markov model training and regurgitation exercise. Originally developed at BuzzFeed, it’s used by a number of similar projects. Additionally, I hooked Markovify using &lt;a href=&quot;https://www.nltk.org/&quot;&gt;NLTK&lt;/a&gt; to build the parts-of-speech tagging into the model.&lt;/p&gt;
+
+&lt;p&gt;The real fun of a Markov model - choosing the sentences to get for step 1. It’s what directly impacts what comes out at step 5. If you put in the Complete works of William Shakespeare, you get Shakespeare-like sentences. If you put in the text of every Star Wars movie, you’ll get Star Wars-sounding quotes from a movie that doesn’t exist yet.&lt;/p&gt;
+
+&lt;p&gt;If you put in ChiefDelphi posts, you’ll get something that sounds vaguely like people talking about FIRST robotics. This is a robotics Discord bot, so why not make it talk about robots?&lt;/p&gt;
+
+&lt;p&gt;The implementation was split into three phases:&lt;/p&gt;
+
+&lt;p&gt;First, I ripped about 6,000 posts from chiefDelphi.com. This code is in &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/chiefDelphi.py&quot;&gt;chiefDelphi.py&lt;/a&gt;. I did it in a number of chunks (see constants on line 16), using &lt;a href=&quot;https://pypi.org/project/pydiscourse/&quot;&gt;PyDiscourse&lt;/a&gt; to simplify interaction with the server. I injected a 0.25 second pause between each post querey to attempt to keep the server load down. Still, apologies to Brandon Martus for making his server somewhat sad on certain evenings in early November 2019. After a bit of in-script cleanup and manual find/replace magic on the resulting text file, I had about &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkov.txt&quot;&gt;3 MB of sentences to train the bot&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Second, in just a &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/markovGenerate.py&quot;&gt;handful of lines of python&lt;/a&gt;, I converted that 3MB of training material into &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkovModel.json&quot;&gt;24MB of a json probability model of how robotics people talk&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Finally, the main discord bot was updated to &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L65&quot;&gt;parses this model into RAM&lt;/a&gt; and &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L241&quot;&gt;generate short sentence responses&lt;/a&gt; when it has nothing else to say in response. It’s not exactly conversational, but it is funny.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/bestOfCasseroleBot.png&quot; alt=&quot;Best of CasseroleBot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, it is worthwhile noting that Markovify explicitly ensures it’s not just re-generating sentences that were in its original database - ie, sentences are actually unique and new. If it can’t accomplish this within a certain number of attempts, it gives up. To handle this, &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L244&quot;&gt;we’ve just got some fixed text to return&lt;/a&gt; if “all else fails”.&lt;/p&gt;
+
+&lt;p&gt;How useful was this? Not very. How fun was it? Quite.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-blue-alliance&quot;&gt;The Blue Alliance&lt;/h4&gt;
+
+&lt;p&gt;Finally, one of the slightly useful features - we did add a Blue Alliance connection. Currently, all it does is &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/theBlueAlliance.py&quot;&gt;look up team names by their number.&lt;/a&gt; But, perhaps more to come in the future, especially if we integrate this with a scouting system.&lt;/p&gt;
+
+&lt;h3 id=&quot;future&quot;&gt;Future&lt;/h3&gt;
+
+&lt;p&gt;The plans going forward? Who knows…. Lots of students have experience developing in this environment, so I’m looking forward to ideas. One in flight is using &lt;a href=&quot;https://github.com/seatgeek/fuzzywuzzy&quot;&gt;Fuzzy string matching to make the input format a bit less rigid and more conversational&lt;/a&gt;. Another might be to use it as a repository to store and retrieve scouting data.&lt;/p&gt;
+
+&lt;p&gt;The biggest thing we have available now - an always-on, text-based-interface &lt;em&gt;into&lt;/em&gt; a computer with GPIO’s, physically located inside our build space and its network. That… opens a &lt;em&gt;lot&lt;/em&gt; of doors.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Hopefully this gives you a bit of an overview as to what we’re doing with our Discord platform at the moment! It also should indicate why I’ve been without a blog post for a while (writing software takes time!).&lt;/p&gt;</content><author><name></name></author><summary type="html"></summary></entry><entry><title type="html">Useful Youtube and Other Websites</title><link href="/blog_posts/2019/11/02/youtube_channels.html" rel="alternate" type="text/html" title="Useful Youtube and Other Websites" /><published>2019-11-02T09:30:00-05:00</published><updated>2019-11-02T09:30:00-05:00</updated><id>/blog_posts/2019/11/02/youtube_channels</id><content type="html" xml:base="/blog_posts/2019/11/02/youtube_channels.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;The internet is truly one of the biggest resources society has at its avail.&lt;/p&gt;
 
@@ -2049,192 +2339,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">My Computer Engineering Toolkit</title><link href="/blog_posts/2019/08/23/my_toolkit.html" rel="alternate" type="text/html" title="My Computer Engineering Toolkit" /><published>2019-08-23T09:30:40-05:00</published><updated>2019-08-23T09:30:40-05:00</updated><id>/blog_posts/2019/08/23/my_toolkit</id><content type="html" xml:base="/blog_posts/2019/08/23/my_toolkit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;This will be a bit of self promotion, but hopefully educational at the same time. Here’s a confession - I have many computers in my life &lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. They have come and gone over the years, and all played a crucial role in my education and learning, leading me toward the engineer I am today.&lt;/p&gt;
-
-&lt;p&gt;I wanted to spend a post talking about the machines I currently use to do my thing.&lt;/p&gt;
-
-&lt;p&gt;For context, if you happen to go to my &lt;a href=&quot;https://www.linkedin.com/in/christopher-gerth-7b8b52126/&quot;&gt;linkedin page&lt;/a&gt;, you’ll notice I’m an &lt;em&gt;embedded&lt;/em&gt; software engineer by day. Basically, this just means my day job is the same as my robotics software-mentor job - just on bigger and yellower machines. My hobbies (robotics and otherwise) tend to flow straight from this occupation.&lt;/p&gt;
-
-&lt;p&gt;What I’ll talk through are what sorts of machines I use day to day to accomplish my personal and mentorship software development tasks. I hope that by getting some insight into how I’ve configured the tools around me, you may get some ideas of your own to form your own custom toolkit to support your hobbies!&lt;/p&gt;
-
-&lt;h2 id=&quot;computer-hardware&quot;&gt;Computer Hardware&lt;/h2&gt;
-
-&lt;h3 id=&quot;the-main-show---the-desktop&quot;&gt;The Main Show - the Desktop&lt;/h3&gt;
-
-&lt;p&gt;My “daily driver” machine is my custom-built desktop. It was fairly up-to-date when I built it in 2013, but it has aged very well - it’s still more than fast enough to run any internet browsing, code editing and building, and occasional video games I throw at it.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/thePC.jpg&quot; alt=&quot;thePC&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Some basic specs:&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Intel i5 3350P CPU - 3.10 GHz&lt;/li&gt;
-  &lt;li&gt;8GB RAM&lt;/li&gt;
-  &lt;li&gt;128 GB Main SSD, 1Tb expansion Drive&lt;/li&gt;
-  &lt;li&gt;NVIDIA GeForce GTX 660&lt;/li&gt;
-  &lt;li&gt;Windows 10 Professional&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Samsung-LU28E570DS-ZA-Led-Lit-Monitor/dp/B07FBNPTDD/ref=sr_1_1?keywords=samsung+4k+monitor&amp;amp;qid=1566526097&amp;amp;s=gateway&amp;amp;sr=8-1&quot;&gt;Samsung 4K 28-inch monitor&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;I’ve gone back and forth on this over the years. I really like all the screen real estate in one spot, and Windows 10 is great about managing it&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Mad-Catz-RAT4-Programmable-Adjustable/dp/B01JBZMGAG&quot;&gt;RAT4 Mouse&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Gotta get something that looks cool, and has programmable buttons. If you’ve never experienced a mouse with a dedicated “back” button, you haven’t lived!&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Adesso-AKB-635UB-Easy-Touch-635/dp/B00SX4X8WW/ref=sr_1_3?keywords=adesso+mechanical+keyboard&amp;amp;qid=1566526455&amp;amp;s=gateway&amp;amp;sr=8-3&quot;&gt;Adesso Mechanical Keyboard&lt;/a&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Mine is similar to this one, I don’t think they sell it anymore.&lt;/li&gt;
-      &lt;li&gt;Mine has &lt;a href=&quot;https://www.keyboardco.com/blog/index.php/2012/12/an-introduction-to-cherry-mx-mechanical-switches/&quot;&gt;Cherry Blue switches&lt;/a&gt; - the really &lt;em&gt;really&lt;/em&gt; clicky ones. Drives the wife mad. But I &lt;em&gt;love&lt;/em&gt; the tactile feel.
-        &lt;ul&gt;
-          &lt;li&gt;Of course, it’s not for everyone. Try a bunch of different keyboards to see which one you like.&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Mousepad is a chunk of fabric-covered neoprene that was surplus from the manufacture of &lt;a href=&quot;https://www.hakenaudio.com/&quot;&gt;Haken Continuum&lt;/a&gt; continuous keyboard. It’s a fun souvenir from one of my favorite college classes.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/thePCguts.jpg&quot; alt=&quot;thePCGuts&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Again keep in mind - these specs are 6 years old at the time of writing. If I ever happen upon a spare couple hundred dollars, I this will probably be the first thing I upgrade. However, it’s still running so fast, it’s hard to bring myself to do so.&lt;/p&gt;
-
-&lt;p&gt;None of this is really top-of-the-line - it’s middle to cheap, but more than sufficient to support my personal coding and development projects.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-new-guy---the-laptop&quot;&gt;The New Guy - the Laptop&lt;/h3&gt;
-
-&lt;p&gt;For folks who do lots of FRC software mentoring, turns out the vast majority of my coding occurs on the road. For this reason, I recently splurged on getting a good machine that would take all the software-writing punishment I could throw at it. My choice? The &lt;a href=&quot;https://consumer.huawei.com/us/tablets/matebook-x-pro/&quot;&gt;Huawei MateBook X Pro&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;https://gloimg.gbtcdn.com/soa/gb/pdm-product-pic/Electronic/2018/07/09/goods_img_big-v1/20180709131041_59936.jpg&quot; alt=&quot;matebook&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;source: gearbest.com&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;That’s right - I got the Chinese hardware. But I have to say, it’s super awesome. Sleek and light, phenomenal battery life, a brilliant and giant display (my key criteria), and a pretty good keyboard and trackpad make for an excellent coding machine on the road.&lt;/p&gt;
-
-&lt;p&gt;The device sports a plethora of USB-C connectors. I usually carry dongle adapters to get me to VGA and HDMI, as well as extra USB and Ethernet ports (all very important for robot usage).&lt;/p&gt;
-
-&lt;p&gt;To address the elephant at the time of this post - &lt;em&gt;Yes, Huawei devices are considered a security risk in the US&lt;/em&gt;. Most of the concern has been targeted at their servers and networking hardware, as it relates to the 5G expansion of wireless telecom carriers. Their consumer hardware is under target too. It was a risk I took when purchasing. I’m hoping the situation gets cleared up soon, but also keeping my finger on the pulse of the conversation, and actively monitoring network traffic. If something starts “phoning home”, I will probably re-evaluate what sort of network permissions this device will get.&lt;/p&gt;
-
-&lt;p&gt;No major changes to the OS or hardware since I’ve gotten it. I’ve got exactly what they say they sell on their website.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-old-standby---the-server&quot;&gt;The Old Standby - the Server&lt;/h3&gt;
-
-&lt;p&gt;At my home, I run one additional machine that acts as a server. I run a Dell PowerEdge R200 in my basement.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;2.33GHz Xenon CPU&lt;/li&gt;
-  &lt;li&gt;4GB RAM&lt;/li&gt;
-  &lt;li&gt;128 GB SSD&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;\assets\server.png&quot; alt=&quot;the server&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;It’s really not much - the thing is 10 years old. I got it for a &lt;em&gt;steep&lt;/em&gt; discount on eBay - just had to provide my own hard drive.&lt;/p&gt;
-
-&lt;p&gt;I run &lt;a href=&quot;https://www.archlinux.org/&quot;&gt;ArchLinux&lt;/a&gt;, one of the most trimmed down operating systems with the &lt;a href=&quot;https://www.linux.com/what-is-linux/&quot;&gt;Linux Kernel&lt;/a&gt; you can get. It’s a “no batteries included” approach to design - which means you get lots of configurability as a user. This server is the platform for a large number of continuous-running applications I keep at my house.&lt;/p&gt;
-
-&lt;h3 id=&quot;network-storage&quot;&gt;Network Storage&lt;/h3&gt;
-
-&lt;p&gt;For saving files and doing server backup, I run a 2-TB &lt;a href=&quot;https://www.buffalotech.com/products/category/network-attached-storage&quot;&gt;Buffalo Network Attached Storage&lt;/a&gt; device, with two hot-swapable drives in a RAID configuration allowing for full redundancy. It’s primarily to supplement the other devices on the network - I’ll get into that later.&lt;/p&gt;
-
-&lt;h3 id=&quot;other-home-networking-equipment&quot;&gt;Other Home Networking Equipment&lt;/h3&gt;
-
-&lt;p&gt;Along with the server, my small rack downstairs consists of two ethernet switches (one providing Power Over Ethernet, one not), an old Netgear combination Router &amp;amp; Wifi access point, and our modem. We’re lucky and have fiber internet service - I’m currently on a 300MBps plan that makes for a &lt;em&gt;blazing&lt;/em&gt; fast experience.&lt;/p&gt;
-
-&lt;p&gt;When I moved into the house, one of my first projects was to install &lt;a href=&quot;https://www.monoprice.com/product?p_id=8103&quot;&gt;Cat6 ethernet wiring&lt;/a&gt; throughout the house. I added 7 new ports on two floors of the house, and ran all the wiring back down to the server &amp;amp; ethernet switches. This allows our media station (Roku &amp;amp; smart DVD Player) the desktop, and a few wired security cameras to connect to wired internet, even though they’re all in different rooms than the rest of the equipment. It also means the noisy server lives downstairs behind closed doors.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/networkEquipment.png&quot; alt=&quot;Network Equip&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;In a super simplified (to the point of inaccurate) diagram, here’s how it all is hooked together:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/simplifiedNetwork.png&quot; alt=&quot;Home Network Diagram&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;key-software&quot;&gt;Key Software&lt;/h2&gt;
-
-&lt;p&gt;This hardware would be nothing without the software that sits on top of it to be useful. I’ll give a quick survey of the pieces of software that get used on a daily basis in my household.&lt;/p&gt;
-
-&lt;h3 id=&quot;on-the-desktop--laptop&quot;&gt;On the Desktop &amp;amp; Laptop&lt;/h3&gt;
-
-&lt;p&gt;I have a strong preference for free software because I like to spend my money on other things, like food. Sometimes you have to pay for good stuff. However, we are lucky that in today’s world, the majority of the tools needed for day-to-day software development can be acquired free of cost!&lt;/p&gt;
-
-&lt;h4 id=&quot;development-environment&quot;&gt;Development Environment&lt;/h4&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://code.visualstudio.com/&quot;&gt;Visual Studio Code&lt;/a&gt; is my preferred code editor. The ability to support so many languages so flexibly, along with tons of built-in tools.&lt;/p&gt;
-
-&lt;p&gt;I’m also a huge fan of dark mode, and I really like the built-in color theme. Call me shallow, but if you have to stare at code all day long, might as well do it in a way that looks ascetically pleasing to you!&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/vsCodeSample.png&quot; alt=&quot;VSCodeSample&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://git-scm.com/&quot;&gt;Git&lt;/a&gt; is a daily part of my development experience. Ever since I learned how to use it in college and on my first job, it’s become an indispensible tool for keeping track of how I change my software over time, organizing my development process, and creating backups of projects. Though I often manipulate my repos via the command line, I still really like having a nice visualization of my version tree. &lt;a href=&quot;https://gitextensions.github.io/&quot;&gt;Git Extensions&lt;/a&gt; is my current choice for doing this, but there’s lots of great alternatives.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/gitExtensionsSample.png&quot; alt=&quot;GitExtensionsSample&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;When connecting to the server, I generally use &lt;a href=&quot;https://en.wikipedia.org/wiki/Secure_Shell&quot;&gt;SSH&lt;/a&gt; to get access to a command line on the other machine. &lt;a href=&quot;https://www.chiark.greenend.org.uk/~sgtatham/putty/&quot;&gt;Putty&lt;/a&gt; is my tool of choice to get this done on Windows, though the one built into Git’s command prompt works just fine too.&lt;/p&gt;
-
-&lt;p&gt;Connecting between the Windows machines usually involves Window’s built-in Remote Desktop application.&lt;/p&gt;
-
-&lt;p&gt;For working with C code, I tend to prefer the &lt;a href=&quot;http://www.mingw.org/wiki/MSYS&quot;&gt;msys/minGW&lt;/a&gt; to get the parts of the GNU/Linux environment on my Windows machines required to build and link C code to an executable. &lt;a href=&quot;https://www.cygwin.com/&quot;&gt;Cygwin&lt;/a&gt; is another super common option.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.python.org/&quot;&gt;Python&lt;/a&gt; is my go-to language for most projects - it’s got easy &amp;amp; c-like syntax, cross-platform abilities, and batteries-included philosophy makes it a good choice for creating highly functional prototypes and super-flexible applications. For pure speed or robustness other options may be better, but Python is still my daily-driver for a language to implement my ideas in.&lt;/p&gt;
-
-&lt;h4 id=&quot;general-engineering-tools&quot;&gt;General Engineering Tools&lt;/h4&gt;
-
-&lt;p&gt;Of recent, &lt;a href=&quot;https://discordapp.com/&quot;&gt;Discord&lt;/a&gt; has become the defacto tool for maintaining communication in our FRC team, amongst friends, and even family.&lt;/p&gt;
-
-&lt;p&gt;For CAD, I tend to like &lt;a href=&quot;https://librecad.org/&quot;&gt;LibreCAD&lt;/a&gt; in the 2D drawings, and use &lt;a href=&quot;https://www.autodesk.com/products/inventor/overview&quot;&gt;Autodesk Inventor&lt;/a&gt; for 3D work. Both have many alternatives, these are simply the ones that I learned first, so I’m still the most efficient with them. I don’t have to do this super often, so I tend to stick with what I know, rather than invest in a new tool.&lt;/p&gt;
-
-&lt;p&gt;For electronics work, I have a few tools of choice. For doing research on the functionality of circuits and simulating their behavior, I use a program called &lt;a href=&quot;https://www.analog.com/en/design-center/design-tools-and-calculators/ltspice-simulator.html&quot;&gt;LTspice&lt;/a&gt;. It’s a bit obtuse to get used to, I learned it in college. It helps when designing analog circuitry and validating functionality prior to building a real circuit.&lt;/p&gt;
-
-&lt;p&gt;When designing an actual circuit that I’ll build, I switch over to a different tool. &lt;a href=&quot;http://www.kicad-pcb.org/&quot;&gt;KiCad&lt;/a&gt; has been my choice of recent, though &lt;a href=&quot;https://www.autodesk.com/products/eagle/free-download&quot;&gt;Autodesk Eagle&lt;/a&gt; was my choice in college. Both give a vast library of components that you first assemble into a nice circuit schematic, then lay out physically on a &lt;a href=&quot;https://en.wikipedia.org/wiki/Printed_circuit_board&quot;&gt;printed circuit board (PCB)&lt;/a&gt;. In addition to printing the schematic, you can export various files from the PCB design side that manufacturers can use to create a custom board for you. This will likely be the subject of a future blog post.&lt;/p&gt;
-
-&lt;h4 id=&quot;documentation&quot;&gt;Documentation&lt;/h4&gt;
-
-&lt;p&gt;For documenting my work, I tend toward two tools.&lt;/p&gt;
-
-&lt;p&gt;For simple technical documentation, I really &lt;em&gt;really&lt;/em&gt; like &lt;a href=&quot;https://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt;. That’s what this website is (mostly) written in! My liking is primarily because it’s super simple to write - basically just editing a text file. The rendering into nicely-formatted viewing is done by some other tool. To me, this is awesome because even if the visualization tool goes extinct, the base content is still super accessible and readable (unlike Microsoft Word or the like). Github and its clones support it natively, so &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files you produce display very nicely via their web interface (which is how most 3rd party folks will first see your projects). The feature set provided is, for me, “just-right” - simple formatting of code, images, headings, lists. All without the overhead of pure HTML/CSS/Javascript to accomplish the same thing. Of course, if doing a website from the ground up, you’ll want to be more familiar with those. However, for something like this blog, Markdown is an awesome choice for entering the information with enough complexity to fully describe your ideas, without unneeded overhead.&lt;/p&gt;
-
-&lt;p&gt;For more formal documentation (think, scientific papers or resumes), &lt;a href=&quot;https://www.latex-project.org/&quot;&gt;LaTeX&lt;/a&gt; is by far king, and I also love it. It produces &lt;a href=&quot;https://github.com/RobotCasserole1736/CasseroleLib/blob/master/doc/current_limiting.pdf&quot;&gt;beautifully formatted documents&lt;/a&gt; with top-of-the-line scientific equation editing. It also does great resumes - I recently moved mine over using the &lt;a href=&quot;https://ctan.org/pkg/moderncv?lang=en&quot;&gt;ModernCV&lt;/a&gt; templates! It’s a bit obtuse to learn at first, but the end results are well worth it!&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/latexResume.png&quot; alt=&quot;LatexResume&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Looks even better unredacted!&lt;/em&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;on-the-server&quot;&gt;On the Server&lt;/h3&gt;
-
-&lt;p&gt;The Gerth Household Server (affectionately nicknamed “Geezer” for its age) runs a number of applications which improve out lives on daily basis. I got into having a household server after my college laptop’s screen died, leaving it only useful by SSH or Remote Desktop access. I was bored one weekend, got Arch Linux up and running, and it kinda just snowballed from there. A few years back I finally decided running my laptop to death wasn’t a great idea, and swapped for the PowerEdge server hardware.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.home-assistant.io/&quot;&gt;HomeAssistant&lt;/a&gt; is our home automation hub. It was one of the first things I attempted to get running on the server, and has been serving use well ever since! We’ve got a number of wifi-controlled light switches and outlets, smart speakers, &lt;a href=&quot;https://github.com/gerth2/smarthome-devices&quot;&gt;some homebrew devices&lt;/a&gt;, and of course many networked devices. HomeAssistant has a ton of built-in functionality - you just have to configure it that “yes, these things are in my home” and it will automatically do some really slick integration, providing a super useful user interface for controlling the devices. Additionally, I can write automation scripts to allow the smart speakers to trigger action on light switches and whatnot. Highly recommended!&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/hassSample.png&quot; alt=&quot;Home Assistant Sample&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt; is my go-to service for hosting repos online, and making them publicly available. However, there are a handful of projects I really &lt;em&gt;don’t&lt;/em&gt; want to make it outside my home network. Some of them concern the internal configuration of my network, others contain personal info (like my tax returns or resumes). To still be able to have totally-private, not-at-all-in-the-outside-world git projects backed up on a separate device from my PC or laptop, the server also runs an instance of &lt;a href=&quot;https://gitea.io/en-us/&quot;&gt;Gitea&lt;/a&gt;, a simple Github-lookalike that I host myself. I’ll also back up critical projects (like this blog!) just in case Github disappears off the face of the earth - my data won’t disappear with it. Though I will have to find another host.&lt;/p&gt;
-
-&lt;p&gt;For home media, we use &lt;a href=&quot;https://www.plex.tv/&quot;&gt;Plex&lt;/a&gt; to stream media files from our NAS to various viewing screens throughout the house. Both TV’s have some smarts built into them to where they can stream from the server.&lt;/p&gt;
-
-&lt;p&gt;Both Gitea and Plex are backed up against the Network Attached Storage device, which is nice, since the big files don’t take up space on the server’s internal hard drives.&lt;/p&gt;
-
-&lt;p&gt;For monitoring the server status, aside from just remoting in via SSH and running &lt;code class=&quot;highlighter-rouge&quot;&gt;top&lt;/code&gt;, I recently installed &lt;a href=&quot;https://www.netdata.cloud/&quot;&gt;NETDATA&lt;/a&gt; to provide a slick web-based view of how the server is running at the moment. It’s made basic checkups much quicker!&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/netdataSample.png&quot; alt=&quot;netdata sample&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;All of the applications are contained behind our router’s firewall - no one should be able to access them externally. While on the go, my wife and I use &lt;a href=&quot;https://openvpn.net/&quot;&gt;openVPN&lt;/a&gt; on our phones and laptops to connect back to the home network. The server runs the server-side implementation of openVPN.&lt;/p&gt;
-
-&lt;p&gt;The concept of this &lt;a href=&quot;https://en.wikipedia.org/wiki/Virtual_private_network&quot;&gt;Virtual Private Network&lt;/a&gt; is simply putting your data in a “tunnel” - one end on the device your using, the other end inside our home network. This not only makes sure we have access to our home network applications, but also that we can protect our data from potentially untrusted wifi networks (Sorry random coffee shop XYZ, your baristas make great coffee, but probably don’t spend a ton of time analyzing the security of their local branch’s networking equipment). By encrypting our data with our own trusted devices and security keys, we can up our safety factor online quite a bit.&lt;/p&gt;
-
-&lt;p&gt;The server also happens to be hooked up to an amplifier that powers some weatherproof speakers we have outside. The server runs both a &lt;a href=&quot;https://github.com/PromyLOPh/pianobar&quot;&gt;Pianobar&lt;/a&gt; instance controlled within HomeAssistant, as well as a &lt;a href=&quot;https://github.com/duncanthrax/scream&quot;&gt;Scream&lt;/a&gt; server. Using these, we can play and stream audio to our outdoor speakers from quite a few different devices.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Ok, this is enough of a technical flex for now. I’m not necessarily recommending that anyone use these tools, or endorsing them in any particular way, other than to say that they work well for my family’s current purposes. If you’re in need of similar solutions, try out the tools and let me know what you think! I’m by no means an expert in any of them, but would be happy to give more feedback if needed.&lt;/p&gt;
-
-&lt;p&gt;Happy coding!&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Though, not as many as my friend whose insurance company wanted to classify him as a small business due to his sheer quantity of high-powered hardware. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
