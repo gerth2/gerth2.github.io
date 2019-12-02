@@ -1,4 +1,173 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-11-17T14:35:38-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Creating Casserole Bot</title><link href="/blog_posts/2019/11/17/casserole_bot.html" rel="alternate" type="text/html" title="Creating Casserole Bot" /><published>2019-11-17T08:30:00-06:00</published><updated>2019-11-17T08:30:00-06:00</updated><id>/blog_posts/2019/11/17/casserole_bot</id><content type="html" xml:base="/blog_posts/2019/11/17/casserole_bot.html">&lt;p&gt;&lt;img src=&quot;/assets/discordLogo.png&quot; alt=&quot;Discord Logo&quot; /&gt;&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-12-01T21:55:49-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Having Other Hobbies, like Cooking</title><link href="/blog_posts/2019/12/01/having_other_hobbies.html" rel="alternate" type="text/html" title="Having Other Hobbies, like Cooking" /><published>2019-12-01T08:30:00-06:00</published><updated>2019-12-01T08:30:00-06:00</updated><id>/blog_posts/2019/12/01/having_other_hobbies</id><content type="html" xml:base="/blog_posts/2019/12/01/having_other_hobbies.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;I’ve been wanting to make this post since I started writing this blog. It’s been on the potential ideas list for some time. It is simultaneously &lt;em&gt;less&lt;/em&gt; and &lt;em&gt;more&lt;/em&gt; important than any other post on this site. It has little to do with actually building a robot, but should speak a bit to how robots integrate with the rest of your life.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-have-other-hobbies&quot;&gt;Why Have Other Hobbies?&lt;/h2&gt;
+
+&lt;p&gt;I write software for a living, for volunteer work with an FRC team, to maintain my home’s IT infrastructure, and to educate folks like you online. Software consumes a large part of my time.&lt;/p&gt;
+
+&lt;p&gt;But, like any technical skill, software can never be an end unto itself. Learning new things is good - Learning for the &lt;em&gt;sole sake of learning&lt;/em&gt; isn’t good.&lt;/p&gt;
+
+&lt;p&gt;Learning should always serve some broader purpose. Learning should help &lt;em&gt;you&lt;/em&gt; to &lt;em&gt;make the world a better place&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;You can study any skill, but knowing how to orient it toward that greater good takes much broader knowledge and expereince. This isn’t the kind of experience that comes from having your nose buried in a textbook, or your rear-end glued to a seat in the programming area. It takes real time and experience doing something &lt;em&gt;outside&lt;/em&gt; robotics.&lt;/p&gt;
+
+&lt;p&gt;So take some time off from the hard technical skills.&lt;/p&gt;
+
+&lt;h2 id=&quot;but-what-else-is-there&quot;&gt;But… What else is there??&lt;/h2&gt;
+
+&lt;p&gt;Ooh, ever so much!&lt;/p&gt;
+
+&lt;p&gt;Take a walk. Collect some things. Travel to new places. Eat new food. Plant a garden. Knit some socks. Learn an instrument. Take some photos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/go_outside.png&quot; alt=&quot;Go Outside&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Talk to your friends about casual topics. Talk about your feelings. Talk about things you like, and things you don’t like. Explore ways you are the same, and ways you are different.&lt;/p&gt;
+
+&lt;p&gt;Every human experiences life slightly differently. Their joys, fears, hopes, and dreams will not be the same as your own. Try to understand how they see the world. Talking to them is a great way to do this. Reading books, contemplating their works of art, listening to their music, and learning about their history is another great way (especially if you aren’t a huge fan of talking to people). Build &lt;em&gt;empathy&lt;/em&gt; with them.&lt;/p&gt;
+
+&lt;p&gt;Search for &lt;em&gt;truth&lt;/em&gt;. Study philosophy and religion - knowing how humanity has approached truth through the ages will inform how you search for it in your own life.&lt;/p&gt;
+
+&lt;p&gt;The late Woodie Flowers describes the need for us to each have a “complex definition of fairness” - much more of a complex definition than you get with your nose stuck in a physics textbook. Searching for answers on “what is true” will help inform answers on “what is fair”.&lt;/p&gt;
+
+&lt;p&gt;Learning these things comes, fundamentally, from doing non-robotics things. Private study, and interaction with others, is absolutely a key component to a well-rounded education, and a well-rounded worldview.&lt;/p&gt;
+
+&lt;h2 id=&quot;so-what-do-you-do&quot;&gt;So, What Do &lt;em&gt;You&lt;/em&gt; Do?&lt;/h2&gt;
+
+&lt;p&gt;I have a personal hobby I want to tell you about - &lt;em&gt;making food&lt;/em&gt;. Cooking is my other main passtime. Enjoyed by both my tastebuds and my wife, I want to spend the rest of this post telling you about my love for food, and giving some cooking advice along the way.&lt;/p&gt;
+
+&lt;h2 id=&quot;cooking-food&quot;&gt;Cooking Food&lt;/h2&gt;
+
+&lt;p&gt;Cooking food is a wonderful fusion of both art and science. It’s easy to do great things as a beginner, but takes a lifetime to master (ever wonder why Grandma’s cooking is so good?).&lt;/p&gt;
+
+&lt;h3 id=&quot;fire--pre-digestion&quot;&gt;Fire = Pre-digestion&lt;/h3&gt;
+
+&lt;p&gt;Humans use tools. &lt;em&gt;Cooking&lt;/em&gt;, at its simplest, is the process of using those tools to make food easier to digest.&lt;/p&gt;
+
+&lt;p&gt;Easier digestion means less energy is needed to &lt;em&gt;extract&lt;/em&gt; useful calories and nutrients from the food you consume. This means more energy available to do other things. Like think about how to build robots.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/campfire.png&quot; alt=&quot;A campfire&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Fire is the primary tool by which this is done. By heating our food, we break down tough fibers and kill off pathogens, making nutrients easily available for our digestive tract to extract. The chemical reactions and physical transformations that take place change the taste and texture, giving our bodies distinct signals of “this is easy to digest”. I’m no expert on human anthropology, but as a speices we seem to recognize these signals and gravitate strongly toward them. There’s something repulsive about gnawing on a raw steak. But heat it up to just the right temperature and add a bit of salt, and it’s suddenly worth a couple hundred bucks.&lt;/p&gt;
+
+&lt;p&gt;Of course, it’s just a general trend that as resources became more plentiful, something which used to be a necessity evolves into an art form. Complicated and ever-more-delicious methods for preparing our foods for consumption developed, as humans went well out of their way to find the most delectable way to prep their food. Techniques were passed from generation to generation, evolving around the locally-avilable ingredients, fuels, and cultures. In doing so, food becomes a mirror for a family’s heritidge and homeland, recalling powerful memories of days past, and showing a path to the future.&lt;/p&gt;
+
+&lt;h3 id=&quot;smoking-meats&quot;&gt;Smoking Meats&lt;/h3&gt;
+
+&lt;p&gt;Appologies in advance to all vegetarians out there. Look away for a few sections.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-basics&quot;&gt;The Basics&lt;/h4&gt;
+
+&lt;p&gt;One of my absolute favorite ways to prepare a big meal is to smoke a big ole’ hunk of meat.&lt;/p&gt;
+
+&lt;p&gt;The technique of “smoking” involves cooking meat “low and slow”. You cover the meat in some flavorings, then leave it in a cooking vessle maintained at around 250 deg. F. for a long period of time (up to 12 hours or more).&lt;/p&gt;
+
+&lt;p&gt;The flavorings can be as simple as &lt;a href=&quot;https://www.foodnetwork.com/recipes/salt-and-pepper-brisket-3052510&quot;&gt;salt and pepper (Howdy, Texas!)&lt;/a&gt;, or much more complex - involving garlic, cumin, paprika, brown sugar, coffee, and many others.&lt;/p&gt;
+
+&lt;p&gt;The combination of low temperature and long duration is well suited to large, dense, tough cuts of meat. Beef brisket or pork shoulder are two common cuts (pork “butt” or “picnic” roast being my favorite). All these come from muscle groups in the animal that get &lt;em&gt;lots&lt;/em&gt; of exercise. The exercise means the meat itself is usually very tough, due to high levels of connective tissue between the muscle fibers. However, lots of usage causes the protiens and enzymes in the meat accumulate in a very flavorful combination - one which is highly prized for consumption. By cooking the meat at low temperature for a long time, it causes the connective tissue and tough parts to break down into liquid gelatin - the “juice” that is often associated with a good chunk of meat. Combined with good seasoning, the whole affair hops on the slow train to flavor town, resulting in (eventually) a thing of great beauty.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-seasonings&quot;&gt;The Seasonings&lt;/h4&gt;
+
+&lt;p&gt;There’s two main components to seasoning meat prior to putting it on a smoker. Salt, and everything else.&lt;/p&gt;
+
+&lt;p&gt;Salt plays a key role in pretty much any cooking. Sodium Chloride (and some of its chemical cousins) have a unique property of helping our tasetbuds sense the flavor of the food more easily. I think it opens up tissues on our tounge to help the tastebuds come into contact with flavor-laden molecules more readily, but I’m not sure. I’m an engineer, not a doctor. No matter, salt makes things taste good.&lt;/p&gt;
+
+&lt;p&gt;The technique I use for flavoring meat was almost entirely learned from &lt;a href=&quot;https://en.wikipedia.org/wiki/Meathead_Goldwyn&quot;&gt;Craig Goldwyn (a.k.a. “Meathead”)&lt;/a&gt;, from his website &lt;a href=&quot;https://www.amazingribs.com&quot;&gt;amazingribs.com&lt;/a&gt; and his book &lt;a href=&quot;https://www.amazon.com/Meathead-Science-Great-Barbecue-Grilling/dp/054401846X/&quot;&gt;The Science of Great Barbecue and Grilling&lt;/a&gt;, which both my wife and I refer to as “the Meat Bible”. He’s an awesome and super-technical cook, the kind of guy I learn well from.&lt;/p&gt;
+
+&lt;p&gt;The basic process relies on the fact that &lt;em&gt;salt will dissolve and penetrate into the meat&lt;/em&gt;, while &lt;em&gt;spices sit on the outside&lt;/em&gt;. Therefor, I will unwrap, dry off, and salt the meat a good 12 hours prior to cooking. I’ll leave it (uncovered) in the fridge the whole time. In addition to the flavoring penetrating deep into the meat, it helps draw out water, which speeds the cooking process later on. Usually, this will all occurr in the evening before the day of the meat smoke.&lt;/p&gt;
+
+&lt;p&gt;THen, the morning of the meat smoke, I’ll wake up, make a pot of coffee, wheel out and fire up the smoker, pull the meat from the fridge, and coat liberally in a rub of sugar and spices (no additional salt!). Exactly what you put in the rub is definitely up to you. If you purchase Meathead’s book, you’ll see a number of awesome examples - these are where I started. However, my current recipie is…. pretty undocumented. I really should write it down. I know it consists of:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;A good hunk of brown sugar, paprika, and garlic powder&lt;/li&gt;
+  &lt;li&gt;A bit less of cumin, onion powder, and black pepper&lt;/li&gt;
+  &lt;li&gt;Sprinklings of cayanne, dry mustard, cinnamon, and rosemary&lt;/li&gt;
+  &lt;li&gt;Other stuff (varies batch to batch)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The take-away - there’s lots of bad answers (ex: &lt;em&gt;all cloves&lt;/em&gt;), but many more good answers. Really, just keep mixing something till it tastes good to you. The only definition of good barbacue is whatever tastes good to you. If it tases good, go with it!&lt;/p&gt;
+
+&lt;p&gt;Anyway, once the meat is prepped, just toss it on the smoker and wait! Sorta. Let’s talk a bit about that smoker itself.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-smoker-and-the-fire&quot;&gt;The Smoker and the Fire&lt;/h4&gt;
+
+&lt;p&gt;Adding another layer of flavor - the heat is usually provided by smoldering wood. Hardwoods like cherry, apple, walnut, and oak provide sweet-tasting smoke, and burn at just the right rate. With a properly regulated fire, the smoke flavor lightly infuses itself into the meat, becoming yet another seasoning in the end product.&lt;/p&gt;
+
+&lt;p&gt;There’s lots of ways to achieve this properly regulated fire, and most outdoor smokers are built up around keeping the fire working correctly in proximity to the meat.&lt;/p&gt;
+
+&lt;p&gt;The offset smoker is a common choice amongst home cooks, providing a separate fire chamber, a chimney, and a series of baffles to direct airflow. Air enters in the small offset section, feeds the fire and is heated (and smoke-infused), then travels through the cooking chamber. By adjusting the quantity of fuel, as well as airflow via the baffles, the cook can maintain a precise temperature and smoke quality inside the cook chamber. Cooking on these devices is much less an exercies in actually cooking, but rather maintaining a fire for 12 hours. Pyros and boy-scouts, rejoice!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/offset_smoker.png&quot; alt=&quot;offset smoker&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The fire itself usually is some combination of the actual wood, and charcoal. Expert “pit masters” tend to make their own charcoal, using a separate burn pit to get the flaming wood “just right” before bringing it in contact with the food. All this is to create burning plant matter which produces exactly the right amount of heat, and sweet-tasting smoke (too hot or too cold, and the smoke takes on an acrid quality).&lt;/p&gt;
+
+&lt;p&gt;Of course, where there is a monotonous task, an inventor sees an oppurtunity to improve through automation. In the smoking area, this comes in smokers which automatically maintain the right temperature. These fall into two major categories.&lt;/p&gt;
+
+&lt;p&gt;Electric smokers use a heating element to provide and maintain temperature. They provide a place to put wood chips directly on top of this heat source, causing them to smoulder and give off the flavor-rich smoke. It’s effectively a specalized oven, with the built-in ability to support a tiny fire. They’re quite inexpensive, and easy to use. However, since the main heat source isn’t the wood itself, the smoke flavor is often more muted than when using other methods.&lt;/p&gt;
+
+&lt;p&gt;The other type is the “pellet grill” - it uses compressed sawdust pellets as fuel. An embedded computer controls an auger, which feeds these pellets into a “burn cup”. An igniter makes sure they catch on fire, and a separately-controlled fan forces air into the burn cup to help adjust the burn rate. The fire can be adjusted from a small smoulder for maximum smoke, to an almost jet-engine like roar for rapid heating. Since the heat source is in fact a wood fire, the smoke flavor is more comprable to a manually-maintained fire, but with the advantage of automation. Set and forget, just like your oven at home. This device is my daily-driver at home when making food.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/my_smoker.png&quot; alt=&quot;My Smoker&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Even works in a snowstorm.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;A key factor in keeping your meat nice and jucy throughout the long cook process is keeping the temperature &lt;em&gt;stable&lt;/em&gt;. Large fluctuations in temperature cause the meat fibers to expand and contract, relasing water and juices with each cycle. Minimizing &lt;script type=&quot;math/tex&quot;&gt;\frac{dTemp}{dt}&lt;/script&gt; keeps the juices in, and the flavors nice and happy. Due to this, a good quality smoker will have lots of thermal mass. Usually this just means heavy metal construction, usually from steel. Chefs often suppliment this with a pan of hot water, or by cooking lots of meat at once.&lt;/p&gt;
+
+&lt;h4 id=&quot;the-end-product&quot;&gt;The End Product&lt;/h4&gt;
+
+&lt;p&gt;Knowing when you’re done is probably the last major key of making good smoked meats. The only way I’ve really seen to do this properly - a thermometer. I prefer the type with the separate probe that you jab into the meat and leave there, and just keep half an eye out for when it hits a certain temperature. Each type of meat has a specific temperature at which point it is “done” - fully cooked, optimally juicy, and sufficently broken down to be delicious. Pork is usually around 200 deg F, beef is less - really, just look it up for the specific type and cut of meat you are cooking.&lt;/p&gt;
+
+&lt;p&gt;Just keep the fire going until the meat is at that temperature. Most meats will have what is called “the stall” - a period of time when the temperature remains unchanged over a long period of time, usually at around the 160 or 170 deg. mark. This is due to water evaporation - at a certain point, the energy of the fire is going to evaporating water, not heating up the meat. Resist the urge to crank up the temperature - it won’t help. If time is of the essence, wrap the meat in tin foil or butchers paper to reduce water evaporation, and allow the heat energy to continue to increase the temperature of the meat.&lt;/p&gt;
+
+&lt;p&gt;Most forms of meat benifit from “resting” for a bit after being pulled off the smoker. Leave them in a cooler or covered with a heavy towel for about 20 minutes prior to slicing or shredding. This will allow the meat fibers to relax as the temperature normalizes throughout the piece of meat, which will retain more moisture inside the meat (rather than it running out all over your cutting board).&lt;/p&gt;
+
+&lt;p&gt;Once sliced or shredded, serve the meat to friends and family. Maybe on a bun, maybe with coleslaw or potato salad, maybe with some homemade BBQ sauce, maybe on a taco…. The world is your oyster.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/smoker_result.png&quot; alt=&quot;results&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;chicago-delicacies&quot;&gt;Chicago Delicacies&lt;/h3&gt;
+
+&lt;p&gt;I was born and raised outside of Chicago. In Chicago, we do pizza…. a bit differently. I’d argue a bit &lt;em&gt;better&lt;/em&gt; than everyone else, but I’m well aware New York doesn’t share that opinion.&lt;/p&gt;
+
+&lt;p&gt;Bite me. Or rather, bite my pizza.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/illinois.png&quot; alt=&quot;HOW PEOPLE SEE ILLINOIS&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Since I moved to “the south” (ie, south of I-80), we don’t have a ton of options for “real” pizza. I’ve been forced to adapt, and service my own pizza needs. Enter a wonderful New Yorker, Andrew Rae. He’s the host of the wonderful youtube show &lt;a href=&quot;https://www.youtube.com/user/bgfilms&quot;&gt;Binging with Babbish&lt;/a&gt;, one of the top shows in a new wave of instructional-yet-casual cooking shows. His recipies are genuine, bulletproof, and delicious. And I’ve largely adopted his recipie as my own, making it for friends and family frequently.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.bingingwithbabish.com/recipes/deepdishpizza&quot;&gt;Here’s the recipie in full&lt;/a&gt;, and the &lt;a href=&quot;https://www.youtube.com/watch?v=hyUnGjykNwg&amp;amp;feature=emb_logo&quot;&gt;accompanying youtube video&lt;/a&gt; if you prefer audio/visual learning over textbook learning.&lt;/p&gt;
+
+&lt;p&gt;I’ve got little to add to his recipie, other than a few notes from the last couple times I’ve made it:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;I swap all the oils for olive oil - I prefer the robust taste, and I think it’s a bit healthier.&lt;/li&gt;
+  &lt;li&gt;I’ll make the dough a day in advance, and let it rise in the fridge. The “cold fermentation” leads to a more complex flavor I prefer slightly. However, I’ve followed the recipie exactly too, and it works great either way.&lt;/li&gt;
+  &lt;li&gt;For the sauce - I tend to let mine cook to be nice and thick, so I can spread a decent amount. Be careful with too much - it tends to leak out and get the whole affair really soggy, which is delicious but sad-looking.&lt;/li&gt;
+  &lt;li&gt;Definitely heed the warning to let it rest a bit before slicing.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.amazon.com/Royal-Industries-Straight-Aluminum-Commercial/dp/B001TA6Y78/&quot;&gt;The aluminum pans&lt;/a&gt; and &lt;a href=&quot;https://www.amazon.com/American-Metalcraft-HDD94-Nickel-Plated-Gripper/dp/B004W7TXE6&quot;&gt;specalized pan manipulator tools&lt;/a&gt; are awesome if you do this frequently.&lt;/li&gt;
+  &lt;li&gt;Extra toppings (green pepper, canned mushrooms, pepperoni, etc.) are a must in my book. Add them either under or over the sauce - under the sauce will get nice and soft, on top will get nice and roasty. I like crumbling the raw sausage in small dots on top of the sauce, and letting it get crispy in the oven.&lt;/li&gt;
+  &lt;li&gt;The cook time can vary quite a bit, depending on your oven, the quantity of cheese you use, and any extra toppings. My personal method is to just leave it in as long as possible, until the exposed crust just barely starts to get “too” brown. The bottom gets a bit crispier (which I like), and it minimizes the chance of an uncooked crust/cheese interface (whcih I really don’t like).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you’re feeling fiesty or festive, you could also coat the pan in garlic butter to get a really special (abet less healthy) flavor from the crust.&lt;/p&gt;
+
+&lt;p&gt;Another awesome combo is to saute some butter, spinach, and garlic in a saucepan till most of the liquid is cooked off. Then, layer the cheese and cooked spinatch together in the pizza, topping with sausage, mushroom, and onion. Heavenly.&lt;/p&gt;
+
+&lt;h2 id=&quot;why-it-matters&quot;&gt;Why It Matters&lt;/h2&gt;
+
+&lt;p&gt;For me, the act of cooking extends far beyond the food itself.&lt;/p&gt;
+
+&lt;p&gt;It connects me to my family - my mother was my first and greatest cooking instructor, and each time I prepare a meal or teach a skill to someone else, I am reminded of her love for me. Growing up, and through today, every family gathering has revolved around a shared meal. It’s an honor to be a participant in that legacy, and to in turn contribute to the core of what brings us together.&lt;/p&gt;
+
+&lt;p&gt;Food is an expression of love. There’s something highly intimate about creating a delicious meal, and sharing it. People literally &lt;em&gt;consume&lt;/em&gt; the physical result of your time and effort, and use it to do more good things in life.&lt;/p&gt;
+
+&lt;p&gt;My favorite meals are the ones which take great time and care to produce. I may spend &lt;em&gt;hours&lt;/em&gt; in the kitchen preparing something which can be eaten in half an hour. Some people aren’t a huge fan of this effort, and I totally understand - &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Five_Love_Languages&quot;&gt;Everyone expresses love in different ways&lt;/a&gt;. But for me, I find great joy in the time and effort. The payoff of sharing the results makes it all worth it!&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Wrapping this all up, keep a few things in mind: Technical understanding of a topic isn’t sufficent - you have to know how to direct that understanding toward the greater good of the world. Having other hobbies is a key portion of becoming a well-rounded individual. It’s this well-roundedness which will tell you &lt;em&gt;how&lt;/em&gt; to direct your technical skills toward the greater good of others.&lt;/p&gt;
+
+&lt;p&gt;I hope I’ve been able to share a sample of how one goes about having those other hobbies. Thanks for going on this brief non-technical journey with me! Only a few weeks till kickoff…. I’m getting excited again! Good things in store!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Creating Casserole Bot</title><link href="/blog_posts/2019/11/17/casserole_bot.html" rel="alternate" type="text/html" title="Creating Casserole Bot" /><published>2019-11-17T08:30:00-06:00</published><updated>2019-11-17T08:30:00-06:00</updated><id>/blog_posts/2019/11/17/casserole_bot</id><content type="html" xml:base="/blog_posts/2019/11/17/casserole_bot.html">&lt;p&gt;&lt;img src=&quot;/assets/discordLogo.png&quot; alt=&quot;Discord Logo&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;&lt;a href=&quot;https://xkcd.com/356/&quot;&gt;Nerd sniping at its finest.&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 
@@ -2281,62 +2450,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
 
 &lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
 
-&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Why I Use the MIT License</title><link href="/blog_posts/2019/08/27/why_mit.html" rel="alternate" type="text/html" title="Why I Use the MIT License" /><published>2019-08-27T09:30:40-05:00</published><updated>2019-08-27T09:30:40-05:00</updated><id>/blog_posts/2019/08/27/why_mit</id><content type="html" xml:base="/blog_posts/2019/08/27/why_mit.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://www.sparkfun.com/news/2506&quot;&gt;Open source software is definitely an interesting beast.&lt;/a&gt; I didn’t spend too much time thinking about it until my college years, and the more I consider it the more impressive it gets. CAD programs, programming languages, even whole operating systems are developed by massive teams of people who have never met each other in person, and just enjoy engineering &lt;em&gt;so much&lt;/em&gt; they do it in their &lt;em&gt;personal time for free&lt;/em&gt;. And the software that is produced can be crazy good!&lt;/p&gt;
-
-&lt;p&gt;The software that is produced has &lt;em&gt;inherent value&lt;/em&gt;. It’s useful! That means that if I have money, and I need software XYZ, and you are selling software XYZ, I very well might pay money to you to get software XYZ. If you happen to be in the business of making money (as a lot of us are), it would make sense to sell software XYZ. Or take it, and use it in some… unsavory… manner.&lt;/p&gt;
-
-&lt;p&gt;At the end of the day, most open source software developers want to do just that - &lt;em&gt;develop open source software&lt;/em&gt;. They may or may not want others to take and sell and do as they please with it, but they generally don’t want to be bothered having to think about it. That would be open-source lawyering, which is not something I have known software engineers to enjoy.&lt;/p&gt;
-
-&lt;p&gt;With this in mind, most open source software is assigned some specific &lt;em&gt;license&lt;/em&gt; to help take care of these issues.&lt;/p&gt;
-
-&lt;p&gt;I am by no means an expert in this area, so please don’t take this post as real legal advice. What you can take it for is a summary of my knowledge at the time of writing, and the reasons I use for the license I usually select.&lt;/p&gt;
-
-&lt;h2 id=&quot;copyright-basics&quot;&gt;Copyright Basics&lt;/h2&gt;
-
-&lt;p&gt;In the United States, &lt;a href=&quot;https://en.wikipedia.org/wiki/Software_copyright&quot;&gt;Copyright Laws&lt;/a&gt; say that anything you write, including source code, by default cannot be used by others. There are some limits to this, including if your source code is not original, or they change it a &lt;em&gt;lot&lt;/em&gt;, or various other conditions.&lt;/p&gt;
-
-&lt;p&gt;However, these defaults and conditions are not consistent in other countries. To keep things simple, it is worthwhile to lay out the exact terms of usage of your &lt;em&gt;creative work&lt;/em&gt; in specific legal language within a license file.&lt;/p&gt;
-
-&lt;p&gt;You can technically put whatever you want in a license, but it’s best to have a lawyer write it, so that you have some assurance your license will hold up in international courts of law. &lt;a href=&quot;https://opensource.org/licenses&quot;&gt;There are many popular licenses available&lt;/a&gt;, and you can pick and choose from them as you choose.&lt;/p&gt;
-
-&lt;p&gt;For my projects, and most FRC projects, I usually choose the &lt;em&gt;MIT License&lt;/em&gt; (named after that same college with the really smart people).&lt;/p&gt;
-
-&lt;h2 id=&quot;mit-basics&quot;&gt;MIT Basics&lt;/h2&gt;
-
-&lt;p&gt;The “MIT License” is one of the most permissive open source licenses available. Individuals can take the source code and use it however they want. Companies can do the same, including using it to make money with their own products. Anyone can modify their copy of code as they see fit, and they don’t have to report the changes back to you.&lt;/p&gt;
-
-&lt;p&gt;Someone could turn around and sell the source code verbatim, but given that it’s already freely available, that doesn’t seem like a good way to make money.&lt;/p&gt;
-
-&lt;p&gt;The biggest thing they can’t do is strip away the license - any redistribution must include your initial MIT licensing. They must also retain your initial copyright notice, which helps contain a reference back to the original author.&lt;/p&gt;
-
-&lt;p&gt;Finally, the software is always provided “As-Is” - it is intended for &lt;em&gt;no particular purposes at all&lt;/em&gt;. This is a fancy way of saying that, even if I describe the project as “Software for an FRC Robot”, it was never &lt;em&gt;really, leagally&lt;/em&gt; intended for that.&lt;/p&gt;
-
-&lt;h2 id=&quot;why-mit&quot;&gt;Why MIT&lt;/h2&gt;
-
-&lt;p&gt;Especially for FRC purposes, I choose MIT for a few reasons.&lt;/p&gt;
-
-&lt;p&gt;For one, it’s a serious license. Lots of “real” projects use it, so it is &lt;em&gt;extermely&lt;/em&gt; likely to hold up in court, in case I ever have to do that. There are some &lt;a href=&quot;https://en.wikipedia.org/wiki/WTFPL&quot;&gt;much more light-hearted&lt;/a&gt; licenses out there, but I question whether these would actually hold up in court.&lt;/p&gt;
-
-&lt;p&gt;Secondly, it is very open, which is what I want robot software to be. I want it to be super simple for other FRC teams to take our code and use it as they need. I’d appreciate if they give us a shout-out, or let us know if they find problems, or show us how they improved it, but I’d never &lt;em&gt;force&lt;/em&gt; that to be required. Build season is short, we’ve got bigger things to worry about.&lt;/p&gt;
-
-&lt;p&gt;Even with companies - even though it would be &lt;em&gt;nice&lt;/em&gt; if they gave us some money for using our code, I still wouldn’t hold it against them if they seriously thought some random code written by a bunch of sleep-deprived high schoolers was better than their engineers could come up with. Are they hiring? I’ve got some resumes for interns I can forward.&lt;/p&gt;
-
-&lt;p&gt;But, most importantly - it ensures the software will only ever be provided “As-Is”. Here’s the critical thing I worry about - say you claimed your software performed some function safely (as lots of our code comments do). Now say someone copy-pasted that code onto a different robot, fired it up, exercised some bug, and the robot ran over a small child and injured them (ow!). Then they came and sued me because our code claimed it was safe, but in fact it was not.&lt;/p&gt;
-
-&lt;p&gt;This is a hopeless situation. Once I publish code on Github, I have no way of knowing who will copy and paste it, or how they will use it. I have no way of guaranteeing safety of functionality.&lt;/p&gt;
-
-&lt;p&gt;Hopefully any judge who knows how software works wouldn’t actually side with the other person. Even still, I’d prefer not to take the chance. I’d rather be writing software than worrying about whether I’ll be sued or not. So, I am always sure to include an MIT License. Having this present is the legally-binding way of saying to a consumer of the software “It’s your responsibility to validate functionality, not mine”.&lt;/p&gt;
-
-&lt;p&gt;Again, I am no lawyer, so I can’t say my line of thought is 100% correct here. It’s highly influenced by my personal research and desire to sleep well at night, but not much else.&lt;/p&gt;
-
-&lt;h2 id=&quot;other-options&quot;&gt;Other Options&lt;/h2&gt;
-
-&lt;p&gt;There are a bunch of other licenses which have some features you might want. These include requiring people who modify the code to notify you of changes. They also may restrict certain phrases or logos as trademarked, prevent changing the license, or prevent for-profit usage. &lt;a href=&quot;https://tldrlegal.com/license/gnu-general-public-license-v3-(gpl-3)&quot;&gt;GPL-3&lt;/a&gt; and &lt;a href=&quot;https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)&quot;&gt;Apache 2.0&lt;/a&gt; are two other common licenses.&lt;/p&gt;
-
-&lt;p&gt;As a side note - I &lt;em&gt;always&lt;/em&gt; subscribe to the notion of what the industry calls “beerware”, under a broader definition. If I have ever used your open source software, and you happen to be in the Peoria IL area with some time to burn, a round of your favorite drinks or food is on me. And I’ve got plenty of good local suggestions! Perhaps for another post.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Looking to choose a license for your project? Choose wisely! &lt;a href=&quot;https://choosealicense.com/&quot;&gt;There are many good tools online&lt;/a&gt; to help you make the choice! Protect yourself and your software, and make it exactly as open for usage as you like!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
