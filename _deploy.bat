@@ -7,7 +7,11 @@ call bundle exec jekyll build
 git add --all
 git commit -m "Committing build in prep for deployment"
 
-git subtree push --prefix _site origin master
+git subtree split --prefix _site -b temp
+git push -f origin temp:master
+git branch -D temp
+
+::git subtree push --prefix _site origin master
 
 @echo Completed public deployment.
 

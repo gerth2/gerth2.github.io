@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Creating Casserole Bot | Tricking Rocks to Think</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="Creating Casserole Bot" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
+<meta property="og:description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
+<link rel="canonical" href="/blog_posts/2019/11/17/casserole_bot.html" />
+<meta property="og:url" content="/blog_posts/2019/11/17/casserole_bot.html" />
+<meta property="og:site_name" content="Tricking Rocks to Think" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-11-17T08:30:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Creating Casserole Bot","dateModified":"2019-11-17T08:30:00-06:00","datePublished":"2019-11-17T08:30:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/11/17/casserole_bot.html"},"url":"/blog_posts/2019/11/17/casserole_bot.html","description":"Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
+<body>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Creating Casserole Bot</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="2019-11-17T08:30:00-06:00" itemprop="datePublished">Nov 17, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="/assets/discordLogo.png" alt="Discord Logo" /></p>
+
+<p><em><a href="https://xkcd.com/356/">Nerd sniping at its finest.</a></em></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This is largely a story of discovery on my part. For the 2019 season, we introduced <a href="https://discordapp.com/">Discord</a> as an alternate communication form - primarily because I wanted a way to share web links with the software team without having them re-type the exact address after looking at my computer screen. It kinda snowballed - for whatever reason, unlike Slack, students actually <em>used</em> it on a day to day basis. This started encouraging out-of-meeting conversations and generally lifting productivity. We started rolling it out to the whole team in prep for the 2020 season, with continued great success.</p>
+
+<p>One of my absolute favorite things about Discord is the voice channel concept - the seamless, easy, fairly low-latency call-in ability is the best I’ve seen. As we were rolling it out, a fun side project idea came up - to investigate a way to get or make a conference room phone for the voice channel.</p>
+
+<h2 id="design-phase">Design Phase</h2>
+
+<p>The goal I had in mind: Provide a single-button-push way to do 2-way audio in the warehouse, to whomever else wanted to talk. If the purpose of Discord was to increase communication, and we wanted voice to be a part of that, we needed the <em>most trivial</em> way to ensure people made the voice connection. No pulling a laptop out, logging in, plugging in…. just something that would sit on a table, always ready, and just needs a single button push to create sweet sweet voice sounds.</p>
+
+<p>Given we didn’t have something like this yet, we’d either need to purchase or make something.</p>
+
+<h3 id="existing-product-survey">Existing Product Survey</h3>
+
+<p>The first step when solving a problem, generally, is to investigate if someone else has solved it already.</p>
+
+<p>A few days of google searching revealed this wasn’t the case, at least not for what we wanted. There’s plenty of conference room phone solutions, but most require either a laptop, or some sort <a href="https://en.wikipedia.org/wiki/Voice_over_IP">VOIP infrastructure</a>. The latter was appealing from the always-present perspective, but was complex to set up. Most of the good-looking systems were somewhat proprietary and costly, and none had built-in Discord voice integration.</p>
+
+<p>It was quickly apparent that to get what we wanted, we’d have to roll up our sleeves and get to work.</p>
+
+<h3 id="technological-options">Technological Options</h3>
+
+<p>Once we knew we were going to do a customized solution, and not just purchase a pre-made one, the next step was to break down the problem</p>
+
+<p>There were two major things to solve:</p>
+
+<ol>
+  <li>Hardware to record and play-back audio</li>
+  <li>Automation to connect to Discord’s servers to that hardware</li>
+</ol>
+
+<p>The final solution ended up smearing these problems back together. But at least to start, we approached them separately.</p>
+
+<p><img src="/assets/discordBotArch.png" alt="Bot Architecture" /></p>
+
+<h3 id="the-audio-hardware">The Audio Hardware</h3>
+
+<p>A big concern was ensuring we wouldn’t get feedback between whatever loudspeaker and microphone we used. Not wanting to create this echo-cancellation ourselves, we opted right away to choose hardware with it built in. This trimmed down the audio hardware options, and led us toward hardware boxes specifically designed toward corporate conference rooms.</p>
+
+<p>These audio devices all have the same basic features - a joined microphone and speaker, some echo cancellation logic and design between them, a handful of buttons for controlling volume and call, etc. They fell into two major categories: Ones designed to connect straight to a PC (usually via USB), and ones that connect to a central VOIP server.</p>
+
+<p>VOIP seemed pretty slick, but it was expensive and came with a decent amount of configuration overhead. It’s usually targeted at large corporate environment where there are <em>many</em> conference rooms linked. Our design only planned for one audio gathering/broadcasting location, with no expansion ability needed. USB appeared much simpler to deal with.</p>
+
+<p>Ultimately, ebay browsing revealed a used <a href="https://uc.yamaha.com/products/conference-phones/flx-uc-sip-voip/">Revolabs/Yamaha FLX 1500</a> which was missing some cables, but apparently “tested functional”, for $15. Given that most of the <a href="https://www.amazon.com/Jabra-Speak-410-Speakerphone-Lync/dp/B004ELA7TA/ref=asc_df_B004ELA7TA/?tag=&amp;linkCode=df0&amp;hvadid=309777534894&amp;hvpos=1o2&amp;hvnetw=g&amp;hvrand=12701059778463327612&amp;hvpone=&amp;hvptwo=&amp;hvqmt=&amp;hvdev=c&amp;hvdvcmdl=&amp;hvlocint=&amp;hvlocphy=9022120&amp;hvtargid=pla-316724737574&amp;ref=&amp;adgrpid=58425267301&amp;th=1">basic USB conference phone solutions start around $75</a>, and the FLX 1500 is close to $250 new, it seemed like a good deal.</p>
+
+<p>For $15, I was willing to risk buying a brick.</p>
+
+<p><img src="/assets/revolabs1500.png" alt="revolabs 1500 fLX UC" /></p>
+
+<p>Good news - it paid off! With proper cables, unit powered up and worked just fine. And just like that, our hardware solution was chosen.</p>
+
+<h3 id="the-automation">The Automation</h3>
+
+<p>When it comes to connecting with Discord, there’s basically one way to do it. Go through their <a href="https://discordapp.com/developers/docs/intro">official API</a>. To connect without needing someone’s personal login, the “headless” method involves creating a Bot and authorizing it on your server. So, from that perspective, the “Discord Bot” solution was pretty much the only answer.</p>
+
+<p>However, such a bot still needs control logic behind it to have it make decisions. Discord’s API lets you send and receive data, but it’s on you to decide what to do with the received data, and generate the data to send. Doing so involves, happily, writing some software!</p>
+
+<p>The usual way this happens: Some kind soul will read through the API documentation, and provide a nice library in a specific programming language to let you interact with it nicely (rather than decoding and constructing the web traffic of the API yourself). <a href="https://discordapi.com/unofficial/libs.html">Discord has quite a few of these</a>, it really just depends on which language you want to use to implement the rest of your app. Given my familarity with Python, the known need to interact with other PC things, and vast amount of other available libraries, <a href="https://github.com/Rapptz/discord.py">discord.py</a> was chosen, and the application would get written in Python.</p>
+
+<p>Of course, you still need some form of a computer to run your program on. On Casserole, we currently have a mentor who freely donates lightly used Raspberry Pi 3b’s. So, at the moment, if anything can be done on a Raspberry Pi, we usually try to start there. Raspberry Pi with <a href="https://en.wikipedia.org/wiki/Raspbian">Raspbian</a> it is then.</p>
+
+<h2 id="implementation-phase">Implementation Phase</h2>
+
+<p>Time to get down to work!</p>
+
+<h3 id="the-basics---building-a-bot">The Basics - Building a Bot</h3>
+
+<h4 id="account-creation">Account Creation</h4>
+
+<p>Building a Discord Bot isn’t actually all that bad. People like to do it a lot, so lots of folks have created some decent tutorials on the topic. A quick google search returned at least three pages of good tutorials by others - so, I’m not looking to cover the general process here. <a href="https://realpython.com/how-to-make-a-discord-bot-python/">For those interested, here’s the guide I followed.</a></p>
+
+<p>The super basics - First you have to create your bot’s account on the Discord side, kinda like a new user.  The “bot” is actually the script you’re running, but the Discord server needs to know the bot exists first.</p>
+
+<p>This account creation results in two things: One is a secret key the bot script needs to authenticate with the servers. The second is that you can now go to your Discord server, invite the bot, and give it permissions and roles like any other user.</p>
+
+<p>As a side note - <em>keep the secret key secret</em>. Legit man. Anyone who has this key can connect to discord <em>as your bot</em>. It’s like giving out your username and password to someone. Don’t post it to Github, anywhere, any time.</p>
+
+<h4 id="basic-scripting">Basic Scripting</h4>
+
+<p>As mentioned, we used Discord.py to write the logic of the bot’s script. This library uses a fairly new feature in python called <code class="highlighter-rouge">asyncio</code> to do <a href="https://docs.python.org/3/library/asyncio.html">concurrent processing with web-requests</a>. This is generally a good thing - interacting with web servers tends to be a pretty event-driven, asynchronous activity. Messages come in whenever they do, and you want to process them as soon as they come in. You’ll generate packets in the background, and need to send them whenever ready. I think it was the right design choice for the library. The only downside is that I had to learn it from scratch. Whoops.</p>
+
+<p><a href="https://realpython.com/async-io-python/">Good thing there are good tutorials out there</a>.</p>
+
+<p>I ultimately ended up scripting in a way that allowed me to leverage the asyncio features as needed, but write the bulk of the scripting in a format I was more familiar with. Probably not the best answer, but seems to be getting the job done for now.</p>
+
+<p>The main entry point for our bot’s logic is in <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/master/casseroleBot.py">this file - casseroleBot.py</a>. Like most python, the main code is all the way at the bottom. It doesn’t do much - it just instantiates the bot, and starts it running.</p>
+
+<h4 id="basic-bot-functionality">Basic Bot Functionality</h4>
+
+<p>The <code class="highlighter-rouge">CasseroleDiscordBotClient</code> class is where most of the main action happens. All the complexity of interacting with the server API is done within the discord.py library. We just provide a few standard hooks.</p>
+
+<p><code class="highlighter-rouge">on_ready()</code> is our hook which gets called when the server connection is successful. For us, it just sets a global flag, letting all the other parts of code know they can interact with the server as needed.</p>
+
+<p><code class="highlighter-rouge">on_message()</code> is our hook for processing all messages sent on all channels on the server. Usually the bot does nothing. However, if the message begins with <code class="highlighter-rouge">$</code>, or the bot’s name is mentioned anywhere in the message, the text is stripped and parsed.</p>
+
+<p>Based on the stripped text, we’ll do one of a few things. Certain specific strings like <code class="highlighter-rouge">callin</code> or <code class="highlighter-rouge">hangup</code> are interpreted as commands to connect to or disconnect from the voice channel - this enables remote users to turn on the phone, in case someone at the shop forgets to hit the button. <code class="highlighter-rouge">help</code> prints some useful info, and <code class="highlighter-rouge">reboot</code> lets us remotely restart the Raspberry Pi.</p>
+
+<h4 id="voice-channel-interaction">Voice Channel Interaction</h4>
+
+<p>There was a key gap we missed while picking Python as the implementation language - the default Discord Python library <em>does not expose the ability to receive audio from discord</em>. Pretty big gap, right?</p>
+
+<p>The good news - we found that someone had <a href="https://github.com/imayhaveborkedit/discord.py">forked the python API to add the feature</a>. It’s still in development and has been clearly marked as “DO NOT USE IN PRODUCTION”. But, since this is just for a casual volunteer project, with no real money riding on it, I chose not to heed the warning. We pulled the fork into our application, and have been using it without issue.</p>
+
+<p>The script architecture is broken up into a few parts:</p>
+
+<h5 id="discord-server-interaction">Discord Server Interaction</h5>
+
+<p>These are all the <code class="highlighter-rouge">async</code> methods, directly responsible for talking to and from the server. We’ve described most of them above.</p>
+
+<h5 id="global-state-variables">Global State Variables</h5>
+
+<p>These are a set of class-scoped variables that indicate the desired state of the bot. Things like whether it’s called into a voice channel, on hold, etc. This state can be <em>commanded</em> from a DIscord message, from physical buttons on the speaker, via a GUI (sometimes)… maybe other places in the future. Therefor, there has to be a way that the <em>async</em> portions of the server interaction can gather inputs from outside the <em>async</em> realm.</p>
+
+<p>To facilitate this, the <code class="highlighter-rouge">periodicStateCheck()</code> method is scheduled within the <code class="highlighter-rouge">async</code> area to run a few times a second. It checks the global state <em>commands</em> to see if any have changed since the last time it checked. If any have, it performs the server actions necessary to execute the state change, and then flips the <em>actual</em> state over to match.</p>
+
+<p>In this way, <code class="highlighter-rouge">periodicStateCheck()</code> is a bridge between the <code class="highlighter-rouge">async</code> world of the Discord server, and the synchronous &amp; procedural world of the rest of the scripting.</p>
+
+<h5 id="audio-handling-classes">Audio Handling Classes</h5>
+
+<p><a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/master/audioHandling.py">These are sources and sinks for audio.</a> They’re the building blocks for interacting with a Discord Voice channels.</p>
+
+<p>When working with a Voice Channel, the Discord.py API requires you provide it an audio source and sink. The source is simply a class which can <em>provide</em> 20ms chunks of <a href="https://en.wikipedia.org/wiki/Pulse-code_modulation">PCM audio data</a> whenever requested. A sink is the mirror: It’s a class which will be regularly provided with 20ms chunks of PCM audio data.</p>
+
+<p>When implementing a source, we have to generate that audio data from somewhere. Similarly, when working with a sink, we have to take the given data and do something with it.</p>
+
+<p>On the source side, we actually implemented two different sources. <code class="highlighter-rouge">MicrophoneAudioSource()</code> is the audio source that reads data from the USB microphone via the <a href="https://python-sounddevice.readthedocs.io/en/0.3.14/">python-sounddevice library</a>, and returns it as the 20ms chunks. <code class="highlighter-rouge">WaveFileAudioSource()</code> does similarly, but instead sources from a .wav file on disk.</p>
+
+<p>Normally, <code class="highlighter-rouge">MicrophoneAudioSource()</code> is configured to be the audio Source for the voice channel. However, when we want to put the call on “hold”, we switch to using <code class="highlighter-rouge">WaveFileAudioSource()</code>. This prevents microphone data from being broadcast to Discord, and instead plays some nice music.</p>
+
+<p>There’s only one audio sink currently, <code class="highlighter-rouge">SpeakerAudioSink()</code>. It also uses python-sounddevice to transmit any audio packets to the default audio device on the system, which happens to be the USB conference room speaker we have hooked up.</p>
+
+<h3 id="interacting-with-an-audio-device">Interacting with an Audio Device</h3>
+
+<p>As mentioned, we’re using python-sounddevice as the library to do audio interaction. It’s actually fairly nice, using Linux’s abstractions to prevent the need to interact <em>directly</em> with the audio hardware. As long as we configure the device we want to use as the Raspberry Pi’s default audio device, python-sounddevice handles the rest.</p>
+
+<p>It was also nice that I could configure python-sounddevice to work with PCM audio at 48KHz, 16 bits, to match the Discord API exactly. This meant we didn’t have to do any weird re-sampling of audio while exchanging between the API and the hardware device.</p>
+
+<h4 id="nuances-of-the-discord-api">Nuances of the Discord API</h4>
+
+<p>The biggest roadblock we hit while implementing the audio interaction was on the Audio Sink. The Discord API returns an <em>independent</em> audio stream <em>per connected user</em>.</p>
+
+<p>So, if one other person is on the call with you, that’s ok - you get one stream, and send it to the speaker.</p>
+
+<p>However, if you have two people, you get two streams. You have to <em>mix</em> the two together prior to sending to the speaker.</p>
+
+<p>Mixing becomes non-trivial pretty quickly. Aside from the fact that <a href="https://dsp.stackexchange.com/questions/3581/algorithms-to-mix-audio-signals-without-clipping">mixing digital audio is just plain hard</a> in the first place, you also have to do it in real-time, accounting for missing or incorrectly ordered packets, in python (which isn’t the fastest or best language for bit-level manipulation on the block).</p>
+
+<p>After a lot of experimentation, I ended up at a not-very-robust but workable answer:</p>
+
+<ol>
+  <li>Use <a href="https://numpy.org/">Numpy</a> for speed of integer addition - base python couldn’t get it done fast enough.</li>
+  <li>Maintain a “buffer” of the current 20ms audio that is soon to be sent to the speaker.</li>
+  <li>Receive each packet from all streams (all tagged with the sending user).</li>
+  <li>Check if the buffer already has an audio packet from that user.</li>
+  <li>If so, send the buffer to the speaker, zero it out, and then add the packet to the buffer</li>
+  <li>Otherwise, just add the packet to the buffer.</li>
+  <li>Record that the packet has data from that speaker.</li>
+  <li>Wait for the next packet and repeat.</li>
+</ol>
+
+<p>This has a number of limitations - it will clip very easily if everyone screams at the same time. It will also not account for out-of-order or missing packets very well. It assumes users are sending data in a synchronized fashion.</p>
+
+<p>For general use-cases, I really wouldn’t recommend doing this. However, for our “good enough for a $15 project” use case, it’s been getting us by so far. The implementation can all be seen in <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/audioHandling.py#L132">the <code class="highlighter-rouge">SpeakerAudioSink</code> class</a>.</p>
+
+<h3 id="interacting-with-a-human-interface-device">Interacting with a Human Interface Device</h3>
+
+<p>Using python-sounddevice provided a good way to access the audio portion of our Revolabs FLX 1500, but didn’t cover how the buttons on the top worked. I’d initially intended to just use a small touchscreen or physical buttons to do the call/hangup operation. However, given that there were already some buttons on the device we were using, I figured, “how hard could it be to get these to work?” Ha.</p>
+
+<p>I didn’t know the first thing about HID devices, other than that they existed. I had to learn a bunch along the way. What follows is an under-educated conglomeration of research over a fast day of experimentation and debugging.</p>
+
+<p>Every USB device you plug into your computer has to tell the computer what it’s capable of. Especially if it’s not just a mouse or a keyboard, there are a ton of protocols around how the device tells the computer what it is and what it can do. In the attempt to make things as… universal… as possible, <a href="https://www.freebsddiary.org/APC/usb_hid_usages.php">a ton of device capabilities are pre-defined.</a> This flexibility comes at a cost - implementing software to properly handle any and all of these inputs is difficult, to say the least.</p>
+
+<p><a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/revolabs1500_usb_info.txt">Dumping the device’s capabilities</a> using Linux utilities revealed a handful of interesting things. For one, the volume and mute buttons were mapped to the standard HID device definitions, which was good. Three out of the five buttons were trivial.</p>
+
+<p>The device reported to also have some ability to control the LED’s, as well as read and set the “hook switch”, which I can only presume maps to the switch on phones which you used to have to physically hang back up on a wall when you were done using them. From what I understand, “flash switch” was also a basic way to tap this switch once, ending the current call and prepping for the next one.</p>
+
+<p><img src="/assets/hookSwitch.png" alt="Hook switch?" /></p>
+
+<p>I was hopeful, because things like this seemed to imply there was some way to get the info out of the device.</p>
+
+<p>Alas, that was not to be. The device also listed a <em>slew</em> of the proprietary, manufacturer-only capabilities, which have no formal definition for what the bits received under those descriptors implies. After connecting to the device and playing around a bunch with the buttons, I could only make <em>one</em> of them generate any bits, and they were all proprietary. Even the mute button didn’t respond on the standard USB api’s, but on some weird proprietary descriptor.</p>
+
+<p>So, rather than implementing proper USB handling, I fell back on <em>hacking and reverse engineering</em>. Rather than write a full USB HID driver in python (eeew), I opted to assume that we run on linux, and attempt to interact with the <code class="highlighter-rouge">/dev/usb/hiddev0</code> file, a <a href="https://www.kernel.org/doc/Documentation/hid/hiddev.txt">special linux kernel file that abstracts the HID device</a>. The path is hard-coded, since we don’t have anything else hooked up to the box’s USB ports at the moment.</p>
+
+<p>It appeared everything was sent in 8 byte chunks - 4 bytes of header to describe the data, and 4 bytes of actual data value. After fiddling about for the headers I care about, I parsed those out of the data stream, and extract the values to represent the meaningful state I care about. <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/revolabsFLXInterface.py">The implementation can be seen here.</a></p>
+
+<p>As mentioned, I don’t have any documentation on what all these proprietary headers are used for, or how I’m supposed to interact with them to configure the device. It doesn’t seem to be anywhere online.</p>
+
+<p>I do have a <em>guess</em> as to why this is. All that follows in this section is that guess, but not something I know for sure.</p>
+
+<p>If you look at the manual for the FLX series, you’ll notice this confusing table:</p>
+
+<p><img src="/assets/revolabsThirdParty.png" alt="Supported third party applications" /></p>
+
+<p>Why in the world does a <em>universal</em> serial bus device have a list of <em>supported applications</em>? Shouldn’t it be <em>universal</em>?</p>
+
+<p>As mentioned, a piece of software supporting every permutation of USB feature set would be really hard to get right. It would inevitably not work with some pieces of hardware, which frustrates users, and reduces their desire to purchase more products from the company.</p>
+
+<p>Consider as well your average corporate purchaser of a conference room phone. Time is money. Assume you have five engineers in a conference room, each getting paid $50/hour.</p>
+
+<p>If they have to spend five minutes at the start of each meeting debugging their phone, even that small amount of time adds up - by my numbers, about $21 per meeting.</p>
+
+<p>Even if your company only has 10 meetings per week in that room (which is an <em>incredibly low</em> estimate), you’re still burning about <strong>$10,000/year</strong> on buggy conference phones.</p>
+
+<p>It would be trivial to justify buying a $5000 device, as long as you could prove it <em>just works</em>.</p>
+
+<p>TL;DR - Corporate purchasers will pay through the nose to get “just works” functionality.</p>
+
+<p>Given this as their primary purchaser base, I think Revolabs made an engineering decision to drive sales in a particular market. Move your more advanced functionalities (beyond basic audio &amp; volume) onto proprietary parts of the USB spec. Work one-on-one with a select set of popular corporate software vendors to ensure seamless integration of the product. Revolabs gets to publish a list of software they are confident they “just work” with. Other software companies get to say Revolabs hardware “just works” with their software.</p>
+
+<p>Corporate purchasers see both lists and purchase both products. Even at the expense of openness and flexibility and cost, they get their “just works” functionality, which is far more valuable.</p>
+
+<p>Now, I’m not saying this is good or bad in general. Clearly, the numbers work out for corporate purchasers (who also happen to pay my paycheck and fund our robotics team).</p>
+
+<p>I suppose it’s more rough on us open-source hackers and tinkerers, but that’s more my own fault for choosing a closed-source piece of hardware. And, to be fair, the audio works super well, and I’ve got most of the buttons I care about working in some fashion. Given I paid $15 total for this project, I really can’t ask for much. You do get what you pay for.</p>
+
+<h2 id="scope-creep---expanding-feature-set">Scope Creep - Expanding Feature Set</h2>
+
+<p>Of course, stopping at this conference phone idea wasn’t good enough. We had a whole sandbox to play in now! The possibilities!</p>
+
+<p>Usually I hate scope creep. But, it is fun to tinker. We’re keeping development constrained behind sufficient criteria to ensure we don’t lose the useful features, while exploring some new ones.</p>
+
+<h3 id="current">Current</h3>
+
+<h4 id="cheering">Cheering</h4>
+
+<p>If you didn’t know <a href="https://www.thebluealliance.com/team/1736/history">1736 has a history of award-winning cheering sections</a>. It is only fitting that our Discord Bot participates as well.</p>
+
+<p><a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/cheerHandler.py"><code class="highlighter-rouge">CheerHandler()</code></a> is where the magic happens for now. An abstracted call/response cheer handler is implemented, along with some regex parsing &amp; stateful “Give me a */What does that spell?” cheer.</p>
+
+<p><img src="/assets/giveMeAB.png" alt="give me a B!" /></p>
+
+<p>Silly as it may be, it’s actually an awesome exercise <a href="https://en.wikipedia.org/wiki/Regular_expression">string parsing with regular expressions</a>, with a fun twist.</p>
+
+<h4 id="markov-chain-responses">Markov Chain Responses</h4>
+
+<p>I’ve always been amused by Markov Chain Bots - They can get a bit boring, but every now and then they produce some real gems.</p>
+
+<p>For those who don’t know, a <a href="https://en.wikipedia.org/wiki/Markov_chain">Markov Chain</a> is a statistics model which looks at the sequential probabilities of events. If you consider the “choice of a word in a sentence” as an event, a Markov Chain bot can generate “new” sentences based on most-likely combinations of other sentences.</p>
+
+<p>An overly-simplified explanation of this:</p>
+
+<ol>
+  <li>Get a bunch of sentences</li>
+  <li>Break every sentence into chunks of words. I choose chunks of 4 words for this example.</li>
+  <li>Analyze all the sentences to see, given three previous words, how likely is the fourth one?</li>
+  <li>Assemble a probability data structure to describe this “given three previous words, how likely is this word?”</li>
+  <li>Use the data structure to generate new sentences.</li>
+</ol>
+
+<p>In step 5, you can get a bit creative - you want to pick words randomly, but not <em>too</em> randomly. You use your probability data structure to skew the randomness toward “likely sentences”.</p>
+
+<p>Furthermore, if you know the language of the sentences (like English), you can incorporate a <a href="https://en.wikipedia.org/wiki/Part-of-speech_tagging">“parts of speech” tagger</a> into the mix. At steps 3 and 5, you use an algorithm from <a href="https://en.wikipedia.org/wiki/Natural_language_processing">Natural Language Processing</a> to identify what words are nouns, verbs, etc. This further increases the accuracy of your probability model, leading to more natural generated sentences.</p>
+
+<p>I leveraged two python libraries to accomplish these goals. They covered all the major technical work, so I didn’t have to implement the above algorithms myself - simply use them. <a href="https://github.com/jsvine/markovify">Markovify</a> is a python library explicitly designed for this text-based Markov model training and regurgitation exercise. Originally developed at BuzzFeed, it’s used by a number of similar projects. Additionally, I hooked Markovify using <a href="https://www.nltk.org/">NLTK</a> to build the parts-of-speech tagging into the model.</p>
+
+<p>The real fun of a Markov model - choosing the sentences to get for step 1. It’s what directly impacts what comes out at step 5. If you put in the Complete works of William Shakespeare, you get Shakespeare-like sentences. If you put in the text of every Star Wars movie, you’ll get Star Wars-sounding quotes from a movie that doesn’t exist yet.</p>
+
+<p>If you put in ChiefDelphi posts, you’ll get something that sounds vaguely like people talking about FIRST robotics. This is a robotics Discord bot, so why not make it talk about robots?</p>
+
+<p>The implementation was split into three phases:</p>
+
+<p>First, I ripped about 6,000 posts from chiefDelphi.com. This code is in <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/chiefDelphi.py">chiefDelphi.py</a>. I did it in a number of chunks (see constants on line 16), using <a href="https://pypi.org/project/pydiscourse/">PyDiscourse</a> to simplify interaction with the server. I injected a 0.25 second pause between each post querey to attempt to keep the server load down. Still, apologies to Brandon Martus for making his server somewhat sad on certain evenings in early November 2019. After a bit of in-script cleanup and manual find/replace magic on the resulting text file, I had about <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkov.txt">3 MB of sentences to train the bot</a>.</p>
+
+<p>Second, in just a <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/markovGenerate.py">handful of lines of python</a>, I converted that 3MB of training material into <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/markovChainGen/CDmarkovModel.json">24MB of a json probability model of how robotics people talk</a>.</p>
+
+<p>Finally, the main discord bot was updated to <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L65">parses this model into RAM</a> and <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L241">generate short sentence responses</a> when it has nothing else to say in response. It’s not exactly conversational, but it is funny.</p>
+
+<p><img src="/assets/bestOfCasseroleBot.png" alt="Best of CasseroleBot" /></p>
+
+<p>Finally, it is worthwhile noting that Markovify explicitly ensures it’s not just re-generating sentences that were in its original database - ie, sentences are actually unique and new. If it can’t accomplish this within a certain number of attempts, it gives up. To handle this, <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L244">we’ve just got some fixed text to return</a> if “all else fails”.</p>
+
+<p>How useful was this? Not very. How fun was it? Quite.</p>
+
+<h4 id="the-blue-alliance">The Blue Alliance</h4>
+
+<p>Finally, one of the slightly useful features - we did add a Blue Alliance connection. Currently, all it does is <a href="https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/theBlueAlliance.py">look up team names by their number.</a> But, perhaps more to come in the future, especially if we integrate this with a scouting system.</p>
+
+<h3 id="future">Future</h3>
+
+<p>The plans going forward? Who knows…. Lots of students have experience developing in this environment, so I’m looking forward to ideas. One in flight is using <a href="https://github.com/seatgeek/fuzzywuzzy">Fuzzy string matching to make the input format a bit less rigid and more conversational</a>. Another might be to use it as a repository to store and retrieve scouting data.</p>
+
+<p>The biggest thing we have available now - an always-on, text-based-interface <em>into</em> a computer with GPIO’s, physically located inside our build space and its network. That… opens a <em>lot</em> of doors.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Hopefully this gives you a bit of an overview as to what we’re doing with our Discord platform at the moment! It also should indicate why I’ve been without a blog post for a while (writing software takes time!).</p>
+
+  </div><a class="u-url" href="/blog_posts/2019/11/17/casserole_bot.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Tricking Rocks to Think</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>
