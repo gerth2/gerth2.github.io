@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Having Other Hobbies, like Cooking"
-date:   2019-11-30 9:30:00 -0500
+date:   2019-12-01 9:30:00 -0500
 categories: blog_posts
 ---
 
@@ -27,6 +27,8 @@ Ooh, ever so much!
 
 Take a walk. Collect some things. Travel to new places. Eat new food. Plant a garden. Knit some socks. Learn an instrument. Take some photos.
 
+![Go Outside](/assets/go_outside.png)
+
 Talk to your friends about casual topics. Talk about your feelings. Talk about things you like, and things you don't like. Explore ways you are the same, and ways you are different.
 
 Every human experiences life slightly differently. Their joys, fears, hopes, and dreams will not be the same as your own. Try to understand how they see the world. Talking to them is a great way to do this. Reading books, contemplating their works of art, listening to their music, and learning about their history is another great way (especially if you aren't a huge fan of talking to people). Build _empathy_ with them.
@@ -51,6 +53,8 @@ Humans use tools. _Cooking_, at its simplest, is the process of using those tool
 
 Easier digestion means less energy is needed to _extract_ useful calories and nutrients from the food you consume. This means more energy available to do other things. Like think about how to build robots.
 
+![A campfire](/assets/campfire.png)
+
 Fire is the primary tool by which this is done. By heating our food, we break down tough fibers and kill off pathogens, making nutrients easily available for our digestive tract to extract. The chemical reactions and physical transformations that take place change the taste and texture, giving our bodies distinct signals of "this is easy to digest". I'm no expert on human anthropology, but as a speices we seem to recognize these signals and gravitate strongly toward them. There's something repulsive about gnawing on a raw steak. But heat it up to just the right temperature and add a bit of salt, and it's suddenly worth a couple hundred bucks.
 
 Of course, it's just a general trend that as resources became more plentiful, something which used to be a necessity evolves into an art form. Complicated and ever-more-delicious methods for preparing our foods for consumption developed, as humans went well out of their way to find the most delectable way to prep their food. Techniques were passed from generation to generation, evolving around the locally-avilable ingredients, fuels, and cultures. In doing so, food becomes a mirror for a family's heritidge and homeland, recalling powerful memories of days past, and showing a path to the future.
@@ -65,7 +69,7 @@ One of my absolute favorite ways to prepare a big meal is to smoke a big ole' hu
 
 The technique of "smoking" involves cooking meat "low and slow". You cover the meat in some flavorings, then leave it in a cooking vessle maintained at around 250 deg. F. for a long period of time (up to 12 hours or more).
 
-The flavorings can be as simple as salt and pepper (Howdy, Texas!), or much more complex - involving garlic, cumin, paprika, brown sugar, coffee, and many others.
+The flavorings can be as simple as [salt and pepper (Howdy, Texas!)](https://www.foodnetwork.com/recipes/salt-and-pepper-brisket-3052510), or much more complex - involving garlic, cumin, paprika, brown sugar, coffee, and many others.
 
 The combination of low temperature and long duration is well suited to large, dense, tough cuts of meat. Beef brisket or pork shoulder are two common cuts (pork "butt" or "picnic" roast being my favorite). All these come from muscle groups in the animal that get _lots_ of exercise. The exercise means the meat itself is usually very tough, due to high levels of connective tissue between the muscle fibers. However, lots of usage causes the protiens and enzymes in the meat accumulate in a very flavorful combination - one which is highly prized for consumption. By cooking the meat at low temperature for a long time, it causes the connective tissue and tough parts to break down into liquid gelatin - the "juice" that is often associated with a good chunk of meat. Combined with good seasoning, the whole affair hops on the slow train to flavor town, resulting in (eventually) a thing of great beauty.
 
@@ -75,16 +79,16 @@ There's two main components to seasoning meat prior to putting it on a smoker. S
 
 Salt plays a key role in pretty much any cooking. Sodium Chloride (and some of its chemical cousins) have a unique property of helping our tasetbuds sense the flavor of the food more easily. I think it opens up tissues on our tounge to help the tastebuds come into contact with flavor-laden molecules more readily, but I'm not sure. I'm an engineer, not a doctor. No matter, salt makes things taste good.
 
-The technique I use for flavoring meat was almost entirely learned from THAT GUY "meathead", from his website [amazingribs.com](https://www.amazingribs.com) and his book [INSERT BOOK NAME HERE](INSERT BOOK LINK HERE), which both my wife and I refer to as "the Meat Bible". He's an awesome and super-technical cook, the kind of guy I learn well from.
+The technique I use for flavoring meat was almost entirely learned from [Craig Goldwyn (a.k.a. "Meathead")](https://en.wikipedia.org/wiki/Meathead_Goldwyn), from his website [amazingribs.com](https://www.amazingribs.com) and his book [The Science of Great Barbecue and Grilling](https://www.amazon.com/Meathead-Science-Great-Barbecue-Grilling/dp/054401846X/), which both my wife and I refer to as "the Meat Bible". He's an awesome and super-technical cook, the kind of guy I learn well from.
 
 The basic process relies on the fact that _salt will dissolve and penetrate into the meat_, while _spices sit on the outside_. Therefor, I will unwrap, dry off, and salt the meat a good 12 hours prior to cooking. I'll leave it (uncovered) in the fridge the whole time. In addition to the flavoring penetrating deep into the meat, it helps draw out water, which speeds the cooking process later on. Usually, this will all occurr in the evening before the day of the meat smoke.
 
 THen, the morning of the meat smoke, I'll wake up, make a pot of coffee, wheel out and fire up the smoker, pull the meat from the fridge, and coat liberally in a rub of sugar and spices (no additional salt!). Exactly what you put in the rub is definitely up to you. If you purchase Meathead's book, you'll see a number of awesome examples - these are where I started. However, my current recipie is.... pretty undocumented. I really should write it down. I know it consists of:
 
-1) A good hunk of brown sugar, paprika, and garlic powder
-2) A bit less of cumin, onion powder, and black pepper
-3) Sprinklings of cayanne, dry mustard, cinnamon, and rosemary
-4) Other stuff (varies batch to batch)
+1. A good hunk of brown sugar, paprika, and garlic powder
+2. A bit less of cumin, onion powder, and black pepper
+3. Sprinklings of cayanne, dry mustard, cinnamon, and rosemary
+4. Other stuff (varies batch to batch)
 
 The take-away - there's lots of bad answers (ex: _all cloves_), but many more good answers. Really, just keep mixing something till it tastes good to you. The only definition of good barbacue is whatever tastes good to you. If it tases good, go with it!
 
@@ -98,6 +102,8 @@ There's lots of ways to achieve this properly regulated fire, and most outdoor s
 
 The offset smoker is a common choice amongst home cooks, providing a separate fire chamber, a chimney, and a series of baffles to direct airflow. Air enters in the small offset section, feeds the fire and is heated (and smoke-infused), then travels through the cooking chamber. By adjusting the quantity of fuel, as well as airflow via the baffles, the cook can maintain a precise temperature and smoke quality inside the cook chamber. Cooking on these devices is much less an exercies in actually cooking, but rather maintaining a fire for 12 hours. Pyros and boy-scouts, rejoice!
 
+![offset smoker](/assets/offset_smoker.png)
+
 The fire itself usually is some combination of the actual wood, and charcoal. Expert "pit masters" tend to make their own charcoal, using a separate burn pit to get the flaming wood "just right" before bringing it in contact with the food. All this is to create burning plant matter which produces exactly the right amount of heat, and sweet-tasting smoke (too hot or too cold, and the smoke takes on an acrid quality).
 
 Of course, where there is a monotonous task, an inventor sees an oppurtunity to improve through automation. In the smoking area, this comes in smokers which automatically maintain the right temperature. These fall into two major categories. 
@@ -106,7 +112,11 @@ Electric smokers use a heating element to provide and maintain temperature. They
 
 The other type is the "pellet grill" - it uses compressed sawdust pellets as fuel. An embedded computer controls an auger, which feeds these pellets into a "burn cup". An igniter makes sure they catch on fire, and a separately-controlled fan forces air into the burn cup to help adjust the burn rate. The fire can be adjusted from a small smoulder for maximum smoke, to an almost jet-engine like roar for rapid heating. Since the heat source is in fact a wood fire, the smoke flavor is more comprable to a manually-maintained fire, but with the advantage of automation. Set and forget, just like your oven at home. This device is my daily-driver at home when making food. 
 
-A key factor in keeping your meat nice and jucy throughout the long cook process is keeping the temperature _stable_. Large fluctuations in temperature cause the meat fibers to expand and contract, relasing water and juices with each cycle. Minimizing $$dTemp/dt$$ keeps the juices in, and the flavors nice and happy. Due to this, a good quality smoker will have lots of thermal mass. Usually this just means heavy metal construction, usually from steel. Chefs often suppliment this with a pan of hot water, or by cooking lots of meat at once. 
+![My Smoker](/assets/my_smoker.png)
+
+_Even works in a snowstorm._
+
+A key factor in keeping your meat nice and jucy throughout the long cook process is keeping the temperature _stable_. Large fluctuations in temperature cause the meat fibers to expand and contract, relasing water and juices with each cycle. Minimizing $$\frac{dTemp}{dt}$$ keeps the juices in, and the flavors nice and happy. Due to this, a good quality smoker will have lots of thermal mass. Usually this just means heavy metal construction, usually from steel. Chefs often suppliment this with a pan of hot water, or by cooking lots of meat at once. 
 
 #### The End Product
 
@@ -118,27 +128,29 @@ Most forms of meat benifit from "resting" for a bit after being pulled off the s
 
 Once sliced or shredded, serve the meat to friends and family. Maybe on a bun, maybe with coleslaw or potato salad, maybe with some homemade BBQ sauce, maybe on a taco.... The world is your oyster.
 
+![results](/assets/smoker_result.png)
+
 ### Chicago Delicacies
 
 I was born and raised outside of Chicago. In Chicago, we do pizza.... a bit differently. I'd argue a bit _better_ than everyone else, but I'm well aware New York doesn't share that opinion. 
 
 Bite me. Or rather, bite my pizza.
 
-![HOW PEOPLE SEE ILLINOIS](LINK ME)
+![HOW PEOPLE SEE ILLINOIS](/assets/illinois.png)
 
-Since I moved to "the south" (ie, south of I-80), we don't have a ton of options for "real" pizza. I've been forced to adapt, and service my own pizza needs. Enter a wonderful New Yorker, Andrew Rae. He's the host of the wonderful youtube show [Binging with Babbish](LINK HERE), one of the top shows in a new wave of instructional-yet-casual cooking shows. His recipies are genuine, bulletproof, and delicious. And I've largely adopted his recipie as my own, making it for friends and family frequently.
+Since I moved to "the south" (ie, south of I-80), we don't have a ton of options for "real" pizza. I've been forced to adapt, and service my own pizza needs. Enter a wonderful New Yorker, Andrew Rae. He's the host of the wonderful youtube show [Binging with Babbish](https://www.youtube.com/user/bgfilms), one of the top shows in a new wave of instructional-yet-casual cooking shows. His recipies are genuine, bulletproof, and delicious. And I've largely adopted his recipie as my own, making it for friends and family frequently.
 
-[Here's the recipie in full](LINK HERE), and the [accompanying youtube video](LINK HERE) if you prefer audio/visual learning over textbook learning.
+[Here's the recipie in full](https://www.bingingwithbabish.com/recipes/deepdishpizza), and the [accompanying youtube video](https://www.youtube.com/watch?v=hyUnGjykNwg&feature=emb_logo) if you prefer audio/visual learning over textbook learning.
 
 I've got little to add to his recipie, other than a few notes from the last couple times I've made it:
 
-1) I swap all the oils for olive oil - I prefer the robust taste, and I think it's a bit healthier.
-2) I'll make the dough a day in advance, and let it rise in the fridge. The "cold fermentation" leads to a more complex flavor I prefer slightly. However, I've followed the recipie exactly too, and it works great either way.
-3) For the sauce - I tend to let mine cook to be nice and thick, so I can spread a decent amount. Be careful with too much - it tends to leak out and get the whole affair really soggy, which is delicious but sad-looking.
-4) Definitely heed the warning to let it rest a bit before slicing.
-5) [The aluminum pans](AMAZON LINK HERE) and [specalized pan manipulator tools](AMAZON LINK HERE) are awesome if you do this frequently.
-6) Extra toppings (green pepper, canned mushrooms, pepperoni, etc.) are a must in my book. Add them either under or over the sauce - under the sauce will get nice and soft, on top will get nice and roasty. I like crumbling the raw sausage in small dots on top of the sauce, and letting it get crispy in the oven.
-7) The cook time can vary quite a bit, depending on your oven, the quantity of cheese you use, and any extra toppings. My personal method is to just leave it in as long as possible, until the exposed crust just barely starts to get "too" brown. The bottom gets a bit crispier (which I like), and it minimizes the chance of an uncooked crust/cheese interface (whcih I really don't like).
+1. I swap all the oils for olive oil - I prefer the robust taste, and I think it's a bit healthier.
+2. I'll make the dough a day in advance, and let it rise in the fridge. The "cold fermentation" leads to a more complex flavor I prefer slightly. However, I've followed the recipie exactly too, and it works great either way.
+3. For the sauce - I tend to let mine cook to be nice and thick, so I can spread a decent amount. Be careful with too much - it tends to leak out and get the whole affair really soggy, which is delicious but sad-looking.
+4. Definitely heed the warning to let it rest a bit before slicing.
+5. [The aluminum pans](https://www.amazon.com/Royal-Industries-Straight-Aluminum-Commercial/dp/B001TA6Y78/) and [specalized pan manipulator tools](https://www.amazon.com/American-Metalcraft-HDD94-Nickel-Plated-Gripper/dp/B004W7TXE6) are awesome if you do this frequently.
+6. Extra toppings (green pepper, canned mushrooms, pepperoni, etc.) are a must in my book. Add them either under or over the sauce - under the sauce will get nice and soft, on top will get nice and roasty. I like crumbling the raw sausage in small dots on top of the sauce, and letting it get crispy in the oven.
+7. The cook time can vary quite a bit, depending on your oven, the quantity of cheese you use, and any extra toppings. My personal method is to just leave it in as long as possible, until the exposed crust just barely starts to get "too" brown. The bottom gets a bit crispier (which I like), and it minimizes the chance of an uncooked crust/cheese interface (whcih I really don't like).
 
 If you're feeling fiesty or festive, you could also coat the pan in garlic butter to get a really special (abet less healthy) flavor from the crust. 
 
@@ -152,7 +164,7 @@ It connects me to my family - my mother was my first and greatest cooking instru
 
 Food is an expression of love. There's something highly intimate about creating a delicious meal, and sharing it. People literally _consume_ the physical result of your time and effort, and use it to do more good things in life. 
 
-My favorite meals are the ones which take great time and care to produce. I may spend _hours_ in the kitchen preparing something which can be eaten in half an hour. Some people aren't a huge fan of this effort, and I totally understand - [Everyone expresses love in different ways](LINK TO FIVE LOVE LANGUAGES HERE). But for me, I find great joy in the time and effort. The payoff of sharing the results makes it all worth it!
+My favorite meals are the ones which take great time and care to produce. I may spend _hours_ in the kitchen preparing something which can be eaten in half an hour. Some people aren't a huge fan of this effort, and I totally understand - [Everyone expresses love in different ways](https://en.wikipedia.org/wiki/The_Five_Love_Languages). But for me, I find great joy in the time and effort. The payoff of sharing the results makes it all worth it!
 
 ## Conclusion
 
