@@ -1,4 +1,274 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-12-01T22:05:06-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Having Other Hobbies, like Cooking</title><link href="/blog_posts/2019/12/01/having_other_hobbies.html" rel="alternate" type="text/html" title="Having Other Hobbies, like Cooking" /><published>2019-12-01T08:30:00-06:00</published><updated>2019-12-01T08:30:00-06:00</updated><id>/blog_posts/2019/12/01/having_other_hobbies</id><content type="html" xml:base="/blog_posts/2019/12/01/having_other_hobbies.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-12-09T17:59:36-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">TRTT Behind the Scenes</title><link href="/blog_posts/2019/12/09/behind_the_scenes.html" rel="alternate" type="text/html" title="TRTT Behind the Scenes" /><published>2019-12-09T08:30:00-06:00</published><updated>2019-12-09T08:30:00-06:00</updated><id>/blog_posts/2019/12/09/behind_the_scenes</id><content type="html" xml:base="/blog_posts/2019/12/09/behind_the_scenes.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+
+&lt;p&gt;When I started writing this blog, I didn’t have much in mind. I was mostly hoping just to write some text, and make it available on a website. It kinda snowballed over time - it’s still not super complex, but does incorporate a number of different web technologies. For anyone interested in doing something similar, or just curious, I figured I’d document what sorts of technologies I’m using currently.&lt;/p&gt;
+
+&lt;h2 id=&quot;jekyll&quot;&gt;Jekyll&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; is a &lt;a href=&quot;https://en.wikipedia.org/wiki/Static_web_page&quot;&gt;static website&lt;/a&gt; generator. Website generators, in general, are tools which allow you to enter in a relatively small amount of information (for example, the text of a post) and create nice-looking and well-structured HTML (which your browser can display) in a scripted manner.&lt;/p&gt;
+
+&lt;p&gt;They’re one of many software tools that take a form of information that is easy for humans to manipulate, and transform it into something which is easy for machines to work with.&lt;/p&gt;
+
+&lt;p&gt;This lets us have our cake and eat it too - pages are easy to make and change, but still look nice, and minimize the work done by the client computer to display the content&lt;/p&gt;
+
+&lt;p&gt;A &lt;a href=&quot;https://en.wikipedia.org/wiki/Static_web_page&quot;&gt;static website&lt;/a&gt; is one which has the content pre-defined, and served the same way to all users.&lt;/p&gt;
+
+&lt;p&gt;A website like Facebook or Twitter is the anti-example to this - depending on who you are (as determined by who is “logged in”), and what friends you have or which handles you subscribe to, the contents returned to your browser when you visit “facebook.com” or “twitter.com” will vary greatly. In order to make this happen, they have to &lt;em&gt;dynamically&lt;/em&gt; generate the HTML, Javascript, and CSS files which are sent to each client on connect.&lt;/p&gt;
+
+&lt;p&gt;However, for many sites (including this one), there’s no mechanism for login, or differentiating users from each other. Each person who visits gets the exact same set of blog posts. Therefor, there’s no need (or reason) for dynamic generation of content. We can pre-generate the exact HTML, Javascript, and CSS you will receive, and just hand it off to you when you ask for it.&lt;/p&gt;
+
+&lt;p&gt;This is a much simpler way of doing things, and is therefor more limiting. I don’t really have the ability to change what each user sees. However, based on the whole point of a blog in general, that sort of flexibility isn’t needed. Flexibility usually implies complexity, which implies more work. To keep the whole thing simple, I chose to go with a static website, and keep things simple.&lt;/p&gt;
+
+&lt;p&gt;Jekyll was chosen specifically because it integrated well with Github, which was my hosting platform (will explain soon). It turned out this didn’t matter too much, but was important at first.&lt;/p&gt;
+
+&lt;h2 id=&quot;githubio---hosting&quot;&gt;Github.io - Hosting&lt;/h2&gt;
+
+&lt;p&gt;Every website, fundamentally, works the same way:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;A client computer contacts another computer and says “Hey, I want to see XYZ webpage”&lt;/li&gt;
+  &lt;li&gt;The server says “Sure, here’s the files associated with XYZ”&lt;/li&gt;
+  &lt;li&gt;The client computer displays the files.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;To do this, it’s required that there is some &lt;em&gt;server&lt;/em&gt;, somewhere, accessible to everyone in the world, which not only stores the files associated with the website, but is configured to properly format and provide responses to clients when requested.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/no_cloud.png&quot; alt=&quot;There is no cloud. It's just someone else's computer.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Designing this server is a big key to having a well-working website. It has to be always-on - any time you turn it off, the website “disappears”, and is inaccessible to everyone. Additionally, it will have to do work any time someone else in the world asks for the website. This means that the load is fairly unpredictable. Between these two facts, using your desktop or laptop as the server is generally a bad idea. You’ll want a dedicated, separate computer that you can leave on all the time, and not care if the CPU load spikes randomly.&lt;/p&gt;
+
+&lt;p&gt;However, even if you were to have a separate computer, hosting your own web server is &lt;em&gt;hard to do right&lt;/em&gt;. For one thing, you have to update your network’s firewall to allow external people to send commands into the server. This reduces the security of your network overall, and is a prime target for folks looking to hack into your network. Without careful security measures, you risk exposing every device on your network to the prying eyes of malicious hackers. These points of entry may be in your router and your network configuration, or in the server itself - old, buggy software on the server is a great way hackers can exploit their way into your personal files, take control of your website, and generally wreak havoc.&lt;/p&gt;
+
+&lt;p&gt;Furthermore, most &lt;a href=&quot;https://en.wikipedia.org/wiki/Internet_service_provider&quot;&gt;consumer Internet Service Providers&lt;/a&gt; don’t allow you to host a website from your connection - you usually need a business (or otherwise special) agreement to have them allow incoming HTTP connections to your network.&lt;/p&gt;
+
+&lt;p&gt;For all these reasons, when hosting a website, it’s often easier to let someone else do it for you.&lt;/p&gt;
+
+&lt;p&gt;Enter &lt;a href=&quot;https://github.io&quot;&gt;github.io&lt;/a&gt;. This is Github’s free service for hosting static websites. It’s pretty simple - create a special repo to house your website. Push the content to the website, with a special file named “index.html” as the “top-level” file which is served whenever someone visits your website.&lt;/p&gt;
+
+&lt;p&gt;It’s an awesome system actually - the only real skill the developer needs is git. As long as you can push your files with git, you can allow github to serve them as a website to anyone in the world who wants to visit the website.&lt;/p&gt;
+
+&lt;p&gt;Given that the hosting was free, it seemed like an easy choice.&lt;/p&gt;
+
+&lt;h2 id=&quot;google-domains---the-web-address&quot;&gt;Google Domains - the Web Address&lt;/h2&gt;
+
+&lt;p&gt;Even once a website is available on some server on the internet, visitors still need an easy way to find the server amongst the &lt;em&gt;many, many&lt;/em&gt; servers online.&lt;/p&gt;
+
+&lt;p&gt;Each server online does get assigned an IP address. Just like on your robot and the driver station get an IP address (10.TE.AM.XX), the server gets a public-facing unique IP address. For example, www.google.com will point to a wide range of addresses, depending on where you live.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ping_google.com.png&quot; alt=&quot;ping_google.com.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;However, remembering these number combinations is intuitive, and hard for humans.&lt;/p&gt;
+
+&lt;p&gt;This is where the &lt;a href=&quot;https://en.wikipedia.org/wiki/Domain_Name_System&quot;&gt;“Domain Name System” (or DNS) servers&lt;/a&gt; come into play.&lt;/p&gt;
+
+&lt;p&gt;DNS servers are a handful of servers that know about other servers. They maintain a mapping of convenient english names (like “google.com”) to actual IP addresses. They do fancy things, handing off requests to each other, until the lookup of website name to IP address has been completed.&lt;/p&gt;
+
+&lt;p&gt;The servers are distributed, and live at fixed and well-known IP addresses. Most ISP’s have their own. &lt;a href=&quot;https://developers.google.com/speed/public-dns/docs/using&quot;&gt;Google does too (8.8.8.8 and 8.8.4.4)&lt;/a&gt;, and &lt;a href=&quot;https://1.1.1.1/dns/&quot;&gt;1.1.1.1 is another up-and-coming one&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;As an aside: an easy way to check “Am I connected to the internet” is to ping a known DNS server. If the IP address 8.8.8.8 responds to pings, you know your network allows for connection to the broader internet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/ping_google_dns.png&quot; alt=&quot;when you see responses from 8.8.8.8, you know you're online.&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;By default, Github provides a URL for free for your website, but its name is not configurable: mine would be “gerth2.github.io” - which, though nice, is not informative about the content of the site.&lt;/p&gt;
+
+&lt;p&gt;In order to allow for the name of the website to show up as the URL, I pay $12 per year to Google Domains. I used their service to &lt;em&gt;purchase&lt;/em&gt; and &lt;em&gt;maintain ownership of&lt;/em&gt; the domain name “trickingrockstothink.com”. In return for my payment, they keep their DNS servers configured such that anyone who types “trickingrockstothink.com” into their browser URL window will get redirected to the IP addresses associated with Github’s web host servers, and specifically my website.&lt;/p&gt;
+
+&lt;h2 id=&quot;markdown&quot;&gt;Markdown&lt;/h2&gt;
+
+&lt;p&gt;As stated previously, the point of using Jekyll as a website generator (rather than manually writing HTML) is to allow me to enter the information (ie, the text you’re reading right now) in the most rapid way, and letting a script do all the “HTML Decoration” around it in a algorithmic way.&lt;/p&gt;
+
+&lt;p&gt;Jekyll takes a few input formats, but &lt;a href=&quot;https://www.markdownguide.org/&quot;&gt;Markdown&lt;/a&gt; is the most common. Markdown is one of many, loosely-defined “markup” languages. A markup language is not really a programming language, but rather a set of special character sequences to indicate a desired formatting. For example, if I want &lt;em&gt;italics in some text&lt;/em&gt;, I have to wrap the text in underscores, &lt;code class=&quot;highlighter-rouge&quot;&gt;_like this_&lt;/code&gt;. Jekyll’s markdown interpreter knows to place the text inside the &lt;code class=&quot;highlighter-rouge&quot;&gt;_ _&lt;/code&gt;’s inside of HTML and CSS blocks which cause the text to go slanty. Similar character sequences are recognized for footnotes, bold text, section headers, and &lt;a href=&quot;https://www.markdownguide.org/cheat-sheet/&quot;&gt;many other things&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Again, there’s no concrete reason I &lt;em&gt;couldn’t&lt;/em&gt; just write the HTML. But, it’s a lot more keystrokes to get the exact same output.&lt;/p&gt;
+
+&lt;p&gt;Additionally, I like the fact that markdown source files are really easy to read as a human. Even if Jekyll and markdown disappear off the face of the planet tomorrow, it would be pretty trivial to move them to some alternate markup format. HTML in theory could be the same, but it isn’t nearly as straightforward.&lt;/p&gt;
+
+&lt;h2 id=&quot;add-ons&quot;&gt;Add-ons&lt;/h2&gt;
+
+&lt;p&gt;Obviously, Markdown doesn’t allow for &lt;em&gt;unlimited&lt;/em&gt; configuration of how your text looks, and that’s on purpose. It sacrifices flexibility to make the &lt;em&gt;most common&lt;/em&gt; operations &lt;em&gt;really really easy&lt;/em&gt;. However, as we’ll show, there’s still plenty of opportunity to extend its functionally as needed.&lt;/p&gt;
+
+&lt;h3 id=&quot;chart-plotting&quot;&gt;Chart Plotting&lt;/h3&gt;
+
+&lt;p&gt;Certain concepts are much better explained with a 2-D graph, rather than words. Especially in the PID tuning, math intro, and similar posts, it’s crucial to have the ability to draw graphs easily.&lt;/p&gt;
+
+&lt;p&gt;I’m using a javascript library called &lt;a href=&quot;https://d3js.org/&quot;&gt;D3JS&lt;/a&gt;. A nice part of markdown is that it supports the concept of injecting custom HTML midway through a post.&lt;/p&gt;
+
+&lt;p&gt;For example, I can create the following chart:&lt;/p&gt;
+
+&lt;div id=&quot;plot2&quot;&gt;&lt;/div&gt;
+&lt;script&gt;
+functionPlot({
+  target: '#plot2',
+  title: '',
+  grid: true,
+  yAxis: {
+      label: &quot;Pressure (psi)&quot;,
+      domain: [0, 150]
+  },
+  xAxis: {
+      label: &quot;Time (s)&quot;,
+      domain: [-3, 20]
+  },
+  data: [{
+    fn: 'max(0,120-120*exp(-x*0.3))',
+    title: 'Tank Pressure'
+  }]
+})
+&lt;/script&gt;
+
+&lt;p&gt;Using the following javascript:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;//Create an empty DIV to be populated with the actual chart
+&amp;lt;div id=&quot;plot2&quot;&amp;gt;&amp;lt;/div&amp;gt; 
+
+//Define a tiny bit of javascript to configure the chart
+&amp;lt;script&amp;gt;
+functionPlot({ //Special function that D3JS has to create a plot
+  target: '#plot2', //Puts the plot onto div named &quot;plot2&quot; (see above)
+  title: '',
+  grid: true,
+  yAxis: {
+      label: &quot;Pressure (psi)&quot;, //Y axis configuration (for pressure)
+      domain: [0, 150]
+  },
+  xAxis: {
+      label: &quot;Time (s)&quot;, //X axis configuration (for time)
+      domain: [-3, 20]
+  },
+  data: [{
+    fn: 'max(0,120-120*exp(-x*0.3))', //Equation which is actually plotted
+    title: 'Tank Pressure'
+  }]
+})
+&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;By putting this code literally just into the markdown, we can create some nice looking plots!&lt;/p&gt;
+
+&lt;p&gt;D3JS supports both a symbolic definition of the equation (as above), as well as a point-by-point definition. If you look at some of the &lt;a href=&quot;/assets/js/pidArm.js&quot;&gt;PID simulation javascript&lt;/a&gt;, you’ll see where each point on the graph is calculated based on the plant model + controller simulation. In turn, these points are passed to D3JS to actually draw the plot image.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.highcharts.com/&quot;&gt;Highcharts&lt;/a&gt; is another super awesome plotting library - it’s much more interactive and a bit heaver-weight than D3JS. We’ve used it quite a bit on data viewers on our robot. I might eventually move this website over to use it as well.&lt;/p&gt;
+
+&lt;h3 id=&quot;math-formulas&quot;&gt;Math Formulas&lt;/h3&gt;
+
+&lt;p&gt;Aside from displaying 2D plots of graphs, it’s also super useful to create formulas, like this one:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;f(x) = \frac{25x^{4}}{1114}&lt;/script&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.latex-project.org/&quot;&gt;Latex is the industry standard for typesetting research papers, as well as the formulas they contain&lt;/a&gt;. It was invented by &lt;a href=&quot;https://en.wikipedia.org/wiki/Donald_Knuth&quot;&gt;Don Knuth&lt;/a&gt;, one of the great minds of computer science in the 21st century. It was one of the first viable “markdown” languages. It’s not super intuitive to use, and is often a bit confusing - it follows a “what you type is what you get”, rather than a “what you see is what you get” (WYSIWYG) paradigm, which gets wacky when typing out instructions while visualizing what they actually mean. It’s the opposite of Microsoft Word, a WYSIWYG editor.&lt;/p&gt;
+
+&lt;p&gt;The choice of word “Typesetting” is very deliberate - Latex is a text-based language for describing what a document &lt;em&gt;ought&lt;/em&gt; to look like. You rely on the computer to do the actual generation of the real thing.&lt;/p&gt;
+
+&lt;p&gt;Still, it’s super powerful. I used it to typeset my resume, and a handful of different not-really-for-academia-but-academic-style papers.&lt;/p&gt;
+
+&lt;p&gt;Also, there’s this thing called &lt;a href=&quot;https://www.mathjax.org/&quot;&gt;Mathjax&lt;/a&gt; online. It’s a simple javascript plugin which uses the special character &lt;code class=&quot;highlighter-rouge&quot;&gt;$&lt;/code&gt; to identify text which ought to be interpreted as Latex markdown, not normal markdown.&lt;/p&gt;
+
+&lt;p&gt;For example, the formula above was created with the text &lt;code class=&quot;highlighter-rouge&quot;&gt;$$ f(x) = \frac{25x^{4}}{1114} $$&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Anyway. My personal opinion on Latex: I feel like its ripe for replacement. It’s a bit obtuse how it works. Modern markdown languages are much simpler. However, it’s by far the best thing out there to do what it does (typeset math formulas and associated academic papers). I’m not entirely sure how it would get improved without destroying that functionality. Due to that, I predict (just like regular expressions), despite any clunkiness at first glance, it’s here to stay.&lt;/p&gt;
+
+&lt;h2 id=&quot;development-flow&quot;&gt;Development Flow&lt;/h2&gt;
+
+&lt;p&gt;If you want to take a look at how the blog gets developed, go ahead and clone &lt;code class=&quot;highlighter-rouge&quot;&gt;https://github.com/gerth2/gerth2.github.io&lt;/code&gt; onto a folder on your local PC (or go look at it on github).&lt;/p&gt;
+
+&lt;p&gt;Obviously, I have to test that posts look right and are proofread and all the interactive parts are functional, prior to making them public online. To facilitate this, there are two main branches in the repo:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;dev&lt;/code&gt; is the branch with the source code, where I make and test all changes to the website&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;master&lt;/code&gt; is the “production” branch, containing only the public-facing HTML source that is served to client PC’s.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you ever want to preview a blog post before it goes live, just keep track of the &lt;code class=&quot;highlighter-rouge&quot;&gt;dev&lt;/code&gt; branch - I usually push to it before deploying to master.&lt;/p&gt;
+
+&lt;p&gt;On the &lt;code class=&quot;highlighter-rouge&quot;&gt;dev&lt;/code&gt; branch, under the &lt;code class=&quot;highlighter-rouge&quot;&gt;_drafts&lt;/code&gt; folder, you’ll find the &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files which are the drafts of posts I’m currently writing.&lt;/p&gt;
+
+&lt;p&gt;Generally, I’ll create a post in &lt;code class=&quot;highlighter-rouge&quot;&gt;_drafts&lt;/code&gt;, write it out and proofread it, and perform any interactivity testing, committing and pushing as I go.&lt;/p&gt;
+
+&lt;p&gt;Once I’m happy with the post, I’ll copy it to the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; folder with the proper date prefix, do one last proofread, test with a non-drafts test server, then run the deploy script.&lt;/p&gt;
+
+&lt;p&gt;To expound on these various components:&lt;/p&gt;
+
+&lt;h3 id=&quot;drafts--local-server&quot;&gt;Drafts &amp;amp; Local Server&lt;/h3&gt;
+
+&lt;p&gt;Jekyll supports running a webserver locally, to view your processed .html files just as though they were live on the computer.&lt;/p&gt;
+
+&lt;p&gt;On the &lt;code class=&quot;highlighter-rouge&quot;&gt;dev&lt;/code&gt; branch, you’ll see two batch scripts:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;serve_local.bat&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;serve_local_drafts.bat&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Both build the website and launch the local Jekyll server on the results. The two are mostly the same, except that the &lt;code class=&quot;highlighter-rouge&quot;&gt;_drafts.bat&lt;/code&gt; one has extra flags to tell Jekyll to include &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; fields from the &lt;code class=&quot;highlighter-rouge&quot;&gt;_drafts&lt;/code&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;A nice feature of the Jekyll server is that it watches the local &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files for changes, and rebuilds the website as needed. This means my net development flow becomes:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Launch &lt;code class=&quot;highlighter-rouge&quot;&gt;serve_local_drafts.bat&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Create/edit a new draft post&lt;/li&gt;
+  &lt;li&gt;Load &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4000&lt;/code&gt; in a web browser, and navigate to the draft post&lt;/li&gt;
+  &lt;li&gt;Proofread &amp;amp; iterate on the &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; file for the post, refreshing the webpage whenever new changes need to be viewed.&lt;/li&gt;
+  &lt;li&gt;Save the file and move it to the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; folder&lt;/li&gt;
+  &lt;li&gt;Close any running server, and launch the &lt;code class=&quot;highlighter-rouge&quot;&gt;serve_local.bat&lt;/code&gt; server&lt;/li&gt;
+  &lt;li&gt;Ensure the “new” website is exactly as I want it at &lt;code class=&quot;highlighter-rouge&quot;&gt;http://localhost:4000&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Stop the test server and deploy to production.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;deployment-script&quot;&gt;Deployment Script&lt;/h3&gt;
+
+&lt;p&gt;There is an additional script called &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy.bat&lt;/code&gt; which performs the deploy to production operation. In my case, “deploy to production” implies “build a fresh copy of the website, and make it available on the internet”.&lt;/p&gt;
+
+&lt;p&gt;It should be known that Github.io has the ability to automatically build Jekyll files to a website, and deploy them for you. All you have to do is push on master, and the build happens in the background. However, it has a key limitation: there’s very few Jekyll plugins that the Github servers will accept. I have a &lt;a href=&quot;https://github.com/gerth2/gerth2.github.io/blob/dev/_plugins/code_snippets.rb&quot;&gt;custom plugin to allow me to include code files from other directories&lt;/a&gt; - it was super useful during the x86 assembly blog posts.&lt;/p&gt;
+
+&lt;p&gt;Due to this custom plugin, Github won’t build my page for me. This means I have to do the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;On the DEV branch, check that all file changes have been committed&lt;/li&gt;
+  &lt;li&gt;Run the Jekyll command to build the website from &lt;code class=&quot;highlighter-rouge&quot;&gt;.md&lt;/code&gt; files to &lt;code class=&quot;highlighter-rouge&quot;&gt;.html&lt;/code&gt; and friends. The output lands in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; folder.&lt;/li&gt;
+  &lt;li&gt;Commit the new webpage to the master branch, using the &lt;code class=&quot;highlighter-rouge&quot;&gt;git subtree&lt;/code&gt; operations to select just the &lt;code class=&quot;highlighter-rouge&quot;&gt;_site&lt;/code&gt; folder.&lt;/li&gt;
+  &lt;li&gt;Push the master branch. This makes the new website version public, and available to everyone in the world&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;All this action is contained within the &lt;code class=&quot;highlighter-rouge&quot;&gt;deploy.bat&lt;/code&gt; script. This is the script I run after I’m “done”, and ready to make the changes public.&lt;/p&gt;
+
+&lt;h3 id=&quot;miscellaneous-development-techniques&quot;&gt;Miscellaneous Development Techniques&lt;/h3&gt;
+
+&lt;p&gt;Admittedly, there’s not a ton of other advice I have. I’m an embedded engineer by trade, so running a website is definitely a bit outside of my comfort zone. I’m absolutely certain someone with experience in web development would happily comment with “aggressive suggestions” on doing things differently, and they’d definitely have a better way of doing things than I have. Good thing I’m not good enough at websites to implement a comment section.&lt;/p&gt;
+
+&lt;p&gt;One final thought, on a tool I use occasionally - &lt;a href=&quot;http://placekitten.com&quot;&gt;Placekitten.com&lt;/a&gt; is an adorable way to create image placeholders of a specific size. This is for cases where you have to develop the website layout and interaction before you have all the content, and just need an image of a certain size. Using it is simple: Just reference their main URL with arguments to indicate the width/height of the desired image in pixels. BAM. They return and adorable kitten of exactly the right size.&lt;/p&gt;
+
+&lt;p&gt;For example, here’s &lt;code class=&quot;highlighter-rouge&quot;&gt;http://placekitten.com/200/300&lt;/code&gt;:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://placekitten.com/200/300&quot; alt=&quot;Placekitten sample&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;DAWWWWWWWWWW.&lt;/p&gt;
+
+&lt;h2 id=&quot;cookie-collection-and-gdpr&quot;&gt;Cookie Collection and GDPR&lt;/h2&gt;
+
+&lt;p&gt;So - a key thing that’s actually kinda unique about this website - &lt;em&gt;I collect exactly zero cookies&lt;/em&gt;. That’s right. Zero. Nada. Zip. What is this, 1995??&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/General_Data_Protection_Regulation&quot;&gt;GDPR is the set of European Union regulations that govern how websites must inform you when certain pieces of data are collected&lt;/a&gt;. To be honest, I do like the concept overall. I do think consumers should be at least made aware of how websites are tracking them, and why.&lt;/p&gt;
+
+&lt;p&gt;However, as I read the regulations, my understanding is that, at any time, an agent of the European Union could contact me and ask me to produce a record, proving that &lt;em&gt;every single visitor&lt;/em&gt; to my website was “properly” notified of the data collection I was doing. Doing so is not something I trust myself to be able to do.&lt;/p&gt;
+
+&lt;p&gt;I’d really love to use something like &lt;a href=&quot;https://marketingplatform.google.com/about/analytics/?hl=en_US&quot;&gt;Google Analytics&lt;/a&gt; to track who is reading the website, and from where. It would help me determine my audience, how popular certain posts are, and what sort of impact new posts or changes to posts has. This would be very useful for me, the content creator, to create more meaningful content.&lt;/p&gt;
+
+&lt;p&gt;However, using Google Analytics means storing cookies on your computer, which means GDPR applies. And here’s the issue: I’m not a lawyer. I don’t &lt;em&gt;really&lt;/em&gt; know for sure what I do and don’t need to do. And even if I get it right, if I’m ever questioned, I’d &lt;em&gt;need&lt;/em&gt; to hire a lawyer to help me in court. And fly to the EU to discuss it with them. All this is expensive, and not something I’d particularly enjoy doing.&lt;/p&gt;
+
+&lt;p&gt;GDPR has no “oops sorry, I got it wrong, I’ll fix it” clause. There’s no warning. If you get it wrong, you owe the EU a &lt;em&gt;ton&lt;/em&gt; of money, up to €20 million.&lt;/p&gt;
+
+&lt;p&gt;I do have a good job at the moment. However, I don’t have the kind of cash for EU reparations, or a lawyer. This website is only a community service. I can’t dump thousands of dollars into it - its just not worth it.&lt;/p&gt;
+
+&lt;p&gt;Therefor, I turned off all tracking of all sorts. Zero cookies should be stored on your computer. If you find one, let me know, I’ll turn it off.&lt;/p&gt;
+
+&lt;p&gt;If you do have feedback on any content on the website, please let me know at the email at the bottom of every page, or on &lt;a href=&quot;https://www.chiefdelphi.com/u/gerthworm/summary&quot;&gt;ChiefDelphi.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you are a lawyer with experience in Tech and GDPR and are willing to provide your services pro-bono, let me know as well! I’d love to add some extra features here with legal guidance. I would happily advertise your firm here, along with one or more posts about our experiences together.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Well, that’s about all I’ve got. Hopefully you’ve learned a tiny bit about the internals that make this website tick, and maybe some info for helping you make your own website.&lt;/p&gt;
+
+&lt;p&gt;Merry Christmas, Happy Holidays, and talk to ya next time!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Having Other Hobbies, like Cooking</title><link href="/blog_posts/2019/12/01/having_other_hobbies.html" rel="alternate" type="text/html" title="Having Other Hobbies, like Cooking" /><published>2019-12-01T08:30:00-06:00</published><updated>2019-12-01T08:30:00-06:00</updated><id>/blog_posts/2019/12/01/having_other_hobbies</id><content type="html" xml:base="/blog_posts/2019/12/01/having_other_hobbies.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;I’ve been wanting to make this post since I started writing this blog. It’s been on the potential ideas list for some time. It is simultaneously &lt;em&gt;less&lt;/em&gt; and &lt;em&gt;more&lt;/em&gt; important than any other post on this site. It has little to do with actually building a robot, but should speak a bit to how robots integrate with the rest of your life.&lt;/p&gt;
 
@@ -2372,82 +2642,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Backward, assuming you read from left to right. Just the established convention. A convention which was clearly made by someone who didn’t read Hebrew. Sorry, Hebrew-reading friends. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry><entry><title type="html">Productive Team Mentality</title><link href="/blog_posts/2019/09/05/team_mentality.html" rel="alternate" type="text/html" title="Productive Team Mentality" /><published>2019-09-05T09:30:40-05:00</published><updated>2019-09-05T09:30:40-05:00</updated><id>/blog_posts/2019/09/05/team_mentality</id><content type="html" xml:base="/blog_posts/2019/09/05/team_mentality.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;This post is largely inspired by &lt;a href=&quot;https://hbr.org/2017/08/high-performing-teams-need-psychological-safety-heres-how-to-create-it&quot;&gt;Laura Delizonna’s excellent article in the Harvard Business Review&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;All technical team environments will operate best when team members do their best work. Effective teams go out of their way to &lt;em&gt;enable&lt;/em&gt; team members to perform well. Although every member will be different to some extent, there are many common team behaviors and qualities that are worth at least considering, if not implementing, in your own team.&lt;/p&gt;
-
-&lt;p&gt;Throughout this discussion, keep in mind that no matter whether or not you have leadership responsibilities on a team, each member of a team is a steward of team culture. The culture is kept and maintained by each individual - leader and individual contributor alike. By acting in accordance with positive, desireable aspects of culture, you yourself build up the team to be a better form of itself.&lt;/p&gt;
-
-&lt;p&gt;With that in mind, let’s explore a few of the aspects of productive, happy technical teams.&lt;/p&gt;
-
-&lt;h2 id=&quot;cultivating-positivity-for-growth&quot;&gt;Cultivating Positivity for Growth&lt;/h2&gt;
-
-&lt;p&gt;Keeping a positive attitude is, for me, the foundation of a good team.&lt;/p&gt;
-
-&lt;p&gt;Technical subjects are, for better or worse, dry and impartial. Physics and Math are governed by cold and impartial laws. Though advantageous for their consistency, these laws do little to reassure human beings of their inherent value and worth. &lt;em&gt;Before&lt;/em&gt; spending time delving into these technical topics, it’s well worth the time to establish that you are &lt;em&gt;happy&lt;/em&gt; to simply be in the presence of your teammates. Make them know that you enjoy being with them - even if you’re not looking forward to the events of the day. Establishing knowledge of the desire to &lt;em&gt;be&lt;/em&gt; a team will provide the motivation to grow as a team.&lt;/p&gt;
-
-&lt;p&gt;An established positive attitude greatly helps people be &lt;em&gt;internally motivated&lt;/em&gt; to find solutions to problems. They know their time is appreciated and well spent, and that their efforts are worthwhile for the success of the team. When individuals actively seek out solutions to problems, without relying on the solution of other team members, they grow their own capability and skill. This growth is essential for future team success.&lt;/p&gt;
-
-&lt;p&gt;A positive team is one which is &lt;em&gt;inherently fun&lt;/em&gt; to be a part of. Not because someone made it fun, but because the team transforms the work into something which can be enjoyed. Something which has a purpose and meaning, and goes beyond a simple task to “take care of”. Team members build each other up, strengthening relationships of trust and mutual respect.&lt;/p&gt;
-
-&lt;h2 id=&quot;building-trust-for-growth&quot;&gt;Building Trust for Growth&lt;/h2&gt;
-
-&lt;p&gt;When we trust our teammates, we believe they will deliver on what we expect of them. Placing this trust in others, with the right attitude, gives them the opportunity to rise to the occasion. Your trust gives them the opportunity to grow - either through success or failure.&lt;/p&gt;
-
-&lt;p&gt;If the other team members succeed and meet your expectations, the other team member has learned a new skill and done something they ordinarily would not have done themselves. A trusting team is one that can grow and expand without fear.&lt;/p&gt;
-
-&lt;p&gt;By giving them trust, and appropriately handling failure, even this can still be a learning experience&lt;/p&gt;
-
-&lt;h2 id=&quot;feeling-safe---handling-failure-for-growth&quot;&gt;Feeling Safe - Handling Failure for Growth&lt;/h2&gt;
-
-&lt;p&gt;A fundamental goal of any technical team should be to mitigate the fallout of failure. Every team member will fail at some point. However, a team member should never be &lt;em&gt;afraid&lt;/em&gt; to fail. The fear of failure will block people from taking risks, and learning new skills. This in turn kills the growth mindset that is at the &lt;em&gt;very core&lt;/em&gt; of any FRC program. Additionally, given the pace of technological advance, any technical team which is unable to embrace change through active growth will &lt;em&gt;very quickly&lt;/em&gt; become obsolete. Fear of failure will absolutely &lt;em&gt;kill&lt;/em&gt; your team.&lt;/p&gt;
-
-&lt;p&gt;Mitigating the fear of failure can be done through many ways. A few of my favorites:&lt;/p&gt;
-
-&lt;h3 id=&quot;short-term-focus-on-solution-not-problem&quot;&gt;Short Term: Focus on Solution, not Problem&lt;/h3&gt;
-
-&lt;p&gt;When failure occurs, the knee-jerk reaction is frequently to zero in on the problem. It’s glaring, everyone can see it, everyone is worried about it. It’s natural to focus on the problem. Well-meant or not, the focus is good at first - ensure that all team members understand the impacts of the problem, and those empowered to solve it understand it enough to go forward.&lt;/p&gt;
-
-&lt;p&gt;But then, shift 100% to the solution. No more complaining, whining, finger-pointing, or getting distracted with “what-if” scenarios. Establish a laser-focus on finding a solution, and don’t look back till you have one. Even if it’s the most horrible hack you’ve ever seen, find something that &lt;em&gt;works&lt;/em&gt; (and is of course, &lt;em&gt;safe&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;Separate things you can change from those you cannot, and focus on the former. The whole team depends on you to &lt;em&gt;solve&lt;/em&gt; the problem, so don’t waste their time by focusing on things you cannot change.&lt;/p&gt;
-
-&lt;h3 id=&quot;long-term-establish-root-cause-and-solve&quot;&gt;Long Term: Establish Root Cause and Solve&lt;/h3&gt;
-
-&lt;p&gt;Once the problem is solved, wrap back around for a &lt;em&gt;retrospective&lt;/em&gt;. Try to dig deep to realize why the problem started in the first place. There may be many causes. Causes will be related to each other, some being effects of the next. &lt;a href=&quot;https://en.wikipedia.org/wiki/Five_whys&quot;&gt;Ask the question “Why?” five times, and answer it genuinely each time.&lt;/a&gt; Keep going if you can.&lt;/p&gt;
-
-&lt;p&gt;Inevitably, people will be involved. You must use &lt;em&gt;compassion&lt;/em&gt; when dealing with people. People, in general, do not act out of malice. With few exceptions, people do not generally &lt;em&gt;try&lt;/em&gt; to cause problems. It would be disingenuous to assume this to be the case from the start. People make decisions based on their own knowledge, biases, hopes, dreams, and opinions. Every person does this. Rarely is the person the issue - much more frequently, the &lt;em&gt;inputs&lt;/em&gt; to their problem solving methodologies were flawed.&lt;/p&gt;
-
-&lt;p&gt;Once you feel comfortable you know why something happened, go about fixing it. Sometimes, it might just be some additional learning or training for a few team members. Sometimes, there’s a &lt;em&gt;process&lt;/em&gt; change to make, wherein your team modifies the usual steps it does while performing a task to prevent a problem from reoccurring.&lt;/p&gt;
-
-&lt;p&gt;This process is a key component of what Dr. Delizonna refers to as “Replacing Blame with Curiosity”. This is an absolutely critical aspect to handling failures - the team attitude should be to approach all problems with a fundamental desire to learn about them and fix them, rather than establish blame. Focus on the solution, not solely on the actual problem itself.&lt;/p&gt;
-
-&lt;h3 id=&quot;the-basket-cases&quot;&gt;The Basket Cases&lt;/h3&gt;
-
-&lt;p&gt;Sometimes, you get a rotten apple of a team member. Someone who can’t work on the team. Someone who &lt;em&gt;trys&lt;/em&gt; to make you fail.&lt;/p&gt;
-
-&lt;p&gt;Or sometimes, it’s the other way around. You find yourself on a team that refuses to have a positive attitude. A team that prioritizes griping over solution finding.&lt;/p&gt;
-
-&lt;p&gt;In both cases, be &lt;em&gt;absolutely&lt;/em&gt; sure your observations are not biased. Have you talked to anyone else about your observations? Have you brought them up with the person/people in question, that you have your issues with? Have you confirmed, beyond all doubt, that no reasonable measure of personal change on your part will bring about the change you wish to see?&lt;/p&gt;
-
-&lt;p&gt;If so, there are drastic actions that can be taken.&lt;/p&gt;
-
-&lt;p&gt;One option is bringing in some higher authority to address the issue with their larger metaphorical “hammer”. This assumes such an authority exists.&lt;/p&gt;
-
-&lt;p&gt;Temporary or permanent separation from the team is another options. Sometimes it is the only one. Keep in mind that this separation fundamentally ends the goal of team growth that all technical teams should strive for, so it must be used with extreme caution.&lt;/p&gt;
-
-&lt;p&gt;Above all, keep in mind these “basket cases” are &lt;em&gt;different&lt;/em&gt; from technical problems. They are &lt;em&gt;people problems&lt;/em&gt;, and need to be addressed separately and differently from your usual technical problems. Most importantly, all interactions of this nature must be done with compassion for all the people involved, especially the group that stands to suffer the most from the solution. But, as Dr. Woodie Flowers reminds us, keep in mind a “complex definition of fairness” to ensure everyone’s needs are met as best possible.&lt;/p&gt;
-
-&lt;h2 id=&quot;vulnerability-feedback-measurement&quot;&gt;Vulnerability, Feedback, Measurement&lt;/h2&gt;
-
-&lt;p&gt;All of the aforementioned ideas are just that - ideas. They aren’t a prescriptive way to organize a team - indeed, if I knew how to tell you that, I’d be a much richer man. What I can tell you is this - &lt;em&gt;be vulnerable&lt;/em&gt;. Talk about these things with your team members. Bring them up (appropriately), and talk as a team about what you expect from each other. Let down your guard, and speak frankly.  Establish not just where you are, but where you want the team to be. Then build a roadmap for how to get there. As problems arise, discuss them swiftly and frankly, investigate with curiosity, design and implement a solution.&lt;/p&gt;
-
-&lt;p&gt;Seeking constant feedback from each other is the key way that you, as a team, ensure your day to day interactions remain positive and productive.&lt;/p&gt;
-
-&lt;p&gt;Additionally, consider a formal measurement of team engagement. Opinion surveys, “1 to 10” rank questions about team environment and member feelings, free-response anonymous questions may help track team engagement, uncover unknown issues, and show your team’s sustainable growth over many years.&lt;/p&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
-
-&lt;p&gt;Hopefully, you’ve gotten a few new ideas about what sorts of attitudes and mentalities are useful for maintaining a productive, growth-minded team. With good team discussion, hopefully you can hone your own team to its peak abilities, and know what to look for as you move on in your career (inside and outside of FIRST) while searching for good teams to spend your time with!&lt;/p&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
