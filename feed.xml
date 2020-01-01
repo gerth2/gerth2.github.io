@@ -1,4 +1,74 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2019-12-09T17:59:36-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">TRTT Behind the Scenes</title><link href="/blog_posts/2019/12/09/behind_the_scenes.html" rel="alternate" type="text/html" title="TRTT Behind the Scenes" /><published>2019-12-09T08:30:00-06:00</published><updated>2019-12-09T08:30:00-06:00</updated><id>/blog_posts/2019/12/09/behind_the_scenes</id><content type="html" xml:base="/blog_posts/2019/12/09/behind_the_scenes.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.8.5">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2020-01-01T09:17:02-06:00</updated><id>/feed.xml</id><title type="html">Tricking Rocks to Think</title><subtitle>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</subtitle><entry><title type="html">Thoughts for Kickoff 2020</title><link href="/blog_posts/2020/01/01/season_prep_2020.html" rel="alternate" type="text/html" title="Thoughts for Kickoff 2020" /><published>2020-01-01T08:30:00-06:00</published><updated>2020-01-01T08:30:00-06:00</updated><id>/blog_posts/2020/01/01/season_prep_2020</id><content type="html" xml:base="/blog_posts/2020/01/01/season_prep_2020.html">&lt;h2 id=&quot;on-kickoff&quot;&gt;On Kickoff&lt;/h2&gt;
+
+&lt;p&gt;Well, it’s been a while since I’ve sat down to write one of these. Lots of things going on, both on the FRC team and at home. All good things to be sure! Just lots of them.&lt;/p&gt;
+
+&lt;p&gt;With most of the normal-people holidays behind us, our thoughts turn toward that long-awaited robotics holiday: &lt;em&gt;Kickoff&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;That magical day when we all sit down, watch a video broadcast with strong anticipation, and then get to work for six(ish) weeks. It’s a key moment in the season - the pressure is on to learn a new game, make decisions, and choose solutions which will impact how the rest of the season goes.&lt;/p&gt;
+
+&lt;p&gt;There’s a fine balance to thinking quickly, and thinking carefully. Too much of either, and you’ll run out of time, or pigeonhole your design. Achieving that balance is often an exercise in simply having experience. However, even if this is only your first or second time around, there are some things you can do to help yourself along.&lt;/p&gt;
+
+&lt;h2 id=&quot;some-unorganized-thoughts-on-starting-your-season&quot;&gt;Some Unorganized Thoughts on Starting your Season&lt;/h2&gt;
+
+&lt;h3 id=&quot;assess-your-understanding-effectively&quot;&gt;Assess your Understanding, Effectively&lt;/h3&gt;
+
+&lt;p&gt;The first thing you should be doing every year is &lt;em&gt;learning&lt;/em&gt; about the new game. How is it played? How is it &lt;em&gt;best&lt;/em&gt; played? Effective learning is the groundwork to building an effective robot.&lt;/p&gt;
+
+&lt;p&gt;A key component to learning is the ability to confirm that, yes, you did actually learn something. In a formal learning environment, like school, this is done through &lt;em&gt;assessments&lt;/em&gt; - your homework, quizzes, tests, etc. They fall into two large categories: &lt;em&gt;Summative&lt;/em&gt; and &lt;em&gt;Formative&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Formative assessments are ones which require you to &lt;em&gt;form&lt;/em&gt; new associations between things you know already - and therefore learn new things. For example, a homework problem putting together two equations that were always considered separately.&lt;/p&gt;
+
+&lt;p&gt;Summative assessments focus more on checking that you simply know the things you should already know. Think regurgitation, like recalling the meaning of a vocab word.&lt;/p&gt;
+
+&lt;p&gt;Both should be employed as you learn about the game. You’ll want to use some form of summative assessment to check your basic comprehension of the game. Then, you’ll want to do some experimental formative assessment as you combine parts of the manual into a well-defined game and design strategy.&lt;/p&gt;
+
+&lt;p&gt;Doing any sort of self assessment is &lt;em&gt;really&lt;/em&gt; hard for one simple reason: &lt;em&gt;you don’t know what you don’t know&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;The quiz that Citrus Circuits puts out every year on the rulebook is a really good summative assessment. You can use it for just yourself, but even better if you can drag some members of your team along with you.&lt;/p&gt;
+
+&lt;p&gt;Perusing the FIRST official Q&amp;amp;A system, as well as the flurry of posts on ChiefDelphi can also help. You can see the questions others have, and evaluate how well you could answer them yourself. Some will have straightforward answers, others not. It can be a good gauge to see if you’re thinking about the problem similarly to others or not.&lt;/p&gt;
+
+&lt;h3 id=&quot;watch-robot-in-3-days&quot;&gt;Watch Robot in 3 Days&lt;/h3&gt;
+
+&lt;p&gt;If you’re not familiar, a number of organizations run what is called “Robot in Three Days” (Ri3D). It’s…. quite literally what it says on the cover. Right as the rules are released, teams start designing and building. They usually have parts on hand already, and use as much off-the-shelf as possible. The goal is rapid prototyping and thorough documentation of the results. Within 3 days, hopefully a functional robot is produced.&lt;/p&gt;
+
+&lt;p&gt;The documentation they produce is a super valuable tool. It’s the early data to show what is going to be easy, and what is going to be hard.&lt;/p&gt;
+
+&lt;p&gt;Obviously, you don’t have to wait until they’re done to start your strategy and design.&lt;/p&gt;
+
+&lt;p&gt;The results of the robot in 3 days should be considered a guideline. If a team was able to create something in 3 days, surely you should be able to make it in 6 (or more) weeks. You can probably do more too! Just use the Ri3D designs as a reference point for judging whether your design is too advanced, or too simple. Seeing what the Ri3D teams do is a bit of an assessment of sorts - it provides a check on day 3, in both a summative &lt;em&gt;and&lt;/em&gt; formative way, of ensuring your thought process is well-aligned to playing the game well.&lt;/p&gt;
+
+&lt;p&gt;As a side note - I think there’s no shame in just building a Ri3D bot verbatim. There’s a ton of awesome people doing awesome design on these things - professionals, really. Take their knowledge, use it the best you can! The vast majority of Ri3D bots make excellent 3rd-robot alliance partners at most regionals, if not better. If you can take a design, build it up in two weeks, and then have four weeks to do driver practice, autonomous development, and maybe a mechanism improvement or two, well…. That sounds like a successful season to me!&lt;/p&gt;
+
+&lt;p&gt;Of course, this isn’t to discourage innovation, but rather meant to extend something &lt;a href=&quot;https://www.linkedin.com/in/karthik-kanagasabapathy-a7a970129/?originalSubdomain=ca&quot;&gt;Karthik Kanagasabapathy&lt;/a&gt; talks about a lot - focus on robots that can do a few things really well, building within your means. If design and strategy aren’t your team’s strong suits, then build a robot with a proven design around a good game strategy, and focus your efforts elsewhere.&lt;/p&gt;
+
+&lt;h3 id=&quot;start-with-a-schedule&quot;&gt;Start with a Schedule&lt;/h3&gt;
+
+&lt;p&gt;Set your deadlines early, set them often. It seems obvious, but takes discipline beyond what many teams expect. The reason is to ensure you aren’t rushing at the end. Rushing leads to cut corners, and therefor lower performance overall. Building &lt;em&gt;fast&lt;/em&gt; is good, building &lt;em&gt;rushed&lt;/em&gt; is bad.&lt;/p&gt;
+
+&lt;p&gt;The best way I know to avoid this is to establish a schedule, and stick to it. Even if that means pulling late nights in week 1 to get CAD done, do it! There’s mechanical, electrical, programming, and drive teams that need the results of your work, and taking the attitude of “there’s six weeks, no need to worry” won’t work out all that well.&lt;/p&gt;
+
+&lt;p&gt;Gantt Charts are one of my favorite ways of organizing these schedules, and making the impact of slipping a date very visible. Detailed is usually better than vague, but you do have to be careful. If the schedule gets too detailed or complicated, you suddenly find your full time job is maintaining schedule documentation, rather than actually building a robot.&lt;/p&gt;
+
+&lt;p&gt;You’ll definitely want to use a tool to do this, rather than re-drawing a picture every time the schedule changes. &lt;a href=&quot;https://www.openproject.org/&quot;&gt;OpenChart&lt;/a&gt; is a pretty decent option. &lt;a href=&quot;https://www.teamgantt.com/google-sheets-gantt-chart-template&quot;&gt;A few options with Google Sheets&lt;/a&gt; also exist.&lt;/p&gt;
+
+&lt;h3 id=&quot;make-kickoff-part-of-team-succession-planning&quot;&gt;Make Kickoff part of Team Succession Planning&lt;/h3&gt;
+
+&lt;p&gt;There will come a time when the team will have to function without you present. No matter how young you think you are, and no matter what your role is, I will always stand behind that axiom.&lt;/p&gt;
+
+&lt;p&gt;Due to this, it’s important to ensure the new students and mentors who come in are properly…. indoctrinated (for lack of a better word)… into the culture that is FIRST. Part of that is the team bonding and excitement that should surround every kickoff event.&lt;/p&gt;
+
+&lt;p&gt;Get excited! Ensure the people leading conversations have enthusiasm, bring out unique ideas and perspectives, and build consensus when it’s time to decide something. Make sure every individual has happy, positive experiences associated with the frenzy that is kickoff.&lt;/p&gt;
+
+&lt;p&gt;Have some food! Play some games together. Take breaks as appropriate. Leaders should be very willing to demonstrate that “having fun” is a critical component to the team acting as, well, a team. Go out to eat, or meet up in a casual setting, all as appropriate.&lt;/p&gt;
+
+&lt;p&gt;Try to ensure everyone is included, but also keep in mind not everyone will want to spend every waking hour thinking about robots - respect both camps, and you’ll ensure that you have a steady supply of workforce to power the team in future years.&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Well, that’s all that’s on my mind for now. I hope I’ll be able to keep up at least a few short posts here and there throughout the season, though I suspect my focus will shift more to ChiefDelphi and working with my team. We’ll see.&lt;/p&gt;
+
+&lt;p&gt;In conclusion, have fun! Best of luck this season! I do hope to run into you at Detroit!&lt;/p&gt;</content><author><name></name></author><summary type="html">On Kickoff</summary></entry><entry><title type="html">TRTT Behind the Scenes</title><link href="/blog_posts/2019/12/09/behind_the_scenes.html" rel="alternate" type="text/html" title="TRTT Behind the Scenes" /><published>2019-12-09T08:30:00-06:00</published><updated>2019-12-09T08:30:00-06:00</updated><id>/blog_posts/2019/12/09/behind_the_scenes</id><content type="html" xml:base="/blog_posts/2019/12/09/behind_the_scenes.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;When I started writing this blog, I didn’t have much in mind. I was mostly hoping just to write some text, and make it available on a website. It kinda snowballed over time - it’s still not super complex, but does incorporate a number of different web technologies. For anyone interested in doing something similar, or just curious, I figured I’d document what sorts of technologies I’m using currently.&lt;/p&gt;
 
@@ -2437,209 +2507,4 @@ t &lt; 0 %]]&gt;&lt;/script&gt;), the wheel should not be turning.&lt;/li&gt;
       &lt;p&gt;Through a circuit breaker, of course. Let’s be safe now. &lt;a href=&quot;#fnref:4&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry><entry><title type="html">Control Theory - Systems &amp;amp; Control Engineering</title><link href="/blog_posts/2019/09/07/systems_and_controls.html" rel="alternate" type="text/html" title="Control Theory - Systems &amp; Control Engineering" /><published>2019-09-07T09:30:40-05:00</published><updated>2019-09-07T09:30:40-05:00</updated><id>/blog_posts/2019/09/07/systems_and_controls</id><content type="html" xml:base="/blog_posts/2019/09/07/systems_and_controls.html">&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
-
-&lt;p&gt;One of the most eye-opening courses I took in college was an &lt;a href=&quot;https://courses.grainger.illinois.edu/ece486&quot;&gt;introduction to control theory course&lt;/a&gt;. The topic was brand new to me. Prior to taking the course, I had never even heard of this concept of “control theory”.&lt;/p&gt;
-
-&lt;p&gt;The course provided a brand new level of abstraction for thinking about how software fits in with the rest of the world. It provided the tools and vision for creating software and physical devices in harmony, to produce desireable, accurate, repeatable actions.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Software and physical devices in harmony&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Sounds sorta familiar, huh?&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/sw_hw_254.png&quot; alt=&quot;software and hardware together&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Source: team254.com&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;I did a couple cool projects in the class, but largely didn’t touch the subject much academically. But boy, did it influence the way that I approach problem solving. And it has been the single greatest driving force in my design philosophy for robotics - both in college, and into FRC mentoring.&lt;/p&gt;
-
-&lt;p&gt;I want to start a series of posts on the topic. We’ll start by talking more about the formal definitions of “System” and “Controls”, dig into a bit of the math (with lots of pictures, don’t worry), and finally talk a bit about controller design - leading into the mysterious land of &lt;em&gt;PID&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;If you’ve spent any time around robotics, you’ve most certainly heard the term PID - this mystical thing that you put in code, and then it magically solves problems! Right?&lt;/p&gt;
-
-&lt;p&gt;Eeeh, not so much. It can solve certain problems, but only under certain constraints. The study of Control Theory will give us the answers on &lt;em&gt;which&lt;/em&gt; problems and &lt;em&gt;which&lt;/em&gt; constraints.&lt;/p&gt;
-
-&lt;p&gt;The ultimate goal? &lt;a href=&quot;https://vimeo.com/110346531&quot;&gt;Make mechanical systems do our bidding&lt;/a&gt;. Nothing more, nothing less. Let’s dive in!&lt;/p&gt;
-
-&lt;h2 id=&quot;defining-a-system&quot;&gt;Defining a &lt;em&gt;System&lt;/em&gt;&lt;/h2&gt;
-
-&lt;p&gt;A &lt;em&gt;Control System&lt;/em&gt;, or simply a &lt;em&gt;System&lt;/em&gt;, is a carefully-selected collection of mechanical parts, electronics, and software. Additionally, these pieces interact with each other. That’s it. Its super vague by itself. The academic treatment is purposefully vague, so as to explore the surprising similarities between seemingly disparate situations.&lt;/p&gt;
-
-&lt;p&gt;Usually, a control system in robotics consists of the following components:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;An &lt;em&gt;Input Command&lt;/em&gt;, which describes what the mechanism &lt;em&gt;should&lt;/em&gt; be doing.
-    &lt;ul&gt;
-      &lt;li&gt;This could be from a human operator’s gamepad, or maybe an autonomous routine.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;Controller&lt;/em&gt;, a piece of software running on a processor which you can freely adjust
-    &lt;ul&gt;
-      &lt;li&gt;This usually lives on the roboRIO, but the software itself can be written as you please.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;An &lt;em&gt;Actuator&lt;/em&gt;, the set of electronics and motors and solenoids which exert a force on the mechanism
-    &lt;ul&gt;
-      &lt;li&gt;FRC rules restrict your set of choices here, but still allow some freedom.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;End Effector&lt;/em&gt;, the part of the mechanism you are attempting to move in some “desired” manner.
-    &lt;ul&gt;
-      &lt;li&gt;This is usually the thing your mechanical team designs and builds. There is some potential to change it, but its design is often fixed.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;Feedback Sensor&lt;/em&gt;, something which measures the mechanism, and provides information to the Controller.
-    &lt;ul&gt;
-      &lt;li&gt;This can often be freely chosen, though due to mechanical constraints often has to be mounted in a certain location on the mechanism.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As you can probably see, every control system has some parts which you can freely design (like the software in the Controller), some components which you have much less control over (like the actuator, or the mechanism connecting the end effector. The goal is to use the components you &lt;em&gt;can&lt;/em&gt; freely design to make the components you &lt;em&gt;can’t&lt;/em&gt; freely design still do what you want.&lt;/p&gt;
-
-&lt;h3 id=&quot;practical-example&quot;&gt;Practical Example&lt;/h3&gt;
-
-&lt;p&gt;As a concrete example, think about a shooter wheel from 2016 or 2017 games. In both games, a common design was to launch a ball by spinning a rubber wheel up to a certain speed, then injecting the ball into the spinning wheel. The common “controls” requirement (aka “desired” behavior) was to ensure the wheel had a particular speed prior to injecting the ball, in order to keep the trajectory consistent. Here’s a concrete example of components that could be used to build up such a system:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The &lt;em&gt;Input Command&lt;/em&gt; came from a button on an XBOX controller. Pressed and the command is something like 1000RPM, released and the command is 0 RPM.&lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;Controller&lt;/em&gt;, as always, was some software on the roboRIO. We’ll delve into the design of this software later.&lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;Actuator&lt;/em&gt; was some speed controller (like a Victor SP) wired to a motor (like a 775 Pro)&lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;End Effector&lt;/em&gt; was some rotating, rubberized wheel. Usually, this was propelled by the actuator, via a gearbox.&lt;/li&gt;
-  &lt;li&gt;The &lt;em&gt;Feedback Sensor&lt;/em&gt; was a &lt;a href=&quot;https://en.wikipedia.org/wiki/Rotary_encoder&quot;&gt;quadrature encoder&lt;/a&gt;, splined to some rotating member in the motor/gearbox/launch wheel system.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;vocabulary&quot;&gt;Vocabulary&lt;/h3&gt;
-
-&lt;p&gt;In more standard control system terminology, the following nomenclature is used:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;The value of the &lt;em&gt;Input Command&lt;/em&gt; is called the &lt;em&gt;Desired&lt;/em&gt; value.&lt;/li&gt;
-  &lt;li&gt;The value of the &lt;em&gt;Feedback Sensor&lt;/em&gt; is called the &lt;em&gt;Actual&lt;/em&gt; value.&lt;/li&gt;
-  &lt;li&gt;The software and computer and actuator electrical components are collectively called the &lt;em&gt;Controller&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;The mechanical portion of the actuator, the end effector, and the linkage between all this and the feedback sensor are collectively called the &lt;em&gt;Plant&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;The output of the controller, into the plant, is called the &lt;em&gt;Control Effort&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The Controller/Plant terminology dates back to when control systems were primarily for Chemical Engineering processes at chemical production plants - Engineers designed controllers to make their plants do what they wanted.&lt;/p&gt;
-
-&lt;p&gt;The &lt;em&gt;Actual&lt;/em&gt; and &lt;em&gt;Desired&lt;/em&gt; values must both describe the quantities associated with the end effector you are trying to control - its speed, its position, etc. In the case of the shooter wheel, it’s the rotational velocity of that launch wheel end effector.&lt;/p&gt;
-
-&lt;p&gt;The Controller’s job is actually fairly simple: Make the &lt;em&gt;Actual&lt;/em&gt; value match the &lt;em&gt;Desired&lt;/em&gt; value as closely as needed. That’s it! &lt;em&gt;How&lt;/em&gt; this is accomplished is much more less simple, and is heavily dependant on the nature of the plant.&lt;/p&gt;
-
-&lt;p&gt;One additional note: The feedback sensor is technically optional, and is not present in some systems. We will discuss this in more detail later.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-block-diagram&quot;&gt;The Block Diagram&lt;/h2&gt;
-
-&lt;p&gt;The core tool used while describing control systems is the &lt;em&gt;block diagram&lt;/em&gt;. Teams who use Labview will already be well familiar with this concept. However, for the sake of the text-based language teams, let’s delve in a bit.&lt;/p&gt;
-
-&lt;p&gt;A block diagram uses labeled &lt;em&gt;blocks&lt;/em&gt; to show entities, and &lt;em&gt;arrows&lt;/em&gt; to show relationships between the entities.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/basic_block.png&quot; alt=&quot;Basic block diagram&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The blocks can be defined to be anything you like - a controller, a plant, part of a plant, your dog, etc. You choose what to put inside the block, so as to communicate your intent most clearly. The block is an indication of an &lt;em&gt;abstraction&lt;/em&gt; - it shows the functional part you want your reader to be thinking about. No additional, unimportant details.&lt;/p&gt;
-
-&lt;p&gt;As a silly example, let us explain a very critical concept for all FRC teams everywhere:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/silly_block_example.png&quot; alt=&quot;Cookies -&amp;gt; feed -&amp;gt; Mentors&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here, we illustrate the concept of some sort of cookies providing sustenance to a group of mentors. It doesn’t matter what type of cookies, or how you made them, or what they cost. It doesn’t matter how the mentors eat the cookies, or how their bodies process the food, or whether you like the mentors or not. All these details are &lt;em&gt;abstracted&lt;/em&gt; behind those nicely named little boxes.&lt;/p&gt;
-
-&lt;p&gt;Arrows indicate a quantitative relationship or flow of data from one block to another. Note we kinda violated that in our silly example. Maybe it’s “Calories”… doesn’t matter I suppose. It’s a silly example.&lt;/p&gt;
-
-&lt;p&gt;For &lt;em&gt;real control system&lt;/em&gt; work, you’ll want your relationships to by quantifiable. That is to say, you can describe their value at any point in time using a number. It could be a command communicated to a motor controller, a force applied from one mechanism to another, a position detected by a sensor, an electrical signal generated by a sensor and sent to a controller… you get the picture. The key is &lt;em&gt;quantitative&lt;/em&gt; - arrows are like assignment in variables, and actually get interpreted as such when you write software or do math based in block diagrams.&lt;/p&gt;
-
-&lt;p&gt;Note that we’ve provided a label over the arrow for clarity. This sometimes is useful, but also may be omitted in two cases:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;The relationship is obvious, such that the label crowds the diagram without adding additional information.&lt;/li&gt;
-  &lt;li&gt;The relationship is purposefully left vague, such that the diagram may apply to many scenarios at once.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Now for a more serious example. In our standard construction of a control system, we usually can draw the following block diagram:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system_simple.png&quot; alt=&quot;Standard control system, very simple&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This illustrates the most basic breakdown of a system that control engineers will do. It illustrates the key concepts we’ve already discussed:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Some outside entity provides a Desired value&lt;/li&gt;
-  &lt;li&gt;Something inside the Plant is measured, producing the Actual value&lt;/li&gt;
-  &lt;li&gt;The controller exerts a Control Effort onto the Plant&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Thought not a hard and fast rule, I will generally draw things you &lt;em&gt;can&lt;/em&gt; freely design in the top row, and things you &lt;em&gt;cannot&lt;/em&gt; freely design in the bottom row. Just a convention to help visually organize the parts of the problem.&lt;/p&gt;
-
-&lt;p&gt;Finally, if you ever hear about “Feedback” in a control system, you can take the words quite literally. As you can see in the bottom row, data is literally &lt;em&gt;fed back&lt;/em&gt; from the controller, through the plant, and back into the controller. The data in the bottom row literally flows backward, visually, in the diagram.&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
-
-&lt;p&gt;Often useful is a more detailed diagram, where we break up the &lt;em&gt;Controller&lt;/em&gt; and &lt;em&gt;Plant&lt;/em&gt; blocks into components that can be more easily mapped to real components on the robot.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/standard_control_system.png&quot; alt=&quot;Standard control system&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here, you should see that perform the following “un-abstractions” to give a more detailed and usable view of the world:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;We specify that our &lt;em&gt;Controller&lt;/em&gt; shall be made up of software, plus some electronics to bring the software outputs to the physical world&lt;/li&gt;
-  &lt;li&gt;We specify that our &lt;em&gt;Plant&lt;/em&gt; is made up of an electrically-powered actuator, some physical mechanism attached to that actuator, and a sensor measuring that mechanism.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;This is probably the most common permutation seen in FRC robotics, but note it doesn’t have to always be this way. For example, your controller might &lt;a href=&quot;https://www.briggsandstratton.com/eu/en_gb/support/faqs/browse/governor-system.html&quot;&gt;contain zero electronics&lt;/a&gt;. Or, your plant might &lt;a href=&quot;https://www.amazon.com/dp/3642100449/&quot;&gt;actually be the stock market&lt;/a&gt;. I say this more as an aside, just to show how broadly this Control Theory topic can be applied. However, for FRC purposes, we’ll focus on the software-electronics-hardware-sensor model.&lt;/p&gt;
-
-&lt;p&gt;To further drive home this process, let’s put some specific component labels down in this diagram for our example shooter system described earlier:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/shooter_wheel_control_system.png&quot; alt=&quot;Shooter Wheel Control System&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here we see the mechanism further broken down into a gearbox and shooter wheel, and some specific component choices made to simplify explanation later on. Play along with us, and by the end you’ll be able to fill in the boxes for your own bespoke robot systems!&lt;/p&gt;
-
-&lt;h2 id=&quot;but-why-feedback&quot;&gt;But, Why Feedback?&lt;/h2&gt;
-
-&lt;p&gt;Earlier on, I mentioned that the sensor (and therefor, the whole Feedback system) was not technically required. Such a system is called “Open Loop”, as there is no information about the results of the control effort passed back into the controller. The loop of signal flow is left “open”.&lt;/p&gt;
-
-&lt;p&gt;This is, admittedly, a much simpler setup. No need to worry about feedback. It’s totally feasible too - as long as you know &lt;em&gt;exactly&lt;/em&gt; how your plant will respond to &lt;em&gt;each and every&lt;/em&gt; sequence of control effort inputs, you can 100% predict where your actuator will end up. If you just work this prediction math backward, you arrive at a solution for a control effort that puts your actuator exactly where you want it.&lt;/p&gt;
-
-&lt;p&gt;The key - plant models are usually &lt;em&gt;unpredictable&lt;/em&gt;. Carpet has bumps. Battery voltage fluctuates. Parts expand and contract with temperature changes. Competition fields have slightly different dimensions than your practice field. Joe Freshman forgets to grease gears properly between matches. No matter how good at math you are, you can’t predict exactly how and when these will impact your system.&lt;/p&gt;
-
-&lt;p&gt;Whenever these &lt;em&gt;disturbances&lt;/em&gt; are big enough to impact system function in a meaningful way, you need &lt;em&gt;feedback&lt;/em&gt; and &lt;em&gt;controller design&lt;/em&gt; that can deal for this variation, correcting for it.&lt;/p&gt;
-
-&lt;h2 id=&quot;next-steps---control-system-design&quot;&gt;Next Steps - Control System Design&lt;/h2&gt;
-
-&lt;p&gt;Ok, we’re at a good point to take a quick step back, and look at where we are at.&lt;/p&gt;
-
-&lt;p&gt;The most general sequence of steps I can provide when it comes to problem solving are as follows:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;Describe the problem&lt;/li&gt;
-  &lt;li&gt;Design a solution&lt;/li&gt;
-  &lt;li&gt;Implement the solution&lt;/li&gt;
-  &lt;li&gt;Validate the solution works&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;So far, we’re partway through step 1. We’re building up a language and technique for describing the problem.&lt;/p&gt;
-
-&lt;p&gt;We’ve described how control systems are broken down into components, represented with nice little connected boxes. The next major task is to start to fill out the contents of each box.&lt;/p&gt;
-
-&lt;p&gt;For standard control theory design, each one will require a mathematical description - a &lt;em&gt;model&lt;/em&gt; - of behavior. Fundamentally, each model will be description of how the input impacts the output.&lt;/p&gt;
-
-&lt;p&gt;Finally, we can apply control theory principles to &lt;em&gt;design&lt;/em&gt; the mathematics of what we want the controller to look like, such that our &lt;em&gt;actual&lt;/em&gt; value converges to the &lt;em&gt;desired&lt;/em&gt; value in the most appropriate way.&lt;/p&gt;
-
-&lt;p&gt;So, next up, we’ll look at some examples of how to build up these mathematical models, and what important takeaways from the models we should expect.&lt;/p&gt;
-
-&lt;p&gt;After that, we’ll be able to move on to step 2, in which we &lt;em&gt;design&lt;/em&gt; the contents of the &lt;em&gt;Control Software&lt;/em&gt; box to make the whole system do what we want.&lt;/p&gt;
-
-&lt;p&gt;We’ll finish off with some thoughts on techniques for validating behavior on real hardware, and troubleshooting when it doesn’t work. Stay tuned!&lt;/p&gt;
-
-&lt;p&gt;Ready to keep going? Check out &lt;a href=&quot;/blog_posts/2019/09/20/math_models.html&quot;&gt;Mathematical Models!&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;closing-note---on-other-resources&quot;&gt;Closing Note - On Other Resources&lt;/h2&gt;
-
-&lt;p&gt;With any luck, I’ve at least peaked your interest in this topic. I do hope you will carry on in this sequence of posts. However, note, this will be an overview, with a focus on getting a ground up explanation of why certain FRC-relevant concepts work the way they do.&lt;/p&gt;
-
-&lt;p&gt;For a &lt;em&gt;much&lt;/em&gt; more thorough and mathematically rigorous explanation of the topic, I &lt;strong&gt;HIGHLY&lt;/strong&gt; recommend reading the textbook &lt;a href=&quot;https://file.tavsys.net/control/controls-engineering-in-frc.pdf&quot;&gt;Controls Engineering in FRC&lt;/a&gt; - by far the best resource I’ve found on this topic. I’ll be making references to sections in this book throughout this series of posts. So far, we’ve discussed content from Chapter 1, Control System Basics.&lt;/p&gt;
-
-&lt;div class=&quot;footnotes&quot;&gt;
-  &lt;ol&gt;
-    &lt;li id=&quot;fn:1&quot;&gt;
-      &lt;p&gt;Backward, assuming you read from left to right. Just the established convention. A convention which was clearly made by someone who didn’t read Hebrew. Sorry, Hebrew-reading friends. &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-&lt;/div&gt;</content><author><name></name></author><summary type="html">Introduction</summary></entry></feed>
+&lt;/div&gt;</content><author><name></name></author><summary type="html">All models are wrong, but some are useful. - George Box</summary></entry></feed>
