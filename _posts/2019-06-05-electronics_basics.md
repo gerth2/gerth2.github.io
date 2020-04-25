@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Introduction to Electronics"
 date:   2019-06-05 9:30:00 -0500
 categories: blog_posts

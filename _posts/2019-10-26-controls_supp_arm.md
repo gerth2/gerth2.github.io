@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Control Theory - Supplemental - Vertical Arm"
 date:   2019-10-26 9:30:00 -0500
 categories: blog_posts
@@ -42,7 +42,7 @@ For context, this post came about when one of our students asked for info on tun
 
 A common example is an arm on the top of a robot. For our arm, we'll assume it's _vertical_ - that is to say, it lifts things from floor height to some higher elevation - Think like the 2018 game robots:
 
-![arm robots](/assets/arm_robots.png)
+![arm robots](/assets/img/arm_robots.png)
 
 Our _desired_ input (or _setpoint_) will come in terms of _degrees above or below the horizon_, rather than rotational velocity. As we'll see, this leads to a different tuning methodology, but the underlying PID concept still works.
 
@@ -68,13 +68,13 @@ When tuning a system and looking at its step response, there are fundamentally t
 
 An _overdamped_ system will slowly approach the desired value, hopefully settling out just barely underneath the desired value. It's generally pretty gradual, and has _no oscillation_, and never _crosses_ or _goes above_ the desired value.
 
-![Overdamped](/assets/ctrl_overdamped.png)
+![Overdamped](/assets/img/ctrl_overdamped.png)
 
 The name should make sense - if you think of friction or stiffness in the system as a "damping" force, an _overdamped_ system has _quite a bit of damping_. Sometimes this is desired, sometimes it is not (as we'll discuss later). But for now, just remember the association of the word with the meaning.
 
 Similarly, an _underdamped_ system will have _much less damping_. In these systems, the actual value _overshoots_ the desired value, crossing and turning around multiple times before settling down. An underdamped system will always have some amount of oscillation.
 
-![Underdamped](/assets/ctrl_underdamped.png)
+![Underdamped](/assets/img/ctrl_underdamped.png)
 
 For systems that involve a PID controller, the P gain tends to be the "knob" that pushes a system between overdamped and underdamped. Additionally, the D gain can take a system with underdamped characteristics, and make it look more overdamped.
 
@@ -82,13 +82,13 @@ Both of these system types are _stable_ - this means that as time progresses, th
 
 The first flavor is the "it blows up from getting too big":
 
-![unstable 1](/assets/ctrl_unstable.png)
+![unstable 1](/assets/img/ctrl_unstable.png)
 
 Here, for whatever reason, the system's value just shoots off in one direction, never really going where we want it. In general, in cases like this, you'll hit some mechanical or electrical limit, break something or let the magic smoke out, and have some other subteams angry at you. Definitely not recommended.
 
 The other flavor of unstable stays somewhat close to the desired value, but never "settles down".
 
-![unstable 2](/assets/ctrl_unstable2.png)
+![unstable 2](/assets/img/ctrl_unstable2.png)
 
 At best, this will be a robot that looks _really_ bad and uncontrollable, which means you don't get picked in elimination rounds. More often, the motion causes parts to wear out prematurely and also break. Again, bad news bears. Also not recommended.
 
@@ -109,7 +109,7 @@ _Rise time_ refers to the duration between when the desired command changes, and
 
 _Settling time_ refers to the duration between when the desired command changes, and when the actual values _settles down_ within some acceptable error from the desired value. 
 
-![Rise and Settling time](/assets/ctrl_time.png)
+![Rise and Settling time](/assets/img/ctrl_time.png)
 
 Overdamped systems will have a longer rise time than underdamped systems. Settling times can vary quite a bit, depending on system dynamics. 
 
@@ -123,11 +123,11 @@ There are also two value-based metrics for talking about your system response.
 
 _Overshoot_ refers to _how much_ the actual value goes past the desired value before coming back toward it.
 
-![Overshoot](/assets/ctrl_overshoot.png)
+![Overshoot](/assets/img/ctrl_overshoot.png)
 
 _Steady State Error_ refers to _how far off_ the actual value is from the desired value after all transient behavior has died down, and the system is fully stabilized.
 
-![Steady State Error](/assets/ctrl_ss_error.png)
+![Steady State Error](/assets/img/ctrl_ss_error.png)
 
 In general, decreasing P and increasing D will lower the amount of overshoot you have. Increasing the physical mass or increasing the friction of the system can also do the same thing.
 

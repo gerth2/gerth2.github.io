@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Introduction to Electronics Pt 2 - the Digital Revolution"
 date:   2019-06-15 9:30:00 -0500
 categories: blog_posts
@@ -50,7 +50,7 @@ When a doped region with extra electrons is fused to a doped region with holes, 
 
 Applying a voltage across this depletion region will exert an extra force on the electrons. Depending on the direction of the voltage, you may end up with more electrons  hopping into holes (expanding the depletion region), or knocking electrons out of holes (shrinking the depletion region). As the voltage gets big enough to drive the depletion region to near zero size, the resistance of the material goes down, and it transforms into a conductor overall.
 
-![depletion layer and diode](/assets/diode.png)
+![depletion layer and diode](/assets/img/diode.png)
 
 This is the useful property of semiconductors - by applying a voltage to one part, the material property can be converted between insulator and conductor.
 
@@ -60,13 +60,13 @@ It is commonly said that computers store information using 1's and 0's. These "b
 
 Transistors contain 3 or more regions of semiconductor material. The simplest type have what is referred to as a Base, Collector, and Emitter region. 
 
-![bjt diagram](/assets/bjt.png)
+![bjt diagram](/assets/img/bjt.png)
 
 Usually the line diagram with the "arrow pointing in" is used to represent the transistor in schematics.
 
 By injecting a voltage (and tiny current) at the base, the motion of electrons causes an avalanche effect if the collector & emitter have a voltage across them. The tiny input force causes a much larger output force, though it saturates at a certain point. This association allows one electrical signal to impact the flow of another signal, much as a human turning a light switch on and off impacts the flow of electricity to a lamp.
 
-![bjt as switch](/assets/bjt_as_switch.png)
+![bjt as switch](/assets/img/bjt_as_switch.png)
 
 This switching action of the transistor is the basis upon which information can be manipulated. By carefully combining transistors, along with small numbers of other components, basic "logic gates" can be built up. These rudamentory gates have one or more inputs, and a single output, and computer boolean operations like AND, OR, and NOT with electronics.
 

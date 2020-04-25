@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Processor Architecture"
 date:   2019-07-22 9:31:00 -0500
 categories: blog_posts
@@ -45,7 +45,7 @@ Storing data is cool, but to do useful processing we have to, well, process the 
 
 The collection of circuitry which does the calculations is generally referred to as the _Arithmetic Logic Unit_, or ALU. It gets its own fancy-pants symbol that looks like a sideways pair of pants:
 
-![ALU](/assets/ALU.png)
+![ALU](/assets/img/ALU.png)
 
 Implementations on various processors will vary slightly, but conceptually they all have to have at least 3 inputs:
 
@@ -84,7 +84,7 @@ What set of operations are supported really just depends on processor design. In
 
 Conceptually, putting together an ALU is remarkably straightforward. Just package all the circuits which do the operations you want individually, feed them each off of the provided inputs, and use a MUX driven by the CTRL input to select which calculation makes it to the output.
 
-![inside ALU](/assets/aluInternals.png)
+![inside ALU](/assets/img/aluInternals.png)
 
 In addition to these combination operations, the ALU will often have additional outputs to indicate if the operation resulted in overflow or underflow (ie, result was outside the min or max range of the numbers that can be represented by the 32 bits of the ALU).
 
@@ -92,7 +92,7 @@ In addition to these combination operations, the ALU will often have additional 
 
 The control unit is the heart of this whole system, coordinating the action of registers and the ALU together to do actual calculation. The design of the unit is special tailored to implement the stored-program concept. Again, the exact design of the control unit can vary, but all have to have at least a few basic components and abilities.
 
-![Control Unit Top Level](/assets/controlUnit.png)
+![Control Unit Top Level](/assets/img/controlUnit.png)
 
 #### Registers
 
@@ -118,15 +118,15 @@ Most control units follow a repeating three-step process while running:
 2. Decode
 3. Execute.
 
-![Control Unit Fetch](/assets/controlUnitFetch.png)
+![Control Unit Fetch](/assets/img/controlUnitFetch.png)
 
 During the _Fetch_ phase, the control unit fetches the next instruction. The Program Counter register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.
 
-![Control Unit Decode](/assets/controlUnitDecode.png)
+![Control Unit Decode](/assets/img/controlUnitDecode.png)
 
 During the _Decode_ phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.
 
-![Control Unit Execute - Math](/assets/controlUnitMath.png)
+![Control Unit Execute - Math](/assets/img/controlUnitMath.png)
 
 During the _Execute_ phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence). The drawing above shows an example where the ALU is used to do math.
 
@@ -173,11 +173,11 @@ Generally, after all decoding and execution has been completed, the Program Coun
 
 The manner in which they alter it can vary far and wide. Usually it involves some offset from the current PC - rather than going to the next instruction, you skip forward by some larger number of addresses, or maybe backward by five addresses... something like that. The size of the jump may be encoded into the instruction word itself, or pulled from a general purpose register, or lots of other options really. At the end of the day, it's just up to how the instruction is interpreted again to select which calculation is used to update the PC prior to the next execution cycle.
 
-![next instruction](/assets/nextInstructionDecode.png)
+![next instruction](/assets/img/nextInstructionDecode.png)
 
 The net result is the same though - the PC gets loaded with the address of the next instruction to run, and the cycle may start over!
 
-![next instruction calc](/assets/controlUnitNextInstruction.png)
+![next instruction calc](/assets/img/controlUnitNextInstruction.png)
 
 ### IO techniques
 

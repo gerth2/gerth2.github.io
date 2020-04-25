@@ -12,55 +12,18 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   
       <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script><head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>x86 Assembly Introduction | Tricking Rocks to Think</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="x86 Assembly Introduction" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan" />
-<meta property="og:description" content="“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan" />
-<link rel="canonical" href="/blog_posts/2019/08/10/x86_intro.html" />
-<meta property="og:url" content="/blog_posts/2019/08/10/x86_intro.html" />
-<meta property="og:site_name" content="Tricking Rocks to Think" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-08-10T09:30:40-05:00" />
-<script type="application/ld+json">
-{"headline":"x86 Assembly Introduction","dateModified":"2019-08-10T09:30:40-05:00","datePublished":"2019-08-10T09:30:40-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/08/10/x86_intro.html"},"url":"/blog_posts/2019/08/10/x86_intro.html","description":"“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - Stephen Dolan","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
-<body>
+      <script src="/assets/js/function-plot.js"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+  <!-- Nothing here yet -->
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+  <body>
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
-</header>
-<main class="page-content" aria-label="Content">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
+    <!-- Nothing here yet -->
+
+    <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">x86 Assembly Introduction</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-08-10T09:30:40-05:00" itemprop="datePublished">Aug 10, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><em>“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - <a href="https://github.com/stedolan">Stephen Dolan</a></em></p>
+        <p><em>“It is well-known that the x86 instruction set is baroque, overcomplicated, and redundantly redundant.” - <a href="https://github.com/stedolan">Stephen Dolan</a></em></p>
 
 <h2 id="introduction">Introduction</h2>
 
@@ -82,13 +45,13 @@
 
 <p><em>Which bits</em> is described within the <a href="https://www.intel.com/content/dam/www/public/us/en/documents/manuals/64-ia-32-architectures-software-developer-instruction-set-reference-manual-325383.pdf">x86 software developer’s reference manual</a>. This behemoth of documentation describes, in great detail, the operation of every assembly instruction, and how to encode it into bits. Diagrams like this one explain the mapping:</p>
 
-<p><img src="/assets/intel_inst_format.png" alt="Intel instruction set bit format" /></p>
+<p><img src="/assets/img/intel_inst_format.png" alt="Intel instruction set bit format" /></p>
 
 <p>Which, as you are probably guessing, is not the most straightforward of methodologies. It’s totally feasable to figure out though, but that figuring will be left as an exerices to the user. It’s all there in that manual though, I promise.</p>
 
 <p>Again though, at least for the sake of this post, keep in mind that given an assembly instruction, you can get bits which go into a processor. All such that we can define what the starting layout of 1’s and 0’s in our RAM looks like:</p>
 
-<p><img src="/assets/controlUnitMemoryLayout.png" alt="Control Unit RAM" /></p>
+<p><img src="/assets/img/controlUnitMemoryLayout.png" alt="Control Unit RAM" /></p>
 
 <p>When writing assembly code, what you are really doing is defining the bits that will go into memory as the <em>stored program</em>, eventually executed by a processor. Once you have the right set of bits, you just have to load them into memory at just the right spot, then fire up the processor. It will pick the first address, and start running your program from the beginning.</p>
 
@@ -98,10 +61,11 @@
 
 <p>In addition to the actual instructions to run, you’ll also generally want to reserve memory locations to store values. Here’s a brief hint of where we’re going - remember variables from C syntax? Any time you have a variable, you’ll need some memory to store it. When writing x86 assembly, you can mark off a sets of bits for usage as variables:</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
 <span class="n">myVariable</span>  <span class="kt">DB</span> <span class="mi">42</span>
 <span class="n">myOtherVariable</span> <span class="kt">DW</span> <span class="mi">25</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>The <code class="highlighter-rouge">.data</code> directive tells the assembler that the things which follow are memory locations for variables, not code. The name of the variable comes first, followed by some string like <code class="highlighter-rouge">DB</code> or <code class="highlighter-rouge">DW</code> to indicate <em>how many</em> bytes the variable occupies. <code class="highlighter-rouge">DB</code> is one byte, <code class="highlighter-rouge">DW</code> is two, <code class="highlighter-rouge">DD</code> is four… others exist. The final thing can be optional, and dictates what the memory is to be set to prior to any code running. In this case, <code class="highlighter-rouge">myVariable</code> gets set to <a href="https://en.wikipedia.org/wiki/Phrases_from_The_Hitchhiker%27s_Guide_to_the_Galaxy#Answer_to_the_Ultimate_Question_of_Life,_the_Universe,_and_Everything_(42)">The Answer to the Ultimate Question of Life, the Universe, and Everything</a>, while <code class="highlighter-rouge">myOtherVariable</code> gets set to 25.</p>
 
@@ -109,20 +73,21 @@
 
 <p>As in all programming languages worth their salt, it is also possible to write comments in your assembly code.</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">;---------------------------------------------------</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="c">;---------------------------------------------------</span>
 <span class="c">; Herp Derp this is where the global variables go!</span>
 <span class="c">; Aren't comments the best?</span>
 <span class="c">;---------------------------------------------------</span>
 <span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
 <span class="n">myVariable</span>  <span class="kt">DB</span> <span class="mi">42</span>
 <span class="n">myOtherVariable</span> <span class="kt">DW</span> <span class="mi">25</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <h4 id="registers">Registers</h4>
 
 <p>We’ll now attempt to describe the General Purpose registers of interest to us in x86 processor architecture.</p>
 
-<p><img src="/assets/controlUnitRegisters.png" alt="Control Unit GPRs" /></p>
+<p><img src="/assets/img/controlUnitRegisters.png" alt="Control Unit GPRs" /></p>
 
 <p>Accessing memory addresses can be slow, so for rapid access of heavily-manipulated values, it’s common place to use a <em>general purpose</em> register to store the quantity. Physically located close to the center of the processor and implemented with high-speed circuitry, these registers are limited in quantity but abundant in speed and capiability. Additionally, some assembly instructions can only work with certain registers, so it’s required to populate the register first before running the restricted assembly instruction.</p>
 
@@ -141,14 +106,14 @@
 
 <p>To do anything useful, we’ll first want to know how to assign and move data values around in the processor.</p>
 
-<p><img src="/assets/controlUnitMemoryOps.png" alt="Control Unit Memory Operations" /></p>
+<p><img src="/assets/img/controlUnitMemoryOps.png" alt="Control Unit Memory Operations" /></p>
 
 <p><code class="highlighter-rouge">mov</code> is the first assembly instruction we will cover. <code class="highlighter-rouge">mov</code> stands for <em>move</em>. It’s the true workhorse of the x86 assembly language. <sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> It’s primary job - move values from one place to another. Fundamentally the syntax is:</p>
 
 <p><code class="highlighter-rouge">mov &lt;dst&gt; &lt;src&gt;</code></p>
 
 <p>It can move constant values into registers or memory, move between registers, or move between registers and memory:</p>
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
 <span class="c">; sample.asm</span>
 <span class="c">; ----------------------------------------------------------------------------</span>
 
@@ -185,7 +150,8 @@
     <span class="n">myOtherVariable</span> <span class="kt">DD</span> <span class="mh">0xBEEFBEEF</span>
     <span class="n">myBeefVariable</span>  <span class="kt">DD</span> <span class="mh">0x0BADBEEF</span>
  
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>Note due to hardware restrictions, direct memory-to-memory moves are not allowed. You have to store in a register first.</p>
 
@@ -197,7 +163,7 @@
 
 <p>After all this, we can assemble, link, and run the code. Using a special tool (called a debugger), we inspect the results of the registers after our code is run and see the result:</p>
 
-<p><img src="/assets/sample_mov_asm_run_result.png" alt="Code run result" /></p>
+<p><img src="/assets/img/sample_mov_asm_run_result.png" alt="Code run result" /></p>
 
 <p>As expected, our variables and registers got updated as promised in the comments! Our new unused variable friend <code class="highlighter-rouge">myBeefVariable</code> remains as it was when we started.</p>
 
@@ -205,7 +171,7 @@
 
 <p>Moving values from here to there is all well and good, but we generally also want to do math on those values.</p>
 
-<p><img src="/assets/controlUnitMath.png" alt="Control Unit Math" /></p>
+<p><img src="/assets/img/controlUnitMath.png" alt="Control Unit Math" /></p>
 
 <p>Fortunately, x86 provides a wide array of math operations for us to choose from. These include, but are not limited to:</p>
 
@@ -221,13 +187,14 @@
 
 <p>For example, to add <code class="highlighter-rouge">EAX</code> and <code class="highlighter-rouge">EBX</code> together, and store the result into <code class="highlighter-rouge">ECX</code>, you would provide the assembly code:</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">mov</span> <span class="n">ECX</span><span class="p">,</span> <span class="n">EAX</span>  <span class="c">; Copy first operand into the output location</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="k">mov</span> <span class="n">ECX</span><span class="p">,</span> <span class="n">EAX</span>  <span class="c">; Copy first operand into the output location</span>
 <span class="k">add</span> <span class="n">ECX</span><span class="p">,</span> <span class="n">EBX</span>  <span class="c">; Add the value in ECX (same as EAX) to EBX, storing back into ECX</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p><code class="highlighter-rouge">sub</code> works very similarly. As a worked example:</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
 <span class="c">; sample.asm</span>
 <span class="c">; ----------------------------------------------------------------------------</span>
 
@@ -260,15 +227,16 @@
 <span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
 
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>True to the comments, add and subtract operations put the results into <code class="highlighter-rouge">ECX</code> and <code class="highlighter-rouge">EDX</code>.</p>
 
-<p><img src="/assets/sample_math_asm_run_result.png" alt="Code run result" /></p>
+<p><img src="/assets/img/sample_math_asm_run_result.png" alt="Code run result" /></p>
 
 <p>Similarly, we can do bitwise logic operations on values. Instructions like <code class="highlighter-rouge">and</code>, <code class="highlighter-rouge">or</code>, and <code class="highlighter-rouge">not</code> do exactly what you’d expect, and follow very similar formatting to our math instruction friends. Yet another worked example of their operation:</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
 <span class="c">; sample.asm</span>
 <span class="c">; ----------------------------------------------------------------------------</span>
 
@@ -312,11 +280,12 @@
     <span class="n">xorResult</span>      <span class="kt">DD</span> <span class="mh">0x0</span>
 
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>The bitwise action performs the corresponding logic operation on the two numbers, one bit at a time, never inter-mixing the bits. Despite how painful it is to look at theses 32-bit sequences, the results are what you’d expect:</p>
 
-<p><img src="/assets/sample_logic_asm_run_result.png" alt="Code run result" /></p>
+<p><img src="/assets/img/sample_logic_asm_run_result.png" alt="Code run result" /></p>
 
 <h4 id="conditional-execution">Conditional Execution</h4>
 
@@ -328,11 +297,11 @@
 
 <p><em>Jump</em> comes in many different flavors, but all do the same thing - they alter the value of the next-address to be decoded as an instruction. By interrupting the normal “add-one-to-instruction-register” behavior of the processor, it enables you (the user) to change the order of execution.</p>
 
-<p><img src="/assets/controlUnitCompareJump.png" alt="Compare and jum processor data flow" /></p>
+<p><img src="/assets/img/controlUnitCompareJump.png" alt="Compare and jum processor data flow" /></p>
 
 <p>The instruction <code class="highlighter-rouge">jmp</code> itself is called an <em>unconditional jump</em> - no matter what <em>EFLAGS</em> is set to, it will always go to the provided memory address. For example, consider the following:</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_countBeverage</span><span class="o">:</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="n">_countBeverage</span><span class="o">:</span>
     <span class="k">add</span> <span class="p">[numBottlesBeverageOnWall],</span> <span class="mh">0x01</span>  <span class="c">; put one additional bottle of beverage on the wall</span>
     <span class="k">jmp</span> <span class="n">_countBeverage</span>                    <span class="c">; do it again.</span>
 
@@ -340,7 +309,8 @@
 
 <span class="kr">section</span> <span class="p">.</span><span class="n">data</span>
     <span class="n">numBottlesBeverageOnWall</span>      <span class="kt">DD</span> <span class="mh">0x0</span> <span class="c">; Zero beverage to start.</span>
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>Like that annoying singing brother in the car ride, this code just keeps counting the number of bottles of beverage on the wall. Maybe this is what you wanted to do - doom your machine to an eternity of counting. But, let’s say we want to do something a bit more meaningful….</p>
 
@@ -359,7 +329,7 @@
 
 <p>To show how to use these, let’s do a bit of a contrived, but still useful, example. We’ll load numbers into <code class="highlighter-rouge">EAX</code> and <code class="highlighter-rouge">EBX</code> and compare them. Based on the outcome of the result, we’ll set <code class="highlighter-rouge">ECX</code> - using (very convinenetly) <code class="highlighter-rouge">0x0A</code> for “<code class="highlighter-rouge">EAX</code> bigger”, <code class="highlighter-rouge">0x0B</code> for “<code class="highlighter-rouge">EBX</code> bigger”, and <code class="highlighter-rouge">0xAB</code> for “<code class="highlighter-rouge">EAX</code> equals <code class="highlighter-rouge">EBX</code>”.</p>
 
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="c">; ----------------------------------------------------------------------------</span>
 <span class="c">; sample.asm</span>
 <span class="c">; ----------------------------------------------------------------------------</span>
 
@@ -395,17 +365,18 @@
     <span class="c">; We are done executing - return control to the operating system</span>
     <span class="k">retn</span> 
 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>Running this produces the expected output - since <script type="math/tex">5 > 2</script>, we expect <code class="highlighter-rouge">0x0A</code> in <code class="highlighter-rouge">ECX</code>, and that’s what we get:</p>
 
-<p><img src="/assets/sample_jmp_asm_run_result.png" alt="Code run result" /></p>
+<p><img src="/assets/img/sample_jmp_asm_run_result.png" alt="Code run result" /></p>
 
 <p>Also as you’d expect - if you tweak the initial values of <code class="highlighter-rouge">EAX</code> and <code class="highlighter-rouge">EBX</code>, you get different results in <code class="highlighter-rouge">ECX</code>:</p>
 
-<p><img src="/assets/sample_jmp_asm_run_result_b_greater.png" alt="Code run result" /></p>
+<p><img src="/assets/img/sample_jmp_asm_run_result_b_greater.png" alt="Code run result" /></p>
 
-<p><img src="/assets/sample_jmp_asm_run_result_eq.png" alt="Code run result" /></p>
+<p><img src="/assets/img/sample_jmp_asm_run_result_eq.png" alt="Code run result" /></p>
 
 <p>A couple things of interest in this example: Note that <code class="highlighter-rouge">jmp</code> or its flavors do <em>not</em> set <em>EFLAGS</em>, so you can do a “chain” of jump instructions after one cmp instruction as above. Based off of just that one comparison, we branch off to the most-appropriate of the three subsections for manipulating <code class="highlighter-rouge">ECX</code>.</p>
 
@@ -414,19 +385,21 @@
 <p>However, the astute reader may be saying “Hey, one of those isn’t actually needed!” and you’re 100% right. In <code class="highlighter-rouge">_same</code>, the last <code class="highlighter-rouge">jmp _done</code> instruction is totally unnecessary from a functionality point of view.</p>
 
 <p>This chunk of code:</p>
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_same</span><span class="o">:</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="n">_same</span><span class="o">:</span>
     <span class="k">mov</span> <span class="n">ECX</span><span class="p">,</span> <span class="mh">0xAB</span>
     <span class="k">jmp</span> <span class="n">_done</span>
 <span class="n">_done</span><span class="o">:</span>
     <span class="k">retn</span> 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>Is functionally the exact same thing as:</p>
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">_same</span><span class="o">:</span>
+<div class="language-nasm highlighter-rouge"><pre class="highlight"><code><span class="n">_same</span><span class="o">:</span>
     <span class="k">mov</span> <span class="n">ECX</span><span class="p">,</span> <span class="mh">0xAB</span>
 <span class="n">_done</span><span class="o">:</span>
     <span class="k">retn</span> 
-</code></pre></div></div>
+</code></pre>
+</div>
 
 <p>Because jumping to the next instruction is, well, exactly what the processor does by default.</p>
 
@@ -447,40 +420,16 @@
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>When I say workhorse, I really do mean it works hard, and can do a lot! Turns out, <a href="https://youtu.be/R7EEoWg6Ekk?t=39"><code class="highlighter-rouge">mov</code> by itself is <em>Turing Complete</em></a>. That’s right, you could build a computer that only know how to do <code class="highlighter-rouge">mov</code>, or limit yourself to only using <code class="highlighter-rouge">mov</code>, and still be able to <em>compute anything you want to</em>. And even more so, <a href="https://github.com/xoreaxeaxeax/movfuscator"><em>someone did it</em></a>. Seriously, this is one of my favorite exercises in all of computer science, just for its simultaneous absurdity and technical prowess. The video is long, but actually worthwhile, and totally approachable to someone who has kept pace with this blog thus far! <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>When I say workhorse, I really do mean it works hard, and can do a lot! Turns out, <a href="https://youtu.be/R7EEoWg6Ekk?t=39"><code class="highlighter-rouge">mov</code> by itself is <em>Turing Complete</em></a>. That’s right, you could build a computer that only know how to do <code class="highlighter-rouge">mov</code>, or limit yourself to only using <code class="highlighter-rouge">mov</code>, and still be able to <em>compute anything you want to</em>. And even more so, <a href="https://github.com/xoreaxeaxeax/movfuscator"><em>someone did it</em></a>. Seriously, this is one of my favorite exercises in all of computer science, just for its simultaneous absurdity and technical prowess. The video is long, but actually worthwhile, and totally approachable to someone who has kept pace with this blog thus far! <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
 
-  </div><a class="u-url" href="/blog_posts/2019/08/10/x86_intro.html" hidden></a>
-</article>
-
       </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+    </main>
 
-  <div class="wrapper">
-
-    <h2 class="footer-heading">Tricking Rocks to Think</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
-      </div>
-
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
-        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Nothing here yet -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

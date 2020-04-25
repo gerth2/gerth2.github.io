@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Digital Devices Part Two - Sequential Logic"
 date:   2019-07-06 9:30:00 -0500
 categories: blog_posts
@@ -117,11 +117,11 @@ If you recall from the binary lesson, if we have 4 bits and treat them as an uns
 
 To store the present time, we will use 4 D flip flops in parallel. This is nothing fancy, just creating a new digital device with three main ports. A 4-bit input, with one bit going to the $$D$$ input each flip flop. The 4-bit output comes directly from the individual $$Q$$ bits at the output of each flip flop. The clock input is still one bit, and drives all flip flop clocks simultaneously. Effectively, we've created a flip flop that stores 4 bits at a time, rather than one. This device is often called a *register*[^4].
 
-![4 bit register](/assets/register.png)
+![4 bit register](/assets/img/register.png)
 
 Rather than drawing all 4 gates every time, we'll put all this in a nice little box labeled "Register":
 
-![4 bit register abstraction symbol](/assets/4bitRegister.png)
+![4 bit register abstraction symbol](/assets/img/4bitRegister.png)
 
 Note the little "/" marks on the input and output ports with the number $$4$$ below it. That's just a notation way to say "here are four wires that should remain together". You should always think of those four bits together as representing "time of day", so we'll draw them together to help not confuse the reader. Some programs may use a thicker line to show the "bundle" of data wires.
 
@@ -131,13 +131,13 @@ Here's the key to the design: the *output* of the register will be used to repre
 
 We'll take a quick shortcut to represent our four bit adder from last time as one block:
 
-![4 bit adder abstraction symbol](/assets/4bitAdder.png)
+![4 bit adder abstraction symbol](/assets/img/4bitAdder.png)
 
 "Inside the box" we've accounted for the fact that the carry-in signal is hardcoded to 0, and the carry out signal is unused and not connected.
 
 We'll hook up a circuit like this:
 
-![Zorgon Clock](/assets/zorgonClock.png)
+![Zorgon Clock](/assets/img/zorgonClock.png)
 
 We see our 4-bit ripple carry adder, like we had [last time](/blog_posts/2019/06/26/digital_devices.html). That "constant value" of 1 is achieved by simply connecting the 0th bit to a high voltage, and all the other bits to ground.
 
@@ -160,17 +160,17 @@ Similarly, a 4-input AND gate will output 1 when all 4 inputs are true, and 0 ot
 
 Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate "are my two 4-bit inputs exactly equal" [^4]:
 
-![Alarm Comparison Circuit](/assets/alarm_circuit.png)
+![Alarm Comparison Circuit](/assets/img/alarm_circuit.png)
 
 Here we've used names A and B for the 4-bit inputs (A consists of A_0, A_1, A_2, and A_3). A is the current time, B is the set time from the user (though order technically won't matter).
 
 We'll wrap this circuit up into a nice little box that compares two four-bit numbers for equality:
 
-![Compare Equality abstraction symbol](/assets/compareEq.png)
+![Compare Equality abstraction symbol](/assets/img/compareEq.png)
 
 We can then hook this guy up to our existing clock circuit, and we suddenly can be woken up at the proper time on planet Zorgon! 
 
-![Zorgon Alarm Clock Circuit](/assets/zorgonAlarmClock.png)
+![Zorgon Alarm Clock Circuit](/assets/img/zorgonAlarmClock.png)
 
 Huzzah!
 
@@ -220,14 +220,14 @@ Just like we've ganged $$N$$ flip-flops together in parallel to make an $$N$$ bi
 
 The multiplexer is used enough that it gets its own special symbol. Here's one drawn where A and B are both 4 bits wide.
 
-![Multiplexer symbol](/assets/mux.png)
+![Multiplexer symbol](/assets/img/mux.png)
 
 
 #### New Dawn
 
 In particular, when our "new day detection" circuitry indicates that the next second is the start of a new day (and the current time should therefor be 0), we can use that 1-bit output and a mux to switch the value of the input to the registers:
 
-![Simple Earth Alarm Clock](/assets/earthAlarmClock.png)
+![Simple Earth Alarm Clock](/assets/img/earthAlarmClock.png)
 
 Here, we see that when our "next-day" detection logic indicates the next second should be 0, we pass in a constant value of all-0-bits to the input of the register. In all other cases, we continue to pass the same thing we used to pass - current time + 1.
 

@@ -3,7 +3,7 @@
 @SET /P AREYOUSURE=Are you sure you want to make your changes live on the internet (Y/[N])?
 @IF /I "%AREYOUSURE%" NEQ "Y" GOTO END
 
-call bundle exec jekyll build
+call .\jekyll.exe build
 git add --all
 git commit -m "Committing build in prep for deployment"
 

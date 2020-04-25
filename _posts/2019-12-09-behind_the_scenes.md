@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "TRTT Behind the Scenes"
 date:   2019-12-09 09:30:00 -0500
 categories: blog_posts
@@ -37,7 +37,7 @@ Every website, fundamentally, works the same way:
 
 To do this, it's required that there is some _server_, somewhere, accessible to everyone in the world, which not only stores the files associated with the website, but is configured to properly format and provide responses to clients when requested.
 
-![There is no cloud. It's just someone else's computer.](/assets/no_cloud.png)
+![There is no cloud. It's just someone else's computer.](/assets/img/no_cloud.png)
 
 Designing this server is a big key to having a well-working website. It has to be always-on - any time you turn it off, the website "disappears", and is inaccessible to everyone. Additionally, it will have to do work any time someone else in the world asks for the website. This means that the load is fairly unpredictable. Between these two facts, using your desktop or laptop as the server is generally a bad idea. You'll want a dedicated, separate computer that you can leave on all the time, and not care if the CPU load spikes randomly.
 
@@ -59,7 +59,7 @@ Even once a website is available on some server on the internet, visitors still 
 
 Each server online does get assigned an IP address. Just like on your robot and the driver station get an IP address (10.TE.AM.XX), the server gets a public-facing unique IP address. For example, www.google.com will point to a wide range of addresses, depending on where you live.
 
-![ping_google.com.png](/assets/ping_google.com.png)
+![ping_google.com.png](/assets/img/ping_google.com.png)
 
 However, remembering these number combinations is intuitive, and hard for humans.
 
@@ -71,7 +71,7 @@ The servers are distributed, and live at fixed and well-known IP addresses. Most
 
 As an aside: an easy way to check "Am I connected to the internet" is to ping a known DNS server. If the IP address 8.8.8.8 responds to pings, you know your network allows for connection to the broader internet.
 
-![when you see responses from 8.8.8.8, you know you're online.](/assets/ping_google_dns.png)
+![when you see responses from 8.8.8.8, you know you're online.](/assets/img/ping_google_dns.png)
 
 By default, Github provides a URL for free for your website, but its name is not configurable: mine would be "gerth2.github.io" - which, though nice, is not informative about the content of the site.
 
@@ -150,7 +150,7 @@ functionPlot({ //Special function that D3JS has to create a plot
 
 By putting this code literally just into the markdown, we can create some nice looking plots!
 
-D3JS supports both a symbolic definition of the equation (as above), as well as a point-by-point definition. If you look at some of the [PID simulation javascript](/assets/js/pidArm.js), you'll see where each point on the graph is calculated based on the plant model + controller simulation. In turn, these points are passed to D3JS to actually draw the plot image.
+D3JS supports both a symbolic definition of the equation (as above), as well as a point-by-point definition. If you look at some of the [PID simulation javascript](/assets/img/js/pidArm.js), you'll see where each point on the graph is calculated based on the plant model + controller simulation. In turn, these points are passed to D3JS to actually draw the plot image.
 
 [Highcharts](https://www.highcharts.com/) is another super awesome plotting library - it's much more interactive and a bit heaver-weight than D3JS. We've used it quite a bit on data viewers on our robot. I might eventually move this website over to use it as well.
 

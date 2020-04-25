@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Abstraction"
 date:   2019-05-26 9:30:00 -0500
 categories: blog_posts
@@ -21,7 +21,7 @@ When you are in school, your good teachers are actively doing this for you. By p
 
 # A Concrete Food Example
 
-![a beautiful roasted chicken dinner](/assets/chicken-close-up-dinner-265393.jpg)
+![a beautiful roasted chicken dinner](/assets/img/chicken-close-up-dinner-265393.jpg)
 
 Let's say that you are tasked with cooking a beautiful roasted chicken dinner. You know your guests are expecting a great meal, but they aren't going to concern themselves with the details of how it came about. They interface with you by receiving the food, and you know you must provide the food, however you are responsible for the details of how to make it.
 
@@ -41,11 +41,11 @@ An **abstraction** is a particular way of breaking down a big problem into small
 
 Practically, the software engineer's job starts when they divide a big problem into small ones, with relationships between the concepts.
 
-![problem breakdown](/assets/breaking_down_ideas.png)
+![problem breakdown](/assets/img/breaking_down_ideas.png)
 
 For each small problem, divide it into "internal concepts" and "interface concepts".
 
-![abstraction thought scope](/assets/abstraction.png)
+![abstraction thought scope](/assets/img/abstraction.png)
 
 The "interface concepts" of each small problem form the **abstraction** of that problem - they boil the small problem down to just the critical details required for solving other small problems.
 

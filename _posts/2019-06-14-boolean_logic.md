@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Boolean Logic"
 date:   2019-06-14 9:30:00 -0500
 categories: blog_posts
@@ -158,15 +158,15 @@ All of the fundamental operations we have mentioned so far have special symbols 
 
 #### NOT Gate Symbol
 
-![NOT Gate Symbol](/assets/not.png)
+![NOT Gate Symbol](/assets/img/not.png)
 
 #### AND Gate Symbol
 
-![AND Gate Symbol](/assets/and.png)
+![AND Gate Symbol](/assets/img/and.png)
 
 #### OR Gate Symbol
 
-![OR Gate Symbol](/assets/or.png)
+![OR Gate Symbol](/assets/img/or.png)
 
 ### Logic Diagrams
 
@@ -178,7 +178,7 @@ $$ D = f(A,B,C) = A \cdot \overline{(B+C)} $$
 
 Using our symbols, we can draw them together with function inputs and outputs, to graphically represent the same equation:
 
-![Simple logic diagram](/assets/simple_logic_diagram.png)
+![Simple logic diagram](/assets/img/simple_logic_diagram.png)
 
 Note how *information* flows from left to right, just like you read. Your inputs are all on the left hand side, propagate through gates which transform and manipulate it, and eventually produce a single, final output on the right-hand side. This left-to-right flow convention is very commonly used in diagrams.
 
@@ -239,7 +239,7 @@ NOR, or "Not OR" is just that - it's an OR gate, but with the output inverted.
 
 Of course, there are symbols for these gates as well. 
 
-![other gates symbols](/assets/xor_nor_nand.png)
+![other gates symbols](/assets/img/xor_nor_nand.png)
 
 From left to right, they are XOR, NOR, and NAND. Outputs are at the top, inputs are at the bottom.
 
@@ -255,15 +255,15 @@ Furthermore, NAND and NOR have the interesting property of being able to emulate
 
 #### NOT with NAND:
 
-![NOT from Nand](/assets/nand_not.png)
+![NOT from Nand](/assets/img/nand_not.png)
 
 #### AND with NAND:
 
-![AND from Nand](/assets/nand_and.png)
+![AND from Nand](/assets/img/nand_and.png)
 
 #### OR with NAND:
 
-![OR from Nand](/assets/nand_or.png)
+![OR from Nand](/assets/img/nand_or.png)
 
 #### So what
 

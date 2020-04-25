@@ -1,11 +1,11 @@
 ---
-layout: post
+layout: default
 title:  "Creating Casserole Bot"
 date:   2019-11-17 9:30:00 -0500
 categories: blog_posts
 ---
 
-![Discord Logo](/assets/discordLogo.png)
+![Discord Logo](/assets/img/discordLogo.png)
 
 *[Nerd sniping at its finest.](https://xkcd.com/356/)*
 
@@ -40,7 +40,7 @@ There were two major things to solve:
 
 The final solution ended up smearing these problems back together. But at least to start, we approached them separately.
 
-![Bot Architecture](/assets/discordBotArch.png)
+![Bot Architecture](/assets/img/discordBotArch.png)
 
 ### The Audio Hardware
 
@@ -54,7 +54,7 @@ Ultimately, ebay browsing revealed a used [Revolabs/Yamaha FLX 1500](https://uc.
 
 For \$15, I was willing to risk buying a brick.
 
-![revolabs 1500 fLX UC](/assets/revolabs1500.png)
+![revolabs 1500 fLX UC](/assets/img/revolabs1500.png)
 
 Good news - it paid off! With proper cables, unit powered up and worked just fine. And just like that, our hardware solution was chosen.
 
@@ -182,7 +182,7 @@ Every USB device you plug into your computer has to tell the computer what it's 
 
 The device reported to also have some ability to control the LED's, as well as read and set the "hook switch", which I can only presume maps to the switch on phones which you used to have to physically hang back up on a wall when you were done using them. From what I understand, "flash switch" was also a basic way to tap this switch once, ending the current call and prepping for the next one. 
 
-![Hook switch?](/assets/hookSwitch.png)
+![Hook switch?](/assets/img/hookSwitch.png)
 
 I was hopeful, because things like this seemed to imply there was some way to get the info out of the device.
 
@@ -198,7 +198,7 @@ I do have a _guess_ as to why this is. All that follows in this section is that 
 
 If you look at the manual for the FLX series, you'll notice this confusing table:
 
-![Supported third party applications](/assets/revolabsThirdParty.png)
+![Supported third party applications](/assets/img/revolabsThirdParty.png)
 
 Why in the world does a _universal_ serial bus device have a list of _supported applications_? Shouldn't it be _universal_?
 
@@ -236,7 +236,7 @@ If you didn't know [1736 has a history of award-winning cheering sections](https
 
 [`CheerHandler()`](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/cheerHandler.py) is where the magic happens for now. An abstracted call/response cheer handler is implemented, along with some regex parsing & stateful "Give me a */What does that spell?" cheer.
 
-![give me a B!](/assets/giveMeAB.png)
+![give me a B!](/assets/img/giveMeAB.png)
 
 Silly as it may be, it's actually an awesome exercise [string parsing with regular expressions](https://en.wikipedia.org/wiki/Regular_expression), with a fun twist.
 
@@ -272,7 +272,7 @@ Second, in just a [handful of lines of python](https://github.com/RobotCasserole
 
 Finally, the main discord bot was updated to [parses this model into RAM](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L65) and [generate short sentence responses](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L241) when it has nothing else to say in response. It's not exactly conversational, but it is funny.
 
-![Best of CasseroleBot](/assets/bestOfCasseroleBot.png)
+![Best of CasseroleBot](/assets/img/bestOfCasseroleBot.png)
 
 Finally, it is worthwhile noting that Markovify explicitly ensures it's not just re-generating sentences that were in its original database - ie, sentences are actually unique and new. If it can't accomplish this within a certain number of attempts, it gives up. To handle this, [we've just got some fixed text to return](https://github.com/RobotCasserole1736/CasseroleDiscordBotPublic/blob/e9473a2fbc231121e1eb9550672707f071fe5167/casseroleBot.py#L244) if "all else fails".
 

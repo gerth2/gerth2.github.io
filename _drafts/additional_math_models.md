@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Control Theory - Additional Math Model Examples"
 date:   2019-09-18 9:30:00 -0500
 categories: blog_posts

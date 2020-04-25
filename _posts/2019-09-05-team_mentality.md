@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Productive Team Mentality"
 date:   2019-09-05 09:30:40 -0500
 categories: blog_posts

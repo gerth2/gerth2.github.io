@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Control Theory - Tuning PID"
 date:   2019-10-19 9:30:00 -0500
 categories: blog_posts
@@ -40,7 +40,7 @@ $$ \omega_{wheel}[n] = \frac{T_s C_1 V_{in}[n] + \omega_{wheel}[n-1]}{( 1 + T_s 
 
 For visualization and intuition, we dump a test input into the system:
 
-![Test input](/assets/standard_control_system_plant_inputs.png)
+![Test input](/assets/img/standard_control_system_plant_inputs.png)
 
 And when you jam 12 volts into this system (via $$V_{in}$$), you get motion that looks like this:
 
@@ -53,7 +53,7 @@ The red line shows the _setpoint_ - the desired speed command. Our goal will be 
 
 As we've mentioned, _tuning_ a PID controller is the process of determining the numeric values of the proportional, integral, derivative, and feed forward gains for the controller. The exact values will be dependant on the physical system and its behavior. 
 
-![Tuning the System](/assets/standard_control_system_tune.png)
+![Tuning the System](/assets/img/standard_control_system_tune.png)
 
 The basic technique we'll cover is effectively _guess and check_. There are some more algorithmic approaches, but I find its best to start with the guess-and-check method, to get the best intuitive understanding of what each gain does. 
 

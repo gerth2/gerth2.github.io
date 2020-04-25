@@ -1,3 +1,3 @@
-call bundle exec jekyll serve --drafts
+call .\jekyll.exe serve --drafts
 
 pause

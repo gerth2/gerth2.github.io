@@ -1,11 +1,11 @@
 ---
-layout: post
+layout: default
 title:  "Digital Devices"
 date:   2019-06-26 9:30:00 -0500
 categories: blog_posts
 ---
 
-![word problems from Bill Waterson](/assets/word_problems.jpg)
+![word problems from Bill Waterson](/assets/img/word_problems.jpg)
 
 *Calvin and Hobbes, by Bill Waterson*
 
@@ -54,7 +54,7 @@ Astute readers will notice that this actually is a very familiar function - it's
 
 $$ B = L_1 \cdot L_2 $$
 
-![mission control button schematic](/assets/mission_control.png)
+![mission control button schematic](/assets/img/mission_control.png)
 
 There we go, quite simple!
 
@@ -71,7 +71,7 @@ Astute readers will again notice this is actually a very familiar function - it'
 
 $$ C = \overline{E} $$
 
-![Astronaut button schematic](/assets/astronaut_button.png)
+![Astronaut button schematic](/assets/img/astronaut_button.png)
 
 Excellent! We have now devices for both the Launch Control room and the Astronauts capsule controls, each with an output that says "Light the rocket" or "Don't light the rocket". The rocket ignition mechanism now has to take these two signals, and combine them together. Note from our initial requirement, we know we don't want to launch the rocket unless both the astronauts and launch control decide it's time to go.
 
@@ -96,7 +96,7 @@ $$ A = (L_1 \cdot L_2) \cdot \overline{E} $$
 In diagrams, we'd draw this as:
 
 
-![Full Schematic](/assets/full_schematic.png)
+![Full Schematic](/assets/img/full_schematic.png)
 
 This simple logic diagram shows how we could implement logic to accomplish our basic launch control system.
 
@@ -104,7 +104,7 @@ This simple logic diagram shows how we could implement logic to accomplish our b
 
 Admittedly, this is a pretty simple system, and we took a very verbose and roundabout way to design it. I bet many of you saw the ending well before we got there. That's perfectly fine! The big takeaway is not just the answer itself, but rather dividing the problem up into useful pieces. In this context, "useful" implies that each one is solvable on its own, and represents some meaningful small piece of computation. If you notice, you can easily draw boxes around the three physical locations we discussed:
 
-![Marked up schematic](/assets/marked_up_schematic.png)
+![Marked up schematic](/assets/img/marked_up_schematic.png)
 
 The individual pieces may not be implemented by the same computer! You might have to have each piece on a different machine, since they're in physically different places. This diagram and design doesn't at all get into how one might transfer a boolean value from one place to another (radio? super long wire?), but for lots of purposes that doesn't matter. Imagine your boss came up and asked "What does the system do"? They don't care about the implementation details, they care about functionality. This would be a great diagram to show the high level behavior of the system, without getting bogged down on communication, button size, or other implementation details.
 
@@ -236,11 +236,11 @@ Again there are algorithms you can use to derive this equation from the truth ta
 
 Based on our observation of the truth table, we can put together this device that can compute one column of the "add two bytes" problem:
 
-![single bit adder](/assets/single_bit_adder.png)
+![single bit adder](/assets/img/single_bit_adder.png)
 
 To use many of these devices in larger units, we'll use an *abstraction* where we draw just the inputs and outputs, and hide the details of the guts.
 
-![abstraction of single bit adder](/assets/single_bit_adder_abstraction.png)
+![abstraction of single bit adder](/assets/img/single_bit_adder_abstraction.png)
 
 ### Ripple-carry Adder
 
@@ -252,7 +252,7 @@ The hookup is pretty much what you'd expect: Every bit in input bytes $$A$$ and 
 
 For a 4-bit Ripple carry adder, the circuit diagram would look like this:
 
-![four bit adder](/assets/four_bit_adder.png)
+![four bit adder](/assets/img/four_bit_adder.png)
 
 Notice how the "carry-out" from each stage *ripples* into the next stage. Hence the name. Someone was clever like that.
 

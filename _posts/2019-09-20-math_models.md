@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Control Theory - Mathematical Models of the World "
 date:   2019-09-20 9:30:00 -0500
 categories: blog_posts
@@ -18,7 +18,7 @@ This is Part 2 in our series on Control Theory. In this installation, we'll look
 
 We briefly alluded to the concept of a _model_ in [Math Primer, part 2](/blog_posts/2019/06/01/math_primer2.html). A _mathematical model_ is one particular form of an [Abstraction](/blog_posts/2019/05/26/abstraction.html), where we create _math equations_ to describe the behavior of a particular thing in the "real world". 
 
-![models_and_argos](/assets/modeling.png)
+![models_and_argos](/assets/img/modeling.png)
 
 Mathematical models can be built for anything which has properties you are willing to describe using numbers. This includes more conceptual things like a country's economy or a stock market, but also physical devices (like motors or gearboxes or robots). We'll be focusing on the latter.
 
@@ -94,7 +94,7 @@ That's it - it's just the ratio of the teeth!
 
 ### Spinning Levers
 
-![Gear Artwork](/assets/gears_art.png)
+![Gear Artwork](/assets/img/gears_art.png)
 
 _source: etc.usf.edu_
 
@@ -108,7 +108,7 @@ A more rigorous way to describe this relationship is to do it from base principl
 
 To start, assume that your teeth are "Ideal" - incredibly small, and super strong. They never slip relative to each other. We outright ignore any tooth geometry, and just model the gears as two differently-sized pancakes.
 
-![gears_basic](/assets/gears_basic.png)
+![gears_basic](/assets/img/gears_basic.png)
 
 The assumption of ideal teeth allows us to say that the _tangential velocity_ (the linear speed of the outside edge of the pancake) must be the same at their mesh point. From geometry, I'll give the equation that relates the _rotational velocity_ $$\omega(t)$$ to the _tangential velocity_ $$v(t)$$. [^1]
 
@@ -154,7 +154,7 @@ Torque is a concept that comes up a lot, isn't something that most freshman star
 
 I always think of torque is "turney force" - force that acts in a circle. Like when you turn a wrench, and tighten a bolt.
 
-![Torque from wrench](/assets/torque_on_wrench.png)
+![Torque from wrench](/assets/img/torque_on_wrench.png)
 
 _source: scienceres-edcp-educ.sites.olt.ubc.ca_ 
 
@@ -172,7 +172,7 @@ Here, we'll start to introduce the glory of using Google to find answers. The ke
 
 We will attempt to create a model of a rotating wheel, such as the ones used to launch gamepieces through holes or into hoppers.
 
-![shooter wheel](/assets/shooter_wheel_1640.png)
+![shooter wheel](/assets/img/shooter_wheel_1640.png)
 
 _source: Team 1640_
 
@@ -214,7 +214,7 @@ Just as mass can be thought of as "tendency of an object to resist changes in ve
 
 The way I personally like to think about it - consider the energy of tiny subsections of our spinning object. At any given rotational velocity, all will have the same rotational velocity. However, the bits near the center will have less _linear_ velocity. They'll be traveling _slower_, at least in a linear sense. This means they have less energy, and would hurt less if they hit you. If you want to change the speed of a rotating bit of mass, it's easier if the rotating bit is very close to center of rotation, rather than really far away.
 
-![outside goes faster than inside](/assets/outsideFasterThanInside.png)
+![outside goes faster than inside](/assets/img/outsideFasterThanInside.png)
 
 These moments of inertia still boil down to a single number, and are usually calculated with integrals. Deriving them from scratch is a classic calc-II homework problem. You should definitely try it at some point in your life.
 
@@ -330,7 +330,7 @@ $$ v_{emf}(t) = K_V \omega(t) $$
 
 This back-force happens in the electrical space, so it's good for us to look at an electrical model of the motor:
 
-![Motor Model](/assets/motorModel.png)
+![Motor Model](/assets/img/motorModel.png)
 
 On the left side, we see the input wires to the motor, along with two measurements you may already be familiar with. One is the _applied voltage_ $$V_{in}(t)$$ - this is the command you give to a motor controller, and the average voltage it outputs to the motor. Usually this will be about +12V for full forward, -12V for full reverse, and 0V at rest (though the numbers usually change with battery charge level). The other quantity is the _current_ flowing through the motor, $$I(t)$$. This might be measured by a motor controller (if you have a nice Talon SRX or similar), or measured by the PDB itself. Either way, you usually don't directly control it, it's just a property of the current state of the whole system.
 

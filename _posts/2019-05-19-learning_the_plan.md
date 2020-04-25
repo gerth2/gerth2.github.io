@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "A Plan for Learning"
 date:   2019-05-19 9:30:40 -0500
 categories: blog_posts
@@ -43,7 +43,7 @@ Rules-based gets you learning and moving fast, but Underlying-Principles gives y
 
 ## The sequence
 
-![sequence](/assets/training_sequence.png)
+![sequence](/assets/img/training_sequence.png)
 
 Fair warning: This picture is subject to change. But it is a start.
 

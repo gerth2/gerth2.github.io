@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Control Theory - Systems & Control Engineering"
 date:   2019-09-07 09:30:40 -0500
 categories: blog_posts
@@ -15,7 +15,7 @@ _Software and physical devices in harmony_
 
 Sounds sorta familiar, huh? 
 
-![software and hardware together](/assets/sw_hw_254.png)
+![software and hardware together](/assets/img/sw_hw_254.png)
 
 _Source: team254.com_
 
@@ -82,13 +82,13 @@ The core tool used while describing control systems is the _block diagram_. Team
 
 A block diagram uses labeled _blocks_ to show entities, and _arrows_ to show relationships between the entities. 
 
-![Basic block diagram](/assets/basic_block.png)
+![Basic block diagram](/assets/img/basic_block.png)
 
 The blocks can be defined to be anything you like - a controller, a plant, part of a plant, your dog, etc. You choose what to put inside the block, so as to communicate your intent most clearly. The block is an indication of an _abstraction_ - it shows the functional part you want your reader to be thinking about. No additional, unimportant details.
 
 As a silly example, let us explain a very critical concept for all FRC teams everywhere:
 
-![Cookies -> feed -> Mentors](/assets/silly_block_example.png)
+![Cookies -> feed -> Mentors](/assets/img/silly_block_example.png)
 
 Here, we illustrate the concept of some sort of cookies providing sustenance to a group of mentors. It doesn't matter what type of cookies, or how you made them, or what they cost. It doesn't matter how the mentors eat the cookies, or how their bodies process the food, or whether you like the mentors or not. All these details are _abstracted_ behind those nicely named little boxes.
 
@@ -103,7 +103,7 @@ Note that we've provided a label over the arrow for clarity. This sometimes is u
 
 Now for a more serious example. In our standard construction of a control system, we usually can draw the following block diagram:
 
-![Standard control system, very simple](/assets/standard_control_system_simple.png)
+![Standard control system, very simple](/assets/img/standard_control_system_simple.png)
 
 This illustrates the most basic breakdown of a system that control engineers will do. It illustrates the key concepts we've already discussed:
 
@@ -117,7 +117,7 @@ Finally, if you ever hear about "Feedback" in a control system, you can take the
 
 Often useful is a more detailed diagram, where we break up the _Controller_ and _Plant_ blocks into components that can be more easily mapped to real components on the robot.
 
-![Standard control system](/assets/standard_control_system.png)
+![Standard control system](/assets/img/standard_control_system.png)
 
 Here, you should see that perform the following "un-abstractions" to give a more detailed and usable view of the world:
 
@@ -128,7 +128,7 @@ This is probably the most common permutation seen in FRC robotics, but note it d
 
 To further drive home this process, let's put some specific component labels down in this diagram for our example shooter system described earlier:
 
-![Shooter Wheel Control System](/assets/shooter_wheel_control_system.png)
+![Shooter Wheel Control System](/assets/img/shooter_wheel_control_system.png)
 
 Here we see the mechanism further broken down into a gearbox and shooter wheel, and some specific component choices made to simplify explanation later on. Play along with us, and by the end you'll be able to fill in the boxes for your own bespoke robot systems!
 

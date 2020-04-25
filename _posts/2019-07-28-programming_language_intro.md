@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Programming Languages - Introduction"
 date:   2019-07-28 9:30:00 -0500
 categories: blog_posts
@@ -32,7 +32,7 @@ When describing programming languages, we've already used the description *high 
 
 The literal 1's and 0's going through your processor is probably the lowest level way to write a program. The people who truly believe this is the best way to write software are either dead, or literally crazy.
 
-![expert keyboard](/assets/supercoder2000.jpg)
+![expert keyboard](/assets/img/supercoder2000.jpg)
 
 *source - reddit.com*
 

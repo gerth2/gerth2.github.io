@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Math Primer, Part 1"
 date:   2019-06-01 9:30:00 -0500
 categories: blog_posts
@@ -101,7 +101,7 @@ The sine, cosine, and tangent are functions that provide the relationship betwee
 2. The side touching the angle in question is the *adjacent* side.
 3. The remaining side is called *opposite* side.
 
-![circle to sine](/assets/rightTriangle.png)
+![circle to sine](/assets/img/rightTriangle.png)
 
 The length of the sides will be denoted with the variables $$h$$, $$a$$, and $$o$$. Under these conventions, our functions allow us to relate the ratios of lengths of sides of a triangle to the given angle with the following relationships:
 
@@ -115,7 +115,7 @@ Teachers commonly assist students in memorizing these relationships by introduci
 
 Although it may not be obvious from first inspection, Sine/Cosine are very useful in determining X/Y coordinates of a point on a circle, when given a certain number of degrees of traversal around that circle.
 
-![circle to sine](/assets/triangleToCircle.png)
+![circle to sine](/assets/img/triangleToCircle.png)
 
 Note, as above, a right triangle can be drawn with one point on the origin $$(0,0)$$, the other on our point of interest $$(x,y)$$. Given the angle referenced from the positive X axis, sine and cosine can be used to deduce the X/Y coordinates:
 

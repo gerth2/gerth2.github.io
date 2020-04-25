@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "C to Assembly"
 date:   2019-08-17 09:30:40 -0500
 categories: blog_posts

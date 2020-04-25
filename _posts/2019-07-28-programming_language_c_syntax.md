@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Programming Language - C Syntax"
 date:   2019-07-28 9:31:00 -0500
 categories: blog_posts
@@ -25,7 +25,7 @@ C code source files are just plain-text, ASCII or utf-encoded [text files](https
 
 A word to the wise - choose a good text editor which knows about C code syntax, so it can properly [highlight different parts of each line](https://en.wikipedia.org/wiki/Syntax_highlighting). These visual cues are invaluable as a software developer to visualize the behavior of your code.
 
-![Syntax Highlighting](/assets/syntaxHighlighting.png)
+![Syntax Highlighting](/assets/img/syntaxHighlighting.png)
 
 ### C Code Statements & Their Components
 

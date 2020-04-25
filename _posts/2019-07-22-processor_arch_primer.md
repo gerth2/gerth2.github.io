@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Processor Architecture Primer"
 date:   2019-07-22 9:30:00 -0500
 categories: blog_posts
@@ -19,7 +19,7 @@ Obviously, there are some big limitations to this system. Humans make mistakes, 
 
 Toward the end of World War I and into World War II, there was an expanding notion of using machines to do rapid computation. The proximity to war-time meant a lot of the computation applications were, well, war-driven. [Cryptography](https://en.wikipedia.org/wiki/Enigma_machine), [attempting to break cryptography](https://en.wikipedia.org/wiki/Bomba_(cryptography)), calculating artillery trajectories, analyzing the feasibility of an atomic bomb.... Some simply calculated differential equations, but again the majority of the funding was pushed toward war-time effort.
 
-![My mother is proud of my artwork.](/assets/wwII.png)
+![My mother is proud of my artwork.](/assets/img/wwII.png)
 
 These machines were quite large. Remember that the transistor had not yet been invented. The logic gates we have studied were conceptually still in use, but to implement them engineers had to use vacuum tubes or electro-mechanical switches. Additionally, the first machines were effectively hard-coded to do one single job. The government would come in and say "Johnson! We need a machine to help shoot shells at the enemy better! Here's the equations, figure it out!" And then Johnson would go wire up one machine to do the job, and come back with an answer, and then the machine would be useless. Well, not entirely useless. But still, to do a different job (or even just tweak the equations), you had to spend lots of time re-designing parts of the circuitry, have technicians come in and physically re-wire the thing, test it all out, and hope you didn't make any mistakes in the process. 
 
@@ -29,7 +29,7 @@ Given the need for speed in reprogramming, a group of engineers set out to desig
 
 [Alan Turing](https://en.wikipedia.org/wiki/Alan_Turing) provided a key portion of the theoretical background for the general purpose computer. The ["Turing Machine"](https://en.wikipedia.org/wiki/Turing_machine) is a formal mathematical description of what sorts of devices can perform general computation. His papers show both what sorts of problems are "computable" (ie solved with an algorithm, acting only with numbers, math, and logic), and what criteria a machine must have to solve an arbitrary problem. This ability to solve an arbitrary problem is what makes a computer "general-purpose".
 
-![Turing Machine](/assets/turing_machine.png)
+![Turing Machine](/assets/img/turing_machine.png)
 
 The classic demonstration of a simple Turing Machine involves a very large piece of magnetic tape, and a *Head* - a device capable of moving along the tape, with the ability to read and write information from defined locations on the tape. The simple implementation is still problem specific - the instructions for how it reads, writes, and moves are hard-coded into the specific Turing Machine. Turing himself showed the possibility of a ["Universal Turing Machine"](https://en.wikipedia.org/wiki/Universal_Turing_machine), which has a single programmed behavior to read the actual instructions from the tape itself. Therefor, the machine did not have to be changed, only the instructions stored in the tape. This is the basis of the "stored program" concept.
 
@@ -58,7 +58,7 @@ Before we start digging into how Von Neumann specified digital components should
 
 The Tri-State buffer introduces a third state to our binary system [^1]: "Z". Z stands for ["High Impedance"](https://en.wikipedia.org/wiki/High_impedance), which (in this context) is an excessively formal way of saying "not plugged in".
 
-![Tri state buffer symbol](/assets/triState.png)
+![Tri state buffer symbol](/assets/img/triState.png)
 
 | CTRL |  In  || Out |
 |------|------||-----|
@@ -73,11 +73,11 @@ When CTRL is 0, the output is forced to the Z "High impedance" state, effectivel
 
 The usefulness of such a device is that it enables us to physically connect multiple digital device outputs to the same physical wire, and select which one of them is _electrically connected_ to the wire. This selection ability means we can control which device dictates the binary 1/0 state of the bus.
 
-![Tri state buffer Usage - C on the bus](/assets/triStateUsageSimple.png)
+![Tri state buffer Usage - C on the bus](/assets/img/triStateUsageSimple.png)
 
 Here we see three digital devices with outputs linked. Since the buffer at the output of C has a control signal of 1, we know the final output will be the same as C. It can be said then that Digital Device C is controlling Output.
 
-![Tri state buffer Usage - A on the bus](/assets/triStateUsageSimple2.png)
+![Tri state buffer Usage - A on the bus](/assets/img/triStateUsageSimple2.png)
 
 Similarly, we can setup A to control Output by turning off CTRL for C, and then turning on CTRL for A.
 
@@ -94,7 +94,7 @@ As readers may have already noticed - only one device can assert its output onto
 
 System Data bus is a common set of wires that transfers data from one device to another. A quick taste of what's to come: at the core of the Von Neumann architecture is a data bus that is used by all components to transfer data back and forth. Each device has a set of tri-state buffers on its output so it can selectively take control of the bus, or allow some other device to assert its data. Additionally, each device has some ability to read the value from the bus, and pull it internally (to do something useful with it, presumably?).
 
-![Basic system bus concept](/assets/systemBusBasic.png)
+![Basic system bus concept](/assets/img/systemBusBasic.png)
 
 In this case we've chosen to draw a 32-bit wide bus (like most processors up till a few years ago had).
 
@@ -102,25 +102,25 @@ In this case we've chosen to draw a 32-bit wide bus (like most processors up til
 
 From previous, we know how to "gang" multiple D flip flops together to make what we call a "register", which can store one _word_'s worth of bits.
 
-![4 bit register](/assets/register.png)
+![4 bit register](/assets/img/register.png)
 
 Since we started with a 32-bit bus, let's also keep 32 bits here.
 
 Along with the system bus, imagine if each device is a slightly modified register. We'll go ahead and use the little circuit created as part of an alarm clock to put a mux on the input to the register. We'll also add our tri-state buffer output.
 
-![useful Von Neumann architecture register](/assets/registerWithWriteEnable.png)
+![useful Von Neumann architecture register](/assets/img/registerWithWriteEnable.png)
 
 We have the addition of the "Write Enable" enable input to choose whether the register is to load a new value from the data input or preserve its previous value. The "Output Enable" signal allows us to choose whether the output is active or not, allowing this register to be placed as a device on a system data bus with other registers.
 
 We can draw the following symbol for an abstraction of this device:
 
-![32 bit register](/assets/32bitRegister.png)
+![32 bit register](/assets/img/32bitRegister.png)
 
 These registers will make up the core of data storage on the processor, and will be a key component going forward.
 
 To demonstrate how they are used, take as an example 3 registers sharing a 32-bit data bus:
 
-![registers on a bus](/assets/registersOnABus.png)
+![registers on a bus](/assets/img/registersOnABus.png)
 
 We now have a system where we can systematically transfer data from one register to another. We have to have something coordinating the write & output enables for all of the registers together - however, assuming you do, it's actually quite easy to move data around now. 
 

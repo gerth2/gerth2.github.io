@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "My Computer Engineering Toolkit"
 date:   2019-08-23 09:30:40 -0500
 categories: blog_posts
@@ -22,7 +22,7 @@ What I'll talk through are what sorts of machines I use day to day to accomplish
 
 My "daily driver" machine is my custom-built desktop. It was fairly up-to-date when I built it in 2013, but it has aged very well - it's still more than fast enough to run any internet browsing, code editing and building, and occasional video games I throw at it. 
 
-![thePC](/assets/thePC.jpg)
+![thePC](/assets/img/thePC.jpg)
 
 Some basic specs:
  * Intel i5 3350P CPU - 3.10 GHz
@@ -40,7 +40,7 @@ Some basic specs:
      * Of course, it's not for everyone. Try a bunch of different keyboards to see which one you like.
  * Mousepad is a chunk of fabric-covered neoprene that was surplus from the manufacture of [Haken Continuum](https://www.hakenaudio.com/) continuous keyboard. It's a fun souvenir from one of my favorite college classes.
 
-![thePCGuts](/assets/thePCguts.jpg)
+![thePCGuts](/assets/img/thePCguts.jpg)
 
 Again keep in mind - these specs are 6 years old at the time of writing. If I ever happen upon a spare couple hundred dollars, I this will probably be the first thing I upgrade. However, it's still running so fast, it's hard to bring myself to do so.
 
@@ -86,11 +86,11 @@ Along with the server, my small rack downstairs consists of two ethernet switche
 
 When I moved into the house, one of my first projects was to install [Cat6 ethernet wiring](https://www.monoprice.com/product?p_id=8103) throughout the house. I added 7 new ports on two floors of the house, and ran all the wiring back down to the server & ethernet switches. This allows our media station (Roku & smart DVD Player) the desktop, and a few wired security cameras to connect to wired internet, even though they're all in different rooms than the rest of the equipment. It also means the noisy server lives downstairs behind closed doors.
 
-![Network Equip](/assets/networkEquipment.png)
+![Network Equip](/assets/img/networkEquipment.png)
 
 In a super simplified (to the point of inaccurate) diagram, here's how it all is hooked together:
 
-![Home Network Diagram](/assets/simplifiedNetwork.png)
+![Home Network Diagram](/assets/img/simplifiedNetwork.png)
 
 ## Key Software
 
@@ -106,11 +106,11 @@ I have a strong preference for free software because I like to spend my money on
 
 I'm also a huge fan of dark mode, and I really like the built-in color theme. Call me shallow, but if you have to stare at code all day long, might as well do it in a way that looks ascetically pleasing to you!
 
-![VSCodeSample](/assets/vsCodeSample.png)
+![VSCodeSample](/assets/img/vsCodeSample.png)
 
 [Git](https://git-scm.com/) is a daily part of my development experience. Ever since I learned how to use it in college and on my first job, it's become an indispensible tool for keeping track of how I change my software over time, organizing my development process, and creating backups of projects. Though I often manipulate my repos via the command line, I still really like having a nice visualization of my version tree. [Git Extensions](https://gitextensions.github.io/) is my current choice for doing this, but there's lots of great alternatives.
 
-![GitExtensionsSample](/assets/gitExtensionsSample.png)
+![GitExtensionsSample](/assets/img/gitExtensionsSample.png)
 
 When connecting to the server, I generally use [SSH](https://en.wikipedia.org/wiki/Secure_Shell) to get access to a command line on the other machine. [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/) is my tool of choice to get this done on Windows, though the one built into Git's command prompt works just fine too.
 
@@ -138,7 +138,7 @@ For simple technical documentation, I really _really_ like [Markdown](https://en
 
 For more formal documentation (think, scientific papers or resumes), [LaTeX](https://www.latex-project.org/) is by far king, and I also love it. It produces [beautifully formatted documents](https://github.com/RobotCasserole1736/CasseroleLib/blob/master/doc/current_limiting.pdf) with top-of-the-line scientific equation editing. It also does great resumes - I recently moved mine over using the [ModernCV](https://ctan.org/pkg/moderncv?lang=en) templates! It's a bit obtuse to learn at first, but the end results are well worth it!
 
-![LatexResume](/assets/latexResume.png)
+![LatexResume](/assets/img/latexResume.png)
 
 *Looks even better unredacted!*
 
@@ -149,7 +149,7 @@ The Gerth Household Server (affectionately nicknamed "Geezer" for its age) runs 
 
 [HomeAssistant](https://www.home-assistant.io/) is our home automation hub. It was one of the first things I attempted to get running on the server, and has been serving use well ever since! We've got a number of wifi-controlled light switches and outlets, smart speakers, [some homebrew devices](https://github.com/gerth2/smarthome-devices), and of course many networked devices. HomeAssistant has a ton of built-in functionality - you just have to configure it that "yes, these things are in my home" and it will automatically do some really slick integration, providing a super useful user interface for controlling the devices. Additionally, I can write automation scripts to allow the smart speakers to trigger action on light switches and whatnot. Highly recommended!
 
-![Home Assistant Sample](/assets/hassSample.png)
+![Home Assistant Sample](/assets/img/hassSample.png)
 
 
 [Github](https://github.com/) is my go-to service for hosting repos online, and making them publicly available. However, there are a handful of projects I really _don't_ want to make it outside my home network. Some of them concern the internal configuration of my network, others contain personal info (like my tax returns or resumes). To still be able to have totally-private, not-at-all-in-the-outside-world git projects backed up on a separate device from my PC or laptop, the server also runs an instance of [Gitea](https://gitea.io/en-us/), a simple Github-lookalike that I host myself. I'll also back up critical projects (like this blog!) just in case Github disappears off the face of the earth - my data won't disappear with it. Though I will have to find another host.
@@ -160,7 +160,7 @@ Both Gitea and Plex are backed up against the Network Attached Storage device, w
 
 For monitoring the server status, aside from just remoting in via SSH and running `top`, I recently installed [NETDATA](https://www.netdata.cloud/) to provide a slick web-based view of how the server is running at the moment. It's made basic checkups much quicker!
 
-![netdata sample](/assets/netdataSample.png)
+![netdata sample](/assets/img/netdataSample.png)
 
 All of the applications are contained behind our router's firewall - no one should be able to access them externally. While on the go, my wife and I use [openVPN](https://openvpn.net/) on our phones and laptops to connect back to the home network. The server runs the server-side implementation of openVPN.
 

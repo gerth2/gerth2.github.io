@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Useful Youtube and Other Websites"
 date:   2019-11-02 9:30:00 -0500
 categories: blog_posts

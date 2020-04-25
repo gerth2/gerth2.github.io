@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Having Other Hobbies, like Cooking"
 date:   2019-12-01 9:30:00 -0500
 categories: blog_posts
@@ -27,7 +27,7 @@ Ooh, ever so much!
 
 Take a walk. Collect some things. Travel to new places. Eat new food. Plant a garden. Knit some socks. Learn an instrument. Take some photos.
 
-![Go Outside](/assets/go_outside.png)
+![Go Outside](/assets/img/go_outside.png)
 
 Talk to your friends about casual topics. Talk about your feelings. Talk about things you like, and things you don't like. Explore ways you are the same, and ways you are different.
 
@@ -53,7 +53,7 @@ Humans use tools. _Cooking_, at its simplest, is the process of using those tool
 
 Easier digestion means less energy is needed to _extract_ useful calories and nutrients from the food you consume. This means more energy available to do other things. Like think about how to build robots.
 
-![A campfire](/assets/campfire.png)
+![A campfire](/assets/img/campfire.png)
 
 Fire is the primary tool by which this is done. By heating our food, we break down tough fibers and kill off pathogens, making nutrients easily available for our digestive tract to extract. The chemical reactions and physical transformations that take place change the taste and texture, giving our bodies distinct signals of "this is easy to digest". I'm no expert on human anthropology, but as a species we seem to recognize these signals and gravitate strongly toward them. There's something repulsive about gnawing on a raw steak. But heat it up to just the right temperature and add a bit of salt, and it's suddenly worth a couple hundred bucks.
 
@@ -102,7 +102,7 @@ There's lots of ways to achieve this properly regulated fire, and most outdoor s
 
 The offset smoker is a common choice amongst home cooks, providing a separate fire chamber, a chimney, and a series of baffles to direct airflow. Air enters in the small offset section, feeds the fire and is heated (and smoke-infused), then travels through the cooking chamber. By adjusting the quantity of fuel, as well as airflow via the baffles, the cook can maintain a precise temperature and smoke quality inside the cook chamber. Cooking on these devices is much less an exercies in actually cooking, but rather maintaining a fire for 12 hours. Pyros and boy-scouts, rejoice!
 
-![offset smoker](/assets/offset_smoker.png)
+![offset smoker](/assets/img/offset_smoker.png)
 
 The fire itself usually is some combination of the actual wood, and charcoal. Expert "pit masters" tend to make their own charcoal, using a separate burn pit to get the flaming wood "just right" before bringing it in contact with the food. All this is to create burning plant matter which produces exactly the right amount of heat, and sweet-tasting smoke (too hot or too cold, and the smoke takes on an acrid quality).
 
@@ -112,7 +112,7 @@ Electric smokers use a heating element to provide and maintain temperature. They
 
 The other type is the "pellet grill" - it uses compressed sawdust pellets as fuel. An embedded computer controls an auger, which feeds these pellets into a "burn cup". An igniter makes sure they catch on fire, and a separately-controlled fan forces air into the burn cup to help adjust the burn rate. The fire can be adjusted from a small smoulder for maximum smoke, to an almost jet-engine like roar for rapid heating. Since the heat source is in fact a wood fire, the smoke flavor is more comparable to a manually-maintained fire, but with the advantage of automation. Set and forget, just like your oven at home. This device is my daily-driver at home when making food. 
 
-![My Smoker](/assets/my_smoker.png)
+![My Smoker](/assets/img/my_smoker.png)
 
 _Even works in a snowstorm._
 
@@ -128,7 +128,7 @@ Most forms of meat benefit from "resting" for a bit after being pulled off the s
 
 Once sliced or shredded, serve the meat to friends and family. Maybe on a bun, maybe with coleslaw or potato salad, maybe with some homemade BBQ sauce, maybe on a taco.... The world is your oyster.
 
-![results](/assets/smoker_result.png)
+![results](/assets/img/smoker_result.png)
 
 ### Chicago Delicacies
 
@@ -136,7 +136,7 @@ I was born and raised outside of Chicago. In Chicago, we do pizza.... a bit diff
 
 Bite me. Or rather, bite my pizza.
 
-![HOW PEOPLE SEE ILLINOIS](/assets/illinois.png)
+![HOW PEOPLE SEE ILLINOIS](/assets/img/illinois.png)
 
 Since I moved to "the south" (ie, south of I-80), we don't have a ton of options for "real" pizza. I've been forced to adapt, and service my own pizza needs. Enter a wonderful New Yorker, Andrew Rae. He's the host of the wonderful youtube show [Binging with Babbish](https://www.youtube.com/user/bgfilms), one of the top shows in a new wave of instructional-yet-casual cooking shows. His recipes are genuine, bulletproof, and delicious. And I've largely adopted his recipie as my own, making it for friends and family frequently.
 

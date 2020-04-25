@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Good Comments"
 date:   2019-08-18 09:30:40 -0500
 categories: blog_posts
@@ -58,7 +58,7 @@ Even worse, some of the comments have _wrong_ information. You may laugh, but th
 
 And, believe it or not, often developers A, B, and C are the same person. I've been there.
 
-![it was me all the time](/assets/it_was_me.png)
+![it was me all the time](/assets/img/it_was_me.png)
 
 *source: me.me or Stephen Hillenburg, you choose.*
 

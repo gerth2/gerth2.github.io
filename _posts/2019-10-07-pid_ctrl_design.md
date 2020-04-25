@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Control Theory - PID & Controller Design"
 date:   2019-10-07 9:30:00 -0500
 categories: blog_posts
@@ -12,11 +12,11 @@ Welcome to post 3 in our series on controls engineering. In this post, we're goi
 
 Recall our standard model of how a _control system_ is laid out:
 
-![Control system](/assets/standard_control_system.png)
+![Control system](/assets/img/standard_control_system.png)
 
 For context, in [part 2](/blog_posts/2019/09/20/math_models.html), we covered what sorts of math equations go inside the _plant_ portion of the control system:
 
-![Plant Models](/assets/standard_control_system_plant.png)
+![Plant Models](/assets/img/standard_control_system_plant.png)
 
 A bit of an aside to the reader: The more I've been writing this series, the more I'm realizing what a disservice I'm actually doing to modern control theory. We're using time domain analysis to build up all our understanding. Professional controls engineers, working on modern systems, don't work in this domain. They're using things like Linear Algebra, State-Space representations, LQR, and a whole host of things that, for better or for worse, I don't have too much exposure to. I feel a bit bad that we're not getting to the point where we can explain these. 
 
@@ -34,7 +34,7 @@ When analyzing the response of a system, we generally divide the analysis into t
 
 To analyze system response, we generally need to expose the system to a variety of different inputs. 
 
-![Test Inputs](/assets/standard_control_system_plant_inputs.png)
+![Test Inputs](/assets/img/standard_control_system_plant_inputs.png)
 
 There are a few types of input that are very good to use, because you can learn a lot about the system from just a few trials (rather than shooting in the dark a lot).
 
@@ -130,7 +130,7 @@ Based on this, we can draw the following plot of wheel speed, over time:
 <div id="plot2a"></div>
 <div id="plot2b"></div>
 
-As a side note, the $$C_1$$ and $$C_2$$ values have been chosen to represent a single 775 pro motor, through a reasonable gearbox, through a typically-sized shooter wheel. See [this javascript file](/assets/js/pidSim.js) for more details on those assumptions.
+As a side note, the $$C_1$$ and $$C_2$$ values have been chosen to represent a single 775 pro motor, through a reasonable gearbox, through a typically-sized shooter wheel. See [this javascript file](/assets/img/js/pidSim.js) for more details on those assumptions.
 
 If you stare at the graph, it certainly appears our initial suppositions are confirmed:
 
@@ -210,7 +210,7 @@ Given the behavior of the system observed so far, the relationship between volta
 
 Again, for context, we are moving on to describe the contents of the _software_ portion of our _controller_ inside our standard control system:
 
-![Controller](/assets/standard_control_system_controller.png)
+![Controller](/assets/img/standard_control_system_controller.png)
 
 ### Bang-Bang
 

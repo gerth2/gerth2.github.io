@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Math Primer, Part 2"
 date:   2019-06-01 9:31:00 -0500
 categories: blog_posts
@@ -437,7 +437,7 @@ If you tend to learn well from lectures, animations, an emphasis on making thing
 
 If you learn better from reading books and visualizing at your own pace, or like 100-year-old textbooks, [Calculus Made Easy](http://www.gutenberg.org/files/33283/33283-pdf.pdf) is a surprisingly hilarious option.
 
-![Calculus made easy & subtitle](/assets/calc_made_easy.png)
+![Calculus made easy & subtitle](/assets/img/calc_made_easy.png)
 
 If a title like that doesn't make you at least want to take a peek, I'm not sure what will.
 

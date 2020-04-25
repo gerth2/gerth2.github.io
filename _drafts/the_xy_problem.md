@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Cognitive Biases - The XY Problem"
 date:   2019-10-26 9:30:00 -0500
 categories: blog_posts

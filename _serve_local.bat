@@ -1,3 +1,3 @@
-call bundle exec jekyll serve
+call .\jekyll.exe serve
 
 pause
