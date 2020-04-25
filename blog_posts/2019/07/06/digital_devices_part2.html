@@ -12,55 +12,18 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   
       <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script><head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Digital Devices Part Two - Sequential Logic | Tricking Rocks to Think</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Digital Devices Part Two - Sequential Logic" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="This post is the continuation of Part 1 in our series on digital devices." />
-<meta property="og:description" content="This post is the continuation of Part 1 in our series on digital devices." />
-<link rel="canonical" href="/blog_posts/2019/07/06/digital_devices_part2.html" />
-<meta property="og:url" content="/blog_posts/2019/07/06/digital_devices_part2.html" />
-<meta property="og:site_name" content="Tricking Rocks to Think" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-07-06T09:30:00-05:00" />
-<script type="application/ld+json">
-{"headline":"Digital Devices Part Two - Sequential Logic","dateModified":"2019-07-06T09:30:00-05:00","datePublished":"2019-07-06T09:30:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/07/06/digital_devices_part2.html"},"url":"/blog_posts/2019/07/06/digital_devices_part2.html","description":"This post is the continuation of Part 1 in our series on digital devices.","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
-<body>
+      <script src="/assets/js/function-plot.js"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+  <!-- Nothing here yet -->
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+  <body>
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
-</header>
-<main class="page-content" aria-label="Content">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
+    <!-- Nothing here yet -->
+
+    <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Digital Devices Part Two - Sequential Logic</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-07-06T09:30:00-05:00" itemprop="datePublished">Jul 6, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p>This post is the continuation of <a href="/blog_posts/2019/06/26/digital_devices.html">Part 1</a> in our series on digital devices.</p>
+        <p>This post is the continuation of <a href="/blog_posts/2019/06/26/digital_devices.html">Part 1</a> in our series on digital devices.</p>
 
 <h2 id="combinational-versus-sequential-logic">Combinational versus Sequential Logic</h2>
 
@@ -176,11 +139,11 @@
 
 <p>To store the present time, we will use 4 D flip flops in parallel. This is nothing fancy, just creating a new digital device with three main ports. A 4-bit input, with one bit going to the <script type="math/tex">D</script> input each flip flop. The 4-bit output comes directly from the individual <script type="math/tex">Q</script> bits at the output of each flip flop. The clock input is still one bit, and drives all flip flop clocks simultaneously. Effectively, we’ve created a flip flop that stores 4 bits at a time, rather than one. This device is often called a <em>register</em><sup id="fnref:4"><a href="#fn:4" class="footnote">4</a></sup>.</p>
 
-<p><img src="/assets/register.png" alt="4 bit register" /></p>
+<p><img src="/assets/img/register.png" alt="4 bit register" /></p>
 
 <p>Rather than drawing all 4 gates every time, we’ll put all this in a nice little box labeled “Register”:</p>
 
-<p><img src="/assets/4bitRegister.png" alt="4 bit register abstraction symbol" /></p>
+<p><img src="/assets/img/4bitRegister.png" alt="4 bit register abstraction symbol" /></p>
 
 <p>Note the little “/” marks on the input and output ports with the number <script type="math/tex">4</script> below it. That’s just a notation way to say “here are four wires that should remain together”. You should always think of those four bits together as representing “time of day”, so we’ll draw them together to help not confuse the reader. Some programs may use a thicker line to show the “bundle” of data wires.</p>
 
@@ -190,13 +153,13 @@
 
 <p>We’ll take a quick shortcut to represent our four bit adder from last time as one block:</p>
 
-<p><img src="/assets/4bitAdder.png" alt="4 bit adder abstraction symbol" /></p>
+<p><img src="/assets/img/4bitAdder.png" alt="4 bit adder abstraction symbol" /></p>
 
 <p>“Inside the box” we’ve accounted for the fact that the carry-in signal is hardcoded to 0, and the carry out signal is unused and not connected.</p>
 
 <p>We’ll hook up a circuit like this:</p>
 
-<p><img src="/assets/zorgonClock.png" alt="Zorgon Clock" /></p>
+<p><img src="/assets/img/zorgonClock.png" alt="Zorgon Clock" /></p>
 
 <p>We see our 4-bit ripple carry adder, like we had <a href="/blog_posts/2019/06/26/digital_devices.html">last time</a>. That “constant value” of 1 is achieved by simply connecting the 0th bit to a high voltage, and all the other bits to ground.</p>
 
@@ -218,17 +181,17 @@
 
 <p>Combining these together in a circuit like this, we create a simple box which outputs a boolean to indicate “are my two 4-bit inputs exactly equal” <sup id="fnref:4:1"><a href="#fn:4" class="footnote">4</a></sup>:</p>
 
-<p><img src="/assets/alarm_circuit.png" alt="Alarm Comparison Circuit" /></p>
+<p><img src="/assets/img/alarm_circuit.png" alt="Alarm Comparison Circuit" /></p>
 
 <p>Here we’ve used names A and B for the 4-bit inputs (A consists of A_0, A_1, A_2, and A_3). A is the current time, B is the set time from the user (though order technically won’t matter).</p>
 
 <p>We’ll wrap this circuit up into a nice little box that compares two four-bit numbers for equality:</p>
 
-<p><img src="/assets/compareEq.png" alt="Compare Equality abstraction symbol" /></p>
+<p><img src="/assets/img/compareEq.png" alt="Compare Equality abstraction symbol" /></p>
 
 <p>We can then hook this guy up to our existing clock circuit, and we suddenly can be woken up at the proper time on planet Zorgon!</p>
 
-<p><img src="/assets/zorgonAlarmClock.png" alt="Zorgon Alarm Clock Circuit" /></p>
+<p><img src="/assets/img/zorgonAlarmClock.png" alt="Zorgon Alarm Clock Circuit" /></p>
 
 <p>Huzzah!</p>
 
@@ -354,13 +317,13 @@
 
 <p>The multiplexer is used enough that it gets its own special symbol. Here’s one drawn where A and B are both 4 bits wide.</p>
 
-<p><img src="/assets/mux.png" alt="Multiplexer symbol" /></p>
+<p><img src="/assets/img/mux.png" alt="Multiplexer symbol" /></p>
 
 <h4 id="new-dawn">New Dawn</h4>
 
 <p>In particular, when our “new day detection” circuitry indicates that the next second is the start of a new day (and the current time should therefor be 0), we can use that 1-bit output and a mux to switch the value of the input to the registers:</p>
 
-<p><img src="/assets/earthAlarmClock.png" alt="Simple Earth Alarm Clock" /></p>
+<p><img src="/assets/img/earthAlarmClock.png" alt="Simple Earth Alarm Clock" /></p>
 
 <p>Here, we see that when our “next-day” detection logic indicates the next second should be 0, we pass in a constant value of all-0-bits to the input of the register. In all other cases, we continue to pass the same thing we used to pass - current time + 1.</p>
 
@@ -458,49 +421,25 @@
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>Flaw - or <em>limitation</em> or <em>opportunity</em>. All words could apply, just pick the one that says what you want to say. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>Flaw - or <em>limitation</em> or <em>opportunity</em>. All words could apply, just pick the one that says what you want to say. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:2">
-      <p>Or at least, it ought to. Sometimes the marketing department has other ideas. But we still like them, because they help sell the things, which makes money, and lets the engineers make more things, and have food to eat. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+      <p>Or at least, it ought to. Sometimes the marketing department has other ideas. But we still like them, because they help sell the things, which makes money, and lets the engineers make more things, and have food to eat. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:3">
-      <p>Turns out, because of gate delay, the ripple-carry adder is actually a bad design for an adder circuit. Think about what happens if you had 1000 stages. How long do you have to wait for the full result to be available? Think about how many gate propagations are needed to calculate the final carry-out signal. Dis nasty. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
+      <p>Turns out, because of gate delay, the ripple-carry adder is actually a bad design for an adder circuit. Think about what happens if you had 1000 stages. How long do you have to wait for the full result to be available? Think about how many gate propagations are needed to calculate the final carry-out signal. Dis nasty. <a href="#fnref:3" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:4">
-      <p>Forgive the odd drawing here - you can ignore the numbers right by the gates. I’m testing out using <a href="http://kicad-pcb.org/">KiCad</a> for schematic capture and design. It’s a bit cumbersome for these educational purposes, but can draw simple logic diagrams well. Looks super powerful as an electronic schematic and printed circuit board design tool though! I highly recommend it so far! <a href="#fnref:4" class="reversefootnote">&#8617;</a> <a href="#fnref:4:1" class="reversefootnote">&#8617;<sup>2</sup></a></p>
+      <p>Forgive the odd drawing here - you can ignore the numbers right by the gates. I’m testing out using <a href="http://kicad-pcb.org/">KiCad</a> for schematic capture and design. It’s a bit cumbersome for these educational purposes, but can draw simple logic diagrams well. Looks super powerful as an electronic schematic and printed circuit board design tool though! I highly recommend it so far! <a href="#fnref:4" class="reversefootnote">&#8617;</a> <a href="#fnref:4:1" class="reversefootnote">&#8617;<sup>2</sup></a></p>
     </li>
   </ol>
 </div>
 
-  </div><a class="u-url" href="/blog_posts/2019/07/06/digital_devices_part2.html" hidden></a>
-</article>
-
       </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+    </main>
 
-  <div class="wrapper">
-
-    <h2 class="footer-heading">Tricking Rocks to Think</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
-      </div>
-
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
-        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Nothing here yet -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

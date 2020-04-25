@@ -12,55 +12,18 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   
       <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script><head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Digital Devices | Tricking Rocks to Think</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Digital Devices" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
-<meta property="og:description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
-<link rel="canonical" href="/blog_posts/2019/06/26/digital_devices.html" />
-<meta property="og:url" content="/blog_posts/2019/06/26/digital_devices.html" />
-<meta property="og:site_name" content="Tricking Rocks to Think" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-06-26T09:30:00-05:00" />
-<script type="application/ld+json">
-{"headline":"Digital Devices","dateModified":"2019-06-26T09:30:00-05:00","datePublished":"2019-06-26T09:30:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/06/26/digital_devices.html"},"url":"/blog_posts/2019/06/26/digital_devices.html","description":"Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
-<body>
+      <script src="/assets/js/function-plot.js"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+  <!-- Nothing here yet -->
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+  <body>
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
-</header>
-<main class="page-content" aria-label="Content">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
+    <!-- Nothing here yet -->
+
+    <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Digital Devices</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-06-26T09:30:00-05:00" itemprop="datePublished">Jun 26, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><img src="/assets/word_problems.jpg" alt="word problems from Bill Waterson" /></p>
+        <p><img src="/assets/img/word_problems.jpg" alt="word problems from Bill Waterson" /></p>
 
 <p><em>Calvin and Hobbes, by Bill Waterson</em></p>
 
@@ -144,7 +107,7 @@
 
 <script type="math/tex; mode=display">B = L_1 \cdot L_2</script>
 
-<p><img src="/assets/mission_control.png" alt="mission control button schematic" /></p>
+<p><img src="/assets/img/mission_control.png" alt="mission control button schematic" /></p>
 
 <p>There we go, quite simple!</p>
 
@@ -181,7 +144,7 @@
 
 <script type="math/tex; mode=display">C = \overline{E}</script>
 
-<p><img src="/assets/astronaut_button.png" alt="Astronaut button schematic" /></p>
+<p><img src="/assets/img/astronaut_button.png" alt="Astronaut button schematic" /></p>
 
 <p>Excellent! We have now devices for both the Launch Control room and the Astronauts capsule controls, each with an output that says “Light the rocket” or “Don’t light the rocket”. The rocket ignition mechanism now has to take these two signals, and combine them together. Note from our initial requirement, we know we don’t want to launch the rocket unless both the astronauts and launch control decide it’s time to go.</p>
 
@@ -239,7 +202,7 @@
 
 <p>In diagrams, we’d draw this as:</p>
 
-<p><img src="/assets/full_schematic.png" alt="Full Schematic" /></p>
+<p><img src="/assets/img/full_schematic.png" alt="Full Schematic" /></p>
 
 <p>This simple logic diagram shows how we could implement logic to accomplish our basic launch control system.</p>
 
@@ -247,7 +210,7 @@
 
 <p>Admittedly, this is a pretty simple system, and we took a very verbose and roundabout way to design it. I bet many of you saw the ending well before we got there. That’s perfectly fine! The big takeaway is not just the answer itself, but rather dividing the problem up into useful pieces. In this context, “useful” implies that each one is solvable on its own, and represents some meaningful small piece of computation. If you notice, you can easily draw boxes around the three physical locations we discussed:</p>
 
-<p><img src="/assets/marked_up_schematic.png" alt="Marked up schematic" /></p>
+<p><img src="/assets/img/marked_up_schematic.png" alt="Marked up schematic" /></p>
 
 <p>The individual pieces may not be implemented by the same computer! You might have to have each piece on a different machine, since they’re in physically different places. This diagram and design doesn’t at all get into how one might transfer a boolean value from one place to another (radio? super long wire?), but for lots of purposes that doesn’t matter. Imagine your boss came up and asked “What does the system do”? They don’t care about the implementation details, they care about functionality. This would be a great diagram to show the high level behavior of the system, without getting bogged down on communication, button size, or other implementation details.</p>
 
@@ -452,11 +415,11 @@
 
 <p>Based on our observation of the truth table, we can put together this device that can compute one column of the “add two bytes” problem:</p>
 
-<p><img src="/assets/single_bit_adder.png" alt="single bit adder" /></p>
+<p><img src="/assets/img/single_bit_adder.png" alt="single bit adder" /></p>
 
 <p>To use many of these devices in larger units, we’ll use an <em>abstraction</em> where we draw just the inputs and outputs, and hide the details of the guts.</p>
 
-<p><img src="/assets/single_bit_adder_abstraction.png" alt="abstraction of single bit adder" /></p>
+<p><img src="/assets/img/single_bit_adder_abstraction.png" alt="abstraction of single bit adder" /></p>
 
 <h3 id="ripple-carry-adder">Ripple-carry Adder</h3>
 
@@ -468,7 +431,7 @@
 
 <p>For a 4-bit Ripple carry adder, the circuit diagram would look like this:</p>
 
-<p><img src="/assets/four_bit_adder.png" alt="four bit adder" /></p>
+<p><img src="/assets/img/four_bit_adder.png" alt="four bit adder" /></p>
 
 <p>Notice how the “carry-out” from each stage <em>ripples</em> into the next stage. Hence the name. Someone was clever like that.</p>
 
@@ -481,40 +444,16 @@
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>Yes, smell. A good engineer uses <em>most</em> of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It’s a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don’t usually recommend the sense of taste for writing software. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>Yes, smell. A good engineer uses <em>most</em> of their senses! Learn the smell of burning electronics, and learn to shut off the power as soon as you smell it! It’s a great way to identify the source of issues, and get early detection of a failure - you can often smell it before you see smoke. Of course, be careful not to inhale anything super toxic. For that same toxic ingestion reason, I don’t usually recommend the sense of taste for writing software. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
 
-  </div><a class="u-url" href="/blog_posts/2019/06/26/digital_devices.html" hidden></a>
-</article>
-
       </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+    </main>
 
-  <div class="wrapper">
-
-    <h2 class="footer-heading">Tricking Rocks to Think</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
-      </div>
-
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
-        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Nothing here yet -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

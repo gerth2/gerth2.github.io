@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [['$','$'], ['\\(','\\)']],
+          processEscapes: true
+        }
+      });
+      </script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+      <script src="https://d3js.org/d3.v3.js"></script>
+      <script src="/assets/js/function-plot.js"></script>
+
+  <!-- Nothing here yet -->
+
+  <body>
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
+    <!-- Nothing here yet -->
+
+    <main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <p><img src="https://imgs.xkcd.com/comics/code_quality.png" alt="code qualify" />
+<em>source - xkcd.com</em></p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>One of the most common things I hear whenever I talk to other software teams, both in FRC and professionally - <em>“We want to write good code.”</em></p>
+
+<p>What is this “good code” thing that folks keep chasing? Or conversely, when someone looks at your code and describes it as “bad”, what are they really saying? There are… a lot.. of <a href="https://softwareengineering.stackexchange.com/questions/17443/what-does-it-mean-to-write-good-code">folks</a> <a href="https://medium.com/@navdeepsingh_2336/good-code-vs-bad-code-35624b4e91bc">out on the</a> <a href="https://developerzen.com/how-do-you-define-good-code-c8a383c207a4">internet who have written</a> <a href="https://hackernoon.com/few-simple-rules-for-good-coding-my-15-years-experience-96cb29d4acd9">on this topic.</a> Lots of them have some good ideas. Lots are just opinions, informed by highly specific scenarios. But what can we learn from all these</p>
+
+<p>True to this blog’s bottom-up approach, I want to spend some time going through what makes for “good” FRC code.</p>
+
+<h2 id="defining-good-code">Defining Good Code</h2>
+
+<p>When I think about what makes code good or bad, there’s one overarching concept that I believe applies universally:</p>
+
+<p><strong>Good Code helps you deliver functionality better</strong></p>
+
+<p>This is the most specific I am willing to say is a universal truth. Everything beyond this requires defining, for <em>your</em> team, at this <em>present time</em>, what <em>better delivery of functionality</em> means.</p>
+
+<h2 id="the-definition-of-good">The Definition of Good</h2>
+
+<p>Having a team manifesto of missions and goals is, in my mind, a key component to the success of any team. You can’t work toward a goal together if team members are not clear on what that goal is. Usually teams write down high level goals in a mission and vision statement.</p>
+
+<p>I think it is a very valuable exercise for every software team to regularly discuss what <em>better delivery of functionality</em> means for them, writing it down if needed.</p>
+
+<p>There are very few wrong answers in the discussion. Therefor, your team’s list will likely not be identical to my team’s list.</p>
+
+<p>Even still, there are also a lot of super common examples, which are worthwhile discussing.</p>
+
+<h3 id="delivery-units">Delivery Units</h3>
+
+<p>To discuss how to improve <em>delivery</em>, we should probably levelset on what we’re talking about when we say “delivery”. When I “deliver” software, it means that I provide a set of functionality to some other team, for them to use. Robot software, like most embedded software, rarely is useful on its own. It has to be combined with a physical device to have meaning. Therefor, as a software team, our job is to <em>deliver</em> functional pieces of software for the rest of the team to use.</p>
+
+<p><em>Delivery</em> should occur exactly as often as needed - no more, no less. Frequent delivery of new software which fixes unimportant issues will quickly annoy folks who really need time to develop on the robot. The time needed to flash the robot, test new functionally, and even just keep track of the fact the “correct” software to use has changed adds lots of overhead. In a time-boxed build (like FRC is), adding overhead is rarely something you want to do. Think about it - what if electrical team changed the wiring of the motor controllers to the roboRIO every day on you? You wouldn’t like that very much. Too much churn is a bad thing.</p>
+
+<p>On the flip side, if the current robot lacks some key functionality, or has a large bug, either of which is preventing driver practice or training, you want to deliver new, fixed software…. <em>as soon as possible!</em> Work has stopped, which again is a bad thing for the robot build overall - competition deadlines aren’t moving out simply because the software team isn’t done yet.</p>
+
+<p>Software teams need to deliver full sets of functionality at the exact pace expected by other subteams. This delivery pace allows them to work software development and testing into the broader robot build schedule with minimal disruption.</p>
+
+<p>Delivery units in FRC tend to be pretty straightforward. For my team, when we “deliver” software, it implies a few things:</p>
+
+<ol>
+  <li>All promised functionality has been merged together in version control</li>
+  <li>The software has been built locally on a PC</li>
+  <li>Any unit tests we have to run have been run, and pass</li>
+  <li>Software has been checked out to the maximum extent possible on a test electrical system.</li>
+  <li>Source code has been tagged in version control and pushed to the server</li>
+  <li>Software has been deployed to the robot</li>
+</ol>
+
+<p>Note that we are using <em>git</em> to do software <em>version control</em> - a topic we’ll cover in a later post. For now, if you aren’t familiar, it’s a methodology for keeping track of changes to files over time.</p>
+
+<p>These requirements on what a “delivery” means for our team drives a few requirements for what we call <em>good</em> software:</p>
+
+<p><strong>Good software is version controlled, preferably with git</strong></p>
+
+<p><strong>Good software can be tested, and has been tested, prior to delivery</strong></p>
+
+<h3 id="velocity-of-delivery">Velocity of Delivery</h3>
+
+<p>When discussing software delivery, being able to deliver fast is a key criteria for most teams. It’s not because you <em>always</em> need to deliver fast, but simply that when duty calls, getting functionality out the door as rapidly as possible is a key desired ability.</p>
+
+<p>Velocity in software development can come from a few different areas</p>
+
+<h4 id="requirements">Requirements</h4>
+
+<p>There are a few out there who might hate me for saying this - that’s ok. Time and time again, my personal experience has shown me that if the goal of the software is not well defined prior to writing it, you’ll be in a world of hurt later on down the road. Similarly, if you want to write software as <em>fast as possible</em>, a key component is to know what your end goal is before you start. Ideally, have some intermediate checkpoints defined too.</p>
+
+<p>A big chunk of this is talking with other team members - what does the mechanical team expect the mechanism to be able to do? What assumptions did the electrical team make while wiring it? What does the drive team expect to do on their gamepad controllers, and what effect are they expecting to see on the robot itself?</p>
+
+<p>Another big chunk of this is talking with your software teammates - which parts of code will have to interact with other parts to get the funcitonality desired? What assumptions will your code make about other parts of code? Do you have to change someone else’s work? Is anyone else already working on this task? What names will we choose for new functions, classes, and variables, so that everyone understands them?</p>
+
+<p>Finally, a smaller chunk is sitting with some quality time of just you and the software. Exactly where will you be making changes? Will the names decided on work well? What do you already know how to do, what do you have to look up, what do you have to ask a mentor about?</p>
+
+<p>Once you have all these requirements for functionality and code implementation, then you can start changing code files.</p>
+
+<p>For me, all this comes down to another rule of <em>good</em> software:</p>
+
+<p><strong>Good software is tied to precise and documented requirements</strong></p>
+
+<p>I like to point teams to the <a href="https://guides.github.com/features/issues/">github “Issues” list that comes with every repo</a>. Its a wonderful tool for tracking not just bugs, but also the functionality changes you have to make. Create one “issue” per chunk of functionality you are modifying, and document all the requirements in it. You can add comments, categorize changes, interact in a documented way with teammates, and mark when the issue has been “closed” (software writing is done).</p>
+
+<h4 id="maintainability">Maintainability</h4>
+
+<p>Oh boy, there is a ton to talk about here.</p>
+
+<p>In the context of software writing, <em>maintainability</em> refers to how easy it is to <em>change</em> functionality later on. This could be two hours after the initial code was written, or two months, or (if you work for my employer) two decades. For me, it doesn’t make a difference - if I’m going back and looking at code a second time, I’ve almost always forgotten what the code initially did. The key to maintainability is <em>minimizing</em> the amount of <em>analysis</em> that has to be re-done prior to making the software change.</p>
+
+<p>Analysis occurs when a developer cannot quickly scan through code and determine functionality. It’s inevitable to some extent - that’s why we do write our code in a language humans can comprehend. Still, the less you keep the next person guessing, the better.</p>
+
+<p>Code comments are the first line of defense in minimizing re-analysis. Marking the code you write with <em>useful</em> annotation can jog memory, and help give reason to the <em>why</em> in the sea of <em>what</em>. More on this in a future blog post.</p>
+
+<h3 id="quality">Quality</h3>
+
+<h2 id="practical-examples">Practical Examples</h2>
+
+      </div>
+    </main>
+
+    <!-- Nothing here yet -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-140459603-1');
+</script> -->
+
+
+  </body>
+
+</html>

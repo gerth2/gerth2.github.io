@@ -12,55 +12,18 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   
       <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script><head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Processor Architecture | Tricking Rocks to Think</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="Processor Architecture" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth" />
-<meta property="og:description" content="People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth" />
-<link rel="canonical" href="/blog_posts/2019/07/22/vonneumann.html" />
-<meta property="og:url" content="/blog_posts/2019/07/22/vonneumann.html" />
-<meta property="og:site_name" content="Tricking Rocks to Think" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-07-22T09:31:00-05:00" />
-<script type="application/ld+json">
-{"headline":"Processor Architecture","dateModified":"2019-07-22T09:31:00-05:00","datePublished":"2019-07-22T09:31:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/07/22/vonneumann.html"},"url":"/blog_posts/2019/07/22/vonneumann.html","description":"People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - Donald Knuth","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
-<body>
+      <script src="/assets/js/function-plot.js"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+  <!-- Nothing here yet -->
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+  <body>
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
-</header>
-<main class="page-content" aria-label="Content">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
+    <!-- Nothing here yet -->
+
+    <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Processor Architecture</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-07-22T09:31:00-05:00" itemprop="datePublished">Jul 22, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><em>People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a></em></p>
+        <p><em>People who are more than casually interested in computers should have at least some idea of what the underlying hardware is like. Otherwise the programs they write will be pretty weird. - <a href="https://en.wikipedia.org/wiki/Donald_Knuth">Donald Knuth</a></em></p>
 
 <h2 id="introduction">Introduction</h2>
 
@@ -120,7 +83,7 @@
 
 <p>The collection of circuitry which does the calculations is generally referred to as the <em>Arithmetic Logic Unit</em>, or ALU. It gets its own fancy-pants symbol that looks like a sideways pair of pants:</p>
 
-<p><img src="/assets/ALU.png" alt="ALU" /></p>
+<p><img src="/assets/img/ALU.png" alt="ALU" /></p>
 
 <p>Implementations on various processors will vary slightly, but conceptually they all have to have at least 3 inputs:</p>
 
@@ -180,7 +143,7 @@
 
 <p>Conceptually, putting together an ALU is remarkably straightforward. Just package all the circuits which do the operations you want individually, feed them each off of the provided inputs, and use a MUX driven by the CTRL input to select which calculation makes it to the output.</p>
 
-<p><img src="/assets/aluInternals.png" alt="inside ALU" /></p>
+<p><img src="/assets/img/aluInternals.png" alt="inside ALU" /></p>
 
 <p>In addition to these combination operations, the ALU will often have additional outputs to indicate if the operation resulted in overflow or underflow (ie, result was outside the min or max range of the numbers that can be represented by the 32 bits of the ALU).</p>
 
@@ -188,7 +151,7 @@
 
 <p>The control unit is the heart of this whole system, coordinating the action of registers and the ALU together to do actual calculation. The design of the unit is special tailored to implement the stored-program concept. Again, the exact design of the control unit can vary, but all have to have at least a few basic components and abilities.</p>
 
-<p><img src="/assets/controlUnit.png" alt="Control Unit Top Level" /></p>
+<p><img src="/assets/img/controlUnit.png" alt="Control Unit Top Level" /></p>
 
 <h4 id="registers">Registers</h4>
 
@@ -216,15 +179,15 @@
   <li>Execute.</li>
 </ol>
 
-<p><img src="/assets/controlUnitFetch.png" alt="Control Unit Fetch" /></p>
+<p><img src="/assets/img/controlUnitFetch.png" alt="Control Unit Fetch" /></p>
 
 <p>During the <em>Fetch</em> phase, the control unit fetches the next instruction. The Program Counter register is used to populate the Memory Address Register. Then a read is commanded from the RAM chip, and the result in the Memory Data Register is moved to the Instruction Register.</p>
 
-<p><img src="/assets/controlUnitDecode.png" alt="Control Unit Decode" /></p>
+<p><img src="/assets/img/controlUnitDecode.png" alt="Control Unit Decode" /></p>
 
 <p>During the <em>Decode</em> phase, the contents of the instruction are analyzed to see what is commanded. Control signals to other parts of the processor are adjusted based on the contents of the instruction.</p>
 
-<p><img src="/assets/controlUnitMath.png" alt="Control Unit Execute - Math" /></p>
+<p><img src="/assets/img/controlUnitMath.png" alt="Control Unit Execute - Math" /></p>
 
 <p>During the <em>Execute</em> phase, the actual requested actions are carried out. The Program Counter is updated to a new value (usually the next memory address in sequence). The drawing above shows an example where the ALU is used to do math.</p>
 
@@ -328,11 +291,11 @@
 
 <p>The manner in which they alter it can vary far and wide. Usually it involves some offset from the current PC - rather than going to the next instruction, you skip forward by some larger number of addresses, or maybe backward by five addresses… something like that. The size of the jump may be encoded into the instruction word itself, or pulled from a general purpose register, or lots of other options really. At the end of the day, it’s just up to how the instruction is interpreted again to select which calculation is used to update the PC prior to the next execution cycle.</p>
 
-<p><img src="/assets/nextInstructionDecode.png" alt="next instruction" /></p>
+<p><img src="/assets/img/nextInstructionDecode.png" alt="next instruction" /></p>
 
 <p>The net result is the same though - the PC gets loaded with the address of the next instruction to run, and the cycle may start over!</p>
 
-<p><img src="/assets/controlUnitNextInstruction.png" alt="next instruction calc" /></p>
+<p><img src="/assets/img/controlUnitNextInstruction.png" alt="next instruction calc" /></p>
 
 <h3 id="io-techniques">IO techniques</h3>
 
@@ -393,43 +356,19 @@
 <div class="footnotes">
   <ol>
     <li id="fn:1">
-      <p>Lots of students <a href="https://www.google.com/search?safe=active&amp;rlz=1C1CHBF_enUS840US840&amp;ei=JIUuXcOzF8m4tAbC4bv4Cw&amp;q=uiuc+ece+385+github&amp;oq=uiuc+ece+385+github&amp;gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8">post their solutions on github</a>, which seems like a violation of academic integrity, if you ask me. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+      <p>Lots of students <a href="https://www.google.com/search?safe=active&amp;rlz=1C1CHBF_enUS840US840&amp;ei=JIUuXcOzF8m4tAbC4bv4Cw&amp;q=uiuc+ece+385+github&amp;oq=uiuc+ece+385+github&amp;gs_l=psy-ab.3..0i22i30.3858.5509..6305...0.0..0.107.585.6j1......0....1..gws-wiz.......0i71j0.a87FJGr1gW8">post their solutions on github</a>, which seems like a violation of academic integrity, if you ask me. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
     <li id="fn:2">
-      <p>Again, lots of students <a href="https://www.google.com/search?q=uiuc+ece+391+github&amp;rlz=1C1CHBF_enUS840US840&amp;oq=uiuc+ece+391+github&amp;aqs=chrome..69i57.5400j0j7&amp;sourceid=chrome&amp;ie=UTF-8">decided to post their solutions online</a>. Tisk tisk. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
+      <p>Again, lots of students <a href="https://www.google.com/search?q=uiuc+ece+391+github&amp;rlz=1C1CHBF_enUS840US840&amp;oq=uiuc+ece+391+github&amp;aqs=chrome..69i57.5400j0j7&amp;sourceid=chrome&amp;ie=UTF-8">decided to post their solutions online</a>. Tisk tisk. <a href="#fnref:2" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
 
-  </div><a class="u-url" href="/blog_posts/2019/07/22/vonneumann.html" hidden></a>
-</article>
-
       </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+    </main>
 
-  <div class="wrapper">
-
-    <h2 class="footer-heading">Tricking Rocks to Think</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
-      </div>
-
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
-        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Nothing here yet -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];

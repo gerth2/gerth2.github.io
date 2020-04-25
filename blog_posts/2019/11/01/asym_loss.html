@@ -12,55 +12,18 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
   
       <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script><head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>The Asymmetric Loss Function | Tricking Rocks to Think</title>
-<meta name="generator" content="Jekyll v3.8.5" />
-<meta property="og:title" content="The Asymmetric Loss Function" />
-<meta property="og:locale" content="en_US" />
-<meta name="description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
-<meta property="og:description" content="Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition." />
-<link rel="canonical" href="/blog_posts/2019/11/01/asym_loss.html" />
-<meta property="og:url" content="/blog_posts/2019/11/01/asym_loss.html" />
-<meta property="og:site_name" content="Tricking Rocks to Think" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-11-01T09:30:00-05:00" />
-<script type="application/ld+json">
-{"headline":"The Asymmetric Loss Function","dateModified":"2019-11-01T09:30:00-05:00","datePublished":"2019-11-01T09:30:00-05:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"/blog_posts/2019/11/01/asym_loss.html"},"url":"/blog_posts/2019/11/01/asym_loss.html","description":"Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.","@context":"https://schema.org"}</script>
-<!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="/feed.xml" title="Tricking Rocks to Think" /></head>
-<body>
+      <script src="/assets/js/function-plot.js"></script>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" ><header class="site-header" role="banner">
+  <!-- Nothing here yet -->
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">Tricking Rocks to Think</a><nav class="site-nav">
-        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-        <label for="nav-trigger">
-          <span class="menu-icon">
-            <svg viewBox="0 0 18 15" width="18px" height="15px">
-              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-            </svg>
-          </span>
-        </label>
+  <body>
 
-        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
-      </nav></div>
-</header>
-<main class="page-content" aria-label="Content">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
+    <!-- Nothing here yet -->
+
+    <main class="page-content" aria-label="Content">
       <div class="wrapper">
-        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
-
-  <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">The Asymmetric Loss Function</h1>
-    <p class="post-meta">
-      <time class="dt-published" datetime="2019-11-01T09:30:00-05:00" itemprop="datePublished">Nov 1, 2019
-      </time></p>
-  </header>
-
-  <div class="post-content e-content" itemprop="articleBody">
-    <p><img src="/assets/made_up_numbers.png" alt="Made Up Numbers" /></p>
+        <p><img src="/assets/img/made_up_numbers.png" alt="Made Up Numbers" /></p>
 
 <p><em>Source: <a href="https://dilbert.com/strip/2008-05-08">Scott Adams</a></em></p>
 
@@ -92,7 +55,7 @@
 
 <p>In general, such a system would have multiple inputs: Air, ground, and space based sensors would monitor the airspace, and provide information about radar &amp; visual observations to a central system. This system would have to <em>interpret</em> all these inputs and produce a single, boolean output: <em>Missile? or No Missile?</em></p>
 
-<p><img src="/assets/missile_detect.png" alt="missile detection" /></p>
+<p><img src="/assets/img/missile_detect.png" alt="missile detection" /></p>
 
 <p>The “asymmetric loss function” deals with how we design the contents of the black “?” box. Clearly, it’s not going to be a trivial transformation.</p>
 
@@ -114,7 +77,7 @@
 
 <p>In one handy-dandy chart:</p>
 
-<p><img src="/assets/fp_fn.png" alt="false negative, false positive" /></p>
+<p><img src="/assets/img/fp_fn.png" alt="false negative, false positive" /></p>
 
 <p>The point of this (fairly morbid) example: The two flavors of wrong are not equally bad.</p>
 
@@ -134,25 +97,25 @@
 
 <p>Let’s look at something a little less morbid: Let’s look at an arm on a robot, which is supposed to deliver a gamepiece to a goal which is on top of a shelf. Something like this:</p>
 
-<p><img src="/assets/gamepiece_place_good.png" alt="gamepiece good" /></p>
+<p><img src="/assets/img/gamepiece_place_good.png" alt="gamepiece good" /></p>
 
 <p>You can see that the triangle shovel on the end of the arm is responsible for lifting the heart gamepiece to the goal level. When the gamepiece is just barely high enough, the gamepiece is quickly delivered horizontally to the goal.</p>
 
 <p>Again though, real world effects come in. Let’s say we end up with an arm that’s slightly too high.</p>
 
-<p><img src="/assets/gamepiece_place_too_high.png" alt="gamepiece OK" /></p>
+<p><img src="/assets/img/gamepiece_place_too_high.png" alt="gamepiece OK" /></p>
 
 <p>In this case, we’re OK still. The arm being too high causes the gamepiece to drop slightly onto the platform. Assuming it can’t roll off and isn’t fragile, we’re still ok. The extra height leads to inaccuracy in placement, and takes longer to move the arm, but overall we still accomplish our goal of delivery.</p>
 
 <p>However, things get nasty if the arm is too low.</p>
 
-<p><img src="/assets/gamepiece_place_too_low.png" alt="gamepiece Bad" /></p>
+<p><img src="/assets/img/gamepiece_place_too_low.png" alt="gamepiece Bad" /></p>
 
 <p>It fails to deliver gamepiece to the goal. Additionally, the arm itself crashes into the support structure, causing damage to the robot.</p>
 
 <p>Obviously, if we’re gonna be wrong, we want to be slightly too high, rather than slightly too low. If we were to create a mathematical function to describe this, and plot it, we might produce a graph that looks like this:</p>
 
-<p><img src="/assets/loss_function.png" alt="Loss function" /></p>
+<p><img src="/assets/img/loss_function.png" alt="Loss function" /></p>
 
 <p>All we’re doing here is making up some numbers to describe the idea that “too high is bad, but too low is worse”. You could definitely assign some real numbers, in terms of the monetary cost of destroying your robot, or the emotional cost of seeing your team lose a match…. maybe… It’s usually pretty hard to make it really accurate. But accurate isn’t the point here, it’s more-so about massaging your engineering knowledge about “what flavor of wrong is least-evil” into a mathematical function.</p>
 
@@ -174,35 +137,11 @@
 
 <p>Again, analyzing the loss function for various parts of your robot won’t exactly tell you how to design it - it will just give you insights into which designs are better or worse. Just one more tool for your design technique toolbox, hopefully to help discover issues in advance, and design around them.</p>
 
-  </div><a class="u-url" href="/blog_posts/2019/11/01/asym_loss.html" hidden></a>
-</article>
-
       </div>
-    </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+    </main>
 
-  <div class="wrapper">
-
-    <h2 class="footer-heading">Tricking Rocks to Think</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li class="p-name">Tricking Rocks to Think</li><li><a class="u-email" href="mailto:webmaster@trickingrockstothink.com">webmaster@trickingrockstothink.com</a></li></ul>
-      </div>
-
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/gerth2"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">gerth2</span></a></li><li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg> <span class="username">christopher-gerth-7b8b52126</span></a></li></ul>
-</div>
-
-      <div class="footer-col footer-col-3">
-        <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
-      </div>
-    </div>
-
-  </div>
-
-</footer>
-<!-- Global site tag (gtag.js) - Google Analytics -->
+    <!-- Nothing here yet -->
+    <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
