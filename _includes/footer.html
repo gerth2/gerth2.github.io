@@ -1,1 +1,26 @@
-<!-- Nothing here yet -->
+<!-- Footer -->
+<footer id="footer">
+    <div class="inner">
+        <div class="content">
+            <section>
+                <h3>{{ site.title }}</h3>
+                <p>{{ site.description }}</p>
+            </section>
+            <section>
+                <ul class="plain">
+                    <li><a href="https://github.com/{{ site.github_username }}"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+                    <li><a href="mailto:{{ site.email }}"><i class="icon fa-envelope">&nbsp;</i>Email</a></li>
+                </ul>
+            </section>
+            <section>
+                <ul class="plain">
+                    <li><a href="https://twitter.com/{{ site.twitter_username }}"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+                    <li><a href="https://www.linkedin.com/in/{{ site.linkedin_username }}"><i class="icon fa-linkedin">&nbsp;</i>Linkedin</a></li>
+                </ul>
+            </section>
+        </div>
+        <div class="copyright text center">
+            <p>&copy; Copyright {{ site.time | date: '%Y' }} - <a href="#">Proudly Produced in Peoria</a> </p>
+          </div>
+    </div>
+</footer>

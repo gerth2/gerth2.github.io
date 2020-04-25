@@ -5,8 +5,6 @@ date:   2019-10-19 9:30:00 -0500
 categories: blog_posts
 ---
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="/assets/sidenav/sidenav.css">
 <script src="/assets/sidenav/sidenav.js"></script>
 <div id="mySidenav" class="sidenav" onclick="openNav()">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

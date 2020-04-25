@@ -5,6 +5,5 @@
 layout: home
 ---
 
-[Welcome](/blog_posts/2019/05/18/welcome.html) to visitor number 
-<img src="https://smallseotools.com/counterDisplay?code=7480ac8b7a83d68872dcecfb95e68148&style=0004&pad=5&type=page&initCount="  title="Visitor Hit Counter" Alt="Visitor Hit Counter" border="0"> to a blog about programming computers, in the context of the FIRST Robotics competition!
+[Welcome](/blog_posts/2019/05/18/welcome.html) to a blog about programming computers, in the context of the FIRST Robotics competition!
 

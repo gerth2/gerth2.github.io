@@ -22,14 +22,16 @@ function getSingularTag(name) {
 }
 
 function openNav() {
-  document.getElementById("mySidenav").style.width = "550px";
-  getSingularTag("main").style.marginLeft = "550px";
+  document.getElementById("mySidenav").style.width = "40%";
+  document.getElementById("main").style.marginLeft = "40%";
+  setTimeout(resizeAllPlots, 200);
   stopPropagation(null);
 }
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
-  getSingularTag("main").style.marginLeft= "0";
+  document.getElementById("main").style.marginLeft= "0";
+  setTimeout(resizeAllPlots, 200);
   stopPropagation(null);
 }
 

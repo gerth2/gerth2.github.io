@@ -101,7 +101,7 @@ For example, I can create the following chart:
 
 <div id="plot2"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot2',
   title: '',
   grid: true,

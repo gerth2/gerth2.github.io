@@ -36,7 +36,7 @@ class DualPlot{
 
     updatePlot(rpmData, voltageData){
         if(this.speedGraph == null){
-            this.speedGraph = functionPlot({
+            this.speedGraph = fplotWrapper({
                 target: this.plot1Name,
                 disableZoom:true,
                 title: '',
@@ -52,7 +52,7 @@ class DualPlot{
               })
         }
         if(this.voltsGraph == null){
-            this.voltsGraph = functionPlot({
+            this.voltsGraph = fplotWrapper({
                 target: this.plot2Name,
                 disableZoom:true,
                 title: '',

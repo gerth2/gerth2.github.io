@@ -37,7 +37,7 @@ class DualPlot{
 
     updatePlot(posData, voltageData){
         if(this.posGraph == null){
-            this.posGraph = functionPlot({
+            this.posGraph = fplotWrapper({
                 target: this.plot1Name,
                 disableZoom:true,
                 title: '',
@@ -53,7 +53,7 @@ class DualPlot{
               })
         }
         if(this.voltsGraph == null){
-            this.voltsGraph = functionPlot({
+            this.voltsGraph = fplotWrapper({
                 target: this.plot2Name,
                 disableZoom:true,
                 title: '',

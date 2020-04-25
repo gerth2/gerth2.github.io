@@ -21,7 +21,7 @@ For example, here is a model of pressure in a pneumatic tank, visualized how it 
 
 <div id="plot2"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot2',
   title: '',
   grid: true,
@@ -87,7 +87,7 @@ Graphically, we can pick a particular time $$t_0$$ on our plot of pressure over 
 
 <div id="plot3"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot3',
   title: '',
   grid: false,
@@ -143,7 +143,7 @@ In either case, here's the picture of $$\dot{P}(t)$$ (red) and $$P(t)$$ (blue) l
 
 <div id="plot4"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot4',
   title: '',
   grid: false,
@@ -213,7 +213,7 @@ As an example, say the driver operates the robot such that the measured velocity
 
 <div id="plot5"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot5',
   title: '',
   grid: true,
@@ -278,7 +278,7 @@ We'll start by picking a very specific set of rectangles to approximate the regi
 
 <div id="plot6"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot6',
   title: '',
   grid: true,
@@ -319,7 +319,7 @@ Trying 1 second width:
 
 <div id="plot7"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot7',
   title: '',
   grid: true,
@@ -352,7 +352,7 @@ And 0.25 second width:
 
 <div id="plot8"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot8',
   title: '',
   grid: true,
@@ -385,7 +385,7 @@ Suddenly, this is looking much better. Let's try that magic 0.02 second interval
 
 <div id="plot9"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot9',
   title: '',
   grid: true,

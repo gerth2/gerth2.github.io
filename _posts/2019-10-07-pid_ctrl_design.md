@@ -74,7 +74,7 @@ function plot1PointsGen(){
     return retArray;
 }
 
-functionPlot({
+fplotWrapper({
   target: '#plot1',
   title: '',
   grid: true,

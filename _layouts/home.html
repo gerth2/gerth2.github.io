@@ -1,14 +1,56 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
-{{ content }}
+    <head>
+      {% include headContents.html %}
+    </head>
+
+  <body>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico" >    
+    {% include header.html %}
+
+    <div id="main">
+
+    <!-- Banner -->
+    <section id="banner">
+        <div class="inner" style="background-color: rgba(0.1,0.1,0.1,0.5);">
+            <br>
+            <h1>Tricking Rocks to Think</h1>
+            <p>{{ content }}</p>
+        </div>
+        <video autoplay loop muted playsinline src="/assets/img/banner.mp4"></video>
+    </section>
+
+    <!-- Main -->
+      <section id="main" class="wrapper">
+        <div class="inner">
+          <div class="content">
+
+            
+
+            <h1>All Posts</h1>
+
+            {% for post in site.posts %}
+            
+                <a href={{post.url}}>{{post.title}}</a><br>
+            
+            {% endfor %}
+
+        </div>
+      </section>
+  </div>
+
+  {% include footer.html %}
+  {% include analytics.html %}
+
+  </body>
+
+  <script src="/assets/js/fplotResizeCallbacks.js"></script>
+
+</html>
 
 
-<h1>All Posts</h1>
 
-{% for post in site.posts %}
 
-    <a href={{post.url}}>{{post.title}}</a><br>
 
-{% endfor %}
+

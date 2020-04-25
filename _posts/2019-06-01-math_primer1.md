@@ -139,7 +139,7 @@ Note the periodic nature of this function - the value of the output goes up and 
 
 <div id="plot1"></div>
 <script>
-functionPlot({
+fplotWrapper({
   target: '#plot1',
   title: 'sin(x)',
   grid: true,

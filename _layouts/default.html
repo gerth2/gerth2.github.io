@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="{{ page.lang | default: site.lang | default: "en" }}">
 
+    <head>
+      {% include headContents.html %}
+    </head>
+
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {
@@ -9,27 +13,41 @@
         }
       });
       </script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-  
-      <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
-  {% include head.html %}
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="/assets/js/function-plot.js"></script>
+    <script src="/assets/js/fplotWrapper.js"></script>
 
   <body>
-
     <link rel="shortcut icon" type="image/x-icon" href="{{ site.baseurl }}/favicon.ico" >    
     {% include header.html %}
 
-    <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        {{ content }}
+    <div id="main">
+      <!-- Heading -->
+      <div id="heading">
+        <div style="background-color: rgba(0.1,0.1,0.1,0.5); padding: 20px;">
+          <h1>{{ page.title }}</h1>
+        </div>
       </div>
-    </main>
 
-    {% include footer.html %}
-    {% include analytics.html %}
+    <!-- Main -->
+      <section id="main" class="wrapper">
+        <div class="inner">
+          <div class="content">
+            {{ content }}
+        </div>
+      </section>
+  </div>
+
+  {% include footer.html %}
+  {% include analytics.html %}
 
   </body>
 
+  <script src="/assets/js/fplotResizeCallbacks.js"></script>
+
 </html>
+
+
+

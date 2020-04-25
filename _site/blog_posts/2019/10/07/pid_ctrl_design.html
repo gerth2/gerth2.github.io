@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
+    <head>
+      <title>Control Theory - PID & Controller Design | Tricking Rocks to Think</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<link rel="stylesheet" href="/assets/css/main.css" />
+<link rel="stylesheet" href="/assets/sidenav/sidenav.css">
+
+    </head>
+
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({
         tex2jax: {
@@ -9,21 +20,41 @@
         }
       });
       </script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-  
-      <script src="https://d3js.org/d3.v3.js"></script>
-      <script src="/assets/js/function-plot.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
 
-  <!-- Nothing here yet -->
+    <script src="https://d3js.org/d3.v3.js"></script>
+    <script src="/assets/js/function-plot.js"></script>
+    <script src="/assets/js/fplotWrapper.js"></script>
 
   <body>
-
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" >    
-    <!-- Nothing here yet -->
+    		<!-- Header -->
+        <header id="header">
+            <a class="logo" href="/index.html">Tricking Rocks to Think</a>
+        </header>
 
-    <main class="page-content" aria-label="Content">
-      <div class="wrapper">
-        <h2 id="introduction">Introduction</h2>
+    <!-- Nav -->
+        <nav id="menu">
+            <ul class="links">
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/elements.html">Elements</a></li>
+                <li><a href="/generic.html">Generic</a></li>
+            </ul>
+        </nav>
+
+    <div id="main">
+      <!-- Heading -->
+      <div id="heading">
+        <div style="background-color: rgba(0.1,0.1,0.1,0.5); padding: 20px;">
+          <h1>Control Theory - PID & Controller Design</h1>
+        </div>
+      </div>
+
+    <!-- Main -->
+      <section id="main" class="wrapper">
+        <div class="inner">
+          <div class="content">
+            <h2 id="introduction">Introduction</h2>
 
 <p>Welcome to post 3 in our series on controls engineering. In this post, we’re going to explore the behavior of the motor model we’ve built up, try to create an intuition for how it behaves. We’ll establish a couple criteria for what we want it to do, and lead into the application of a classic PID controller.</p>
 
@@ -92,7 +123,7 @@ function plot1PointsGen(){
     return retArray;
 }
 
-functionPlot({
+fplotWrapper({
   target: '#plot1',
   title: '',
   grid: true,
@@ -377,11 +408,37 @@ t < 0 %]]></script>), the wheel should not be turning.</li>
 <script src="/assets/js/pidSim.js"></script>
 
 
-      </div>
-    </main>
+        </div>
+      </section>
+  </div>
 
-    <!-- Nothing here yet -->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+  <!-- Footer -->
+<footer id="footer">
+    <div class="inner">
+        <div class="content">
+            <section>
+                <h3>Tricking Rocks to Think</h3>
+                <p>Thoughts on software development, leadership, and sundry other topics in the context of the FIRST robotics competition.</p>
+            </section>
+            <section>
+                <ul class="plain">
+                    <li><a href="https://github.com/gerth2"><i class="icon fa-github">&nbsp;</i>Github</a></li>
+                    <li><a href="mailto:webmaster@trickingrockstothink.com"><i class="icon fa-envelope">&nbsp;</i>Email</a></li>
+                </ul>
+            </section>
+            <section>
+                <ul class="plain">
+                    <li><a href="https://twitter.com/chris58858176"><i class="icon fa-twitter">&nbsp;</i>Twitter</a></li>
+                    <li><a href="https://www.linkedin.com/in/christopher-gerth-7b8b52126"><i class="icon fa-linkedin">&nbsp;</i>Linkedin</a></li>
+                </ul>
+            </section>
+        </div>
+        <div class="copyright text center">
+            <p>&copy; Copyright 2020 - <a href="#">Proudly Produced in Peoria</a> </p>
+          </div>
+    </div>
+</footer>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-140459603-1"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -394,4 +451,9 @@ t < 0 %]]></script>), the wheel should not be turning.</li>
 
   </body>
 
+  <script src="/assets/js/fplotResizeCallbacks.js"></script>
+
 </html>
+
+
+
