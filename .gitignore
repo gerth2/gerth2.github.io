@@ -1,6 +1,5 @@
-
+_site/*.exe
 .sass-cache
 .jekyll-metadata
 *.o
-*.exe
 diagrams/*~
