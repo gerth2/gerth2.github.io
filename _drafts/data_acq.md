@@ -27,6 +27,8 @@ The best way to understand the system we put together is to start with how we mo
 
 ### Separating Data from Code
 
+![High Level Data Model](/assets/img/highLevelDataModel.png)
+
 As mentioned, there's fundamentally two categories of work that get done related to software. 
 
 One is actually writing the logic that controls the robot. Which joystick goes to which motor, which button controls the intake, which autonomous path happens before the arm gets raised.... things like this are definitely in the realm of what people traditionally think of when you describe the "software developer" role. It's done through writing code (in Java, for us), running it on some computer, stepping through it with a debugger, injecting test inputs, and making sure the outputs correspond to your expectations.
@@ -34,6 +36,16 @@ One is actually writing the logic that controls the robot. Which joystick goes t
 The other step is tuning. Here, we assume the logic has been written and tested. We're looking to empirically discover (or at least confirm) what _exact_ values for constants need to be in the software. The most universal example of this is in PID controllers: the P, I, D (and maybe F) gains are just numbers that you have to figure out, and prove that they work on the real mechanism. There's other examples too: _thresholds and debounces_ are another common one for us. How many samples of "button pushed" do we need to confirm that, yes, the operator does in fact mean to command the arm upward? How many RPM of error is acceptable before our shooter wheel is "ready"?
 
 Subtle, unexpected disturbances in the mechanism mean it's not usually practical for the average FRC team to _completely and totally determine_ these up front. That means that at least _some_ time will be spent working on the actual robot, solving for the best values for these constants by some educated guess-and-check methodology. That educated process will definitely have some up-front work to make reasonable guesses, but (at least for us) always requires some iteration on the actual robot.
+
+### The V-Chart of Development Flow
+
+Visualizing this data/code separation is most easily done in my mind through the classic "V" model.
+
+![Software Development V-Chart](/assets/img/RobotSwDevVChart.png)
+
+There's a lot to be said about it, and [you can do so here](https://en.wikipedia.org/wiki/V-Model_(software_development)). We won't do too much to delve into its nuances at the moment, but the key takeaway: The _code_ that is written is derived from basic assumptions about how we want the robot to work. _Data_ is anything derived from specific knowledge that is only available _on the physical robot itself_. It's where the software world concretely starts to bridge back to the robot performance that was desired from gameplay goals.
+
+There should probably be a whole blog post on this model of thinking about software development. But this, alas, is not that post.
 
 ## Motivation 
 
@@ -62,7 +74,7 @@ This is far from an exhaustive list, but should serve to show two things:
 
 ## "Uniqueness" of Robot Software Development Problem
 
-It's worthwhile to note the roboRIO and our chosen language of Java bring unique things to the table. For one thing, we have the benefit of a full ethernet network stack, Linux OS, shell, and filesystem. On the other hand, this means we don't have the "full silicon ownership" that you get from other styles of embedded code development (ex: Arduino.... sorta). Lacking that direct tie to "object in memory", it means lots of the industry-standard calibration tools won't quite fit the bill..... but it does mean that lots of less-common solutions are much easier to implement.
+It's worthwhile to note the roboRIO and our chosen language of Java bring unique things to the table. For one thing, we have the benefit of a full Ethernet network stack, Linux OS, shell, and filesystem. On the other hand, this means we don't have the "full silicon ownership" that you get from other styles of embedded code development (ex: Arduino.... sorta). Lacking that direct tie to "object in memory", it means lots of the industry-standard calibration tools won't quite fit the bill..... but it does mean that lots of less-common solutions are much easier to implement.
 
 Finally, we're under fairly extreme timeline crunches, and working with teams of developers who are trying to learn all this at the same time.
 
@@ -75,11 +87,11 @@ When we went about designing our system, we started with an assessment of what w
 
 ## Analysis
 
-The biggest dealbraker was that, at the time, we couldn't figure out how to get Shuffleboard's calibration value interface to work robustly. We were constantly guessing as to whether the new values had made it to the robot, and even lost a match due to a calibration change that didn't get propagated properly.
+The biggest deal-breaker was that, at the time, we couldn't figure out how to get Shuffleboard's calibration value interface to work robustly. We were constantly guessing as to whether the new values had made it to the robot, and even lost a match due to a calibration change that didn't get propagated properly.
 
 In addition, the timeseries graphing was cumbersome, and didn't allow the flexibility we wanted to quickly analyze data. Finally, the layout of the visualization had to be stored in a separate file on the development computer. This forced an non-obvious, two-points-of-change any there was a new value or a modified name.
 
-What we did like was that you didn't have to know a separate programming language to add or use the dashboard interface. Keeping the configuration in the source code as much as possible was deemed important, to minimize the mental load on already-stressed students.
+What we did like was that you didn't have to know a separate programming language to add or use the dashboard interface. [Keeping the configuration in the source code](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/robot/ShooterControl/ShooterControl.java#L74) as much as possible was deemed important, to minimize the mental load on already-stressed students.
 
 From these and other more minor requirements, we defined a "model" of the world to inform our tool design. Namely:
 
@@ -89,7 +101,7 @@ From these and other more minor requirements, we defined a "model" of the world 
 
 ### Calibrations
 
-A `calibration` is a code object which represents a number that can be treated as some numeric constant by software implementation, but should be easily and rapidly adjustable during the tuning process, without rebuilding and reloading code.
+[A `calibration` is a code object](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/lib/Calibration/Calibration.java#L43) which represents a number that can be treated as some numeric constant by software implementation, but should be easily and rapidly adjustable during the tuning process, without rebuilding and reloading code.
 
 #### Software Developer Interface
 
@@ -97,19 +109,22 @@ Calibrations must support a software-facing `.get()` method where the value is r
 
 #### Tuning Interface
 
-The user-facing interface would need to allow a software developer to rapidly enter new values for these calibrations, and save/restore values over code restarts. This is to ensure a mid-tuning battery swap doesn't wipe out a few hours of work. 
+[The user-facing interface](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/deploy/www/calibration.js) would need to allow a software developer to rapidly enter new values for these calibrations, and save/restore values over code restarts. This is to ensure a mid-tuning battery swap doesn't wipe out a few hours of work. 
 
 #### Back-end Requirements
 
-All the heavy lifting of file-read and cal value change must be done at init time, to ensure runtime code execution time is as deterministic and small as possible.
+[All the heavy lifting of file-read and cal value change must be done at init time](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/lib/Calibration/CalWrangler.java#L64), to ensure runtime code execution time is as deterministic and small as possible.
 
 Multiple people might be tuning at the same time - data has to be accepted from multiple simultaneous tuning clients, and synchronize between multiple tuners.
 
-The save/restore functionality leverages a text file stored on a USB drive, which allows for quick swaps between hardware if needed.
+The save/restore functionality leverages a text file stored on a USB drive, which allows for quick swaps between hardware if needed. We prefer the little nubby ones that have no mass to cantilever and vibrate and prematurely weaken the port.
+
+![USB Drive](/assets/img/usbDrive.png)
+
 
 ### Signals
 
-A `signal` is a code object which represents the value of some meaningful state on the robot. Usually it's tied to some physical measurement (ex: _left drivetrain wheel velocity in RPM_), but it can be more abstract (ex: _current step in a sequence of 10 things to do in an auto routine_). 
+[A `signal` is a code object which represents the value of some meaningful state on the robot](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/lib/DataServer/Signal.java#L11). Usually it's tied to some physical measurement (ex: _left drivetrain wheel velocity in RPM_), but it can be more abstract (ex: _current step in a sequence of 10 things to do in an auto routine_). 
 
 By recording these timestamped values, analyzing software behavior via signals can be considered the "next-step" beyond single-step debugging. It's not looking at how single lines of code interact at one instant, but how larger chunks of code interact over time. From this sense, it's not to be a replacement for other debugging forms. It just fills the niche for debugging a program which is running in real-time, without stopping the program.
 
@@ -125,19 +140,19 @@ Software developers are forced to provide both an "English" name for the value, 
 
 #### Back-end Requirements
 
-Signals need to be able to retain a history of values, since the change of the value over time is often of interest. Signals also need to have some notion of _timestamping_ - end users will care _when_ the signal had a particular value. 
+Signals need to be able to retain a history of values, since the change of the value over time is often of interest. [Signals also need to have some notion of _timestamping_ - end users will care _when_ the signal had a particular value](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/lib/DataServer/DataSample.java#L8). 
 
 Signal data will be consumed by multiple simultaneous readers, all looking for data at a different rate. Driver dashboard, timeseries data plotters, a flat list of "robot state" values, log-to-file functionality.... Each consumer will have particular requirements on what data it wants and when, and the signal will have to deliver to all of them.
 
-The consumers need to have the ability to configure what data they get out of the signal to ensure network bandwidth is only used as needed. Every sample transferred over ethernet should get displayed meaningfully to the end user. 
+The consumers need to have the ability to configure what data they get out of the signal to ensure network bandwidth is only used as needed. Every sample transferred over Ethernet should get displayed meaningfully to the end user. 
 
-Two examples: A flat list of values in a gird that updates every 500ms only needs each value every 500ms - the in-between values should not be transferred. On the other hand, a time-series plot of three signals needs _every_ sample, but only from those three signals. No others should show up on ethernet. 
+Two examples: A flat list of values in a gird that updates every 500ms only needs each value every 500ms - the in-between values should not be transferred. On the other hand, a time-series plot of three signals needs _every_ sample, but only from those three signals. No others should show up on Ethernet. 
 
-To facilitate this, signals are configurable to send data with TX rate and decimation specs. TX rate impacts how frequently samples are sent out over the network. Decimation impacts how many samples are skipped in each transmission.
+To facilitate this, signals are [configurable to send data with TX rate and decimation specs](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/lib/DataServer/AcqSpec.java). TX rate impacts how frequently samples are sent out over the network. Decimation impacts how many samples are skipped in each transmission.
 
-To ensure we don't use up too much memory at runtime, Signals are informed which clients are asking for their data, and how (tx/decimation). Using this info, the signal can internally determine which samples need to be retained in memory (_will_ need to be sent to at least one client), and which can be "garbage collected" (already sent to every client that cares). This dynamic allocation/dealocation of memory is not optimal for embedded systems, but we chose to do it in a focused manner. When zero clients are hooked up (usually what happens on the field), no storage or allocation happens at all. Memory and sample count is tracked at runtime, so we can detect and fix problems if needed. 
+To ensure we don't use up too much memory at runtime, [Signals are informed which clients are asking for their data](https://github.com/RobotCasserole1736/RobotCasserole2020/blob/master/RobotCasserole2020/src/main/java/frc/lib/DataServer/Signal.java#L74), and how (tx/decimation). Using this info, the signal can internally determine which samples need to be retained in memory (_will_ need to be sent to at least one client), and which can be "garbage collected" (already sent to every client that cares). This dynamic allocation/deallocation of memory is not optimal for embedded systems, but we chose to do it in a focused manner. When zero clients are hooked up (usually what happens on the field), no storage or allocation happens at all. Memory and sample count is tracked at runtime, so we can detect and fix problems if needed. 
 
-This helps us meet our goals of runtime efficiency as well - when no clients are looking for the data, the `.addSample()` should be a no-op. The `.addSample()` operation is designed to be as lightweight as possible, with the "send-to-clients" operation taking the brunt of the organizational work (and running in a lower-priority background thread). Since we're using a queue paradigm to store and send data, the rate at which data shows up on the ethernet link only matters to ensure visual displays stay nice and responsive on the Tuning Engineer's side. No data is lost if the server happens to miss a tx deadline, it just gets put in the next data packet.
+This helps us meet our goals of runtime efficiency as well - when no clients are looking for the data, the `.addSample()` should be a no-op. The `.addSample()` operation is designed to be as lightweight as possible, with the "send-to-clients" operation taking the brunt of the organizational work (and running in a lower-priority background thread). Since we're using a queue paradigm to store and send data, the rate at which data shows up on the Ethernet link only matters to ensure visual displays stay nice and responsive on the Tuning Engineer's side. No data is lost if the server happens to miss a tx deadline, it just gets put in the next data packet.
 
 ## Joint Requirements
 
@@ -145,8 +160,8 @@ Even though Signals and Calibrations serve different purposes (different directi
 
 Taking a hint from some work that 254 had done in prior years, we decided to do a web-based user interface for the Tuning Engineer. This has a number of advantages:
 
-1. Cross-platform and no extra install: Any computer with a web browser and ethernet/wifi connection can be used for tuning. And, tablets make you look cool.
-2. Sits on top of the already-required ethernet network on the robot.
+1. Cross-platform and no extra install: Any computer with a web browser and Ethernet/WiFi connection can be used for tuning. And, tablets make you look cool.
+2. Sits on top of the already-required Ethernet network on the robot.
 3. Flexible GUI design to ensure interaction is smooth, consistent, and easy.
 
 Conveniently, when desktop simulation started being more of a thing in 2019, this architecture dovetailed well - actually, the webserver "just worked". We had to adjust a few paths in simulation to account for the fact the desktop filesystem wasn't the same as the roboRIO's. But, otherwise, a desktop pc can host the same web interface on `localhost` as the roboRIO.
@@ -167,7 +182,7 @@ Both use Jetty to divide up the server's functionality by page, and serve the fi
 
 ### Websockets API
 
-The basic flow of information starts the same way as any other static website: The web browser is navigated to the appropriate page (roboRIO's IP address + `5800` port), and the robot returns the appropriate .html/.js/.css files. The client web browser displays the page and starts running the javascript.
+The basic flow of information starts the same way as any other static website: The web browser is navigated to the appropriate page (roboRIO's IP address + `5805` port), and the robot returns the appropriate .html/.js/.css files. The client web browser displays the page and starts running the javascript.
 
 At this point, we need to start transferring additional data between the robot and the client web browser, depending on what the page is supposed to display, and what the user wants to do. To facilitate this communication, we used [Websockets](https://en.wikipedia.org/wiki/WebSocket) as the underlying protocol, with a messaging scheme largely informed by the requirements above, and guided by concepts the [ASAP2 Can Calibration Protocol](https://automotivetechis.files.wordpress.com/2012/06/ccp211.pdf), whose workflow we were roughly emulating. [JSON](https://www.json.org/json-en.html) was chosen to organize the data as it was passed back and forth between client and server.
 
@@ -195,11 +210,17 @@ This design allows the client sides to be pretty flexible.
 
 We've built up client webpages to display very-granular [timeseries data in real-time using Highcharts](https://www.highcharts.com/) [^2]. We customized the UI to be as close as we could get to tools the mentors on our team were used to (namely, the aforementioned ATI Vision and Vector CANape).
 
+![Data Viewer](/assets/img/data_viewer.gif)
+
 We also built a very basic "display all values" page, which is good for quick debug.
 
 There's also a "driver dashboard" website, though it requires a bit more custom support (as the values displayed need more metadata to describe the graphical "widget"). 
 
+![Driver Dashboard](/assets/img/dashboard.gif)
+
 Finally, we also built up a quick-and-dirty robot pose display, which uses a few special-named signals for robot X/Y/Angle pose (both desired and actual). It's mostly useful for visualizing autonomous routines prior to getting on the actual robot, as well as a quick visual indication of how well the odometery is working on the real robot.
+
+![Robot Field Pose Dashboard](/assets/img/robot_pose.png)
 
 # Server-Client Architecture - Calibrations
 
@@ -209,27 +230,36 @@ When the client connects, it gets a list of available calibrations instead of si
 
 Future work includes a periodic update from server to client to ensure the client always reflects the server's state.... but so far, it hasn't been a hinderance to the workflow.
 
+![Calibrations](/assets/img/calibrations.png)
+
 # End Usage - On the Practice Field
 
 The vast majority of the usage this system sees is when we're on the practice field, debugging software and dialing in performance of the actual robot.
 
+![Calibration on field with many students](/assets/img/cal_on_field_3.png)
+
+
 Although it can certainly be used by one person on one computer, I especially like that this system opens the door for multiple students to get involved at the same time. At the peak, we can have up to four computers with groups of students at each:
 
-. Driver Station Computer
-  . Has the FRC driver station, controllers, and driver dashboard website pulled up
-  . Two students to operate the robot and execute the test sequences desired
-. Calibrations Computer
-  . Has the calibrations webpage pulled up
-  . One student enters new calibration values as needed
-. Data Viewing Computer
-  . Has the real-time data plots page pulled up
-  . One or more students getting data captures from tests run on the robot, and doing analysis of the results of calibration
-. Software Development Computer
-  . Has one or more students making changes to software, as required.
+1. Driver Station Computer
+  * Has the FRC driver station, controllers, and driver dashboard website pulled up
+  * Two students to operate the robot and execute the test sequences desired
+2. Calibrations Computer
+  * Has the calibrations webpage pulled up
+  * One student enters new calibration values as needed
+3. Data Viewing Computer
+  * Has the real-time data plots page pulled up
+  * One or more students getting data captures from tests run on the robot, and doing analysis of the results of calibration
+4. Software Development Computer
+  * Has one or more students making changes to software, as required.
 
 On top of all of that, you would have one or more students or mentors coordinating the efforts - deciding the "run list" of tests, giving input on what cal values to change and why, and overall making the whole experience educational.
 
+![Calibration on field with many students](/assets/img/cal_on_field_2.png)
+
 Obviously, not all of these have to be separate people and roles, but it's really good to help get more than just one software student engaged in the development process. It ensures that even if you're not the actual person typing in the code, you still have an understanding of how the robot is working and _why_ things are done in certain ways. It's (hopefully) inspirational, shows the depth of jobs one can have in an engineering organization, and prepares many students to talk to judges intelligently about the robot's operation.
+
+![Calibration on field with many students](/assets/img/cal_on_field_4.gif)
 
 # Conclusion
 
