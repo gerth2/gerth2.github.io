@@ -77,6 +77,10 @@ Along these lines, lots of my favorite channels involve food. With a strongly te
 
 [Bon Appétit](https://www.youtube.com/user/BonAppetitDotCom) isn't just the cooking magazine you may recall - their youtube video series has some of the best presented, casual yet technical explanation of cooking techniques and recipes I've ever seen. The people in the videos seem like so much fun to work with, and (assuming the videos represent day-to-day in their test kitchen) their workplace is one of the most positive I've ever seen. If engineering ever fails me as a career, my resume is totally showing up in BA's mailbox. 
 
+**EDIT:** Well, I guess I spoke too soon. There was some information that went public earlier this year about some of the internal staffing and salary practices at Bon Appétit. I'm not personally involved with them at all, so I don't want to post any links or list any specifics, as I can't vouch for any of the facts. You'll have to go do some googling on your own to find those. 
+
+That being said, what is out there sure seems pretty damning. It's a lesson in why having a good HR department with good review practices is key to any organizations success. Also, why it's important to step up and address problems head-on when they occur. Also, appearances are not always what they seem to be.
+
 ### History
 
 [Oversimplified](https://www.youtube.com/user/Webzwithaz) - Super entertaining and rapid downloads of historical events. 
