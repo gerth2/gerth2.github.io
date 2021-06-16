@@ -142,7 +142,9 @@ Start Over:
 
 Similar to P, if you make D too high, you get instability. 
 
-_Hint: On this system, a good value is around 0.047_
+_Hint: On this system, a good value is less than 0.047_
+
+Note: The "good" values for D are very small. Nearly zero. In fact, under most definitions of "optional"< D is not actually required for a flywheel system like this. 
 
 #### I Gain
 
@@ -166,6 +168,8 @@ Start Over:
 <br>
 <input value="Zero-out I" type="button" onClick="adjustI(0)"/>
 <br>
+
+Again, note that I is not required for this system. You can use it to compensate for other factors, but using it isn't quite the ideal answer. For some systems, it might make sense. However, caution must be used to ensure it does not introduce instability.
 
 Once you're at this point - the best advice I can give - [STOP](https://www.youtube.com/watch?v=GbKAaSf6e10&feature=youtu.be&t=14). Don't keep fiddling at random. Good enough is good enough. PID will never get quite perfect. If you are at a point that looks like this, there's admittedly not much else you can expect.
 
